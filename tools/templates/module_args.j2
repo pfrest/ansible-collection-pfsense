@@ -1,0 +1,14 @@
+    module_args = {
+{%- for name, arg in module_args.items() %}
+        "{{ name }}": {
+            "type": {{ arg.type }},
+            "required": {{ arg.required | default(False) }},
+            "default": {{ arg.default | default(None) | repr }},
+            "choices": {{ arg.choices | default([]) }},
+{%- if arg.elements is defined %}
+            "elements": "{{ arg.elements }}",
+            "suboptions": {{ arg.suboptions | default({}) | repr }},
+{%- endif %}
+        },
+{%- endfor %}
+    }
