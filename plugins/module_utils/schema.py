@@ -1,56 +1,22 @@
 """
 Module containing schema-related utilities for Ansible modules.
 """
-from ansible_collections.pfrest.pfsense.plugins.module_utils.rest import RestClient
-
-import requests
+import json
+import pathlib
 
 
 class NativeSchema:
     """
     A class for interacting with the native schema of the REST API.
-
-    Attributes:
-        URL (str): The REST API endpoint URL for fetching the native schema.
-        module (AnsibleModule): The Ansible module instance.
     """
-    URL: str = "/api/v2/schema/native"
-
-    rest_client: RestClient
-
-    def __init__(self, rest_client: RestClient = None, full_schema: dict = None):
+    def __init__(self):
         """
         Initialize the NativeSchema object and fetch the schema.
-
-        Args:
-            rest_client (RestClient): An instance of RestClient for REST API communications. Required if an explicit
-                schema is not provided.
-            schema (dict): An optional pre-fetched schema dictionary. If provided, the schema will not be fetched
-                from the REST API.
         """
-        # Require a RestClient or a pre-fetched schema, but not both
-        if rest_client is None and full_schema is None:
-            raise ValueError("Either rest_client or full_schema must be provided.")
-        if rest_client and full_schema:
-            raise ValueError("Either a rest_client or full_schema should be provided, but not both.")
-
-        # Initialize attributes
-        self.rest_client = rest_client
-        self.full_schema = full_schema if full_schema else {}
-
-        # Fetch the schema if not provided
-        if self.rest_client:
-            self.fetch()
-
-    def fetch(self) -> dict:
-        """
-        Fetch the full native schema from the REST API.
-
-        Returns:
-            dict: The native schema as a dictionary.
-        """
-        self.full_schema = self.rest_client.get(self.URL).json()
-        return self.full_schema
+        # Load the embedded schema from the JSON file included in the collection.
+        file_path = pathlib.Path(__file__).parent.joinpath("assets", "schema.json")
+        with open(file_path, 'r') as f:
+            self.full_schema = json.load(f)
     
     def get_endpoint_schema(self, endpoint: str) -> dict:
         """
