@@ -31,43 +31,21 @@ class BaseModule:
     endpoint_schema: dict
     rest_client: RestClient
 
-    def __init__(self, rest_client: RestClient, full_schema: NativeSchema):
+    def __init__(self, rest_client: RestClient):
         """
         Initialize the BaseModule with connection parameters.
 
         Args:
             rest_client (RestClient): An instance of RestClient for REST API communications.
-            full_schema (NativeSchema): An instance of NativeSchema for schema interactions.
         """
         self.rest_client = rest_client
-        self.full_schema = full_schema
+        self.full_schema = NativeSchema()
         self.model_schema = self.full_schema.get_model_schema_by_endpoint(self.endpoint)
         self.endpoint_schema = self.full_schema.get_endpoint_schema(self.endpoint)
         self.many = self.endpoint_schema.get("many")
         self.model_name = self.model_schema.get("class")
         self.endpoint_singular = self.full_schema.get_singular_endpoint_by_model(self.model_name)
         self.endpoint_plural = self.full_schema.get_plural_endpoint_by_model(self.model_name)
-    
-    def run_module(self):
-        """
-        The main logic for the module should be implemented here.
-        This method should be overridden by subclasses.
-        """
-        raise NotImplementedError("Subclasses must implement this method.")
-    
-    def run_module_plural(self):
-        """
-        The main logic for handling multiple resources should be implemented here.
-        This method should be overridden by subclasses.
-        """
-        raise NotImplementedError("Subclasses must implement this method.")
-    
-    def run_module_singular(self, module: AnsibleModule):
-        """
-        The main logic for handling a single resource should be implemented here.
-        This method should be overridden by subclasses.
-        """
-        # First, query for an existing object using the requested lookup fields
 
     def lookup_object(self, lookup_params: dict = None) -> dict:
         """
@@ -165,7 +143,21 @@ class BaseModule:
         resp = self.rest_client.put(self.endpoint_plural, data=data)
         return resp.json().get('data', [])
 
-    def set_object_state(self, state: str, data: dict, lookup_fields: list[str]) -> bool:
+    def execute_action(self, data: dict) -> tuple[bool, dict]:
+        """
+        Executes an action with the desired parameters.
+
+        Args:
+            data (dict): The action parameters to include in the action execution
+
+        Returns:
+            tuple[bool, dict]: First item indicates whether the object was changed, second item is the response data
+        """
+        resp = self.create_object(data)
+        changed = True  # TODO: Determine if the action actually changed something
+        return changed, resp
+
+    def set_object_state(self, state: str, data: dict, lookup_fields: list[str]) -> tuple[bool, dict]:
         """
         Set the state of the object based on the desired state in module parameters.
         If the state is 'present', it will create or update the object as needed.
@@ -177,10 +169,11 @@ class BaseModule:
             lookup_fields (list[str]): The fields to use for looking up the existing object.
 
         Returns:
-            bool: True if the action resulted in a change, False otherwise.
+            tuple[bool, dict]: First item indicates whether the object was changed, second item is the response data
         """
         # Keep track of whether a change was made
         changed = False
+        response = {}
 
         # Construct the lookup query
         lookup_query = self.get_lookup_query(lookup_fields, data)
@@ -194,18 +187,18 @@ class BaseModule:
 
         # When state is present and our lookup did not find an existing object, create it
         if state == 'present' and not existing_object:
-            self.create_object(data)
+            response = self.create_object(data)
             changed = True
         # When state is present and our lookup found an existing object, update it if needed
         elif state == 'present' and existing_object and self.object_needs_update(data, existing_object):
-            self.update_object(data)
+            response = self.update_object(data)
             changed = True
         # When state is absent and our lookup found an existing object, delete it
         elif state == 'absent' and existing_object:
-            self.delete_object(existing_object.get("id"))
+            response = self.delete_object(existing_object.get("id"))
             changed = True
 
-        return changed
+        return changed, response
 
     @staticmethod
     def object_needs_update(new_object: dict, existing_object: dict) -> bool:

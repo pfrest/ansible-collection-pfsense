@@ -23,7 +23,7 @@ args = argparse.parse_args()
 # Load the schema file into a NativeSchema object
 with args.schema.open("r", encoding="utf-8") as schema_file:
     native_schema_json = json.load(schema_file)
-    native_schema = NativeSchema(full_schema=native_schema_json)
+    native_schema = NativeSchema()
 
 
 def get_module_types(endpoint_url: str) -> list[str]:
@@ -289,6 +289,36 @@ def get_module_options_for_collection_module(endpoint_url: str) -> dict:
     }
 
 
+def get_module_options_for_resource_module(endpoint_url: str) -> dict:
+    """
+    Generates the module options documentation for a resource module based on the endpoint.
+
+    Args:
+        endpoint_url (str): The endpoint URL.
+
+    Returns:
+        dict: The module options for the resource module.
+    """
+    return {
+        "state": {
+            "type": "str",
+            "choices": ["present", "absent"],
+            "default": "present",
+            "description": "Whether the resource should be present or absent."
+        },
+        "lookup_fields": {
+            "type": "list",
+            "elements": "str",
+            "required": False,
+            "default": None,
+            "description": "The list of fields to use when looking up existing resources. This should be a list of "
+                           "field names that uniquely identify a resource. If not specified, the module will attempt "
+                           "to use the 'id' field if it exists, or all fields marked as 'unique' in the schema."
+        },
+        **get_module_options_from_fields(endpoint_url)
+    }
+
+
 def get_module_options_from_fields(endpoint_url: str) -> dict:
     """
     Generates the module options documentation based on the endpoint and module type.
@@ -342,20 +372,20 @@ def get_module_options(endpoint_url: str, module_type: str) -> dict:
             {
                 "type": "int",
                 "default": 443,
-                "description": "The port number of the pfSense API (default: 443)."
+                "description": "The port number of the pfSense API."
             },
         "api_username":
             {
                 "type": "str",
                 "default": "admin",
-                "description": "The username to authenticate with the pfSense API. (default: 'admin')"
+                "description": "The username to authenticate with the pfSense API."
             },
         "api_password":
             {
                 "type": "str",
                 "default": "pfsense",
                 "no_log": True,
-                "description": "The password to authenticate with the pfSense API. (default: 'pfsense')"
+                "description": "The password to authenticate with the pfSense API."
             },
         "api_key":
             {
@@ -375,6 +405,8 @@ def get_module_options(endpoint_url: str, module_type: str) -> dict:
         return {**standard_options, **get_module_options_for_info_module(endpoint_url)}
     elif module_type == "collection":
         return {**standard_options, **get_module_options_for_collection_module(endpoint_url)}
+    elif module_type == "resource":
+        return {**standard_options, **get_module_options_for_resource_module(endpoint_url)}
     else:
         return {**standard_options, **get_module_options_from_fields(endpoint_url)}
 
@@ -420,6 +452,8 @@ if __name__ == "__main__":
             # Render the template with the module details
             rendered_module = template.render(
                 module_args=doc.get("options", {}),
+                module_type=mod_type,
+                endpoint_schema=native_schema.get_endpoint_schema(endpoint),
                 documentation=yaml.dump(doc, sort_keys=False, indent=2),
             )
 
