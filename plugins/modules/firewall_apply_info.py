@@ -50,6 +50,51 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve Firewall Apply
+  pfrest.pfsense.firewall_apply_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Firewall Apply data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    applied:
+      description: Displays `true` when all firewall changes are applied and there
+        are no pending changes left.Displays `false` when there are pending firewall
+        changes that have not been applied.
+      type: bool
+      returned: always
+    pending_subsystems:
+      description: Displays the specific firewall subsystems that have pending changes.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

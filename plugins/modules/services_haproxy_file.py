@@ -83,6 +83,63 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Create HA Proxy File
+  pfrest.pfsense.services_haproxy_file:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: present
+    name: example
+    content: example
+- name: Delete HA Proxy File
+  pfrest.pfsense.services_haproxy_file:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: absent
+    name: example
+    content: example
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The HA Proxy File data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    name:
+      description: The unique name for this file.
+      type: str
+      returned: always
+    type:
+      description: The type of file. Use `null` to assume an Errorfile.
+      type: str
+      returned: always
+    content:
+      description: The content of this file.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

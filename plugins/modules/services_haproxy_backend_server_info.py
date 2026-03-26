@@ -50,6 +50,82 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve HA Proxy Backend Server
+  pfrest.pfsense.services_haproxy_backend_server_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The HA Proxy Backend Server data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    name:
+      description: The unique name for this backend server.
+      type: str
+      returned: always
+    status:
+      description: The eligibility status for this backend server.
+      type: str
+      returned: always
+    address:
+      description: The hostname or IP address of this backend server. Hostname values
+        are only resolved at service startup.
+      type: str
+      returned: always
+    port:
+      description: 'The port to forward to for this backend server. Valid options
+        are: a TCP/UDP port number'
+      type: str
+      returned: always
+    weight:
+      description: The weight of this backend server when load balancing.
+      type: int
+      returned: always
+    ssl:
+      description: Enables or disables using SSL/TLS when forwarding to this backend
+        server.
+      type: bool
+      returned: always
+    sslserververify:
+      description: Enables or disables verifying the SSL/TLS certificate when forwarding
+        to this backend server.
+      type: bool
+      returned: always
+    serverid:
+      description: The unique ID for this backend server. This value is set by the
+        system for internal use and cannot be changed.
+      type: int
+      returned: always
+    advanced:
+      description: Allows adding custom HAProxy server settings to the server.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

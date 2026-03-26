@@ -59,6 +59,50 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Manage CARP
+  pfrest.pfsense.status_carp:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    enable: false
+    maintenance_mode: false
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The CARP data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    enable:
+      description: Enables or disables CARP on this system.
+      type: bool
+      returned: always
+    maintenance_mode:
+      description: Enables or disables CARP maintenance mode on this system.
+      type: bool
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

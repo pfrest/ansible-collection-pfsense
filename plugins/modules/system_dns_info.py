@@ -50,6 +50,55 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve System DNS
+  pfrest.pfsense.system_dns_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The System DNS data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    dnsallowoverride:
+      description: Allow DNS servers to be overwritten by DHCP on WAN interfaces.
+      type: bool
+      returned: always
+    dnslocalhost:
+      description: Use local DNS server (DNS Resover or DNS Forwarder) as the primary
+        DNS, or use only remote DNS servers specified in `dnsserver`. Set to `null`
+        to use local DNS server as the primary and remote DNS servers as backup.
+      type: str
+      returned: always
+    dnsserver:
+      description: The remote DNS server IPv4 or IPv6 addresses.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

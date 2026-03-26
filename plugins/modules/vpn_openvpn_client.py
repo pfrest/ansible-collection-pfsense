@@ -462,6 +462,328 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Create Open VPN Client
+  pfrest.pfsense.vpn_openvpn_client:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: present
+    mode: p2p_tls
+    dev_mode: tun
+    protocol: UDP4
+    interface: example
+    server_addr: example
+    server_port: example
+    proxy_user: example
+    proxy_passwd: example
+    tls_type: auth
+    caref: example
+    data_ciphers: example
+    data_ciphers_fallback: example
+    digest: example
+- name: Delete Open VPN Client
+  pfrest.pfsense.vpn_openvpn_client:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: absent
+    mode: p2p_tls
+    dev_mode: tun
+    protocol: UDP4
+    interface: example
+    server_addr: example
+    server_port: example
+    proxy_user: example
+    proxy_passwd: example
+    tls_type: auth
+    caref: example
+    data_ciphers: example
+    data_ciphers_fallback: example
+    digest: example
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Open VPN Client data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    vpnid:
+      description: The unique ID for this OpenVPN client. This value is assigned by
+        the system and cannot be changed.
+      type: int
+      returned: always
+    vpnif:
+      description: The VPN interface name for this OpenVPN client. This value is assigned
+        by the system and cannot be changed.
+      type: str
+      returned: always
+    description:
+      description: The description for this OpenVPN client.
+      type: str
+      returned: always
+    disable:
+      description: Disables this OpenVPN client.
+      type: bool
+      returned: always
+    mode:
+      description: The OpenVPN client mode.
+      type: str
+      returned: always
+    dev_mode:
+      description: The carrier mode for this OpenVPN client. `tun` mode carries IPv4
+        and IPv6 (layer 3) and is the most common and compatible mode across all platforms.
+        `tap` mode is capable of carrying 802.3 (layer 2).
+      type: str
+      returned: always
+    protocol:
+      description: The protocol used by this OpenVPN client.
+      type: str
+      returned: always
+    interface:
+      description: The interface used by the firewall to originate this OpenVPN client
+        connection.
+      type: str
+      returned: always
+    server_addr:
+      description: The IP address or hostname of the OpenVPN server this client will
+        connect to.
+      type: str
+      returned: always
+    server_port:
+      description: 'The port used by the server to receive client connections. Valid
+        options are: a TCP/UDP port number'
+      type: str
+      returned: always
+    local_port:
+      description: 'The port binding used by OpenVPN for client connections. Valid
+        options are: a TCP/UDP port number'
+      type: str
+      returned: always
+    proxy_addr:
+      description: The address for an HTTP Proxy this client can use to connect to
+        a remote server.
+      type: str
+      returned: always
+    proxy_port:
+      description: 'The port used by the HTTP Proxy. Valid options are: a TCP/UDP
+        port number'
+      type: str
+      returned: always
+    proxy_authtype:
+      description: The type of authentication used by the proxy server.
+      type: str
+      returned: always
+    proxy_user:
+      description: The username to use for authentication to the remote proxy.
+      type: str
+      returned: always
+    proxy_passwd:
+      description: The username to use for authentication to the remote proxy.
+      type: str
+      returned: always
+    auth_user:
+      description: The username used to authenticate with the OpenVPN server.
+      type: str
+      returned: always
+    auth_pass:
+      description: The password used to authenticate with the OpenVPN server.
+      type: str
+      returned: always
+    auth_retry_none:
+      description: Disables retrying authentication if an authentication failed error
+        is received from the server
+      type: bool
+      returned: always
+    tls:
+      description: The TLS key this OpenVPN client will use to sign control channel
+        packets with an HMAC signature for authentication when establishing the tunnel.
+      type: str
+      returned: always
+    tls_type:
+      description: The TLS key usage type. In `auth` mode, the TLS key is used only
+        as HMAC authentication for the control channel, protecting the peers from
+        unauthorized connections. The `crypt` mode encrypts the control channel communication
+        in addition to providing authentication, providing more privacy and traffic
+        control channel obfuscation.
+      type: str
+      returned: always
+    tlsauth_keydir:
+      description: The TLS key direction. This must be set to complementary values
+        on the client and client. For example, if the client is set to 0, the client
+        must be set to 1. Both may be set to omit the direction, in which case the
+        TLS Key will be used bidirectionally.
+      type: str
+      returned: always
+    caref:
+      description: The `refid` of the CA object to assume as the peer CA.
+      type: str
+      returned: always
+    certref:
+      description: The `refid` of the certificate object to assume as the OpenVPN
+        client certificate.
+      type: str
+      returned: always
+    data_ciphers:
+      description: The encryption algorithms/ciphers allowed by this OpenVPN client.
+      type: str
+      returned: always
+    data_ciphers_fallback:
+      description: The fallback encryption algorithm/cipher used for data channel
+        packets when communicating with clients that do not support data encryption
+        algorithm negotiation (e.g. Shared Key).
+      type: str
+      returned: always
+    digest:
+      description: The algorithm used to authenticate data channel packets, and control
+        channel packets if a TLS Key is present.
+      type: str
+      returned: always
+    remote_cert_tls:
+      description: Enables or disables requiring hosts to have a client certificate
+        to connect.
+      type: bool
+      returned: always
+    tunnel_network:
+      description: The IPv4 virtual network used for private communications between
+        this client and client hosts.
+      type: str
+      returned: always
+    tunnel_networkv6:
+      description: The IPv6 virtual network used for private communications between
+        this client and client hosts.
+      type: str
+      returned: always
+    remote_network:
+      description: IPv4 networks that will be routed through the tunnel, so that a
+        site-to-site VPN can be established without manually changing the routing
+        tables. Expressed as a list of one or more CIDR ranges or host/network type
+        aliases. If this is a site-to-site VPN, enter the remote LAN/s here. May be
+        left empty for non site-to-site VPN.
+      type: str
+      returned: always
+    remote_networkv6:
+      description: IPv6 networks that will be routed through the tunnel, so that a
+        site-to-site VPN can be established without manually changing the routing
+        tables. Expressed as a list of one or more CIDR ranges or host/network type
+        aliases. If this is a site-to-site VPN, enter the remote LAN/s here. May be
+        left empty for non site-to-site VPN.
+      type: str
+      returned: always
+    use_shaper:
+      description: Maximum outgoing bandwidth (in bytes per second) for this tunnel.
+        Use `null` no limit.
+      type: int
+      returned: always
+    allow_compression:
+      description: The compression mode allowed by this OpenVPN client. Compression
+        can potentially increase throughput but may allow an attacker to extract secrets
+        if they can control compressed plaintext traversing the VPN (e.g. HTTP)
+      type: str
+      returned: always
+    passtos:
+      description: Enables or disables setting the TOS IP header value of tunnel packets
+        to match the encapsulated packet value.
+      type: bool
+      returned: always
+    route_no_pull:
+      description: Enables or disables the servers ability to add routes to the client's
+        routing table.
+      type: bool
+      returned: always
+    route_no_exec:
+      description: Enables or disables adding/removing routes automatically.
+      type: bool
+      returned: always
+    dns_add:
+      description: Enables or disables using the DNS server(s) provided by the OpenVPN
+        server.
+      type: bool
+      returned: always
+    topology:
+      description: The method used to supply a virtual adapter IP address to clients
+        when using TUN mode on IPv4.
+      type: str
+      returned: always
+    inactive_seconds:
+      description: The amount of time (in seconds) until a client connection is closed
+        for inactivity.
+      type: int
+      returned: always
+    ping_method:
+      description: The method used to define ping configuration.
+      type: str
+      returned: always
+    keepalive_interval:
+      description: The keepalive interval parameter.
+      type: int
+      returned: always
+    keepalive_timeout:
+      description: The keepalive timeout parameter.
+      type: int
+      returned: always
+    ping_seconds:
+      description: The number of seconds to accept no packets before sending a ping
+        to the remote peer over the TCP/UDP control channel.
+      type: int
+      returned: always
+    ping_action:
+      description: The action to take after a ping to the remote peer times-out.
+      type: str
+      returned: always
+    ping_action_seconds:
+      description: The number of seconds that must elapse before the ping is considered
+        a timeout and the configured `ping_action` is performed.
+      type: int
+      returned: always
+    custom_options:
+      description: Additional options to add to the OpenVPN client configuration.
+      type: str
+      returned: always
+    udp_fast_io:
+      description: Enables or disables fast I/O operations with UDP writes to tun/tap
+        (Experimental).
+      type: bool
+      returned: always
+    exit_notify:
+      description: The number of times this client will attempt to send an exit notifications.
+      type: str
+      returned: always
+    sndrcvbuf:
+      description: The send and receive buffer size for OpenVPN. Set to null to use
+        the system default.
+      type: int
+      returned: always
+    create_gw:
+      description: The gateway type(s) that will be created when a virtual interface
+        is assigned to this OpenVPN server
+      type: str
+      returned: always
+    verbosity_level:
+      description: The OpenVPN logging verbosity level.
+      type: int
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

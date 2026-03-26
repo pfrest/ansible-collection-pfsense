@@ -312,6 +312,212 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Create Firewall Rule
+  pfrest.pfsense.firewall_rule:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: present
+    type: pass
+    interface: example
+    ipprotocol: inet
+    source: example
+    destination: example
+- name: Delete Firewall Rule
+  pfrest.pfsense.firewall_rule:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: absent
+    type: pass
+    interface: example
+    ipprotocol: inet
+    source: example
+    destination: example
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Firewall Rule data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    type:
+      description: The action to take against traffic that matches this rule.
+      type: str
+      returned: always
+    interface:
+      description: The interface where packets must originate to match this rule.
+      type: str
+      returned: always
+    ipprotocol:
+      description: The IP version(s) this rule applies to.
+      type: str
+      returned: always
+    protocol:
+      description: The IP/transport protocol this rule should match.
+      type: str
+      returned: always
+    icmptype:
+      description: Th ICMP subtypes this rule applies to. This field is only applicable
+        when `ipprotocol` is `inet` and `protocol` is `icmp`.
+      type: str
+      returned: always
+    source:
+      description: 'The source address this rule applies to. Valid value options are:
+        an existing interface, an IP address, a subnet CIDR, an existing alias, `any`,
+        `(self)`, `l2tp`, `pppoe`. The context of this address can be inverted by
+        prefixing the value with `!`. For interface values, the `:ip` modifier can
+        be appended to the value to use the interface''s IP address instead of its
+        entire subnet.'
+      type: str
+      returned: always
+    source_port:
+      description: 'The source port this rule applies to. Set to `null` to allow any
+        source port. Valid options are: a TCP/UDP port number, a TCP/UDP port range
+        separated by `:`, an existing port type firewall alias'
+      type: str
+      returned: always
+    destination:
+      description: 'The destination address this rule applies to. Valid value options
+        are: an existing interface, an IP address, a subnet CIDR, an existing alias,
+        `any`, `(self)`, `l2tp`, `pppoe`. The context of this address can be inverted
+        by prefixing the value with `!`. For interface values, the `:ip` modifier
+        can be appended to the value to use the interface''s IP address instead of
+        its entire subnet.'
+      type: str
+      returned: always
+    destination_port:
+      description: 'The destination port this rule applies to. Set to `null` to allow
+        any destination port. Valid options are: a TCP/UDP port number, a TCP/UDP
+        port range separated by `:`, an existing port type firewall alias'
+      type: str
+      returned: always
+    descr:
+      description: A description detailing the purpose or justification of this firewall
+        rule.
+      type: str
+      returned: always
+    disabled:
+      description: Enable or disable this firewall rule.
+      type: bool
+      returned: always
+    log:
+      description: Enable or disable logging of traffic that matches this rule.
+      type: bool
+      returned: always
+    tag:
+      description: A packet matching this rule can be marked and this mark used to
+        match on other NAT/filter rules. It is called
+      type: str
+      returned: always
+    statetype:
+      description: The state mechanism to use for this firewall rule.
+      type: str
+      returned: always
+    tcp_flags_any:
+      description: Allow any TCP flags.
+      type: bool
+      returned: always
+    tcp_flags_out_of:
+      description: The TCP flags that can be set for this rule to match.
+      type: str
+      returned: always
+    tcp_flags_set:
+      description: The TCP flags that must be set for this rule to match.
+      type: str
+      returned: always
+    gateway:
+      description: The gateway traffic matching this rule will be routed to. Set to
+        `null` to use default.
+      type: str
+      returned: always
+    sched:
+      description: The name of an existing firewall schedule to assign to this firewall
+        rule.
+      type: str
+      returned: always
+    dnpipe:
+      description: The name of the traffic shaper limiter pipe or queue to use for
+        incoming traffic.
+      type: str
+      returned: always
+    pdnpipe:
+      description: The name of the traffic shaper limiter pipe or queue to use for
+        outgoing traffic.
+      type: str
+      returned: always
+    defaultqueue:
+      description: The name of the traffic shaper queue to assume as the default queue
+        for traffic matching this rule.
+      type: str
+      returned: always
+    ackqueue:
+      description: The name of the traffic shaper queue to assume as the ACK queue
+        for ACK traffic matching this rule.
+      type: str
+      returned: always
+    floating:
+      description: Mark this rule as a floating firewall rule.
+      type: bool
+      returned: always
+    quick:
+      description: Apply this action to traffic that matches this rule immediately.
+        This field only applies to floating firewall rules.
+      type: bool
+      returned: always
+    direction:
+      description: The direction of traffic this firewall rule applies to. This field
+        only applies to floating firewall rules.
+      type: str
+      returned: always
+    tracker:
+      description: The internal tracking ID for this firewall rule.
+      type: int
+      returned: always
+    associated_rule_id:
+      description: The internal rule ID for the NAT rule associated with this rule.
+      type: str
+      returned: always
+    created_time:
+      description: The unix timestamp of when this firewall rule was original created.
+      type: int
+      returned: always
+    created_by:
+      description: The username and IP of the user who originally created this firewall
+        rule.
+      type: str
+      returned: always
+    updated_time:
+      description: The unix timestamp of when this firewall rule was original created.
+      type: int
+      returned: always
+    updated_by:
+      description: The username and IP of the user who last updated this firewall
+        rule.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

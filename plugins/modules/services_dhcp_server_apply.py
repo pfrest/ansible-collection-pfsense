@@ -47,6 +47,46 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Perform DHCP Server Apply action
+  pfrest.pfsense.services_dhcp_server_apply:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The DHCP Server Apply data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    applied:
+      description: Displays `true` if all DHCP server changes are applied and there
+        are no pending changes left.Displays `false` when there are pending DHCP server
+        changes that have not been applied.
+      type: bool
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

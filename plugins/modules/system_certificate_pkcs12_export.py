@@ -69,6 +69,63 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Perform Certificate PKCS#12 Export action
+  pfrest.pfsense.system_certificate_pkcs12_export:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    certref: example
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Certificate PKCS#12 Export data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    certref:
+      description: The Certificate to export as a PKCS12 file.
+      type: str
+      returned: always
+    encryption:
+      description: The level of encryption to use when exporting the PKCS#12 archive.
+      type: str
+      returned: always
+    passphrase:
+      description: The passphrase to use when exporting the PKCS#12 archive. Leave
+        empty for no passphrase.
+      type: str
+      returned: always
+    filename:
+      description: The filename used when exporting the PKCS#12 archive. This value
+        cannot be changed and will always be certificate refid with the .p12 extension.
+      type: str
+      returned: always
+    binary_data:
+      description: The PKCS#12 archive binary data. This value cannot be changed.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

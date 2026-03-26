@@ -50,6 +50,185 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve Traffic Shaper Limiter Queue
+  pfrest.pfsense.firewall_traffic_shaper_limiter_queue_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Traffic Shaper Limiter Queue data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    name:
+      description: The unique name for this limiter queue.
+      type: str
+      returned: always
+    number:
+      description: A unique number auto-assigned to this limiter. This is only used
+        internally by the system and cannot be manually set or changed.
+      type: int
+      returned: always
+    enabled:
+      description: Enables or disables this limiter queue.
+      type: bool
+      returned: always
+    mask:
+      description: If `source` or `destination` slots is chosen a dynamic pipe with
+        the bandwidth, delay, packet loss and queue size given above will be created
+        for each source/destination IP address encountered, respectively. This makes
+        it possible to easily specify bandwidth limits per host or subnet.
+      type: str
+      returned: always
+    maskbits:
+      description: The IPv4 mask bits to use when determine the scope of the dynamic
+        pipe for IPv4 traffic.
+      type: int
+      returned: always
+    maskbitsv6:
+      description: The IPv6 mask bits to use when determine the scope of the dynamic
+        pipe for IPv4 traffic.
+      type: int
+      returned: always
+    qlimit:
+      description: The length of the limiter's queue which the scheduler and AQM are
+        responsible for. Set to `null` to assume default.
+      type: int
+      returned: always
+    ecn:
+      description: Enable or disable ECN. ECN sets a reserved TCP flag when the queue
+        is nearing or exceeding capacity. Not all AQMs or schedulers support this.
+      type: bool
+      returned: always
+    description:
+      description: The verbose description for this limiter queue.
+      type: str
+      returned: always
+    aqm:
+      description: The Active Queue Management (AQM) algorithm to use for this queue.
+        AQM is the intelligent drop of network packets inside the queue, when it becomes
+        full or gets close to becoming full, with the goal of reducing network congestion.
+      type: str
+      returned: always
+    param_codel_target:
+      description: The value for the CoDel target parameter.
+      type: int
+      returned: always
+    param_codel_interval:
+      description: The value for the CoDel interval parameter.
+      type: int
+      returned: always
+    param_pie_target:
+      description: The value for the PIE target parameter.
+      type: int
+      returned: always
+    param_pie_tupdate:
+      description: The value for the PIE tupdate parameter.
+      type: int
+      returned: always
+    param_pie_alpha:
+      description: The value for the PIE alpha parameter.
+      type: int
+      returned: always
+    param_pie_beta:
+      description: The value for the PIE beta parameter.
+      type: int
+      returned: always
+    param_pie_max_burst:
+      description: The value for the PIE max_burst parameter.
+      type: int
+      returned: always
+    param_pie_max_ecnth:
+      description: The value for the PIE ecnth parameter.
+      type: int
+      returned: always
+    pie_onoff:
+      description: Enable or disable turning PIE on and off depending on queue load.
+      type: bool
+      returned: always
+    pie_capdrop:
+      description: Enable or disable cap drop adjustment.
+      type: bool
+      returned: always
+    pie_qdelay:
+      description: Set queue delay type to timestamps (true) or departure rate estimation
+        (false).
+      type: bool
+      returned: always
+    pie_pderand:
+      description: Enable or disable drop probability de-randomisation.
+      type: bool
+      returned: always
+    param_red_w_q:
+      description: The value for the RED w_q parameter.
+      type: int
+      returned: always
+    param_red_min_th:
+      description: The value for the RED min_th parameter.
+      type: int
+      returned: always
+    param_red_max_th:
+      description: The value for the RED max_th parameter.
+      type: int
+      returned: always
+    param_red_max_p:
+      description: The value for the RED max_p parameter.
+      type: int
+      returned: always
+    param_gred_w_q:
+      description: The value for the GRED w_q parameter.
+      type: int
+      returned: always
+    param_gred_min_th:
+      description: The value for the GRED min_th parameter.
+      type: int
+      returned: always
+    param_gred_max_th:
+      description: The value for the GRED max_th parameter.
+      type: int
+      returned: always
+    param_gred_max_p:
+      description: The value for the GRED max_p parameter.
+      type: int
+      returned: always
+    weight:
+      description: The share of the parent limiter this queue gets.
+      type: int
+      returned: always
+    plr:
+      description: The amount of packet loss (in percentage) added to traffic passing
+        through this limiter queue.
+      type: str
+      returned: always
+    buckets:
+      description: The limiter queue's bucket size (slots).
+      type: int
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

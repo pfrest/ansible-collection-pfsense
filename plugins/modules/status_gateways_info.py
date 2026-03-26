@@ -50,6 +50,77 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve all Routing Gateway Statuses
+  pfrest.pfsense.status_gateways_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: A list of Routing Gateway Statuses returned by the API.
+  type: list
+  elements: dict
+  returned: always
+  contains:
+    name:
+      description: The name of the gateway this status corresponds to.
+      type: str
+      returned: always
+    srcip:
+      description: The current source IP being used to send monitoring probes to this
+        gateway.
+      type: str
+      returned: always
+    monitorip:
+      description: The current IP being monitored for this gateway.
+      type: str
+      returned: always
+    delay:
+      description: The current latency (in milliseconds) for this gateway.
+      type: str
+      returned: always
+    stddev:
+      description: The standard deviation in latency (in milliseconds) for this gateway.
+      type: str
+      returned: always
+    loss:
+      description: The current amount of packet loss (in percentage) for this gateway.
+        This uses a whole percentage (0.0-100.0).
+      type: str
+      returned: always
+    status:
+      description: The current status of this gateway. Typically, this will indicate
+        if the gateway is consider online or offline.
+      type: str
+      returned: always
+    substatus:
+      description: The current sub-status of this gateway. Typically, this provide
+        details into problems this gateway is seeing such as latency or packet loss.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

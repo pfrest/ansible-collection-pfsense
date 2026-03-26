@@ -50,6 +50,45 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve all Open VPN Logs
+  pfrest.pfsense.status_logs_openvpn_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: A list of Open VPN Logs returned by the API.
+  type: list
+  elements: dict
+  returned: always
+  contains:
+    text:
+      description: The raw text of the openvpn log entry.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

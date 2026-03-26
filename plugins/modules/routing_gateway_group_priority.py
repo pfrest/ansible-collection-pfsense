@@ -83,6 +83,65 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Create Routing Gateway Group Priority
+  pfrest.pfsense.routing_gateway_group_priority:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: present
+    gateway: example
+    tier: 1
+- name: Delete Routing Gateway Group Priority
+  pfrest.pfsense.routing_gateway_group_priority:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: absent
+    gateway: example
+    tier: 1
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Routing Gateway Group Priority data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    gateway:
+      description: The name of the gateway to prioritize in this gateway group.
+      type: str
+      returned: always
+    tier:
+      description: The priority of this gateway in the group. Lower numbered tiers
+        are higher priority.
+      type: int
+      returned: always
+    virtual_ip:
+      description: The virtual IP to use for this gateway group. Use `address` to
+        use the interface's current IP.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

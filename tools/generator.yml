@@ -1,0 +1,14 @@
+# Configuration for tools/module_generator.py
+#
+# Modules listed under 'exclude_modules' will be skipped during auto-generation.
+# Use the full module name (e.g. "firewall_rule", "firewall_rules_info").
+# This is useful when a module has been manually customized and should not be
+# overwritten by the generator.
+exclude_modules: []
+# Example:
+#   exclude_modules:
+#     - firewall_rule
+#     - firewall_rules_info
+
+
+

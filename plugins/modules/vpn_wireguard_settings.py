@@ -97,6 +97,77 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Manage WireGuard Settings
+  pfrest.pfsense.vpn_wireguard_settings:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    enable: false
+    keep_conf: true
+    resolve_interval_track: false
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The WireGuard Settings data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    enable:
+      description: Enables or disables WireGuard on this system. WireGuard cannot
+        be disabled when one or more tunnels is assigned to a pfSense interface.
+      type: bool
+      returned: always
+    keep_conf:
+      description: Enables or disables keeping the WireGuard configuration when the
+        package is uninstalled/reinstalled.
+      type: bool
+      returned: always
+    resolve_interval_track:
+      description: Enables or disables tracking the 'Aliases Hostnames Resolve Interval'
+        value as the `resolve_internal` value instead of specifying a value directly.
+      type: bool
+      returned: always
+    resolve_interval:
+      description: The interval (in seconds) for re-resolving endpoint host/domain
+        names.
+      type: int
+      returned: always
+    interface_group:
+      description: Configures which WireGuard tunnels are members of the WireGuard
+        interface group.
+      type: str
+      returned: always
+    hide_secrets:
+      description: Enables or disables hiding all secrets (private and pre-shared
+        keys) in the user interface.
+      type: bool
+      returned: always
+    hide_peers:
+      description: Enables or disables initially hiding all peers in the user interface.
+      type: bool
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

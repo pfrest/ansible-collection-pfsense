@@ -411,6 +411,263 @@ def get_module_options(endpoint_url: str, module_type: str) -> dict:
         return {**standard_options, **get_module_options_from_fields(endpoint_url)}
 
 
+def schema_type_to_returns_type(schema_type: str) -> str:
+    """
+    Converts a schema type string to an Ansible RETURNS type string.
+
+    Args:
+        schema_type (str): The schema type string.
+
+    Returns:
+        str: The corresponding Ansible RETURNS type string.
+    """
+    type_mapping = {
+        "string": "str",
+        "integer": "int",
+        "float": "float",
+        "boolean": "bool",
+        "array": "list",
+        "object": "dict",
+    }
+    return type_mapping.get(schema_type, "str")
+
+
+def get_returns_contains_for_model(model_class: str, visited: set = None) -> dict:
+    """
+    Recursively builds the 'contains' dict for a model's fields for use in RETURNS documentation.
+    Uses a visited set to prevent infinite recursion on circular model references.
+
+    Args:
+        model_class (str): The model class name to build the contains dict for.
+        visited (set): A set of already-visited model class names to avoid recursion.
+
+    Returns:
+        dict: A dict mapping field names to their RETURNS documentation entries.
+    """
+    if visited is None:
+        visited = set()
+    if model_class in visited:
+        return {}
+    visited = visited | {model_class}
+
+    if model_class not in native_schema.full_schema.get("models", {}):
+        return {}
+
+    model_schema = native_schema.get_model_schema(model_class)
+    contains = {}
+
+    for field_name, field_schema in model_schema.get("fields", {}).items():
+        # Skip write-only fields - they are not included in API responses
+        if field_schema.get("write_only", False):
+            continue
+
+        # Clean up help text
+        help_text = field_schema.get("help_text", "")
+        help_text = " ".join(filter(None, help_text.split()))
+
+        field_entry = {
+            "description": help_text or f"The {field_name.replace('_', ' ')} of the object.",
+            "type": schema_type_to_returns_type(field_schema.get("type", "string")),
+            "returned": "always",
+        }
+
+        # Recursively handle nested model fields
+        nested_model = field_schema.get("nested_model_class")
+        if nested_model:
+            nested_contains = get_returns_contains_for_model(nested_model, visited)
+            if nested_contains:
+                field_entry["elements"] = "dict"
+                field_entry["contains"] = nested_contains
+
+        contains[field_name] = field_entry
+
+    return contains
+
+
+def get_example_value_for_field(field_name: str, field_schema: dict):
+    """
+    Returns a realistic example value for a field based on its schema.
+
+    Args:
+        field_name (str): The name of the field.
+        field_schema (dict): The schema dict for the field.
+
+    Returns:
+        A representative example value for the field.
+    """
+    # Use first available choice for constrained fields
+    choices = field_schema.get("choices") or []
+    if choices:
+        return choices[0]
+
+    # Use the default value if it is meaningful
+    default = field_schema.get("default")
+    if default is not None and default != "" and default != []:
+        return default
+
+    # Fall back to type-based placeholders
+    field_type = field_schema.get("type", "string")
+    placeholders = {
+        "string": "example",
+        "integer": 1,
+        "float": 1.0,
+        "boolean": False,
+        "array": [],
+    }
+    return placeholders.get(field_type, "example")
+
+
+def generate_module_returns(endpoint_url: str, module_type: str) -> dict:
+    """
+    Generates the RETURNS documentation dict for a module based on its endpoint and type.
+
+    Args:
+        endpoint_url (str): The endpoint URL.
+        module_type (str): The module type.
+
+    Returns:
+        dict: The RETURNS documentation as a dictionary that can be serialized to YAML.
+    """
+    model_schema = native_schema.get_model_schema_by_endpoint(endpoint_url)
+    endpoint_schema = native_schema.get_endpoint_schema(endpoint_url)
+
+    # Build the 'contains' mapping from model fields (excluding write-only)
+    contains = get_returns_contains_for_model(model_schema["class"])
+
+    # For many-endpoint info/collection modules, the response data is a list
+    if module_type in ("collection",) or (module_type == "info" and endpoint_schema.get("many")):
+        data_entry = {
+            "description": f"A list of {model_schema['verbose_name_plural']} returned by the API.",
+            "type": "list",
+            "elements": "dict",
+            "returned": "always",
+        }
+    else:
+        data_entry = {
+            "description": f"The {model_schema['verbose_name']} data returned by the API.",
+            "type": "dict",
+            "returned": "always",
+        }
+
+    if contains:
+        data_entry["contains"] = contains
+
+    return {
+        "changed": {
+            "description": "Whether any changes were made.",
+            "type": "bool",
+            "returned": "always",
+        },
+        "status": {
+            "description": "The HTTP status code of the API response.",
+            "type": "int",
+            "returned": "always",
+        },
+        "response_id": {
+            "description": "The unique response/error ID from the API.",
+            "type": "str",
+            "returned": "always",
+        },
+        "msg": {
+            "description": "A status message from the API.",
+            "type": "str",
+            "returned": "always",
+        },
+        "data": data_entry,
+    }
+
+
+def generate_module_examples(endpoint_url: str, module_type: str) -> list:
+    """
+    Generates a list of example task dicts for a module based on its endpoint and type.
+    Each task dict represents a single Ansible task playbook entry and can be serialized to YAML.
+
+    Args:
+        endpoint_url (str): The endpoint URL.
+        module_type (str): The module type.
+
+    Returns:
+        list: A list of task dicts representing usage examples for the module.
+    """
+    model_schema = native_schema.get_model_schema_by_endpoint(endpoint_url)
+    endpoint_schema = native_schema.get_endpoint_schema(endpoint_url)
+    module_name = get_module_name(endpoint_url, module_type)
+    model_name = model_schema["verbose_name"]
+    model_name_plural = model_schema["verbose_name_plural"]
+    fqcn = f"pfrest.pfsense.{module_name}"
+
+    # Standard connection parameters shared by all examples
+    connection_params = {
+        "api_host": "pfsense.example.com",
+        "api_username": "admin",
+        "api_password": "pfsense",
+    }
+
+    # Separate writable fields into required and optional
+    required_fields = {}
+    optional_fields = {}
+    for field_name, field_schema in model_schema.get("fields", {}).items():
+        if field_schema.get("read_only", False) or field_schema.get("write_only", False):
+            continue
+        value = get_example_value_for_field(field_name, field_schema)
+        if field_schema.get("required", False):
+            required_fields[field_name] = value
+        else:
+            optional_fields[field_name] = value
+
+    examples = []
+
+    if module_type == "resource":
+        # Present example with all required fields
+        examples.append({
+            "name": f"Create {model_name}",
+            fqcn: {**connection_params, "state": "present", **required_fields},
+        })
+        # Absent example showing how to delete the resource
+        examples.append({
+            "name": f"Delete {model_name}",
+            fqcn: {**connection_params, "state": "absent", **required_fields},
+        })
+
+    elif module_type == "collection":
+        # Show a representative object inside the objects list
+        obj = dict(required_fields)
+        for k, v in list(optional_fields.items())[:2]:
+            obj[k] = v
+        examples.append({
+            "name": f"Manage all {model_name_plural}",
+            fqcn: {**connection_params, "objects": [obj] if obj else [{}]},
+        })
+
+    elif module_type == "singleton":
+        params = dict(connection_params)
+        params.update(required_fields)
+        # Include a few optional fields when there are no required fields to make the example useful
+        if not required_fields:
+            for k, v in list(optional_fields.items())[:3]:
+                params[k] = v
+        examples.append({"name": f"Manage {model_name}", fqcn: params})
+
+    elif module_type == "action":
+        params = dict(connection_params)
+        params.update(required_fields)
+        examples.append({"name": f"Perform {model_name} action", fqcn: params})
+
+    elif module_type == "info":
+        if endpoint_schema.get("many"):
+            examples.append({
+                "name": f"Retrieve all {model_name_plural}",
+                fqcn: dict(connection_params),
+            })
+        else:
+            examples.append({
+                "name": f"Retrieve {model_name}",
+                fqcn: {**connection_params, "lookup_params": {}},
+            })
+
+    return examples
+
+
 def generate_module_documentation(endpoint_url: str, module_type: str) -> dict:
     """
     Generates the module documentation string based on the endpoint and module type.
@@ -435,12 +692,27 @@ def generate_module_documentation(endpoint_url: str, module_type: str) -> dict:
 
 
 if __name__ == "__main__":
+    # Load the generator configuration file
+    generator_config = {}
+    generator_config_path = Path(__file__).parent / "generator.yml"
+    if generator_config_path.exists():
+        with generator_config_path.open("r", encoding="utf-8") as config_file:
+            generator_config = yaml.safe_load(config_file) or {}
+
+    exclude_modules = generator_config.get("exclude_modules") or []
+
     # Iterate over all endpoints in the schema and determine their module types
     for endpoint in native_schema.full_schema.get("endpoints").keys():
         mod_types = get_module_types(endpoint)
         for mod_type in mod_types:
             doc = generate_module_documentation(endpoint, mod_type)
             module_name = doc.get("module")
+
+            # Skip modules that are excluded in the generator config
+            if module_name in exclude_modules:
+                print(f"Skipping module: {module_name} (excluded in generator.yml)")
+                continue
+
             print(f"Generating module: {module_name}... ", end="")
 
             # Load the Jinja2 template
@@ -455,6 +727,17 @@ if __name__ == "__main__":
                 module_type=mod_type,
                 endpoint_schema=native_schema.get_endpoint_schema(endpoint),
                 documentation=yaml.dump(doc, sort_keys=False, indent=2),
+                returns=yaml.dump(
+                    generate_module_returns(endpoint, mod_type),
+                    sort_keys=False,
+                    indent=2,
+                ),
+                examples=yaml.dump(
+                    generate_module_examples(endpoint, mod_type),
+                    sort_keys=False,
+                    default_flow_style=False,
+                    allow_unicode=True,
+                ),
             )
 
             # Write the rendered module to a .py file

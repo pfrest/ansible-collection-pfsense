@@ -50,6 +50,190 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve all BIND Zones
+  pfrest.pfsense.services_bind_zones_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: A list of BIND Zones returned by the API.
+  type: list
+  elements: dict
+  returned: always
+  contains:
+    disabled:
+      description: Disable this BIND zone.
+      type: bool
+      returned: always
+    name:
+      description: The name of this BIND zone.
+      type: str
+      returned: always
+    description:
+      description: A description for this BIND zone.
+      type: str
+      returned: always
+    type:
+      description: The type of this BIND zone.
+      type: str
+      returned: always
+    view:
+      description: The views this BIND zone belongs to.
+      type: str
+      returned: always
+    reversev4:
+      description: Enable reverse DNS for this BIND zone.
+      type: bool
+      returned: always
+    reversev6:
+      description: Enable reverse IPv6 DNS for this BIND zone.
+      type: bool
+      returned: always
+    rpz:
+      description: Enable this zone as part of a response policy.
+      type: bool
+      returned: always
+    custom:
+      description: Custom BIND options for this BIND zone.
+      type: str
+      returned: always
+    dnssec:
+      description: Enable DNSSEC for this BIND zone.
+      type: bool
+      returned: always
+    backupkeys:
+      description: Enable backing up DNSSEC keys in the XML configuration for this
+        BIND zone.
+      type: bool
+      returned: always
+    slaveip:
+      description: The IP address of the slave server for this BIND zone.
+      type: str
+      returned: always
+    forwarders:
+      description: The forwarders for this BIND zone.
+      type: str
+      returned: always
+    ttl:
+      description: The default TTL interval (in seconds) for records within this BIND
+        zone without a specific TTL.
+      type: int
+      returned: always
+    baseip:
+      description: The IP address of the base domain for this zone. This sets an A
+        record for the base domain.
+      type: str
+      returned: always
+    nameserver:
+      description: The SOA nameserver for this zone.
+      type: str
+      returned: always
+    mail:
+      description: The SOA email address (RNAME) for this zone. This must be in an
+        FQDN format.
+      type: str
+      returned: always
+    serial:
+      description: The SOA serial number for this zone.
+      type: int
+      returned: always
+    refresh:
+      description: The SOA refresh interval for this zone. TTL-style time-unit suffixes
+        are supported (e.g. 1h, 1d, 1w), otherwise time in seconds is assumed.
+      type: str
+      returned: always
+    retry:
+      description: The SOA retry interval for this zone. TTL-style time-unit suffixes
+        are supported (e.g. 1h, 1d, 1w), otherwise time in seconds is assumed.
+      type: str
+      returned: always
+    expire:
+      description: The SOA expiry interval for this zone. TTL-style time-unit suffixes
+        are supported (e.g. 1h, 1d, 1w), otherwise time in seconds is assumed.
+      type: str
+      returned: always
+    minimum:
+      description: The SOA minimum TTL interval (in seconds) for this zone. This is
+        also referred to as the negative TTL. TTL-style time-unit suffixes are supported
+        (e.g. 1h, 1d, 1w), otherwise time in seconds is assumed.
+      type: str
+      returned: always
+    enable_updatepolicy:
+      description: Enable a specific dynamic update policy for this BIND zone.
+      type: bool
+      returned: always
+    updatepolicy:
+      description: The update policy for this BIND zone.
+      type: str
+      returned: always
+    allowupdate:
+      description: The access lists that are allowed to submit dynamic updates for
+        'master' zones (e.g. dynamic DNS).
+      type: str
+      returned: always
+    allowtransfer:
+      description: The access lists that are allowed to transfer this BIND zone.
+      type: str
+      returned: always
+    allowquery:
+      description: The access lists that are allowed to query this BIND zone.
+      type: str
+      returned: always
+    regdhcpstatic:
+      description: Register DHCP static mappings as records in this BIND zone.
+      type: bool
+      returned: always
+    customzonerecords:
+      description: Custom records for this BIND zone.
+      type: str
+      returned: always
+    records:
+      description: The records for this BIND zone.
+      type: list
+      returned: always
+      elements: dict
+      contains:
+        name:
+          description: The domain name for this record.
+          type: str
+          returned: always
+        type:
+          description: The type of record.
+          type: str
+          returned: always
+        rdata:
+          description: The data for this record. This can be an IP address, domain
+            name, or other data depending on the record type.
+          type: str
+          returned: always
+        priority:
+          description: The priority for this record.
+          type: int
+          returned: always
+
+'''
+
 
 def run_module():
     module_args = {

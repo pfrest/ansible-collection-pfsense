@@ -118,6 +118,73 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Create HAProxy Frontend Access Control List
+  pfrest.pfsense.services_haproxy_frontend_acl:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: present
+    name: example
+    expression: host_starts_with
+    value: example
+- name: Delete HAProxy Frontend Access Control List
+  pfrest.pfsense.services_haproxy_frontend_acl:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: absent
+    name: example
+    expression: host_starts_with
+    value: example
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The HAProxy Frontend Access Control List data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    name:
+      description: The unique name for this frontend ACL.
+      type: str
+      returned: always
+    expression:
+      description: The expression to use to determine the match for this ACL.
+      type: str
+      returned: always
+    value:
+      description: The value which indicates a match for this ACL.
+      type: str
+      returned: always
+    casesensitive:
+      description: Enables or disables case-sensitive matching for this ACL.
+      type: bool
+      returned: always
+    not:
+      description: Enables or disables inverting the context of this ACL.
+      type: bool
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

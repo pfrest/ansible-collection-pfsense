@@ -50,6 +50,139 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve all OpenVPN Server Statuses
+  pfrest.pfsense.status_openvpn_servers_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: A list of OpenVPN Server Statuses returned by the API.
+  type: list
+  elements: dict
+  returned: always
+  contains:
+    name:
+      description: The name of the OpenVPN server.
+      type: str
+      returned: always
+    mode:
+      description: The mode of the OpenVPN server.
+      type: str
+      returned: always
+    port:
+      description: 'The port number of the OpenVPN server. Valid options are: a TCP/UDP
+        port number'
+      type: str
+      returned: always
+    vpnid:
+      description: The VPN ID of the OpenVPN server this status corresponds to.
+      type: int
+      returned: always
+    mgmt:
+      description: The management interface of the OpenVPN server.
+      type: str
+      returned: always
+    conns:
+      description: The current connections to the OpenVPN server.
+      type: list
+      returned: always
+      elements: dict
+      contains:
+        common_name:
+          description: The common name of the OpenVPN server connection.
+          type: str
+          returned: always
+        remote_host:
+          description: The remote host of the OpenVPN server connection.
+          type: str
+          returned: always
+        virtual_addr:
+          description: The virtual address of the OpenVPN server connection.
+          type: str
+          returned: always
+        virtual_addr6:
+          description: The virtual IPv6 address of the OpenVPN server connection.
+          type: str
+          returned: always
+        bytes_recv:
+          description: The number of bytes received by the OpenVPN server connection.
+          type: int
+          returned: always
+        bytes_sent:
+          description: The number of bytes sent by the OpenVPN server connection.
+          type: int
+          returned: always
+        connect_time:
+          description: The connection time of the OpenVPN server connection.
+          type: str
+          returned: always
+        connect_time_unix:
+          description: The connection time of the OpenVPN server connection in Unix
+            time.
+          type: int
+          returned: always
+        user_name:
+          description: The user name of the OpenVPN server connection.
+          type: str
+          returned: always
+        client_id:
+          description: The client ID of the OpenVPN server connection.
+          type: int
+          returned: always
+        peer_id:
+          description: The peer ID of the OpenVPN server connection.
+          type: int
+          returned: always
+        cipher:
+          description: The cipher of the OpenVPN server connection.
+          type: str
+          returned: always
+    routes:
+      description: The current routes of the OpenVPN server.
+      type: list
+      returned: always
+      elements: dict
+      contains:
+        common_name:
+          description: The common name of the OpenVPN server connection.
+          type: str
+          returned: always
+        remote_host:
+          description: The remote host of the OpenVPN server connection.
+          type: str
+          returned: always
+        virtual_addr:
+          description: The virtual address of the OpenVPN server connection.
+          type: str
+          returned: always
+        last_time:
+          description: The last time of the route was used.
+          type: str
+          returned: always
+
+'''
+
 
 def run_module():
     module_args = {

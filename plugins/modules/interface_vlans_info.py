@@ -50,6 +50,63 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve all Interface VLANs
+  pfrest.pfsense.interface_vlans_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: A list of Interface VLANs returned by the API.
+  type: list
+  elements: dict
+  returned: always
+  contains:
+    if:
+      description: The real parent interface this VLAN will be applied to.
+      type: str
+      returned: always
+    tag:
+      description: The VLAN ID tag to use. This must be unique from all other VLANs
+        on the parent interface.
+      type: int
+      returned: always
+    vlanif:
+      description: Displays the full interface VLAN. This value is automatically populated
+        and cannot be set.
+      type: str
+      returned: always
+    pcp:
+      description: The 802.1p VLAN priority code point (PCP) to assign to this VLAN.
+      type: int
+      returned: always
+    descr:
+      description: A description to help document the purpose of this VLAN.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

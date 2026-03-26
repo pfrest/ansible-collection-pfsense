@@ -152,6 +152,105 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Create Free RADIUS Client
+  pfrest.pfsense.services_freeradius_client:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: present
+    addr: example
+    shortname: example
+    secret: example
+- name: Delete Free RADIUS Client
+  pfrest.pfsense.services_freeradius_client:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: absent
+    addr: example
+    shortname: example
+    secret: example
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Free RADIUS Client data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    addr:
+      description: The IP address or network of the RADIUS client(s) in CIDR notation.
+        This is the IP of the NAS (switch, access point, firewall, router, etc.)
+      type: str
+      returned: always
+    ip_version:
+      description: The IP version of the this Client.
+      type: str
+      returned: always
+    description:
+      description: The description for this interface.
+      type: str
+      returned: always
+    shortname:
+      description: A short name for the client. This is generally the hostname of
+        the NAS.
+      type: str
+      returned: always
+    secret:
+      description: This is the shared secret (password) which the NAS (switch, accesspoint,
+        etc.) needs to communicate with the RADIUS server.
+      type: str
+      returned: always
+    proto:
+      description: The protocol the client uses.
+      type: str
+      returned: always
+    nastype:
+      description: The NAS type of the client. This is used by checkrad.pl for simultaneous
+        use checks.
+      type: str
+      returned: always
+    msgauth:
+      description: RFC5080 requires Message-Authenticator in Access-Request. But older
+        NAS (switches or accesspoints) do not include that.
+      type: bool
+      returned: always
+    maxconn:
+      description: Takes only effect if you use TCP as protocol. Limits the number
+        of simultaneous TCP connections from a client.
+      type: int
+      returned: always
+    naslogin:
+      description: If supported by your NAS, you can use SNMP or finger for simultaneous-use
+        checks instead of (s)radutmp file and accounting. Leave empty to choose (s)radutmp.
+      type: str
+      returned: always
+    naspassword:
+      description: If supported by your NAS, you can use SNMP or finger for simultaneous-use
+        checks instead of (s)radutmp file and accounting. Leave empty to choose (s)radutmp.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

@@ -53,6 +53,45 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Perform REST API Settings Sync action
+  pfrest.pfsense.system_restapi_settings_sync:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    sync_data: example
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The REST API Settings Sync data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    sync_data:
+      description: The serialized REST API settings data to be synced.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

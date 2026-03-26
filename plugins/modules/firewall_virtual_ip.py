@@ -155,6 +155,128 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Create Virtual IP
+  pfrest.pfsense.firewall_virtual_ip:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: present
+    mode: ipalias
+    interface: example
+    subnet: example
+    subnet_bits: 1
+    vhid: 1
+    password: example
+    carp_peer: example
+- name: Delete Virtual IP
+  pfrest.pfsense.firewall_virtual_ip:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: absent
+    mode: ipalias
+    interface: example
+    subnet: example
+    subnet_bits: 1
+    vhid: 1
+    password: example
+    carp_peer: example
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Virtual IP data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    uniqid:
+      description: The unique ID for this virtual IP.
+      type: str
+      returned: always
+    mode:
+      description: The virtual IP mode to use for this virtual IP.
+      type: str
+      returned: always
+    interface:
+      description: The interface this virtual IP will apply to.
+      type: str
+      returned: always
+    type:
+      description: The virtual IP scope type. The `network` option is only applicable
+        to the `proxyarp` and `other` virtual IP modes.
+      type: str
+      returned: always
+    subnet:
+      description: The address for this virtual IP.
+      type: str
+      returned: always
+    subnet_bits:
+      description: The subnet bits for this virtual IP. For `proxyarp` and `other`
+        virtual IPs, this value specifies a block of many IP address. For all other
+        virtual IP modes, this specifies the subnet mask
+      type: int
+      returned: always
+    descr:
+      description: A description for administrative reference
+      type: str
+      returned: always
+    noexpand:
+      description: Disable expansion of this entry into IPs on NAT lists (e.g. 192.168.1.0/24
+        expands to 256 entries.)
+      type: bool
+      returned: always
+    vhid:
+      description: The VHID group that the machines will share.
+      type: int
+      returned: always
+    advbase:
+      description: The base frequency that this machine will advertise.
+      type: int
+      returned: always
+    advskew:
+      description: The frequency skew that this machine will advertise.
+      type: int
+      returned: always
+    password:
+      description: The VHID group password shared by all CARP members.
+      type: str
+      returned: always
+    carp_status:
+      description: The current CARP status of this virtual IP. This will display show
+        whether this CARP node is the primary or backup peer.
+      type: str
+      returned: always
+    carp_mode:
+      description: The CARP mode to use for this virtual IP. Please note this field
+        is exclusive to pfSense Plus and has no effect on CE.
+      type: str
+      returned: always
+    carp_peer:
+      description: The IP address of the CARP peer. Please note this field is exclusive
+        to pfSense Plus and has no effect on CE.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

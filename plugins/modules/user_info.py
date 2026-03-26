@@ -50,6 +50,89 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve User
+  pfrest.pfsense.user_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The User data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    name:
+      description: The username of this local user.
+      type: str
+      returned: always
+    password:
+      description: The password of this local user.
+      type: str
+      returned: always
+    uid:
+      description: The UID of this local user. This value is automatically assigned
+        and cannot be changed.
+      type: int
+      returned: always
+    scope:
+      description: The scope of this local user. This value is automatically assigned
+        and cannot be changed.
+      type: str
+      returned: always
+    priv:
+      description: The privileges assigned to this local user.
+      type: str
+      returned: always
+    disabled:
+      description: Disable this local user.
+      type: bool
+      returned: always
+    descr:
+      description: The full descriptive name for this local user.
+      type: str
+      returned: always
+    expires:
+      description: The expiration date for this user in mm/dd/YYYY format. Use empty
+        string for no expiration
+      type: str
+      returned: always
+    cert:
+      description: The user certificates to assign this user. Items must be existing
+        certificate `refid`s.
+      type: str
+      returned: always
+    authorizedkeys:
+      description: The SSH authorized keys to assign this user.
+      type: str
+      returned: always
+    ipsecpsk:
+      description: The IPsec pre-shared key to assign this user.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

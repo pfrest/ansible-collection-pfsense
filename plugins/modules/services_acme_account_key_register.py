@@ -53,6 +53,53 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Perform ACME Account Key Register action
+  pfrest.pfsense.services_acme_account_key_register:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    name: example
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The ACME Account Key Register data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    name:
+      description: The name of the ACME account key to register.
+      type: str
+      returned: always
+    status:
+      description: 'The registration status of the ACME account key. This will show
+        ''pending'' if the registration process is still running, ''registered'' if
+        the registration was successful, ''failed'' if the registration failed, and
+        ''unknown'' if the registration status is not known. Note: This status can
+        only be determined for registrations initiated through the REST API.'
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

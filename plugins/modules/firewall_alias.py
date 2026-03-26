@@ -106,6 +106,82 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Create Firewall Alias
+  pfrest.pfsense.firewall_alias:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: present
+    name: example
+    type: host
+- name: Delete Firewall Alias
+  pfrest.pfsense.firewall_alias:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: absent
+    name: example
+    type: host
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Firewall Alias data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    name:
+      description: Sets the name for the alias. This name must be unique from all
+        other aliases.
+      type: str
+      returned: always
+    type:
+      description: Sets the type of alias this object will be. This directly impacts
+        what values can be specified in the `address` field.
+      type: str
+      returned: always
+    descr:
+      description: Sets a description to help specify the purpose or contents of the
+        alias.
+      type: str
+      returned: always
+    address:
+      description: Sets the host, network or port entries for the alias. When `type`
+        is set to `host`, each entry must be a valid IP address or FQDN. When `type`
+        is set to `network`, each entry must be a valid network CIDR or FQDN. When
+        `type` is set to `port`, each entry must be a valid port or port range. You
+        may also specify an existing alias's `name` as an entry to created nested
+        aliases.
+      type: str
+      returned: always
+    detail:
+      description: Sets descriptions for each alias `address`. Values must match the
+        order of the `address` value it relates to. For example, the first value specified
+        here is the description for the first value specified in the `address` field.
+        This value cannot contain
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

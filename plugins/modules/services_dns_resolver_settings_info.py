@@ -50,6 +50,121 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve DNS Resolver Settings
+  pfrest.pfsense.services_dns_resolver_settings_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The DNS Resolver Settings data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    enable:
+      description: Enables or disables the DNS Resolver service.
+      type: bool
+      returned: always
+    port:
+      description: 'The port on which the DNS Resolver service listens. Valid options
+        are: a TCP/UDP port number'
+      type: str
+      returned: always
+    enablessl:
+      description: Enables or disables SSL/TLS for the DNS Resolver service.
+      type: bool
+      returned: always
+    sslcertref:
+      description: The SSL/TLS certificate to use for the DNS Resolver service.
+      type: str
+      returned: always
+    tlsport:
+      description: 'The port on which the DNS Resolver service listens for SSL/TLS
+        connections. Valid options are: a TCP/UDP port number'
+      type: str
+      returned: always
+    active_interface:
+      description: The interface on which the DNS Resolver service listens for DNS
+        queries. Set empty value ". "to listen on all interfaces.
+      type: str
+      returned: always
+    outgoing_interface:
+      description: The interface on which the DNS Resolver service sends outgoing
+        DNS queries. Set empty value ". "to use any interface.
+      type: str
+      returned: always
+    strictout:
+      description: Enables or disables sending recursive queries if none of the selected
+        Outgoing Network ". "Interfaces are available.
+      type: bool
+      returned: always
+    system_domain_local_zone_type:
+      description: The type of local zone used for the system domain.
+      type: str
+      returned: always
+    dnssec:
+      description: Enables or disables DNSSEC validation.
+      type: bool
+      returned: always
+    python:
+      description: Enables or disables the Python module.
+      type: bool
+      returned: always
+    python_order:
+      description: The order in which the Python module is loaded.
+      type: str
+      returned: always
+    python_script:
+      description: The Python module to utilize.
+      type: str
+      returned: always
+    forwarding:
+      description: Enables or disables DNS Resolver forwarding mode.
+      type: bool
+      returned: always
+    regdhcp:
+      description: Enables or disables registering DHCP leases in the DNS Resolver
+        service.
+      type: bool
+      returned: always
+    regdhcpstatic:
+      description: Enables or disables registering static DHCP mappings in the DNS
+        Resolver service.
+      type: bool
+      returned: always
+    regovpnclients:
+      description: Enables or disables registering OpenVPN clients in the DNS Resolver
+        service.
+      type: bool
+      returned: always
+    custom_options:
+      description: Custom options to add to the DNS Resolver configuration.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

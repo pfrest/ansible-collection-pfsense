@@ -50,6 +50,129 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve all Outbound NAT Mappings
+  pfrest.pfsense.firewall_nat_outbound_mappings_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: A list of Outbound NAT Mappings returned by the API.
+  type: list
+  elements: dict
+  returned: always
+  contains:
+    interface:
+      description: The interface on which traffic is matched as it exits the firewall.
+        In most cases this is a WAN-type or another externally-connected interface.
+      type: str
+      returned: always
+    protocol:
+      description: The protocol this rule should match. Use `null` for any protocol.
+      type: str
+      returned: always
+    disabled:
+      description: Disable this outbound NAT rule.
+      type: bool
+      returned: always
+    nonat:
+      description: Do not NAT traffic matching this rule.
+      type: bool
+      returned: always
+    nosync:
+      description: Do not sync this rule to HA peers.
+      type: bool
+      returned: always
+    source:
+      description: 'The source network this rule should match. Valid value options
+        are: an existing interface, a subnet CIDR, an existing alias, `any`, `(self)`,
+        `pppoe`. The context of this address can be inverted by prefixing the value
+        with `!`. For interface values, the `:ip` modifier can be appended to the
+        value to use the interface''s IP address instead of its entire subnet.'
+      type: str
+      returned: always
+    source_port:
+      description: 'The source port this rule should match. Valid options are: a TCP/UDP
+        port number, a TCP/UDP port range separated by `:`, an existing port type
+        firewall alias'
+      type: str
+      returned: always
+    destination:
+      description: 'The destination network this rule should match. Valid value options
+        are: an existing interface, a subnet CIDR, an existing alias, `any`, `pppoe`.
+        The context of this address can be inverted by prefixing the value with `!`.
+        For interface values, the `:ip` modifier can be appended to the value to use
+        the interface''s IP address instead of its entire subnet.'
+      type: str
+      returned: always
+    destination_port:
+      description: 'The destination port this rule should match. Valid options are:
+        a TCP/UDP port number, a TCP/UDP port range separated by `:`, an existing
+        port type firewall alias'
+      type: str
+      returned: always
+    target:
+      description: 'The target network traffic matching this rule should be translated
+        to. Valid value options are: an IP address, an existing alias. For interface
+        values, the `:ip` modifier can be appended to the value to use the interface''s
+        IP address instead of its entire subnet.'
+      type: str
+      returned: always
+    target_subnet:
+      description: The subnet bits for the assigned `target`. This field is only applicable
+        if `target` is set to an IP address. This has no affect for alias or interface
+        `targets`.
+      type: int
+      returned: always
+    nat_port:
+      description: 'The external source port or port range used for rewriting the
+        original source port on connections matching the rule. Valid options are:
+        a TCP/UDP port number, a TCP/UDP port range separated by `:`'
+      type: str
+      returned: always
+    static_nat_port:
+      description: Do not rewrite source port for traffic matching this rule.
+      type: bool
+      returned: always
+    poolopts:
+      description: The pool option used to load balance external IP mapping when `target`
+        is set to a subnet or alias of many addresses. Set to `null` to revert to
+        the system default.
+      type: str
+      returned: always
+    source_hash_key:
+      description: The key that is fed to the hashing algorithm in hex format. This
+        must be a 16 byte (32 character) hex string prefixed with `0x`. If a value
+        is not provided, one will automatically be generated
+      type: str
+      returned: always
+    descr:
+      description: A description for the outbound NAT mapping.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

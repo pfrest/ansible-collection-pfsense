@@ -103,6 +103,101 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Create WireGuard Tunnel
+  pfrest.pfsense.vpn_wireguard_tunnel:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: present
+    privatekey: example
+- name: Delete WireGuard Tunnel
+  pfrest.pfsense.vpn_wireguard_tunnel:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: absent
+    privatekey: example
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The WireGuard Tunnel data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    name:
+      description: The name of the WireGuard interface. This value is automatically
+        assigned by the system and cannot be changed.
+      type: str
+      returned: always
+    enabled:
+      description: Enables or disables this tunnels and any associated peers.
+      type: bool
+      returned: always
+    descr:
+      description: A description for this WireGuard tunnel.
+      type: str
+      returned: always
+    listenport:
+      description: 'The port WireGuard will listen on for this tunnel. Valid options
+        are: a TCP/UDP port number'
+      type: str
+      returned: always
+    publickey:
+      description: The public key for this tunnel. This value is automatically derived
+        from the `privatekey` value and cannot be set manually.
+      type: str
+      returned: always
+    privatekey:
+      description: The private key for this tunnel.
+      type: str
+      returned: always
+    mtu:
+      description: The MTU for this WireGuard tunnel interface. This value is ignored
+        if this tunnel is assigned as a pfSense interface.
+      type: int
+      returned: always
+    addresses:
+      description: The IPv4 or IPv6 addresses to assign this WireGuard tunnel interface.
+        This field is ignored if this tunnel interface is assigned to an existing
+        pfSense interface object.
+      type: list
+      returned: always
+      elements: dict
+      contains:
+        address:
+          description: The IPv4 or IPv6 address for this WireGuard tunnel.
+          type: str
+          returned: always
+        mask:
+          description: The subnet mask for this WireGuard tunnel.
+          type: int
+          returned: always
+        descr:
+          description: A description for this WireGuard tunnel address entry.
+          type: str
+          returned: always
+
+'''
+
 
 def run_module():
     module_args = {

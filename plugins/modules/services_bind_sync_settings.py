@@ -74,6 +74,54 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Manage BIND Sync Settings
+  pfrest.pfsense.services_bind_sync_settings:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    synconchanges: disabled
+    masterip: example
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The BIND Sync Settings data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    synconchanges:
+      description: The sync mode to use.
+      type: str
+      returned: always
+    synctimeout:
+      description: The timeout for the sync process.
+      type: int
+      returned: always
+    masterip:
+      description: The IP address of the master BIND server.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

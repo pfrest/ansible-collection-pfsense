@@ -50,6 +50,66 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve BIND Sync Remote Host
+  pfrest.pfsense.services_bind_sync_remote_host_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The BIND Sync Remote Host data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    syncdestinenable:
+      description: Enable this remote host for syncing.
+      type: bool
+      returned: always
+    syncprotocol:
+      description: The protocol to use for syncing.
+      type: str
+      returned: always
+    ipaddress:
+      description: The IP address/hostname of the remote host.
+      type: str
+      returned: always
+    syncport:
+      description: 'The remote host port to use for syncing. Valid options are: a
+        TCP/UDP port number'
+      type: str
+      returned: always
+    username:
+      description: The username to use to authenticate when syncing.
+      type: str
+      returned: always
+    password:
+      description: The password to use to authenticate when syncing.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

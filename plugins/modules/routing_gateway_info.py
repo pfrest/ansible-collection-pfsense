@@ -50,6 +50,146 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve Routing Gateway
+  pfrest.pfsense.routing_gateway_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Routing Gateway data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    name:
+      description: Sets a name for the gateway.
+      type: str
+      returned: always
+    descr:
+      description: Sets a descriptions for the gateway.
+      type: str
+      returned: always
+    disabled:
+      description: Disable this gateway.
+      type: bool
+      returned: always
+    ipprotocol:
+      description: Sets the Internet Protocol version this gateway uses.
+      type: str
+      returned: always
+    interface:
+      description: Sets the interface this gateway will apply to.
+      type: str
+      returned: always
+    gateway:
+      description: Sets the IP address of the remote gateway.
+      type: str
+      returned: always
+    monitor_disable:
+      description: Disable gateway monitoring for this gateway.
+      type: bool
+      returned: always
+    monitor:
+      description: Sets a different IP address to use when monitoring this gateway.
+        This is typically only necessary if the gateway IP does not accept ICMP probes.
+      type: str
+      returned: always
+    action_disable:
+      description: Disable actions from taking place when gateway events occur. The
+        gateway will always be considered up.
+      type: bool
+      returned: always
+    force_down:
+      description: Always consider this gateway to be up.
+      type: bool
+      returned: always
+    dpinger_dont_add_static_route:
+      description: Prevents gateway monitoring from adding a static route for this
+        gateway's monitor IP.
+      type: bool
+      returned: always
+    gw_down_kill_states:
+      description: Controls the state killing behavior when this specific gateway
+        goes down. Killing states for specific down gateways only affects states created
+        by policy routing rules and reply-to. Has no effect if gateway monitoring
+        or its action are disabled or if the gateway is forced down. May not have
+        any effect on dynamic gateways during a link loss event.
+      type: str
+      returned: always
+    nonlocalgateway:
+      description: Allows or disallows gateway IPs that are not a part of the parent
+        interface's subnet(s).
+      type: bool
+      returned: always
+    weight:
+      description: Sets the weight for this gateway when used in a Gateway Group.
+      type: int
+      returned: always
+    data_payload:
+      description: Sets the data payload to send in ICMP packets to gateway monitor
+        IP.
+      type: int
+      returned: always
+    latencylow:
+      description: Sets the threshold to consider latency as low.
+      type: int
+      returned: always
+    latencyhigh:
+      description: Sets the threshold to consider latency as high. This value must
+        be greater than `latencylow`.
+      type: int
+      returned: always
+    losslow:
+      description: Sets the threshold to consider packet loss as low.
+      type: int
+      returned: always
+    losshigh:
+      description: Sets the threshold to consider packet loss as high. This value
+        must be greater than `losslow`.
+      type: int
+      returned: always
+    interval:
+      description: Sets how often ICMP probes will be sent in milliseconds.
+      type: int
+      returned: always
+    loss_interval:
+      description: Sets the time interval in milliseconds before packets are treated
+        as lost.
+      type: int
+      returned: always
+    time_period:
+      description: Sets the time period in milliseconds over which results are averaged.
+      type: int
+      returned: always
+    alert_interval:
+      description: Sets the time interval in milliseconds between checking for an
+        alert conditions.
+      type: int
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

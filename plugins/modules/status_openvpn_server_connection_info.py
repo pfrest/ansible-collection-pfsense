@@ -50,6 +50,89 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve OpenVPN Server Connection Status
+  pfrest.pfsense.status_openvpn_server_connection_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The OpenVPN Server Connection Status data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    common_name:
+      description: The common name of the OpenVPN server connection.
+      type: str
+      returned: always
+    remote_host:
+      description: The remote host of the OpenVPN server connection.
+      type: str
+      returned: always
+    virtual_addr:
+      description: The virtual address of the OpenVPN server connection.
+      type: str
+      returned: always
+    virtual_addr6:
+      description: The virtual IPv6 address of the OpenVPN server connection.
+      type: str
+      returned: always
+    bytes_recv:
+      description: The number of bytes received by the OpenVPN server connection.
+      type: int
+      returned: always
+    bytes_sent:
+      description: The number of bytes sent by the OpenVPN server connection.
+      type: int
+      returned: always
+    connect_time:
+      description: The connection time of the OpenVPN server connection.
+      type: str
+      returned: always
+    connect_time_unix:
+      description: The connection time of the OpenVPN server connection in Unix time.
+      type: int
+      returned: always
+    user_name:
+      description: The user name of the OpenVPN server connection.
+      type: str
+      returned: always
+    client_id:
+      description: The client ID of the OpenVPN server connection.
+      type: int
+      returned: always
+    peer_id:
+      description: The peer ID of the OpenVPN server connection.
+      type: int
+      returned: always
+    cipher:
+      description: The cipher of the OpenVPN server connection.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

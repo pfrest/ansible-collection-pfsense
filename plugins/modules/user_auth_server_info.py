@@ -50,6 +50,188 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve authentication server
+  pfrest.pfsense.user_auth_server_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The authentication server data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    refid:
+      description: The unique reference ID for this authentication server. This value
+        is only used internally and cannot be manually set or changed.
+      type: str
+      returned: always
+    type:
+      description: The type of this authentication server.
+      type: str
+      returned: always
+    name:
+      description: The descriptive name for this authentication server.
+      type: str
+      returned: always
+    host:
+      description: The remote IP address or hostname of the authentication server.
+      type: str
+      returned: always
+    ldap_port:
+      description: 'The LDAP port to connect to on this LDAP authentication server.
+        Valid options are: a TCP/UDP port number'
+      type: str
+      returned: always
+    ldap_urltype:
+      description: The encryption mode to use when connecting to this authentication
+        server. Use `Standard TCP` for unencrypted LDAP connections, use `STARTTLS
+        Encrypt` to start an encrypted connection via STARTTLS if it's available,
+        or `SSL/TLS Encrypted` to only use LDAPS encrypted connections.
+      type: str
+      returned: always
+    ldap_protver:
+      description: The LDAP protocol version to use for connections to this LDAP authentication
+        server.
+      type: int
+      returned: always
+    ldap_timeout:
+      description: The timeout (in seconds) for connections to the LDAP authentication
+        server.
+      type: int
+      returned: always
+    ldap_caref:
+      description: The certificate authority used to validate the LDAP server certificate.
+      type: str
+      returned: always
+    ldap_scope:
+      description: The LDAP search scope. Use `one` to limit the scope to a single
+        level, or `subtree` to allow the entire subtree to be searched.
+      type: str
+      returned: always
+    ldap_basedn:
+      description: The root for LDAP searches on this authentication server.
+      type: str
+      returned: always
+    ldap_authcn:
+      description: The LDAP authentication container.
+      type: str
+      returned: always
+    ldap_extended_enabled:
+      description: Enable LDAP extended queries.
+      type: bool
+      returned: always
+    ldap_extended_query:
+      description: The extended LDAP query to make during LDAP searches.
+      type: str
+      returned: always
+    ldap_binddn:
+      description: The DN to use when binding to this authentication server. Set to
+        `null` to bind anonymously.
+      type: str
+      returned: always
+    ldap_bindpw:
+      description: The password to use when binding to this authentication server.
+      type: str
+      returned: always
+    ldap_attr_user:
+      description: The LDAP user attribute.
+      type: str
+      returned: always
+    ldap_attr_group:
+      description: The LDAP group attribute.
+      type: str
+      returned: always
+    ldap_attr_member:
+      description: The LDAP member attribute.
+      type: str
+      returned: always
+    ldap_rfc2307:
+      description: Enables or disable RFC2307 LDAP options.
+      type: bool
+      returned: always
+    ldap_rfc2307_userdn:
+      description: Enables or disable the use of DNs for username searches.
+      type: bool
+      returned: always
+    ldap_attr_groupobj:
+      description: The group object class for groups in RFC2307 mode.
+      type: str
+      returned: always
+    ldap_pam_groupdn:
+      description: The group DN to use for shell authentication. Users must be a member
+        of this group and have valid posixAccount attributes to sign in.
+      type: str
+      returned: always
+    ldap_utf8:
+      description: Enables or disables UTF-8 encoding LDAP parameters before sending
+        them to this authentication server
+      type: bool
+      returned: always
+    ldap_nostrip_at:
+      description: Do not strip away parts of the username after the @ symbol.
+      type: bool
+      returned: always
+    ldap_allow_unauthenticated:
+      description: Enables or disables unauthenticated binding. Unauthenticated binds
+        are bind with an existing login but with an empty password. Some LDAP servers
+        (Microsoft AD) allow this type of bind without any possibility to disable
+        it.
+      type: bool
+      returned: always
+    radius_secret:
+      description: The shared secret to use when authenticating to this RADIUS server.
+      type: str
+      returned: always
+    radius_auth_port:
+      description: 'The port used by RADIUS for authentication. Set to `null` to disable
+        use of authentication services. Valid options are: a TCP/UDP port number'
+      type: str
+      returned: always
+    radius_acct_port:
+      description: 'The port used by RADIUS for accounting. Set to `null` to disable
+        use of accounting services. Valid options are: a TCP/UDP port number'
+      type: str
+      returned: always
+    radius_protocol:
+      description: The RADIUS protocol to use when authenticating.
+      type: str
+      returned: always
+    radius_timeout:
+      description: The timeout (in seconds) for connections to this RADIUS authentication
+        server.
+      type: int
+      returned: always
+    radius_nasip_attribute:
+      description: The interface whose IP will be used as the 'NAS-IP-Address' attribute
+        during RADIUS Access-Requests. This choice will not change the interface used
+        for contacting the RADIUS server.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

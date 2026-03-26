@@ -50,6 +50,57 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve all Available Interfaces
+  pfrest.pfsense.interface_available_interfaces_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: A list of Available Interfaces returned by the API.
+  type: list
+  elements: dict
+  returned: always
+  contains:
+    if:
+      description: The name of the interface.
+      type: str
+      returned: always
+    mac:
+      description: The MAC address of the interface.
+      type: str
+      returned: always
+    dmesg:
+      description: The description of the interface.
+      type: str
+      returned: always
+    in_use_by:
+      description: The pfSense interface ID that is using this interface.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

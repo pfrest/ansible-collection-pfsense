@@ -53,6 +53,68 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Perform ACME Certificate Renew action
+  pfrest.pfsense.services_acme_certificate_renew:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    certificate: example
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The ACME Certificate Renew data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    certificate:
+      description: The name of the ACME certificate to be renewed.
+      type: str
+      returned: always
+    status:
+      description: 'The status of the ACME certificate renew process. This will show
+        ''pending'' if the renew process is still running or ''completed'' if the
+        renew process has finished. This status only indicates whether the renew process
+        has completed, not whether it was successful. You will needto refer to the
+        result log for that information. Note: This log is only populated when the
+        renew process is initiated via REST API, not when it is initiated via the
+        pfSense webConfigurator or auto-renewals.'
+      type: str
+      returned: always
+    last_updated:
+      description: 'The unix timestamp of when the ACME certificate renew status last
+        changed. Note: This timestamp is only updated when the renew process is initiated
+        via REST API, not when it is initiated via the pfSense webConfigurator or
+        auto-renewals.'
+      type: int
+      returned: always
+    result_log:
+      description: 'The output result of the acme.sh renew command. Note: This log
+        is only populated when the renew process is initiated via REST API, not when
+        it is initiated via the pfSense webConfigurator or auto-renewals.'
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

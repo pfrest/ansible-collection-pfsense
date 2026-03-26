@@ -53,6 +53,39 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Perform System Halt action
+  pfrest.pfsense.diagnostics_halt_system:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The System Halt data returned by the API.
+  type: dict
+  returned: always
+
+'''
+
 
 def run_module():
     module_args = {

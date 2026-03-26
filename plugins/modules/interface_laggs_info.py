@@ -50,6 +50,69 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve all Interface LAGGs
+  pfrest.pfsense.interface_laggs_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: A list of Interface LAGGs returned by the API.
+  type: list
+  elements: dict
+  returned: always
+  contains:
+    laggif:
+      description: The real name of the LAGG interface.
+      type: str
+      returned: always
+    descr:
+      description: A description to help document the purpose of this LAGG interface.
+      type: str
+      returned: always
+    members:
+      description: A list of member interfaces to include in the LAGG.
+      type: str
+      returned: always
+    proto:
+      description: The LAGG protocol to use.
+      type: str
+      returned: always
+    lacptimeout:
+      description: The LACP timeout mode to use.
+      type: str
+      returned: always
+    lagghash:
+      description: The LAGG hash algorithm to use.
+      type: str
+      returned: always
+    failovermaster:
+      description: The failover master interface to use.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

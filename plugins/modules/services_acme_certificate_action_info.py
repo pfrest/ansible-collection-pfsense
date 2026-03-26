@@ -50,6 +50,53 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve ACME Certificate Action
+  pfrest.pfsense.services_acme_certificate_action_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The ACME Certificate Action data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    status:
+      description: The activation status of the ACME certificate.
+      type: str
+      returned: always
+    command:
+      description: The command to execute on the ACME certificate.
+      type: str
+      returned: always
+    method:
+      description: The action method that should be used to run the command.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

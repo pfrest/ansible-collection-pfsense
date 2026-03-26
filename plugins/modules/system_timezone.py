@@ -54,6 +54,46 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Manage System Timezone
+  pfrest.pfsense.system_timezone:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    timezone: UTC
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The System Timezone data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    timezone:
+      description: Set geographic region name (Continent/Location) to determine the
+        timezone for the firewall.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

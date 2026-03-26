@@ -76,6 +76,60 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Create HA Proxy Backend Error File
+  pfrest.pfsense.services_haproxy_backend_error_file:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: present
+    errorcode: 1
+    errorfile: example
+- name: Delete HA Proxy Backend Error File
+  pfrest.pfsense.services_haproxy_backend_error_file:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: absent
+    errorcode: 1
+    errorfile: example
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The HA Proxy Backend Error File data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    errorcode:
+      description: The HTTP status code that will trigger this error file to be used.
+      type: int
+      returned: always
+    errorfile:
+      description: The HAProxy error file object that should be used for the assigned
+        HTTP status code.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

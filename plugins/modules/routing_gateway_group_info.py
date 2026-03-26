@@ -50,6 +50,77 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve Routing Gateway Group
+  pfrest.pfsense.routing_gateway_group_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Routing Gateway Group data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    name:
+      description: The name of the gateway group.
+      type: str
+      returned: always
+    trigger:
+      description: The trigger that will cause a gateway to be excluded from the group.
+      type: str
+      returned: always
+    descr:
+      description: A description of the gateway group.
+      type: str
+      returned: always
+    ipprotocol:
+      description: The assumed IP protocol of the gateways in this group.
+      type: str
+      returned: always
+    priorities:
+      description: The priorities of the gateways in this group.
+      type: list
+      returned: always
+      elements: dict
+      contains:
+        gateway:
+          description: The name of the gateway to prioritize in this gateway group.
+          type: str
+          returned: always
+        tier:
+          description: The priority of this gateway in the group. Lower numbered tiers
+            are higher priority.
+          type: int
+          returned: always
+        virtual_ip:
+          description: The virtual IP to use for this gateway group. Use `address`
+            to use the interface's current IP.
+          type: str
+          returned: always
+
+'''
+
 
 def run_module():
     module_args = {

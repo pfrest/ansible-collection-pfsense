@@ -56,6 +56,56 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Perform Service action
+  pfrest.pfsense.status_service:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Service data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    name:
+      description: The internal name of the service.
+      type: str
+      returned: always
+    description:
+      description: The full descriptive name of the service.
+      type: str
+      returned: always
+    enabled:
+      description: Indicates if the service is enabled.
+      type: bool
+      returned: always
+    status:
+      description: Indicates if the service is actively running.
+      type: bool
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

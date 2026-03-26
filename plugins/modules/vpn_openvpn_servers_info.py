@@ -50,6 +50,399 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve all Open VPN Servers
+  pfrest.pfsense.vpn_openvpn_servers_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: A list of Open VPN Servers returned by the API.
+  type: list
+  elements: dict
+  returned: always
+  contains:
+    vpnid:
+      description: The unique ID for this OpenVPN server. This value is assigned by
+        the system and cannot be changed.
+      type: int
+      returned: always
+    vpnif:
+      description: The VPN interface name for this OpenVPN server. This value is assigned
+        by the system and cannot be changed.
+      type: str
+      returned: always
+    description:
+      description: The description for this OpenVPN server.
+      type: str
+      returned: always
+    disable:
+      description: Disables this OpenVPN server.
+      type: bool
+      returned: always
+    mode:
+      description: The OpenVPN server mode.
+      type: str
+      returned: always
+    authmode:
+      description: The name of the authentication server to use as the authentication
+        backend for this OpenVPN server
+      type: str
+      returned: always
+    dev_mode:
+      description: The carrier mode for this OpenVPN server. `tun` mode carries IPv4
+        and IPv6 (layer 3) and is the most common and compatible mode across all platforms.
+        `tap` mode is capable of carrying 802.3 (layer 2).
+      type: str
+      returned: always
+    protocol:
+      description: The protocol used by this OpenVPN server.
+      type: str
+      returned: always
+    interface:
+      description: The interface or Virtual IP address where OpenVPN will receive
+        client connections.
+      type: str
+      returned: always
+    local_port:
+      description: 'The port used by OpenVPN to receive client connections. Valid
+        options are: a TCP/UDP port number'
+      type: str
+      returned: always
+    use_tls:
+      description: Enables or disables the use of a TLS key for this OpenVPN server.
+      type: bool
+      returned: always
+    tls:
+      description: The TLS key this OpenVPN server will use to sign control channel
+        packets with an HMAC signature for authentication when establishing the tunnel.
+      type: str
+      returned: always
+    tls_type:
+      description: The TLS key usage type. In `auth` mode, the TLS key is used only
+        as HMAC authentication for the control channel, protecting the peers from
+        unauthorized connections. The `crypt` mode encrypts the control channel communication
+        in addition to providing authentication, providing more privacy and traffic
+        control channel obfuscation.
+      type: str
+      returned: always
+    tlsauth_keydir:
+      description: The TLS key direction. This must be set to complementary values
+        on the client and server. For example, if the server is set to 0, the client
+        must be set to 1. Both may be set to omit the direction, in which case the
+        TLS Key will be used bidirectionally.
+      type: str
+      returned: always
+    caref:
+      description: The `refid` of the CA object to assume as the peer CA.
+      type: str
+      returned: always
+    certref:
+      description: The `refid` of the certificate object to assume as the OpenVPN
+        server certificate.
+      type: str
+      returned: always
+    cert_depth:
+      description: The depth of the certificate chain to check when a certificate
+        based client signs in. Certificates below this depth are not accepted. This
+        is useful for denying certificates made with intermediate CAs generated from
+        the same CA as the server. Set to null to use system default.
+      type: int
+      returned: always
+    dh_length:
+      description: The Diffie-Hellman (DH) parameter set used for key exchange.
+      type: str
+      returned: always
+    ecdh_curve:
+      description: The Elliptic Curve to use for key exchange. The curve from the
+        server certificate is used by default when the server uses an ECDSA certificate.
+        Otherwise, secp384r1 is used as a fallback.
+      type: str
+      returned: always
+    data_ciphers:
+      description: The encryption algorithms/ciphers allowed by this OpenVPN server.
+      type: str
+      returned: always
+    data_ciphers_fallback:
+      description: The fallback encryption algorithm/cipher used for data channel
+        packets when communicating with clients that do not support data encryption
+        algorithm negotiation (e.g. Shared Key).
+      type: str
+      returned: always
+    digest:
+      description: The algorithm used to authenticate data channel packets, and control
+        channel packets if a TLS Key is present.
+      type: str
+      returned: always
+    strictusercn:
+      description: Enables or disables enforcing a match between the common name of
+        the client certificate and the username given at login.
+      type: bool
+      returned: always
+    remote_cert_tls:
+      description: Enables or disables requiring hosts to have a client certificate
+        to connect.
+      type: bool
+      returned: always
+    tunnel_network:
+      description: The IPv4 virtual network used for private communications between
+        this server and client hosts.
+      type: str
+      returned: always
+    tunnel_networkv6:
+      description: The IPv6 virtual network used for private communications between
+        this server and client hosts.
+      type: str
+      returned: always
+    serverbridge_dhcp:
+      description: Enables or disables clients on the bridge to obtain DHCP.
+      type: bool
+      returned: always
+    serverbridge_interface:
+      description: The interface to which this TAP instance will be bridged. This
+        is not done automatically. This interface must be assigned and the bridge
+        created separately. This setting controls which existing IP address and subnet
+        mask are used by OpenVPN for the bridge.
+      type: str
+      returned: always
+    serverbridge_routegateway:
+      description: Enables or disables pushing the bridge interface's IPv4 address
+        to connecting clients as a route gateway.
+      type: bool
+      returned: always
+    serverbridge_dhcp_start:
+      description: The bridge DHCP range's start address.
+      type: str
+      returned: always
+    serverbridge_dhcp_end:
+      description: The bridge DHCP range's end address.
+      type: str
+      returned: always
+    gwredir:
+      description: Enable forcing all client-generated IPv4 traffic through the tunnel.
+      type: bool
+      returned: always
+    gwredir6:
+      description: Enable forcing all client-generated IPv6 traffic through the tunnel.
+      type: bool
+      returned: always
+    local_network:
+      description: The IPv4 networks that will be accessible from the remote endpoint.
+        Expressed as a list of one or more CIDR ranges or host/network type aliases.
+        This may be left blank if not adding a route to the local network through
+        this tunnel on the remote machine. This is generally set to the LAN network.
+      type: str
+      returned: always
+    local_networkv6:
+      description: The IPv6 networks that will be accessible from the remote endpoint.
+        Expressed as a list of one or more CIDR ranges or host/network type aliases.
+        This may be left blank if not adding a route to the local network through
+        this tunnel on the remote machine. This is generally set to the LAN network.
+      type: str
+      returned: always
+    remote_network:
+      description: IPv4 networks that will be routed through the tunnel, so that a
+        site-to-site VPN can be established without manually changing the routing
+        tables. Expressed as a list of one or more CIDR ranges or host/network type
+        aliases. If this is a site-to-site VPN, enter the remote LAN/s here. May be
+        left empty for non site-to-site VPN.
+      type: str
+      returned: always
+    remote_networkv6:
+      description: IPv6 networks that will be routed through the tunnel, so that a
+        site-to-site VPN can be established without manually changing the routing
+        tables. Expressed as a list of one or more CIDR ranges or host/network type
+        aliases. If this is a site-to-site VPN, enter the remote LAN/s here. May be
+        left empty for non site-to-site VPN.
+      type: str
+      returned: always
+    maxclients:
+      description: The maximum number of clients allowed to concurrently connect to
+        this server.
+      type: int
+      returned: always
+    allow_compression:
+      description: The compression mode allowed by this OpenVPN server. Compression
+        can potentially increase throughput but may allow an attacker to extract secrets
+        if they can control compressed plaintext traversing the VPN (e.g. HTTP)
+      type: str
+      returned: always
+    passtos:
+      description: Enables or disables setting the TOS IP header value of tunnel packets
+        to match the encapsulated packet value.
+      type: bool
+      returned: always
+    client2client:
+      description: Enables or disables allowing communication between clients connected
+        to this server.
+      type: bool
+      returned: always
+    duplicate_cn:
+      description: Enables or disable allowing the same user to connect multiple times.
+      type: bool
+      returned: always
+    connlimit:
+      description: The number of concurrent connections a single user can have.
+      type: int
+      returned: always
+    dynamic_ip:
+      description: Enables or disables allowing connected clients to retain their
+        connections if their IP address changes.
+      type: bool
+      returned: always
+    topology:
+      description: The method used to supply a virtual adapter IP address to clients
+        when using TUN mode on IPv4.
+      type: str
+      returned: always
+    inactive_seconds:
+      description: The amount of time (in seconds) until a client connection is closed
+        for inactivity.
+      type: int
+      returned: always
+    ping_method:
+      description: The method used to define ping configuration.
+      type: str
+      returned: always
+    keepalive_interval:
+      description: The keepalive interval parameter.
+      type: int
+      returned: always
+    keepalive_timeout:
+      description: The keepalive timeout parameter.
+      type: int
+      returned: always
+    ping_seconds:
+      description: The number of seconds to accept no packets before sending a ping
+        to the remote peer over the TCP/UDP control channel.
+      type: int
+      returned: always
+    ping_push:
+      description: Enables or disables push ping to the VPN client.
+      type: bool
+      returned: always
+    ping_action:
+      description: The action to take after a ping to the remote peer times-out.
+      type: str
+      returned: always
+    ping_action_seconds:
+      description: The number of seconds that must elapse before the ping is considered
+        a timeout and the configured `ping_action` is performed.
+      type: int
+      returned: always
+    ping_action_push:
+      description: Enables or disables pushing the ping action to the VPN client.
+      type: bool
+      returned: always
+    dns_domain:
+      description: The default domain to provide to clients.
+      type: str
+      returned: always
+    dns_server1:
+      description: The primary DNS server to provide to clients.
+      type: str
+      returned: always
+    dns_server2:
+      description: The secondary DNS server to provide to clients.
+      type: str
+      returned: always
+    dns_server3:
+      description: The tertiary DNS server to provide to clients.
+      type: str
+      returned: always
+    dns_server4:
+      description: The quaternary DNS server to provide to clients.
+      type: str
+      returned: always
+    push_blockoutsidedns:
+      description: Enables or disables blocking Windows 10 clients' access to DNS
+        servers except across OpenVPN while connected, forcing clients to use only
+        VPN DNS servers.
+      type: bool
+      returned: always
+    push_register_dns:
+      description: Enables or disables running `net stop dnscache`, `net start dnscache`,
+        `ipconfig /flushdns` and `ipconfig /registerdns` on connection initiation
+        for Windows clients.
+      type: bool
+      returned: always
+    ntp_server1:
+      description: The primary NTP server to provide to clients.
+      type: str
+      returned: always
+    ntp_server2:
+      description: The secondary NTP server to provide to clients.
+      type: str
+      returned: always
+    netbios_enable:
+      description: Enables or disables NetBIOS over TCP/IP.
+      type: bool
+      returned: always
+    netbios_ntype:
+      description: The NetBIOS node type.
+      type: int
+      returned: always
+    netbios_scope:
+      description: The NetBIOS Scope ID. This provides an extended naming service
+        for NetBIOS over TCP/IP. The NetBIOS scope ID isolates NetBIOS traffic on
+        a single network to only those nodes with the same NetBIOS scope ID.
+      type: str
+      returned: always
+    wins_server1:
+      description: The primary WINS server to provide to clients.
+      type: str
+      returned: always
+    wins_server2:
+      description: The secondary WINS server to provide to clients.
+      type: str
+      returned: always
+    custom_options:
+      description: Additional options to add to the OpenVPN server configuration.
+      type: str
+      returned: always
+    username_as_common_name:
+      description: Enables or disable the username of the client being used in place
+        of the certificate common name for purposes such as determining Client Specific
+        Overrides.
+      type: bool
+      returned: always
+    sndrcvbuf:
+      description: The send and receive buffer size for OpenVPN. Set to null to use
+        the system default.
+      type: int
+      returned: always
+    create_gw:
+      description: The gateway type(s) that will be created when a virtual interface
+        is assigned to this OpenVPN server
+      type: str
+      returned: always
+    verbosity_level:
+      description: The OpenVPN logging verbosity level.
+      type: int
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

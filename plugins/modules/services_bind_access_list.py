@@ -81,6 +81,73 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Create BIND Access List
+  pfrest.pfsense.services_bind_access_list:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: present
+    name: example
+    entries: &id001 []
+- name: Delete BIND Access List
+  pfrest.pfsense.services_bind_access_list:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: absent
+    name: example
+    entries: *id001
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The BIND Access List data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    name:
+      description: The name of the access list.
+      type: str
+      returned: always
+    description:
+      description: A description for the access list.
+      type: str
+      returned: always
+    entries:
+      description: The network entries for this access list.
+      type: list
+      returned: always
+      elements: dict
+      contains:
+        value:
+          description: The network CIDR to allow.
+          type: str
+          returned: always
+        description:
+          description: A description of the access list entry.
+          type: str
+          returned: always
+
+'''
+
 
 def run_module():
     module_args = {

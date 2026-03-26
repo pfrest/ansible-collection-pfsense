@@ -94,6 +94,84 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Create DNS Resolver Access List
+  pfrest.pfsense.services_dns_resolver_access_list:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: present
+    name: example
+    action: allow
+    networks: &id001 []
+- name: Delete DNS Resolver Access List
+  pfrest.pfsense.services_dns_resolver_access_list:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: absent
+    name: example
+    action: allow
+    networks: *id001
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The DNS Resolver Access List data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    name:
+      description: The name of this access list.
+      type: str
+      returned: always
+    action:
+      description: The action to take when an access list match is found.
+      type: str
+      returned: always
+    description:
+      description: A description for this access list.
+      type: str
+      returned: always
+    networks:
+      description: The DNS Resolver access list network entries to include in this
+        access list.
+      type: list
+      returned: always
+      elements: dict
+      contains:
+        network:
+          description: The network address of this access list entry.
+          type: str
+          returned: always
+        mask:
+          description: The subnet mask of this access list entry's network.
+          type: int
+          returned: always
+        description:
+          description: A description for this access list entry.
+          type: str
+          returned: always
+
+'''
+
 
 def run_module():
     module_args = {

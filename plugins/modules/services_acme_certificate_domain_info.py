@@ -50,6 +50,967 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve ACME Certificate Domain
+  pfrest.pfsense.services_acme_certificate_domain_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The ACME Certificate Domain data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    name:
+      description: The fully-qualified domain name of this domain (SAN).
+      type: str
+      returned: always
+    status:
+      description: The activation status of the ACME certificate.
+      type: str
+      returned: always
+    method:
+      description: The method to use to validate this domain.
+      type: str
+      returned: always
+    webrootfolder:
+      description: 'Folder into which the acme challenge response is written; for
+        example: /usr/local/www/.well-known/acme-challenge/'
+      type: str
+      returned: always
+    webrootftpftpserver:
+      description: Hostname of FTP server to which ACME will connect (e.g. ftps://www.webserver.tld
+        ). Currently supports FTPS (passive) and SFTP.
+      type: str
+      returned: always
+    webrootftpusername:
+      description: Username for the remote server
+      type: str
+      returned: always
+    webrootftppassword:
+      description: Password to authenticate this user on the remote server
+      type: str
+      returned: always
+    webrootftpfolder:
+      description: Folder into which the acme challenge response is written (e.g.
+        /.well-known/acme-challenge/)
+      type: str
+      returned: always
+    standaloneport:
+      description: HTTP listen port for stand-alone server. Must be 80 or have port
+        80 on WAN forwarded to this port. Firewall rules must allow traffic to reach
+        this port.
+      type: str
+      returned: always
+    standaloneipv6:
+      description: Bind to IPv6 instead of IPv4.
+      type: bool
+      returned: always
+    standalonetlsport:
+      description: TLS listen port for stand-alone server. Must be 443 or have port
+        443 on WAN forwarded to this port. Firewall rules must allow traffic to reach
+        this port.
+      type: str
+      returned: always
+    nsupdate_server:
+      description: The DNS server to which updates are sent (IP address or hostname)
+      type: str
+      returned: always
+    nsupdate_keyname:
+      description: (Optional) A name for the key, if it is different than _acme-challenge.[DomainName]
+      type: str
+      returned: always
+    nsupdate_keyalgo:
+      description: Algorithm used to generate the authentication Key for this zone
+      type: str
+      returned: always
+    nsupdate_key:
+      description: The key which authenticates updates for this zone
+      type: str
+      returned: always
+    nsupdate_zone:
+      description: (Optional) Explicitly set the zone name for updates.
+      type: str
+      returned: always
+    one984hosting_username:
+      description: 1984Hosting Username
+      type: str
+      returned: always
+    one984hosting_password:
+      description: 1984Hosting Password
+      type: str
+      returned: always
+    acmeproxy_endpoint:
+      description: Acmeproxy Endpoint URL (https://ip:port)
+      type: str
+      returned: always
+    acmeproxy_username:
+      description: Acmeproxy Username
+      type: str
+      returned: always
+    acmeproxy_password:
+      description: Acmeproxy Password
+      type: str
+      returned: always
+    acmedns_username:
+      description: acme-dns.io Username
+      type: str
+      returned: always
+    acmedns_password:
+      description: acme-dns.io Password
+      type: str
+      returned: always
+    acmedns_subdomain:
+      description: acme-dns.io subdomain
+      type: str
+      returned: always
+    acmedns_update_url:
+      description: (optional) Custom ACME DNS Base URL
+      type: str
+      returned: always
+    active24_token:
+      description: Active24 Token
+      type: str
+      returned: always
+    akamai_host:
+      description: Hostname
+      type: str
+      returned: always
+    akamai_access_token:
+      description: Access Token
+      type: str
+      returned: always
+    akamai_client_token:
+      description: Client Token
+      type: str
+      returned: always
+    akamai_client_secret:
+      description: Client Secret
+      type: str
+      returned: always
+    ali_key:
+      description: API Key
+      type: str
+      returned: always
+    ali_secret:
+      description: API Secret
+      type: str
+      returned: always
+    kas_login:
+      description: Login
+      type: str
+      returned: always
+    kas_authtype:
+      description: 'Auth type (default: sha1)'
+      type: str
+      returned: always
+    kas_authdata:
+      description: Auth data
+      type: str
+      returned: always
+    ad_api_key:
+      description: Alwaysdata API Key
+      type: str
+      returned: always
+    anx_token:
+      description: API Token
+      type: str
+      returned: always
+    af_api_username:
+      description: ArtFiles Username
+      type: str
+      returned: always
+    af_api_password:
+      description: ArtFiles Password
+      type: str
+      returned: always
+    arvan_token:
+      description: Arvan API Token
+      type: str
+      returned: always
+    aurora_key:
+      description: API Key
+      type: str
+      returned: always
+    aurora_secret:
+      description: API Secret. Obtain the key and secret from https://cp.pcextreme.nl/auroradns/users.
+      type: str
+      returned: always
+    autodns_user:
+      description: autoDNS Username
+      type: str
+      returned: always
+    autodns_password:
+      description: autoDNS Password
+      type: str
+      returned: always
+    autodns_context:
+      description: autoDNS Context
+      type: str
+      returned: always
+    aws_access_key_id:
+      description: AWS Access Key / API ID
+      type: str
+      returned: always
+    aws_secret_access_key:
+      description: AWS Secret Access / API Key
+      type: str
+      returned: always
+    aws_dns_slowrate:
+      description: 'Sleep interval after TXT record update, in seconds (default: 1)'
+      type: str
+      returned: always
+    azion_email:
+      description: Account e-mail address
+      type: str
+      returned: always
+    azion_password:
+      description: Account password
+      type: str
+      returned: always
+    azuredns_subscriptionid:
+      description: Azure Subscription ID. First, <a href="https://github.com/acmesh-official/acme.sh/wiki/How-to-use-Azure-DNS">setup
+        a service principal for access to the DNS Zone</a>.
+      type: str
+      returned: always
+    azuredns_tenantid:
+      description: Azure Tenant ID
+      type: str
+      returned: always
+    azuredns_appid:
+      description: Azure App ID
+      type: str
+      returned: always
+    azuredns_clientsecret:
+      description: Azure Client Secret
+      type: str
+      returned: always
+    bookmyname_username:
+      description: BookMyName Username
+      type: str
+      returned: always
+    bookmyname_password:
+      description: BookMyName Password
+      type: str
+      returned: always
+    bunny_api_key:
+      description: Bunny DNS API Key
+      type: str
+      returned: always
+    clouddns_email:
+      description: CloudDNS e-mail address
+      type: str
+      returned: always
+    clouddns_client_id:
+      description: CloudDNS client ID
+      type: str
+      returned: always
+    clouddns_password:
+      description: CloudDNS Password
+      type: str
+      returned: always
+    cloudns_auth_id:
+      description: Authentication ID
+      type: str
+      returned: always
+    cloudns_sub_auth_id:
+      description: Sub authentication ID
+      type: str
+      returned: always
+    cloudns_auth_password:
+      description: ClouDNS Password
+      type: str
+      returned: always
+    cf_key:
+      description: Cloudflare API Key
+      type: str
+      returned: always
+    cf_email:
+      description: Cloudflare API Email Address
+      type: str
+      returned: always
+    cf_token:
+      description: Cloudflare API Token
+      type: str
+      returned: always
+    cf_account_id:
+      description: Cloudflare API Account ID
+      type: str
+      returned: always
+    cf_zone_id:
+      description: Cloudflare API Zone ID
+      type: str
+      returned: always
+    conoha_username:
+      description: Conoha Username
+      type: str
+      returned: always
+    conoha_password:
+      description: Conoha Password
+      type: str
+      returned: always
+    conoha_tenantid:
+      description: Conoha Tenant ID
+      type: str
+      returned: always
+    conoha_identityserviceapi:
+      description: Conoha Identity Service API
+      type: str
+      returned: always
+    constellix_key:
+      description: Constellix Key
+      type: str
+      returned: always
+    constellix_secret:
+      description: Constellix Secret
+      type: str
+      returned: always
+    cpanel_username:
+      description: cPanel username
+      type: str
+      returned: always
+    cpanel_apitoken:
+      description: cPanel API token
+      type: str
+      returned: always
+    cpanel_hostname:
+      description: URL to cPanel instance
+      type: str
+      returned: always
+    cn_user:
+      description: Core Networks Username
+      type: str
+      returned: always
+    cn_password:
+      description: Core Networks Password
+      type: str
+      returned: always
+    curanet_authclientid:
+      description: Authentication Client ID
+      type: str
+      returned: always
+    curanet_authsecret:
+      description: Authentication Secret
+      type: str
+      returned: always
+    cy_username:
+      description: CY username
+      type: str
+      returned: always
+    cy_password:
+      description: CY Password
+      type: str
+      returned: always
+    ddnss_token:
+      description: API Token (e.g. aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee)
+      type: str
+      returned: always
+    dedyn_token:
+      description: deSEC.io API Token
+      type: str
+      returned: always
+    dedyn_name:
+      description: deSEC.io Username
+      type: str
+      returned: always
+    do_api_key:
+      description: DigitalOcean API Key
+      type: str
+      returned: always
+    da_api:
+      description: DirectAdmin API URI (e.g. https://remoteUser:remotePassword@da.example.com:8443)
+      type: str
+      returned: always
+    da_api_insecure:
+      description: DirectAdmin API Security check, 0=check for valid SSL certificate,
+        1=always accept
+      type: str
+      returned: always
+    dnsexit_api_key:
+      description: DNSExit API Key
+      type: str
+      returned: always
+    dnsexit_auth_user:
+      description: DNSExit Username
+      type: str
+      returned: always
+    dnsexit_auth_pass:
+      description: DNSExit Password
+      type: str
+      returned: always
+    dnshome_subdomain:
+      description: Subdomain
+      type: str
+      returned: always
+    dnshome_subdomainpassword:
+      description: Subdomain Password
+      type: str
+      returned: always
+    dnsimple_oauth_token:
+      description: DNSimple oauth token, visit <a href="https://dnsimple.com/user">https://dnsimple.com/user</a>
+        to generate.
+      type: str
+      returned: always
+    me_key:
+      description: DNSMadeEasy API Key
+      type: str
+      returned: always
+    me_secret:
+      description: DNSMadeEasy API Secret
+      type: str
+      returned: always
+    dnsservices_username:
+      description: dns.services Username
+      type: str
+      returned: always
+    dnsservices_password:
+      description: dns.services Password
+      type: str
+      returned: always
+    do_letoken:
+      description: DO.de API Token
+      type: str
+      returned: always
+    do_pid:
+      description: DO Customer ID
+      type: str
+      returned: always
+    do_pw:
+      description: DO Password
+      type: str
+      returned: always
+    domeneshop_token:
+      description: Domeneshop API Token
+      type: str
+      returned: always
+    domeneshop_secret:
+      description: Domeneshop API Secret
+      type: str
+      returned: always
+    dp_id:
+      description: Dnspod API ID
+      type: str
+      returned: always
+    dp_key:
+      description: Dnspod API Key
+      type: str
+      returned: always
+    dpi_id:
+      description: Dnspod API ID
+      type: str
+      returned: always
+    dpi_key:
+      description: Dnspod API Key
+      type: str
+      returned: always
+    dh_api_key:
+      description: Dreamhost API Token
+      type: str
+      returned: always
+    duckdns_token:
+      description: DuckDNS API Token (Look in DuckDNS account settings)
+      type: str
+      returned: always
+    dd_api_user:
+      description: DurableDNS API User
+      type: str
+      returned: always
+    dd_api_key:
+      description: DurableDNS API Key
+      type: str
+      returned: always
+    dyn_customer:
+      description: dyn.com customer ID
+      type: str
+      returned: always
+    dyn_username:
+      description: dyn.com API Username (Dyn Managed DNS user, Needs Z&R Permissions
+        for RecordAdd, RecordUpdate, RecordDelete, RecordGet, ZoneGet, ZoneAddNode,
+        ZoneRemoveNode, ZonePublish)
+      type: str
+      returned: always
+    dyn_password:
+      description: dyn.com Password
+      type: str
+      returned: always
+    df_user:
+      description: dyndnsfree.de Username
+      type: str
+      returned: always
+    df_password:
+      description: dyndnsfree.de Password
+      type: str
+      returned: always
+    dynu_clientid:
+      description: Dynu API Client ID created in the Dynu account settings
+      type: str
+      returned: always
+    dynu_secret:
+      description: Dynu API Secret
+      type: str
+      returned: always
+    easydns_key:
+      description: easyDNS API Key. Sign up for a key at https://cp.easydns.com/manage/security/api/signup.php
+      type: str
+      returned: always
+    easydns_token:
+      description: easyDNS API Token
+      type: str
+      returned: always
+    euserv_username:
+      description: Euserv.eu Username
+      type: str
+      returned: always
+    euserv_password:
+      description: Euserv.eu Password
+      type: str
+      returned: always
+    exoscale_api_key:
+      description: Exoscale API Key
+      type: str
+      returned: always
+    exoscale_secret_key:
+      description: Exoscale Secret Key
+      type: str
+      returned: always
+    fornex_api_key:
+      description: Fornex API Key
+      type: str
+      returned: always
+    freedns_user:
+      description: FreeDNS username
+      type: str
+      returned: always
+    freedns_password:
+      description: FreeDNS Password
+      type: str
+      returned: always
+    gandi_livedns_key:
+      description: Gandi LiveDNS API Key, retrieved from <a href="https://account.gandi.net">https://account.gandi.net</a>
+      type: str
+      returned: always
+    gcore_key:
+      description: Gcore API Key
+      type: str
+      returned: always
+    geoscaling_username:
+      description: Username
+      type: str
+      returned: always
+    geoscaling_password:
+      description: Password
+      type: str
+      returned: always
+    gd_key:
+      description: GoDaddy API Key
+      type: str
+      returned: always
+    gd_secret:
+      description: GoDaddy API Secret
+      type: str
+      returned: always
+    googledomains_access_token:
+      description: Google Domains API Access Token
+      type: str
+      returned: always
+    googledomains_zone:
+      description: Google Domains DNS Zone
+      type: str
+      returned: always
+    hetzner_token:
+      description: Hetzner API Token. Visit https://dns.hetzner.com/settings/api-token
+        to retrieve.
+      type: str
+      returned: always
+    hexonet_login:
+      description: Hexonet Username
+      type: str
+      returned: always
+    hexonet_password:
+      description: Hexonet Password
+      type: str
+      returned: always
+    huaweicloud_username:
+      description: Username
+      type: str
+      returned: always
+    huaweicloud_password:
+      description: Password
+      type: str
+      returned: always
+    huaweicloud_domainname:
+      description: Domain Name
+      type: str
+      returned: always
+    he_username:
+      description: Hurricane Electric username
+      type: str
+      returned: always
+    he_password:
+      description: Hurricane Electric password
+      type: str
+      returned: always
+    hostingde_apikey:
+      description: Hosting.de API Key
+      type: str
+      returned: always
+    hostingde_endpoint:
+      description: Hosting.de API endpoint, e.g. https://secure.hosting.de
+      type: str
+      returned: always
+    infoblox_creds:
+      description: Infoblox credentials in <strong>username:password</strong> format
+      type: str
+      returned: always
+    infoblox_server:
+      description: Infoblox server IP address or hostname
+      type: str
+      returned: always
+    infoblox_view:
+      description: Infoblox DNS View name, or enter "default"
+      type: str
+      returned: always
+    infomaniak_api_token:
+      description: Infomaniak API token. Visit https://manager.infomaniak.com/v3/&lt;account_id&gt;/api/dashboard
+        and generate a token with the scope Domain.
+      type: str
+      returned: always
+    default_infomaniak_api_url:
+      description: 'Infomaniak API URL (Default: https://api.infomaniak.com)'
+      type: str
+      returned: always
+    infomaniak_ttl:
+      description: 'Infomaniak DNS record TTL (Default: 300)'
+      type: str
+      returned: always
+    ionos_prefix:
+      description: Prefix
+      type: str
+      returned: always
+    ionos_secret:
+      description: Secret. Read https://beta.developer.hosting.ionos.de/docs/getstarted
+        to learn how to get a prefix and secret.
+      type: str
+      returned: always
+    ipv64_token:
+      description: IPv64.net Access Token
+      type: str
+      returned: always
+    internetbs_api_key:
+      description: Internet.BS API Key
+      type: str
+      returned: always
+    internetbs_api_password:
+      description: Internet.BS API Password
+      type: str
+      returned: always
+    inwx_username:
+      description: INWX.de username
+      type: str
+      returned: always
+    inwx_password:
+      description: INWX.de password
+      type: str
+      returned: always
+    inwx_shared_secret:
+      description: INWX.de shared secret
+      type: str
+      returned: always
+    ispc_user:
+      description: ISPConfig remoteUser
+      type: str
+      returned: always
+    ispc_password:
+      description: ISPConfig remotePassword
+      type: str
+      returned: always
+    ispc_api:
+      description: API URL (e.g. https://ispc.domain.tld:8080/remote/json.php )
+      type: str
+      returned: always
+    ispc_api_insecure:
+      description: Set 1 for insecure and 0 for secure. Controls whether the server
+        TLS certificate is checked for validity (0) or always accepted (1)
+      type: str
+      returned: always
+    jd_access_key_id:
+      description: jdcloud Access Key ID
+      type: str
+      returned: always
+    jd_region:
+      description: jdcloud Region
+      type: str
+      returned: always
+    joker_username:
+      description: Joker.com Username
+      type: str
+      returned: always
+    kinghost_username:
+      description: Kinghost API Username
+      type: str
+      returned: always
+    knot_server:
+      description: IP address of the Knot server
+      type: str
+      returned: always
+    la_id:
+      description: ID
+      type: str
+      returned: always
+    loopia_user:
+      description: Loopia username
+      type: str
+      returned: always
+    lua_email:
+      description: Luadns API Email Address
+      type: str
+      returned: always
+    miab_username:
+      description: MailinaBox Username
+      type: str
+      returned: always
+    miab_server:
+      description: MailinaBox Server
+      type: str
+      returned: always
+    mydnsjp_masterid:
+      description: MyDNS.jp Master ID
+      type: str
+      returned: always
+    namecom_username:
+      description: Name.com username
+      type: str
+      returned: always
+    namecom_token:
+      description: Name.com API Token
+      type: str
+      returned: always
+    namecheap_username:
+      description: Namecheap Username
+      type: str
+      returned: always
+    nm_user:
+      description: namemaster.de API username
+      type: str
+      returned: always
+    nc_cid:
+      description: Netcup Customer ID/Number
+      type: str
+      returned: always
+    nic_clientid:
+      description: nic.ru API Client ID
+      type: str
+      returned: always
+    nic_clientsecret:
+      description: nic.ru API Client Secret
+      type: str
+      returned: always
+    nic_username:
+      description: nic.ru Username
+      type: str
+      returned: always
+    nw_api_endpoint:
+      description: Choose the NW API Endpoint
+      type: str
+      returned: always
+    onecom_user:
+      description: One.com Username
+      type: str
+      returned: always
+    oci_cli_tenancy:
+      description: OCID of tenancy that contains the target DNS zone
+      type: str
+      returned: always
+    oci_cli_user:
+      description: OCID of user with permission to add/remove records from zones
+      type: str
+      returned: always
+    oci_cli_region:
+      description: Tenancy home region
+      type: str
+      returned: always
+    oci_cli_key:
+      description: The private API signing key in PEM format. Using an encrypted private
+        key that needs a passphrase is not supported.
+      type: str
+      returned: always
+    openprovider_user:
+      description: OpenProvider Username
+      type: str
+      returned: always
+    ovh_end_point:
+      description: Choose the OVH API Endpoint / Region
+      type: str
+      returned: always
+    pleskxml_user:
+      description: Plesk User
+      type: str
+      returned: always
+    pleskxml_uri:
+      description: Plesk Server URI
+      type: str
+      returned: always
+    pointhq_email:
+      description: PointHQ account E-mail address
+      type: str
+      returned: always
+    pdns_url:
+      description: PowerDNS URL (e.g. http://ns.example.com:8081 )
+      type: str
+      returned: always
+    pdns_serverid:
+      description: PowerDNS ServerId (e.g. localhost )
+      type: str
+      returned: always
+    pdns_ttl:
+      description: PowerDNS Record TTL (e.g. 60 )
+      type: str
+      returned: always
+    rackcorp_apiuuid:
+      description: API UUID
+      type: str
+      returned: always
+    rackspace_username:
+      description: Rackspace Username
+      type: str
+      returned: always
+    rackspace_apikey:
+      description: Rackspace API Key
+      type: str
+      returned: always
+    rage4_username:
+      description: Username
+      type: str
+      returned: always
+    rcode0_url:
+      description: Rcode0 URL
+      type: str
+      returned: always
+    rcode0_ttl:
+      description: Rcode0 TTL
+      type: str
+      returned: always
+    regru_api_username:
+      description: reg.ru Username
+      type: str
+      returned: always
+    scaleway_api_token:
+      description: API Token
+      type: str
+      returned: always
+    schlundtech_user:
+      description: schlundtech.de Username
+      type: str
+      returned: always
+    selfhostdns_username:
+      description: Username (Customer number, not email address or DynDNS account)
+      type: str
+      returned: always
+    selfhostdns_map:
+      description: Record ID (Edit the record, value is shown in brackets)
+      type: str
+      returned: always
+    servercow_api_username:
+      description: Servercow username
+      type: str
+      returned: always
+    simply_accountname:
+      description: Account Name
+      type: str
+      returned: always
+    simply_api:
+      description: 'API Endpoint URL. Default: https://api.simply.com/1'
+      type: str
+      returned: always
+    udr_user:
+      description: Username
+      type: str
+      returned: always
+    ultra_usr:
+      description: UltraDNS Username
+      type: str
+      returned: always
+    uno_user:
+      description: UnoEuro username
+      type: str
+      returned: always
+    veesp_user:
+      description: Username
+      type: str
+      returned: always
+    west_username:
+      description: West.cn Domain API Username
+      type: str
+      returned: always
+    world4you_username:
+      description: Username
+      type: str
+      returned: always
+    yc_zone_id:
+      description: DNS Zone ID
+      type: str
+      returned: always
+    yc_folder_id:
+      description: Yandex Cloud Folder ID
+      type: str
+      returned: always
+    yc_sa_id:
+      description: Service Account ID
+      type: str
+      returned: always
+    yc_sa_key_id:
+      description: Service Account IAM Key ID
+      type: str
+      returned: always
+    yc_sa_key_file_pem_b64:
+      description: Base64 content of private key.
+      type: str
+      returned: always
+    zone_username:
+      description: Zone.ee Username
+      type: str
+      returned: always
+    zone_key:
+      description: Zone.ee API Key
+      type: str
+      returned: always
+    anydnschallengealias:
+      description: (Optional) Adds the --challenge-alias flag to the acme.sh call.<br/>To
+        use a CNAME for _acme-challenge.importantDomain.tld to direct the acme validation
+        to a different (sub)domain _acme-challenge.aliasDomainForValidationOnly.tld,
+        configure the alternate domain here.<br/>More information can be found <a
+        href="https://github.com/acmesh-official/acme.sh/wiki/DNS-alias-mode" target="_new">here</a>.
+      type: str
+      returned: always
+    anydnschallengedomain:
+      description: (Optional) Uses the challenge domain alias value as --domain-alias
+        instead in the acme.sh call.
+      type: bool
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

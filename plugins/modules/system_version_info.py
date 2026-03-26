@@ -50,6 +50,59 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve System Version
+  pfrest.pfsense.system_version_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The System Version data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    version:
+      description: The official pfSense version release name. (e.g. X.X.X-RELEASE)
+      type: str
+      returned: always
+    base:
+      description: The base pfSense version. For pfSense CE, this will be the major
+        and minor version but not the patch. For pfSense Plus, this will be the version
+        year and month but not the patch.
+      type: str
+      returned: always
+    patch:
+      description: The pfSense build's patch version.
+      type: str
+      returned: always
+    buildtime:
+      description: The datetime string of when the pfSense version was initially built.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

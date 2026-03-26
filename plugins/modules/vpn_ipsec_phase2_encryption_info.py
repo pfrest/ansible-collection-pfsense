@@ -50,6 +50,50 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve IPsec Phase 2 Encryption
+  pfrest.pfsense.vpn_ipsec_phase2_encryption_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The IPsec Phase 2 Encryption data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    name:
+      description: The name of the encryption algorithm to use for this P2 encryption
+        item.
+      type: str
+      returned: always
+    keylen:
+      description: The key length for the encryption algorithm.
+      type: int
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

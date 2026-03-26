@@ -98,6 +98,72 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Create BIND Zone Record
+  pfrest.pfsense.services_bind_zone_record:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: present
+    name: example
+    type: A
+    rdata: example
+    priority: 1
+- name: Delete BIND Zone Record
+  pfrest.pfsense.services_bind_zone_record:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: absent
+    name: example
+    type: A
+    rdata: example
+    priority: 1
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The BIND Zone Record data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    name:
+      description: The domain name for this record.
+      type: str
+      returned: always
+    type:
+      description: The type of record.
+      type: str
+      returned: always
+    rdata:
+      description: The data for this record. This can be an IP address, domain name,
+        or other data depending on the record type.
+      type: str
+      returned: always
+    priority:
+      description: The priority for this record.
+      type: int
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

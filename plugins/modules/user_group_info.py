@@ -50,6 +50,69 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve User Group
+  pfrest.pfsense.user_group_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The User Group data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    name:
+      description: The name for this user group.
+      type: str
+      returned: always
+    gid:
+      description: The GID of this user group. This value is automatically assigned
+        and cannot be changed.
+      type: int
+      returned: always
+    scope:
+      description: The scope of this user group. Use `local` for user groups that
+        only apply to this system. use `remote` for groups that also apply to remote
+        authentication servers. Please note the `system` scope is reserved for built-in,
+        system-defined user groups and cannot be assigned manually.
+      type: str
+      returned: always
+    description:
+      description: The description to assign to this user group.
+      type: str
+      returned: always
+    member:
+      description: The local user names to assign to this user group.
+      type: str
+      returned: always
+    priv:
+      description: The privileges to assign to this user group.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

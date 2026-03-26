@@ -50,6 +50,102 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve DHCP Server Static Mapping
+  pfrest.pfsense.services_dhcp_server_static_mapping_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The DHCP Server Static Mapping data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    mac:
+      description: The MAC address of the client this mapping is for.
+      type: str
+      returned: always
+    ipaddr:
+      description: The IP address to assign this client via DHCP.
+      type: str
+      returned: always
+    cid:
+      description: The client identifier of the client this mapping is for.
+      type: str
+      returned: always
+    hostname:
+      description: The hostname to assign this client via DHCP.
+      type: str
+      returned: always
+    domain:
+      description: The domain to be assigned via DHCP.
+      type: str
+      returned: always
+    domainsearchlist:
+      description: The domain search list to provide via DHCP.
+      type: str
+      returned: always
+    defaultleasetime:
+      description: The default DHCP lease validity period (in seconds). This is used
+        for clients that do not ask for a specific expiration time.
+      type: int
+      returned: always
+    maxleasetime:
+      description: The maximum DHCP lease validity period (in seconds) this client
+        can request.
+      type: int
+      returned: always
+    gateway:
+      description: The gateway IPv4 address to provide via DHCP. This is only necessary
+        if you are not using the interface's IP as the gateway. Specify `none` for
+        no gateway assignment.
+      type: str
+      returned: always
+    dnsserver:
+      description: The DNS servers to provide via DHCP. Leave empty to default to
+        system nameservers.
+      type: str
+      returned: always
+    winsserver:
+      description: The WINS servers to provide via DHCP.
+      type: str
+      returned: always
+    ntpserver:
+      description: The NTP servers to provide via DHCP.
+      type: str
+      returned: always
+    arp_table_static_entry:
+      description: Assign a static ARP entry for this static mapping.
+      type: bool
+      returned: always
+    descr:
+      description: The description of this static mapping.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

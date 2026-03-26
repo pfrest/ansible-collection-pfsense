@@ -50,6 +50,70 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve all REST API Keys
+  pfrest.pfsense.auth_keys_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: A list of REST API Keys returned by the API.
+  type: list
+  elements: dict
+  returned: always
+  contains:
+    descr:
+      description: Sets a description for this API key. This is used to identify the
+        key's purpose and cannot be changed once created.
+      type: str
+      returned: always
+    username:
+      description: The username this API key is issued to.
+      type: str
+      returned: always
+    hash_algo:
+      description: The hash algorithm used for this API key. It is recommended to
+        increase the strength of the algorithm for keys assigned to privileged users.
+      type: str
+      returned: always
+    length_bytes:
+      description: The length of the API key (in bytes). Greater key lengths provide
+        greater security, but also increase the number of characters used in the key
+        string.
+      type: int
+      returned: always
+    hash:
+      description: The hash of the generated API key
+      type: str
+      returned: always
+    key:
+      description: The real API key. This value is not stored internally and cannot
+        be recovered if lost.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

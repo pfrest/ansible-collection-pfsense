@@ -50,6 +50,63 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve DHCP Relay
+  pfrest.pfsense.services_dhcp_relay_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The DHCP Relay data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    enable:
+      description: Enables or disables the DHCP relay.
+      type: bool
+      returned: always
+    interface:
+      description: The downstream interfaces to listen on for DHCP requests.
+      type: str
+      returned: always
+    agentoption:
+      description: Enables or disables appending the circuit ID (interface number)
+        and the agent ID to the DHCP request.
+      type: bool
+      returned: always
+    carpstatusvip:
+      description: DHCP Relay will be stopped when the chosen VIP is in BACKUP status,
+        and started in MASTER status.
+      type: str
+      returned: always
+    server:
+      description: The IPv4 addresses of the DHCP server to relay requests to.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

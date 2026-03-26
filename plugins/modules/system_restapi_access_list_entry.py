@@ -109,6 +109,81 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Create RESTAPI Access List Entry
+  pfrest.pfsense.system_restapi_access_list_entry:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: present
+    network: example
+- name: Delete RESTAPI Access List Entry
+  pfrest.pfsense.system_restapi_access_list_entry:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: absent
+    network: example
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The RESTAPI Access List Entry data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    type:
+      description: The type of access this entry provides. "allow" entries permit
+        access to the REST API from the specified networks. "deny" entries block access
+        to the REST API from the specified networks.
+      type: str
+      returned: always
+    weight:
+      description: The weight of this entry. Entries with lower weights are evaluated
+        first. If multiple entries match a request, the entry with the lowest weight
+        will be applied.
+      type: int
+      returned: always
+    network:
+      description: The network (in CIDR notation) that this entry applies to. Clients
+        interacting with the REST API from this network will be affected by this entry.
+      type: str
+      returned: always
+    users:
+      description: The users that this entry applies to. Only users in this list will
+        be affected by this entry. Leave empty if this entry should apply to all users.
+      type: str
+      returned: always
+    sched:
+      description: The firewall schedule that this entry will use. This entry will
+        only be active during the times specified in the schedule. Leave empty to
+        apply this entry at all times.
+      type: str
+      returned: always
+    descr:
+      description: A description of this access list entry. This field is optional.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

@@ -201,6 +201,263 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Manage all HA Proxy Frontends
+  pfrest.pfsense.services_haproxy_frontends:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    objects:
+    - name: example
+      type: http
+      descr: example
+      status: active
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: A list of HA Proxy Frontends returned by the API.
+  type: list
+  elements: dict
+  returned: always
+  contains:
+    name:
+      description: The unique name for this HAProxy frontend.
+      type: str
+      returned: always
+    descr:
+      description: The description for this HAProxy frontend.
+      type: str
+      returned: always
+    status:
+      description: The activation status for this HAProxy frontend.
+      type: str
+      returned: always
+    a_extaddr:
+      description: The external addresses assigned to this frontend.
+      type: list
+      returned: always
+      elements: dict
+      contains:
+        extaddr:
+          description: The external address to use.
+          type: str
+          returned: always
+        extaddr_custom:
+          description: The custom IPv4 or IPv6 address to use as the external address.
+          type: str
+          returned: always
+        extaddr_port:
+          description: 'The port to bind to for this address. Valid options are: a
+            TCP/UDP port number'
+          type: str
+          returned: always
+        extaddr_ssl:
+          description: Enables or disables using SSL/TLS for this address.
+          type: bool
+          returned: always
+        exaddr_advanced:
+          description: The advanced configuration to apply to this address.
+          type: str
+          returned: always
+    max_connections:
+      description: The maximum number of connections allowed by this frontend.
+      type: int
+      returned: always
+    type:
+      description: The processing type for this frontend.
+      type: str
+      returned: always
+    ha_acls:
+      description: The ACLs to apply to this frontend.
+      type: list
+      returned: always
+      elements: dict
+      contains:
+        name:
+          description: The unique name for this frontend ACL.
+          type: str
+          returned: always
+        expression:
+          description: The expression to use to determine the match for this ACL.
+          type: str
+          returned: always
+        value:
+          description: The value which indicates a match for this ACL.
+          type: str
+          returned: always
+        casesensitive:
+          description: Enables or disables case-sensitive matching for this ACL.
+          type: bool
+          returned: always
+        not:
+          description: Enables or disables inverting the context of this ACL.
+          type: bool
+          returned: always
+    a_actionitems:
+      description: The actions to take when an ACL match is found.
+      type: list
+      returned: always
+      elements: dict
+      contains:
+        action:
+          description: The action to take when an ACL match is found.
+          type: str
+          returned: always
+        acl:
+          description: The name of the frontend ACL this action is associated with.
+          type: str
+          returned: always
+        backend:
+          description: The backend to use when an ACL match is found.
+          type: str
+          returned: always
+        customaction:
+          description: The custom action to take when an ACL match is found.
+          type: str
+          returned: always
+        deny_status:
+          description: The deny status to use when an ACL match is found.
+          type: str
+          returned: always
+        realm:
+          description: The authentication realm to use when an ACL match is found.
+          type: str
+          returned: always
+        rule:
+          description: The redirect rule to use when an ACL match is found.
+          type: str
+          returned: always
+        lua_function:
+          description: The Lua function to use when an ACL match is found.
+          type: str
+          returned: always
+        name:
+          description: The name to use when an ACL match is found.
+          type: str
+          returned: always
+        fmt:
+          description: The fmt value to use when an ACL match is found.
+          type: str
+          returned: always
+        find:
+          description: The value to find when an ACL match is found.
+          type: str
+          returned: always
+        replace:
+          description: The value to replace with when an ACL match is found.
+          type: str
+          returned: always
+        path:
+          description: The path to use when an ACL match is found.
+          type: str
+          returned: always
+        status:
+          description: The status to use when an ACL match is found.
+          type: str
+          returned: always
+        reason:
+          description: The status reason to use when an ACL match is found.
+          type: str
+          returned: always
+    backend_serverpool:
+      description: The default backend to use for this frontend.
+      type: str
+      returned: always
+    socket_stats:
+      description: Enables or disables collecting and providing separate statistics
+        for each socket.
+      type: bool
+      returned: always
+    dontlognull:
+      description: Enables or disables logging connections with no data transferred.
+      type: bool
+      returned: always
+    dontlog_normal:
+      description: Enables or disables only logging anomalous (not normal) connection.
+      type: bool
+      returned: always
+    log_separate_errors:
+      description: Enables or disables changing the log level from info to err on
+        potentially interesting info.
+      type: bool
+      returned: always
+    log_detailed:
+      description: Enables or disables more detailed logging.
+      type: bool
+      returned: always
+    a_errorfiles:
+      description: The custom error files to use for this frontend.
+      type: list
+      returned: always
+      elements: dict
+      contains:
+        errorcode:
+          description: The HTTP status code that will trigger this error file to be
+            used.
+          type: int
+          returned: always
+        errorfile:
+          description: The HAProxy error file object that should be used for the assigned
+            HTTP status code.
+          type: str
+          returned: always
+    client_timeout:
+      description: The amount of time (in milliseconds) to wait for data from the
+        client.
+      type: int
+      returned: always
+    forwardfor:
+      description: Enables or disables the HTTP X-Forwarded-For header which contains
+        the client's IP address.
+      type: bool
+      returned: always
+    httpclose:
+      description: The `httpclose` option this frontend will operate.
+      type: str
+      returned: always
+    advanced_bind:
+      description: Custom value to pass behind each bind option.
+      type: str
+      returned: always
+    advanced:
+      description: Custom configuration to pass to this frontend.
+      type: str
+      returned: always
+    ssloffloadcert:
+      description: The default SSL/TLS certificate refid to use for this frontend.
+      type: str
+      returned: always
+    ha_certificates:
+      description: The additional SSL/TLS certificates to use on this frontend.
+      type: list
+      returned: always
+      elements: dict
+      contains:
+        ssl_certificate:
+          description: The SSL/TLS certificate refid to add to this frontend.
+          type: str
+          returned: always
+
+'''
+
 
 def run_module():
     module_args = {

@@ -50,6 +50,75 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve DNS Resolver Host Override
+  pfrest.pfsense.services_dns_resolver_host_override_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The DNS Resolver Host Override data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    host:
+      description: The hostname portion of the host override.
+      type: str
+      returned: always
+    domain:
+      description: The hostname portion of the host override.
+      type: str
+      returned: always
+    ip:
+      description: The IP addresses this host override will resolve.
+      type: str
+      returned: always
+    descr:
+      description: A detailed description for this host override.
+      type: str
+      returned: always
+    aliases:
+      description: Additional alias hostnames that should resolve the same IP(s).
+      type: list
+      returned: always
+      elements: dict
+      contains:
+        host:
+          description: The hostname portion of the host override alias.
+          type: str
+          returned: always
+        domain:
+          description: The hostname portion of the host override alias.
+          type: str
+          returned: always
+        descr:
+          description: A detailed description for this host override alias.
+          type: str
+          returned: always
+
+'''
+
 
 def run_module():
     module_args = {

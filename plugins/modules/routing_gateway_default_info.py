@@ -50,6 +50,53 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve Default Gateway
+  pfrest.pfsense.routing_gateway_default_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Default Gateway data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    defaultgw4:
+      description: The gateway to assigns as the default IPv4 gateway for this system.
+        Leave blank to automatically determine the default gateway, or set to `-`
+        to assign no gateway.
+      type: str
+      returned: always
+    defaultgw6:
+      description: The gateway to assigns as the default IPv6 gateway for this system.
+        Leave blank to automatically determine the default gateway, or set to `-`
+        to assign no gateway.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

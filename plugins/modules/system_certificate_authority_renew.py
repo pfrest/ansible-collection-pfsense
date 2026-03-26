@@ -71,6 +71,67 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Perform Certificate Authority Renew action
+  pfrest.pfsense.system_certificate_authority_renew:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    caref: example
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Certificate Authority Renew data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    caref:
+      description: The Certificate Authority to renew.
+      type: str
+      returned: always
+    reusekey:
+      description: Reuses the existing private key when renewing the certificate authority.
+      type: bool
+      returned: always
+    reuseserial:
+      description: Reuses the existing serial number when renewing the certificate
+        authority.
+      type: bool
+      returned: always
+    strictsecurity:
+      description: Enforces strict security measures when renewing the certificate
+        authority.
+      type: bool
+      returned: always
+    oldserial:
+      description: The old serial number of the Certificate Authority before the renewal.
+      type: str
+      returned: always
+    newserial:
+      description: The new serial number of the Certificate Authority after the renewal.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

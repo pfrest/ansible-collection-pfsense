@@ -50,6 +50,90 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve WireGuard Peer
+  pfrest.pfsense.vpn_wireguard_peer_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The WireGuard Peer data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    enabled:
+      description: Enables or disables this WireGuard peer.
+      type: bool
+      returned: always
+    tun:
+      description: The WireGuard tunnel for this peer.
+      type: str
+      returned: always
+    endpoint:
+      description: The IP address or hostname of the remote peer. Set to `null` to
+        make this a dynamic endpoint.
+      type: str
+      returned: always
+    port:
+      description: 'The port used by the remote peer. Valid options are: a TCP/UDP
+        port number'
+      type: str
+      returned: always
+    descr:
+      description: The description for this peer.
+      type: str
+      returned: always
+    persistentkeepalive:
+      description: The interval (in seconds) for Keep Alive packets sent to this peer.
+        Set to `null` to disable.
+      type: int
+      returned: always
+    publickey:
+      description: The public key for this peer.
+      type: str
+      returned: always
+    allowedips:
+      description: The allowed IP/subnets for this WireGuard peer.
+      type: list
+      returned: always
+      elements: dict
+      contains:
+        address:
+          description: The IPv4 or IPv6 address for this peer IP.
+          type: str
+          returned: always
+        mask:
+          description: The subnet mask for this peer IP.
+          type: int
+          returned: always
+        descr:
+          description: A description for this allowed peer IP.
+          type: str
+          returned: always
+
+'''
+
 
 def run_module():
     module_args = {

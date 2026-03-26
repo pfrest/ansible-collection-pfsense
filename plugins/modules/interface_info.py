@@ -50,6 +50,237 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve Network Interface
+  pfrest.pfsense.interface_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Network Interface data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    if:
+      description: The real interface this configuration will be applied to.
+      type: str
+      returned: always
+    enable:
+      description: Enable or disable this interface.
+      type: bool
+      returned: always
+    descr:
+      description: The descriptive name for this interface.
+      type: str
+      returned: always
+    spoofmac:
+      description: Assigns (spoofs) the MAC address for this interface instead of
+        using the interface's real MAC.
+      type: str
+      returned: always
+    mtu:
+      description: Sets the MTU for this interface. Assumes default MTU if value is
+        `null`.
+      type: int
+      returned: always
+    mss:
+      description: Sets the MSS for this interface. Assumes default MSS if value is
+        `null`.
+      type: int
+      returned: always
+    media:
+      description: Sets the link speed for this interface. In most situations this
+        can be left as the default.
+      type: str
+      returned: always
+    mediaopt:
+      description: Sets the link duplex for this interface. In most situations this
+        can be left as the default.
+      type: str
+      returned: always
+    blockpriv:
+      description: Enable or disable automatically blocking RFC 1918 private networks
+        on this interface.
+      type: bool
+      returned: always
+    blockbogons:
+      description: Enable or disable automatically blocking bogon networks on this
+        interface.
+      type: bool
+      returned: always
+    typev4:
+      description: Selects the IPv4 address type to assign this interface.
+      type: str
+      returned: always
+    ipaddr:
+      description: Sets the IPv4 address to assign to this interface.
+      type: str
+      returned: always
+    subnet:
+      description: Sets the subnet bit count to assign this interface.
+      type: int
+      returned: always
+    gateway:
+      description: Sets the upstream gateway this interface will use. This is only
+        applicable for WAN-type interfaces.
+      type: str
+      returned: always
+    dhcphostname:
+      description: Sets the DHCP hostname this interface will advertise via DHCP.
+      type: str
+      returned: always
+    alias_address:
+      description: Sets the value used as a fixed alias IPv4 address by the DHCP client.
+      type: str
+      returned: always
+    alias_subnet:
+      description: Sets the value used as the fixed alias IPv4 address's subnet bit
+        count by the DHCP client.
+      type: int
+      returned: always
+    dhcprejectfrom:
+      description: Sets a list of IPv4 DHCP server addresses to reject DHCP offers
+        for on this interface.
+      type: str
+      returned: always
+    adv_dhcp_config_advanced:
+      description: Enables or disables the advanced DHCP settings on this interface.
+      type: bool
+      returned: always
+    adv_dhcp_pt_values:
+      description: Selects the advanced DHCP timing preset.
+      type: str
+      returned: always
+    adv_dhcp_pt_timeout:
+      description: Manually sets the timeout timing value used when requested DHCP
+        leases on this interface.
+      type: int
+      returned: always
+    adv_dhcp_pt_retry:
+      description: Manually sets the retry timing value used when requested DHCP leases
+        on this interface.
+      type: int
+      returned: always
+    adv_dhcp_pt_select_timeout:
+      description: Manually sets the select timing value used when requested DHCP
+        leases on this interface.
+      type: int
+      returned: always
+    adv_dhcp_pt_reboot:
+      description: Manually sets the reboot timing value used when requested DHCP
+        leases on this interface.
+      type: int
+      returned: always
+    adv_dhcp_pt_backoff_cutoff:
+      description: Manually sets the backoff cutoff timing value used when requested
+        DHCP leases on this interface.
+      type: int
+      returned: always
+    adv_dhcp_pt_initial_interval:
+      description: Manually sets the initial interval timing value used when requested
+        DHCP leases on this interface.
+      type: int
+      returned: always
+    adv_dhcp_send_options:
+      description: Sets DHCP options to be sent when requesting a DHCP lease for this
+        interface.
+      type: str
+      returned: always
+    adv_dhcp_request_options:
+      description: Sets DHCP option 55 values to be sent when requesting a DHCP lease
+        for this interface.
+      type: str
+      returned: always
+    adv_dhcp_required_options:
+      description: Sets DHCP options required by the client when requesting a DHCP
+        lease for this interface.
+      type: str
+      returned: always
+    adv_dhcp_option_modifiers:
+      description: Sets DHCP option modifiers applied to the obtained DHCP lease.
+      type: str
+      returned: always
+    adv_dhcp_config_file_override:
+      description: Enables or disables overriding the entire DHCP configuration file
+        for this interface.
+      type: bool
+      returned: always
+    adv_dhcp_config_file_override_path:
+      description: Sets the local file path of the custom DHCP configuration file.
+      type: str
+      returned: always
+    typev6:
+      description: Selects the IPv6 address type to assign this interface.
+      type: str
+      returned: always
+    ipaddrv6:
+      description: Sets the IPv6 address to assign to this interface.
+      type: str
+      returned: always
+    subnetv6:
+      description: Sets the subnet bit count to assign this interface.
+      type: int
+      returned: always
+    gatewayv6:
+      description: Sets the upstream IPv6 gateway this interface will use. This is
+        only applicable for WAN-type interfaces.
+      type: str
+      returned: always
+    ipv6usev4iface:
+      description: Enable or disable IPv6 using the IPv4 connectivity link (PPPoE).
+      type: bool
+      returned: always
+    slaacusev4iface:
+      description: Enable or disable IPv6 using the IPv4 connectivity link (PPPoE).
+      type: bool
+      returned: always
+    prefix_6rd:
+      description: Sets the 6RD IPv6 prefix assigned by the ISP for this interface.
+      type: str
+      returned: always
+    gateway_6rd:
+      description: Sets the 6RD IPv4 gateway address assigned by the ISP for this
+        interface.
+      type: str
+      returned: always
+    prefix_6rd_v4plen:
+      description: Sets the 6RD IPv4 prefix length. Normally specified by the ISP.
+        A value of 0 means embed theentire IPv4 address in the 6RD prefix.
+      type: int
+      returned: always
+    track6_interface:
+      description: Sets the dynamic IPv6 WAN interface to track for configuration.
+      type: str
+      returned: always
+    track6_prefix_id_hex:
+      description: Sets the hexadecimal IPv6 prefix ID. This determines the configurable
+        network ID based on the dynamic IPv6 connection.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

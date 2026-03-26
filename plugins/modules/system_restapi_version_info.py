@@ -50,6 +50,61 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve REST API Version
+  pfrest.pfsense.system_restapi_version_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The REST API Version data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    current_version:
+      description: The current API version installed on this system.
+      type: str
+      returned: always
+    latest_version:
+      description: The latest API version available to this system.
+      type: str
+      returned: always
+    latest_version_release_date:
+      description: The latest API version's release date.
+      type: str
+      returned: always
+    update_available:
+      description: Indicates if an API update is available for this system.
+      type: bool
+      returned: always
+    available_versions:
+      description: All available versions of the REST API package for this system.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

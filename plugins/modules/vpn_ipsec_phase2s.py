@@ -246,6 +246,190 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Manage all IPsec Phase 2s
+  pfrest.pfsense.vpn_ipsec_phase2s:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    objects:
+    - ikeid: 1
+      mode: tunnel
+      localid_type: example
+      localid_address: example
+      localid_netbits: 1
+      natlocalid_address: example
+      natlocalid_netbits: 1
+      remoteid_type: example
+      remoteid_address: example
+      remoteid_netbits: 1
+      encryption_algorithm_option: []
+      hash_algorithm_option: hmac_sha1
+      descr: example
+      disabled: false
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: A list of IPsec Phase 2s returned by the API.
+  type: list
+  elements: dict
+  returned: always
+  contains:
+    uniqid:
+      description: A unique ID used to identify this IPsec phase2 entry internally.
+        This value is automatically set by the system and cannot be changed.
+      type: str
+      returned: always
+    reqid:
+      description: A unique ID used to identify this IPsec phase2 entry internally.
+        This value is automatically set by the system and cannot be changed.
+      type: int
+      returned: always
+    ikeid:
+      description: The `ikeid` of the parent IPsec phase 1 entry this IPsec phase
+        2 entry belongs to.
+      type: int
+      returned: always
+    descr:
+      description: A description for this IPsec phase 2 entry.
+      type: str
+      returned: always
+    disabled:
+      description: Disables this IPsec phase 2 entry.
+      type: bool
+      returned: always
+    mode:
+      description: The IPsec phase 2 mode this entry will use.
+      type: str
+      returned: always
+    localid_type:
+      description: 'The local ID type to use for this phase 2 entry. Valid value options
+        are: an existing interface, `address`, `network`. For interface values, the
+        `:ip` modifier can be appended to the value to use the interface''s IP address
+        instead of its entire subnet.'
+      type: str
+      returned: always
+    localid_address:
+      description: The local network IP component of this IPsec security association.
+      type: str
+      returned: always
+    localid_netbits:
+      description: The subnet bits of the `localid_address` network.
+      type: int
+      returned: always
+    natlocalid_type:
+      description: 'The NAT/BINAT translation type for this IPsec phase 2 entry. Leave
+        as `null` if NAT/BINAT is not needed. Valid value options are: an existing
+        interface, `address`, `network`. For interface values, the `:ip` modifier
+        can be appended to the value to use the interface''s IP address instead of
+        its entire subnet.'
+      type: str
+      returned: always
+    natlocalid_address:
+      description: The NAT/BINAT local network IP component of this IPsec security
+        association.
+      type: str
+      returned: always
+    natlocalid_netbits:
+      description: The subnet bits of the `natlocalid_address` network.
+      type: int
+      returned: always
+    remoteid_type:
+      description: 'The remote ID type to use for this phase 2 entry. Valid value
+        options are: `address`, `network`. For interface values, the `:ip` modifier
+        can be appended to the value to use the interface''s IP address instead of
+        its entire subnet.'
+      type: str
+      returned: always
+    remoteid_address:
+      description: The remote network IP component of this IPsec security association.
+      type: str
+      returned: always
+    remoteid_netbits:
+      description: The subnet bits of the `remoteid_address` network.
+      type: int
+      returned: always
+    protocol:
+      description: the IPsec phase 2 proposal protocol for this entry. Encapsulating
+        Security Payload (`esp`) performs encryption and authentication, Authentication
+        Header (`ah`) is authentication only.
+      type: str
+      returned: always
+    encryption_algorithm_option:
+      description: The encryption algorithms to be used by this phase 2 entry.
+      type: list
+      returned: always
+      elements: dict
+      contains:
+        name:
+          description: The name of the encryption algorithm to use for this P2 encryption
+            item.
+          type: str
+          returned: always
+        keylen:
+          description: The key length for the encryption algorithm.
+          type: int
+          returned: always
+    hash_algorithm_option:
+      description: 'The hashing algorithms used by this IPsec phase 2 entry. Note:
+        Hash is ignored with GCM algorithms. SHA1 provides weak security and should
+        be avoided.'
+      type: str
+      returned: always
+    pfsgroup:
+      description: 'The PFS key group this IPsec phase 2 entry should use. Note: Groups
+        1, 2, 5, 22, 23, and 24 provide weak security and should be avoided.'
+      type: int
+      returned: always
+    rekey_time:
+      description: The amount of time (in seconds) before an IKE SA establishes new
+        keys.
+      type: int
+      returned: always
+    rand_time:
+      description: A random value up to this amount will be subtracted from the `rekey_time`
+        and `reauth_time` to avoid simultaneous renegotiation.
+      type: int
+      returned: always
+    lifetime:
+      description: The hard IKE SA lifetime (in seconds) after which the IKE SA will
+        be expired.
+      type: int
+      returned: always
+    pinghost:
+      description: The IP address to send an ICMP echo request to inside the tunnel.
+        Can trigger initiation of a tunnel mode P2, but does not trigger initiation
+        of a VTI mode P2.
+      type: str
+      returned: always
+    keepalive:
+      description: Enables or disables checking this P2 and initiating if disconnected;
+        does not send traffic inside the tunnel. This check ignores the P1 option
+        'Child SA Start Action' and works for both VTI and tunnel mode P2s. For IKEv2
+        without split connections, this only needs to be enabled on one P2.
+      type: bool
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

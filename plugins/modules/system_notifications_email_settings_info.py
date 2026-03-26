@@ -50,6 +50,87 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve Email Notification Settings
+  pfrest.pfsense.system_notifications_email_settings_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Email Notification Settings data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    disable:
+      description: Disables SMTP notifications.
+      type: bool
+      returned: always
+    ipaddress:
+      description: The IP address or hostname of the SMTP server.
+      type: str
+      returned: always
+    port:
+      description: 'The port number of the SMTP server. Valid options are: a TCP/UDP
+        port number'
+      type: str
+      returned: always
+    timeout:
+      description: The timeout (in seconds) for the SMTP connection.
+      type: int
+      returned: always
+    ssl:
+      description: Enables or disables SSL/TLS for the SMTP connection.
+      type: bool
+      returned: always
+    sslvalidate:
+      description: Enables or disables SSL/TLS certificate validation for the SMTP
+        connection.
+      type: bool
+      returned: always
+    fromaddress:
+      description: The email address to use as the "From" address in notifications.
+      type: str
+      returned: always
+    notifyemailaddress:
+      description: The email address to send notifications to.
+      type: str
+      returned: always
+    authentication_mechanism:
+      description: The authentication mechanism to use for the SMTP connection.
+      type: str
+      returned: always
+    username:
+      description: The username to use for SMTP authentication.
+      type: str
+      returned: always
+    password:
+      description: The password to use for SMTP authentication.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

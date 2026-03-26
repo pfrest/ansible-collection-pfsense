@@ -76,6 +76,62 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Manage SSH
+  pfrest.pfsense.services_ssh:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    enable: false
+    port: '22'
+    sshdkeyonly: enabled
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The SSH data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    enable:
+      description: Enable the SSH server on this system.
+      type: bool
+      returned: always
+    port:
+      description: 'The TCP port the SSH server will listen on. Valid options are:
+        a TCP/UDP port number'
+      type: str
+      returned: always
+    sshdkeyonly:
+      description: The SSH authentication mode to use. Use `enabled` to require public
+        key authentication, use both to require both a public key AND a password,
+        or use `null` to allow a password OR a public key.
+      type: str
+      returned: always
+    sshdagentforwarding:
+      description: Enable support for ssh-agent forwarding.
+      type: bool
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

@@ -53,6 +53,54 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Manage Firewall States Size
+  pfrest.pfsense.firewall_states_size:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    maximumstates: 96000
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Firewall States Size data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    maximumstates:
+      description: The maximum number of firewall state entries allowed by this firewall.
+      type: int
+      returned: always
+    defaultmaximumstates:
+      description: The default number of firewall state entries allowed by this firewall.
+      type: int
+      returned: always
+    currentstates:
+      description: The number of firewall state entries currently registered in the
+        states table.
+      type: int
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

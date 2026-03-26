@@ -59,6 +59,50 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Manage System Hostname
+  pfrest.pfsense.system_hostname:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    hostname: example
+    domain: example
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The System Hostname data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    hostname:
+      description: The hostname portion of the FQDN to assign to this system.
+      type: str
+      returned: always
+    domain:
+      description: The domain portion of the FQDN to assign to this system.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

@@ -196,6 +196,116 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Manage NTP Settings
+  pfrest.pfsense.services_ntp_settings:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    serverauthkey: example
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The NTP Settings data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    enable:
+      description: Enables or disabled the NTP server.
+      type: bool
+      returned: always
+    interface:
+      description: The interfaces the NTP server will listen on.
+      type: str
+      returned: always
+    ntpmaxpeers:
+      description: The maximum number of candidate peers in the NTP pool.
+      type: int
+      returned: always
+    orphan:
+      description: The orphan mode stratum to set. Orphan mode allows the system clock
+        to be used when no other clocks are available. The number here specifies the
+        stratum reported during orphan mode and should normally be set to a number
+        high enough to ensure that any other servers available to clients are preferred
+        over this server
+      type: int
+      returned: always
+    ntpminpoll:
+      description: The minimum poll interval for NTP messages. Use empty string to
+        assume system default, and `omit` to not set this value.
+      type: str
+      returned: always
+    ntpmaxpoll:
+      description: The maximum poll interval for NTP messages. Use empty string to
+        assume system default, and `omit` to not set this value. This value must be
+        greater than the `ntpminpoll`.
+      type: str
+      returned: always
+    dnsresolv:
+      description: The IP protocol peers are forced to use for DNS resolution.
+      type: str
+      returned: always
+    logpeer:
+      description: Enable or disable logging peer messages.
+      type: bool
+      returned: always
+    logsys:
+      description: Enable or disable logging system messages.
+      type: bool
+      returned: always
+    clockstats:
+      description: Enable or disable logging reference clock statistics.
+      type: bool
+      returned: always
+    loopstats:
+      description: Enable or disable logging clock discipline statistics.
+      type: bool
+      returned: always
+    peerstats:
+      description: Enable or disable logging peer statistics.
+      type: bool
+      returned: always
+    statsgraph:
+      description: Enable or disable RRD graphs for NTP statistics.
+      type: bool
+      returned: always
+    leapsec:
+      description: The Leap second configuration as text.
+      type: str
+      returned: always
+    serverauth:
+      description: Enable or disable NTPv3 server authentication. (RFC 1305)
+      type: bool
+      returned: always
+    serverauthkey:
+      description: The NTP server authentication key.
+      type: str
+      returned: always
+    serverauthalgo:
+      description: The digest algorithm for the server authentication key.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

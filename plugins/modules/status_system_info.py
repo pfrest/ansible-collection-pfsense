@@ -50,6 +50,122 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve System Status
+  pfrest.pfsense.status_system_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The System Status data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    platform:
+      description: The verbose name of this system's platform.
+      type: str
+      returned: always
+    serial:
+      description: The system's unique serial number/ID.
+      type: str
+      returned: always
+    netgate_id:
+      description: The unique ID issued for this pfSense instance by Netgate.
+      type: str
+      returned: always
+    uptime:
+      description: The amount of time this system has been up since the last reboot.
+      type: str
+      returned: always
+    bios_vendor:
+      description: The name of the BIOS vendor.
+      type: str
+      returned: always
+    bios_version:
+      description: The BIOS version installed on this system.
+      type: str
+      returned: always
+    bios_date:
+      description: The build date of the BIOS version.
+      type: str
+      returned: always
+    kernel_pti:
+      description: Indicates whether kernel PTI is enabled or not.
+      type: bool
+      returned: always
+    mds_mitigation:
+      description: Indicates whether MDS mitigation is enabled or not.
+      type: str
+      returned: always
+    temp_c:
+      description: The current system temperature in celsius.
+      type: str
+      returned: always
+    temp_f:
+      description: The current system temperature in fahrenheit.
+      type: str
+      returned: always
+    cpu_model:
+      description: The model of CPU installed in this system and other CPU info.
+      type: str
+      returned: always
+    cpu_load_avg:
+      description: The CPU load averages. The first value represents the load average
+        for the last minute, the second value represents the load average for the
+        last 5 minutes, and the third value represents the load average for the last
+        15 minutes.
+      type: str
+      returned: always
+    cpu_count:
+      description: The total number of CPUs cores available on this system.
+      type: int
+      returned: always
+    cpu_usage:
+      description: 'The current CPU usage as a whole percentage. Note: This is an
+        approximate usage based on the last minute load average and total number of
+        CPU cores. This may not represent exact CPU usage.'
+      type: str
+      returned: always
+    mbuf_usage:
+      description: The current MBUF usage as a whole percentage.
+      type: str
+      returned: always
+    mem_usage:
+      description: The current memory usage as a whole percentage.
+      type: str
+      returned: always
+    swap_usage:
+      description: The current swap usage as a whole percentage.
+      type: str
+      returned: always
+    disk_usage:
+      description: The current disk usage as a whole percentage.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

@@ -50,6 +50,54 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve Web GUI Settings
+  pfrest.pfsense.system_webgui_settings_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Web GUI Settings data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    protocol:
+      description: The protocol to use for the web GUI.
+      type: str
+      returned: always
+    port:
+      description: 'The port on which the web GUI listens. Valid options are: a TCP/UDP
+        port number'
+      type: str
+      returned: always
+    sslcertref:
+      description: The SSL/TLS certificate to use for the web GUI.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

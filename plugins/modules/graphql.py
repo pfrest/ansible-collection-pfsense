@@ -60,6 +60,49 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Perform GraphQL action
+  pfrest.pfsense.graphql:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The GraphQL data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    query:
+      description: The GraphQL query/mutation to execute.
+      type: str
+      returned: always
+    variables:
+      description: The variables to pass to the GraphQL query or mutation. In general,
+        this will be an object containing the variables to pass to the query or mutation.
+      type: list
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

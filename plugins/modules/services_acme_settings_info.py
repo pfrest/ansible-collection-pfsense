@@ -50,6 +50,51 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve ACME Settings
+  pfrest.pfsense.services_acme_settings_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The ACME Settings data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    enable:
+      description: Enables or disables the ACME renewal job.
+      type: bool
+      returned: always
+    writecerts:
+      description: Enables or disables the writing of certificates to /conf/acme/
+        in various formats for use by other scripts or daemons which do not integrate
+        with the pfSense certificate manager.
+      type: bool
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

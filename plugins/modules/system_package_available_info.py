@@ -50,6 +50,66 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve all Available Packages
+  pfrest.pfsense.system_package_available_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: A list of Available Packages returned by the API.
+  type: list
+  elements: dict
+  returned: always
+  contains:
+    name:
+      description: The name of the pfSense package.
+      type: str
+      returned: always
+    shortname:
+      description: The package's shortname.
+      type: str
+      returned: always
+    descr:
+      description: The package's description.
+      type: str
+      returned: always
+    version:
+      description: The latest version available for this package.
+      type: str
+      returned: always
+    installed:
+      description: Indicates whether the package is currently installed or not.
+      type: bool
+      returned: always
+    deps:
+      description: Dependencies for this package that are also installed when this
+        package is installed.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

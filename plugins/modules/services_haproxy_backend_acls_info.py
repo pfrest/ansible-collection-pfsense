@@ -51,6 +51,61 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve all HAProxy Backend Access Control Lists
+  pfrest.pfsense.services_haproxy_backend_acls_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: A list of HAProxy Backend Access Control Lists returned by the API.
+  type: list
+  elements: dict
+  returned: always
+  contains:
+    name:
+      description: The unique name for this backend ACL.
+      type: str
+      returned: always
+    expression:
+      description: The expression to use to determine the match for this ACL.
+      type: str
+      returned: always
+    value:
+      description: The value which indicates a match for this ACL.
+      type: str
+      returned: always
+    casesensitive:
+      description: Enables or disables case-sensitive matching for this ACL.
+      type: bool
+      returned: always
+    not:
+      description: Enables or disables inverting the context of this ACL.
+      type: bool
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

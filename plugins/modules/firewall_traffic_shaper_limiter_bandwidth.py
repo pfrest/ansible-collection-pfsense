@@ -85,6 +85,64 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Create Traffic Shaper Limiter Bandwidth
+  pfrest.pfsense.firewall_traffic_shaper_limiter_bandwidth:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: present
+    bw: 1
+    bwscale: b
+- name: Delete Traffic Shaper Limiter Bandwidth
+  pfrest.pfsense.firewall_traffic_shaper_limiter_bandwidth:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: absent
+    bw: 1
+    bwscale: b
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Traffic Shaper Limiter Bandwidth data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    bw:
+      description: The amount of bandwidth this profile allows.
+      type: int
+      returned: always
+    bwscale:
+      description: The scale factor of the `bw` fields value.
+      type: str
+      returned: always
+    bwsched:
+      description: The schedule to assign this bandwidth profile. When this firewall
+        schedule is active, this bandwidth profile will be used.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

@@ -197,6 +197,137 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Create HA Proxy Backend Action
+  pfrest.pfsense.services_haproxy_backend_action:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: present
+    action: use_server
+    acl: example
+    server: example
+    customaction: example
+    deny_status: example
+    realm: example
+    rule: example
+    lua_function: example
+    name: example
+    fmt: example
+    find: example
+    replace: example
+    path: example
+    status: example
+    reason: example
+- name: Delete HA Proxy Backend Action
+  pfrest.pfsense.services_haproxy_backend_action:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: absent
+    action: use_server
+    acl: example
+    server: example
+    customaction: example
+    deny_status: example
+    realm: example
+    rule: example
+    lua_function: example
+    name: example
+    fmt: example
+    find: example
+    replace: example
+    path: example
+    status: example
+    reason: example
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The HA Proxy Backend Action data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    action:
+      description: The action to take when an ACL match is found.
+      type: str
+      returned: always
+    acl:
+      description: The name of the backend ACL this action is associated with.
+      type: str
+      returned: always
+    server:
+      description: The backend server to use when an ACL match is found.
+      type: str
+      returned: always
+    customaction:
+      description: The custom action to take when an ACL match is found.
+      type: str
+      returned: always
+    deny_status:
+      description: The deny status to use when an ACL match is found.
+      type: str
+      returned: always
+    realm:
+      description: The authentication realm to use when an ACL match is found.
+      type: str
+      returned: always
+    rule:
+      description: The redirect rule to use when an ACL match is found.
+      type: str
+      returned: always
+    lua_function:
+      description: The Lua function to use when an ACL match is found.
+      type: str
+      returned: always
+    name:
+      description: The name to use when an ACL match is found.
+      type: str
+      returned: always
+    fmt:
+      description: The fmt value to use when an ACL match is found.
+      type: str
+      returned: always
+    find:
+      description: The value to find when an ACL match is found.
+      type: str
+      returned: always
+    replace:
+      description: The value to replace with when an ACL match is found.
+      type: str
+      returned: always
+    path:
+      description: The path to use when an ACL match is found.
+      type: str
+      returned: always
+    status:
+      description: The status to use when an ACL match is found.
+      type: str
+      returned: always
+    reason:
+      description: The status reason to use when an ACL match is found.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

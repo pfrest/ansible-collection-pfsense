@@ -50,6 +50,54 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve HA Proxy DNS Resolver
+  pfrest.pfsense.services_haproxy_settings_dns_resolver_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The HA Proxy DNS Resolver data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    name:
+      description: The descriptive name for this DNS server.
+      type: str
+      returned: always
+    server:
+      description: The IP or hostname of the DNS server.
+      type: str
+      returned: always
+    port:
+      description: 'The port used by this DNS server. Valid options are: a TCP/UDP
+        port number'
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

@@ -50,6 +50,103 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve all Firewall States
+  pfrest.pfsense.firewall_states_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: A list of Firewall States returned by the API.
+  type: list
+  elements: dict
+  returned: always
+  contains:
+    interface:
+      description: The interface that initially received the traffic which registered
+        the state.
+      type: str
+      returned: always
+    protocol:
+      description: The protocol listed in the state.
+      type: str
+      returned: always
+    direction:
+      description: The direction of traffic listed in the state.
+      type: str
+      returned: always
+    source:
+      description: 'The source address listed in the state. Note: Depending on the
+        `protocol`, this value may contain the source port as well.'
+      type: str
+      returned: always
+    destination:
+      description: 'The destination address listed in the state. Note: Depending on
+        the `protocol`, this value may contain the destination port as well.'
+      type: str
+      returned: always
+    state:
+      description: The current status of the firewall state.
+      type: str
+      returned: always
+    age:
+      description: The age of the firewall state in HH:MM:SS format.
+      type: str
+      returned: always
+    expires_in:
+      description: The amount of time remaining until the state expires in HH:MM:SS
+        format.
+      type: str
+      returned: always
+    packets_total:
+      description: The total number of packets observed by the state.
+      type: int
+      returned: always
+    packets_in:
+      description: The total number of inbound packets observed by the state.
+      type: int
+      returned: always
+    packets_out:
+      description: The total number of outbound packets observed by the state.
+      type: int
+      returned: always
+    bytes_total:
+      description: The total number of traffic (in bytes) observed by the state.
+      type: int
+      returned: always
+    bytes_in:
+      description: The total number of inbound traffic (in bytes) observed by the
+        state.
+      type: int
+      returned: always
+    bytes_out:
+      description: The total number of outbound traffic (in bytes) observed by the
+        state.
+      type: int
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

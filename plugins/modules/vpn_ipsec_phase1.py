@@ -305,6 +305,248 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Create IPsec Phase 1
+  pfrest.pfsense.vpn_ipsec_phase1:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: present
+    iketype: ikev1
+    mode: main
+    protocol: inet
+    interface: example
+    remote_gateway: example
+    authentication_method: pre_shared_key
+    myid_type: myaddress
+    myid_data: example
+    peerid_type: any
+    peerid_data: example
+    pre_shared_key: example
+    certref: example
+    caref: example
+    encryption: &id001 []
+- name: Delete IPsec Phase 1
+  pfrest.pfsense.vpn_ipsec_phase1:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: absent
+    iketype: ikev1
+    mode: main
+    protocol: inet
+    interface: example
+    remote_gateway: example
+    authentication_method: pre_shared_key
+    myid_type: myaddress
+    myid_data: example
+    peerid_type: any
+    peerid_data: example
+    pre_shared_key: example
+    certref: example
+    caref: example
+    encryption: *id001
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The IPsec Phase 1 data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    ikeid:
+      description: The unique IKE ID for this phase 1 entry. This value is dynamically
+        set and cannot be set or changed by users.
+      type: int
+      returned: always
+    descr:
+      description: A description for this IPsec phase 1 entry.
+      type: str
+      returned: always
+    disabled:
+      description: Disables this IPsec phase 1 entry.
+      type: bool
+      returned: always
+    iketype:
+      description: The IKE protocol version this phase 1 entry will use.
+      type: str
+      returned: always
+    mode:
+      description: The IKEv1 negotiation mode this phase 1 entry will use.
+      type: str
+      returned: always
+    protocol:
+      description: The IP version this phase 1 entry will use.
+      type: str
+      returned: always
+    interface:
+      description: The interface for the local endpoint of this phase 1 entry. This
+        should be an interface that is reachable by the remote peer.
+      type: str
+      returned: always
+    remote_gateway:
+      description: The IP address or hostname of the remote gateway.
+      type: str
+      returned: always
+    authentication_method:
+      description: The IPsec authentication method this tunnel will use.
+      type: str
+      returned: always
+    myid_type:
+      description: The identifier type used by the local end of the tunnel.
+      type: str
+      returned: always
+    myid_data:
+      description: The identifier value used by the local end of the tunnel. This
+        must be a value that corresponds with the current `myid_type` value.
+      type: str
+      returned: always
+    peerid_type:
+      description: The identifier type used by the remote end of the tunnel.
+      type: str
+      returned: always
+    peerid_data:
+      description: The identifier value used by the remote end of the tunnel. This
+        must be a value that corresponds with the current `peerid_type` value.
+      type: str
+      returned: always
+    pre_shared_key:
+      description: The Pre-Shared Key (PSK) value. This key must match on both peers
+        and should be long and random to protect the tunnel and its contents. A weak
+        Pre-Shared Key can lead to a tunnel compromise.
+      type: str
+      returned: always
+    certref:
+      description: The certificate which identifies this system. The certificate must
+        have at least one non-wildcard SAN.
+      type: str
+      returned: always
+    caref:
+      description: The certificate authority to use when validating the peer certificate.
+      type: str
+      returned: always
+    rekey_time:
+      description: The amount of time (in seconds) before an child SA establishes
+        new keys.
+      type: int
+      returned: always
+    reauth_time:
+      description: The amount of time (in seconds) before an child SA is torn down
+        and recreated from scratch, including authentication.
+      type: int
+      returned: always
+    rand_time:
+      description: A random value up to this amount will be subtracted from the `rekey_time`
+        to avoid simultaneous renegotiation.
+      type: int
+      returned: always
+    lifetime:
+      description: The hard child SA lifetime (in seconds) after which the child SA
+        will be expired.
+      type: int
+      returned: always
+    startaction:
+      description: The option used to force specific initiation/responder behavior
+        for child SA (P2) entries.
+      type: str
+      returned: always
+    closeaction:
+      description: The option used to control the behavior when the remote peer unexpectedly
+        closes a child SA (P2)
+      type: str
+      returned: always
+    nat_traversal:
+      description: The option used to enable the use of NAT-T (i.e. the encapsulation
+        of ESP in UDP packets) if needed, which can help with clients that are behind
+        restrictive firewalls.
+      type: str
+      returned: always
+    gw_duplicates:
+      description: Enables or disables the allowance of multiple phase 1 configurations
+        with the same remote gateway endpoint.
+      type: bool
+      returned: always
+    mobike:
+      description: Enables or disables the use of MOBIKE for this tunnel.
+      type: bool
+      returned: always
+    splitconn:
+      description: Enables or disables the use split connection entries with multiple
+        phase 2 configurations. Required for remote endpoints that support only a
+        single traffic selector per child SA.
+      type: bool
+      returned: always
+    prfselect_enable:
+      description: Enables or disables manual Pseudo-Random Function (PRF) selection.
+      type: bool
+      returned: always
+    ikeport:
+      description: 'The UDP port for IKE on the remote gateway. Valid options are:
+        a TCP/UDP port number'
+      type: str
+      returned: always
+    nattport:
+      description: 'The UDP port for NAT-T on the remote gateway. Valid options are:
+        a TCP/UDP port number'
+      type: str
+      returned: always
+    dpd_delay:
+      description: The delay (in seconds) between sending peer acknowledgement messages.
+      type: int
+      returned: always
+    dpd_maxfail:
+      description: The number of consecutive failures allowed before disconnecting.
+      type: int
+      returned: always
+    encryption:
+      description: The encryption algorithms supported by this P1 encryption.
+      type: list
+      returned: always
+      elements: dict
+      contains:
+        encryption_algorithm_name:
+          description: The name of the encryption algorithm to use for this P1 encryption
+            item.
+          type: str
+          returned: always
+        encryption_algorithm_keylen:
+          description: The key length for the encryption algorithm.
+          type: int
+          returned: always
+        hash_algorithm:
+          description: The hash algorithm to use for this P1 encryption item.
+          type: str
+          returned: always
+        dhgroup:
+          description: The Diffie-Hellman (DH) group to use for this P1 encryption
+            item.
+          type: int
+          returned: always
+        prf_algorithm:
+          description: The PRF algorithm to use for this P1 encryption item. This
+            value has no affect unless the P1 entry has PRF enabled.
+          type: str
+          returned: always
+
+'''
+
 
 def run_module():
     module_args = {

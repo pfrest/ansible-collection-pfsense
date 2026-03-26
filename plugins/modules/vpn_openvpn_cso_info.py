@@ -50,6 +50,162 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve Open VPN Client Specific Override
+  pfrest.pfsense.vpn_openvpn_cso_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Open VPN Client Specific Override data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    common_name:
+      description: The X.509 common name for the client certificate, or the username
+        for VPNs utilizing password authentication.
+      type: str
+      returned: always
+    disable:
+      description: Disables this client specific override.
+      type: bool
+      returned: always
+    block:
+      description: Enables or disables the client from connecting to this server.
+        Do not use this option to permanently disable a client due to a compromised
+        key or password. Use a CRL instead.
+      type: bool
+      returned: always
+    description:
+      description: The description for this client specific override.
+      type: str
+      returned: always
+    server_list:
+      description: The OpenVPN servers that will utilize this override. When no servers
+        are specified, the override will apply to all servers.
+      type: str
+      returned: always
+    tunnel_network:
+      description: The IPv4 virtual network used for private communications between
+        the server and client hosts.
+      type: str
+      returned: always
+    tunnel_networkv6:
+      description: The IPv6 virtual network used for private communications between
+        the server and client hosts.
+      type: str
+      returned: always
+    local_network:
+      description: The IPv4 server-side networks that will be accessible from this
+        particular client.
+      type: str
+      returned: always
+    local_networkv6:
+      description: the IPv6 server-side networks that will be accessible from this
+        particular client.
+      type: str
+      returned: always
+    remote_network:
+      description: The IPv4 client-side networks that will be routed to this client
+        specifically using iroute, so that a site-to-site VPN can be established.
+      type: str
+      returned: always
+    remote_networkv6:
+      description: The IPv6 client-side networks that will be routed to this client
+        specifically using iroute, so that a site-to-site VPN can be established.
+      type: str
+      returned: always
+    gwredir:
+      description: Enable forcing all client-generated traffic through the tunnel.
+      type: bool
+      returned: always
+    push_reset:
+      description: Enables or disables preventing this client from receiving any server-defined
+        client settings.
+      type: bool
+      returned: always
+    remove_options:
+      description: Specifies the push-remove options to apply to the client
+      type: str
+      returned: always
+    dns_domain:
+      description: The default domain to provide to the client.
+      type: str
+      returned: always
+    dns_server1:
+      description: The primary DNS server to provide to the client.
+      type: str
+      returned: always
+    dns_server2:
+      description: The secondary DNS server to provide to the client.
+      type: str
+      returned: always
+    dns_server3:
+      description: The tertiary DNS server to provide to the client.
+      type: str
+      returned: always
+    dns_server4:
+      description: The quaternary DNS server to provide to the client.
+      type: str
+      returned: always
+    ntp_server1:
+      description: The primary NTP server to provide to the client.
+      type: str
+      returned: always
+    ntp_server2:
+      description: The secondary NTP server to provide to the client.
+      type: str
+      returned: always
+    netbios_enable:
+      description: Enables or disables NetBIOS over TCP/IP.
+      type: bool
+      returned: always
+    netbios_ntype:
+      description: The NetBIOS node type.
+      type: int
+      returned: always
+    netbios_scope:
+      description: The NetBIOS Scope ID. This provides an extended naming service
+        for NetBIOS over TCP/IP. The NetBIOS scope ID isolates NetBIOS traffic on
+        a single network to only those nodes with the same NetBIOS scope ID.
+      type: str
+      returned: always
+    wins_server1:
+      description: The primary WINS server to provide to the client.
+      type: str
+      returned: always
+    wins_server2:
+      description: The secondary WINS server to provide to the client.
+      type: str
+      returned: always
+    custom_options:
+      description: Additional OpenVPN options to add for this client.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

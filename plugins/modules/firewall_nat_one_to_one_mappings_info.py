@@ -50,6 +50,92 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve all 1:1 NAT mappings
+  pfrest.pfsense.firewall_nat_one_to_one_mappings_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: A list of 1:1 NAT mappings returned by the API.
+  type: list
+  elements: dict
+  returned: always
+  contains:
+    interface:
+      description: The interface this 1:1 NAT mapping applies to.
+      type: str
+      returned: always
+    disabled:
+      description: Disables this 1:1 NAT mapping.
+      type: bool
+      returned: always
+    nobinat:
+      description: Exclude traffic matching this mapping from a later, more general,
+        mapping.
+      type: bool
+      returned: always
+    natreflection:
+      description: Enables or disables NAT reflection for traffic matching this mapping.
+        Set to `null` to use the system default.
+      type: str
+      returned: always
+    ipprotocol:
+      description: The IP version this mapping applies to.
+      type: str
+      returned: always
+    external:
+      description: 'The external IP address or interface for the 1:1 mapping. Valid
+        value options are: an IP address. For interface values, the `:ip` modifier
+        can be appended to the value to use the interface''s IP address instead of
+        its entire subnet.'
+      type: str
+      returned: always
+    source:
+      description: 'The source IP address or subnet that traffic must match to apply
+        this mapping. Valid value options are: an existing interface, an IP address,
+        a subnet CIDR, `any`, `l2tp`, `pppoe`. The context of this address can be
+        inverted by prefixing the value with `!`. For interface values, the `:ip`
+        modifier can be appended to the value to use the interface''s IP address instead
+        of its entire subnet.'
+      type: str
+      returned: always
+    destination:
+      description: 'The destination IP address or subnet that traffic must match to
+        apply this mapping. Valid value options are: an existing interface, an IP
+        address, a subnet CIDR, an existing alias, `any`, `l2tp`, `pppoe`. The context
+        of this address can be inverted by prefixing the value with `!`. For interface
+        values, the `:ip` modifier can be appended to the value to use the interface''s
+        IP address instead of its entire subnet.'
+      type: str
+      returned: always
+    descr:
+      description: A description for this 1:1 NAT mapping
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

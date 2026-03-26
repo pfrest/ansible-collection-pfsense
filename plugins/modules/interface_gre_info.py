@@ -50,6 +50,87 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve Interface GRE
+  pfrest.pfsense.interface_gre_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Interface GRE data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    if:
+      description: The pfSense interface interface serving as the local address to
+        be used for the GRE tunnel.
+      type: str
+      returned: always
+    greif:
+      description: The real interface name for this GRE interface.
+      type: str
+      returned: always
+    descr:
+      description: A description for this GRE interface.
+      type: str
+      returned: always
+    add_static_route:
+      description: Whether to add an explicit static route for the remote inner tunnel
+        address/subnet via the local tunnel address.
+      type: bool
+      returned: always
+    remote_addr:
+      description: The remote address to use for the GRE tunnel.
+      type: str
+      returned: always
+    tunnel_local_addr:
+      description: The local IPv4 address to use for the GRE tunnel.
+      type: str
+      returned: always
+    tunnel_remote_addr:
+      description: The remote IPv4 address to use for the GRE tunnel.
+      type: str
+      returned: always
+    tunnel_remote_net:
+      description: The remote IPv4 subnet bitmask to use for the GRE tunnel.
+      type: int
+      returned: always
+    tunnel_local_addr6:
+      description: The local IPv6 address to use for the GRE tunnel.
+      type: str
+      returned: always
+    tunnel_remote_addr6:
+      description: The remote IPv6 address to use for the GRE tunnel.
+      type: str
+      returned: always
+    tunnel_remote_net6:
+      description: The remote IPv6 subnet bitmask to use for the GRE tunnel.
+      type: int
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

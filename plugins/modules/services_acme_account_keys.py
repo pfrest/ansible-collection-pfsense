@@ -85,6 +85,66 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Manage all ACME Account Keys
+  pfrest.pfsense.services_acme_account_keys:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    objects:
+    - name: example
+      acmeserver: example
+      descr: example
+      email: example
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: A list of ACME Account Keys returned by the API.
+  type: list
+  elements: dict
+  returned: always
+  contains:
+    name:
+      description: The name of the ACME account key.
+      type: str
+      returned: always
+    descr:
+      description: A description of the ACME account key.
+      type: str
+      returned: always
+    email:
+      description: The email address associated with the ACME account key.
+      type: str
+      returned: always
+    acmeserver:
+      description: The ACME server this account key will belong to.
+      type: str
+      returned: always
+    accountkey:
+      description: The RSA private key for the ACME account key.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

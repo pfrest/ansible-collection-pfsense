@@ -50,6 +50,76 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve Cron Job
+  pfrest.pfsense.services_cron_job_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Cron Job data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    minute:
+      description: The minute(s) at which the command will be executed or a special
+        @ event string. (0-59, ranges, divided, @ event or delay, *=all). When using
+        a special @ event, such as @reboot, the other time fields must be empty.
+      type: str
+      returned: always
+    hour:
+      description: The hour(s) at which the command will be executed. (0-23, ranges,
+        or divided, *=all)
+      type: str
+      returned: always
+    mday:
+      description: The day(s) of the month on which the command will be executed.
+        (1-31, ranges, or divided, *=all).
+      type: str
+      returned: always
+    month:
+      description: The month(s) of the year in which the command will be executed.
+        (1-31, ranges, or divided, *=all).
+      type: str
+      returned: always
+    wday:
+      description: The day(s) of the week on which the command will be executed. (0-7,
+        7=Sun or use names, ranges, or divided, *=all).
+      type: str
+      returned: always
+    who:
+      description: The OS user to use when cron runs the command.
+      type: str
+      returned: always
+    command:
+      description: The command to run. Use full file paths for this command and include
+        an command parameters.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

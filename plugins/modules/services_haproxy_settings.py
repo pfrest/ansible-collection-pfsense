@@ -260,6 +260,191 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Manage HA Proxy Settings
+  pfrest.pfsense.services_haproxy_settings:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    enable: false
+    maxconn: 1
+    nbthread: 1
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The HA Proxy Settings data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    enable:
+      description: Enables or disable HAProxy on the system.
+      type: bool
+      returned: always
+    maxconn:
+      description: The maximum per-process number of concurrent connections
+      type: int
+      returned: always
+    nbthread:
+      description: The number of threads to start per process. This setting is experimental.
+      type: int
+      returned: always
+    terminate_on_reload:
+      description: Enables or disables an immediate stop of old process on reload.
+        (closes existing connections)
+      type: bool
+      returned: always
+    hard_stop_after:
+      description: The maximum time allowed to perform a clean soft-stop. This can
+        be represented as different time values such as 30s, 15m, 3h or 1d.
+      type: str
+      returned: always
+    carpdev:
+      description: The CARP interface IP to monitor. HAProxy will only run on the
+        firewall whose interface is MASTER.
+      type: str
+      returned: always
+    localstatsport:
+      description: 'The internal port to be used for the stats tab. Set to null to
+        disable local stats. Valid options are: a TCP/UDP port number'
+      type: str
+      returned: always
+    localstats_refreshtime:
+      description: The internal (in seconds) in which local stats will be refreshed.
+      type: int
+      returned: always
+    localstats_sticktable_refreshtime:
+      description: The internal (in seconds) in which the sticktable stats will be
+        refreshed.
+      type: int
+      returned: always
+    remotesyslog:
+      description: The IP address or hostname of the remote syslog server to send
+        logs to. Use `/var/run/log` to to log to the local pfSense system log.
+      type: str
+      returned: always
+    logfacility:
+      description: The logging facility to log to.
+      type: str
+      returned: always
+    loglevel:
+      description: The log level to begin logging events. Only events of this level
+        or higher will be logged.
+      type: str
+      returned: always
+    log_send_hostname:
+      description: The hostname field to include in the syslog header. Leave empty
+        to use the system hostname.
+      type: str
+      returned: always
+    dns_resolvers:
+      description: The DNS resolvers HAProxy will use for DNS queries.
+      type: list
+      returned: always
+      elements: dict
+      contains:
+        name:
+          description: The descriptive name for this DNS server.
+          type: str
+          returned: always
+        server:
+          description: The IP or hostname of the DNS server.
+          type: str
+          returned: always
+        port:
+          description: 'The port used by this DNS server. Valid options are: a TCP/UDP
+            port number'
+          type: str
+          returned: always
+    resolver_retries:
+      description: The number of queries to send to resolve a server name before giving
+        up.
+      type: int
+      returned: always
+    resolver_timeoutretry:
+      description: The time between two DNS queries, when no response have been received.
+      type: str
+      returned: always
+    resolver_holdvalid:
+      description: The interval between two successive name resolution when the last
+        answer was valid.
+      type: str
+      returned: always
+    email_mailers:
+      description: The email servers HAProxy will use to send SMTP alerts.
+      type: list
+      returned: always
+      elements: dict
+      contains:
+        name:
+          description: The descriptive name for this mail server.
+          type: str
+          returned: always
+        mailserver:
+          description: The IP or hostname of the mail server.
+          type: str
+          returned: always
+        mailserverport:
+          description: 'The port used by this mail server. Valid options are: a TCP/UDP
+            port number'
+          type: str
+          returned: always
+    email_level:
+      description: The maximum log level to send emails for. Leave empty to disable
+        sending email alerts.
+      type: str
+      returned: always
+    email_myhostname:
+      description: The hostname to use as the origin of the email.
+      type: str
+      returned: always
+    email_from:
+      description: The email address to be used as the sender of the emails.
+      type: str
+      returned: always
+    email_to:
+      description: The email address to send emails to.
+      type: str
+      returned: always
+    sslcompatibilitymode:
+      description: The SSL/TLS compatibility mode which determines the cipher suites
+        and TLS versions supported.
+      type: str
+      returned: always
+    ssldefaultdhparam:
+      description: The maximum size of the Diffie-Hellman parameters used for generating
+        the ephemeral/temporary Diffie-Hellman key in case of DHE key exchange
+      type: int
+      returned: always
+    advanced:
+      description: Additional HAProxy options to include in the global settings area.
+      type: str
+      returned: always
+    enablesync:
+      description: Enables or disables including HAProxy configurations in HA sync
+        if configured.
+      type: bool
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

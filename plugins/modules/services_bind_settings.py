@@ -200,6 +200,122 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Manage BIND Settings
+  pfrest.pfsense.services_bind_settings:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    bind_forwarder_ips: example
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The BIND Settings data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    enable_bind:
+      description: Enables the BIND service.
+      type: bool
+      returned: always
+    bind_ip_version:
+      description: The IP version to use for the BIND service. Leave empty to use
+        both IPv4 and IPv6.
+      type: str
+      returned: always
+    listenon:
+      description: The interfaces to listen on for DNS requests.
+      type: str
+      returned: always
+    bind_notify:
+      description: Notify slave server after any update on master.
+      type: bool
+      returned: always
+    bind_hide_version:
+      description: Hide the BIND version in responses.
+      type: bool
+      returned: always
+    bind_ram_limit:
+      description: The maximum amount of RAM to use for the BIND service.
+      type: str
+      returned: always
+    bind_logging:
+      description: Enable logging for the BIND service.
+      type: bool
+      returned: always
+    log_severity:
+      description: The minimum severity of events to log.
+      type: str
+      returned: always
+    log_options:
+      description: The categories to log.
+      type: str
+      returned: always
+    rate_enabled:
+      description: Enable rate limiting for the BIND service.
+      type: bool
+      returned: always
+    rate_limit:
+      description: The maximum number of queries per second to allow.
+      type: int
+      returned: always
+    log_only:
+      description: When rate limiting, only log that the query limit has been exceeded.
+        If disabled, the query will be dropped instead.
+      type: bool
+      returned: always
+    bind_forwarder:
+      description: Enable forwarding queries to other DNS servers listed below rather
+        than this server performing its own recursion.
+      type: bool
+      returned: always
+    bind_forwarder_ips:
+      description: The IP addresses of the DNS servers to forward queries to.
+      type: str
+      returned: always
+    bind_dnssec_validation:
+      description: Enable DNSSEC validation when BIND is acting as a recursive resolver.
+      type: str
+      returned: always
+    listenport:
+      description: 'The TCP and UDP port to listen on for DNS requests. Valid options
+        are: a TCP/UDP port number'
+      type: str
+      returned: always
+    controlport:
+      description: 'The TCP port to listen on for control requests (localhost only).
+        Valid options are: a TCP/UDP port number'
+      type: str
+      returned: always
+    bind_custom_options:
+      description: Custom BIND options to include in the configuration file.
+      type: str
+      returned: always
+    bind_global_settings:
+      description: Global BIND settings to include in the configuration file.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

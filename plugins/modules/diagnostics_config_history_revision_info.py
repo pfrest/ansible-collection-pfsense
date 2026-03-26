@@ -50,6 +50,58 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve Configuration History Entry
+  pfrest.pfsense.diagnostics_config_history_revision_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Configuration History Entry data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    time:
+      description: The time the configuration change was made.
+      type: int
+      returned: always
+    description:
+      description: The description of the configuration change.
+      type: str
+      returned: always
+    version:
+      description: The configuration version associated with this change.
+      type: str
+      returned: always
+    filesize:
+      description: The file size (in bytes) of the configuration file associated with
+        this change.
+      type: int
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

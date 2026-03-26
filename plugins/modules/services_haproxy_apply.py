@@ -47,6 +47,44 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Perform HA Proxy Apply action
+  pfrest.pfsense.services_haproxy_apply:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The HA Proxy Apply data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    applied:
+      description: Indicates whether all HAProxy configuration changes have been applied.
+      type: bool
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

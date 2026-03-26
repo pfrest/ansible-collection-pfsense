@@ -76,6 +76,67 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Create Service Watchdog
+  pfrest.pfsense.services_service_watchdog:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: present
+    name: example
+- name: Delete Service Watchdog
+  pfrest.pfsense.services_service_watchdog:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: absent
+    name: example
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Service Watchdog data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    name:
+      description: The name of the service to be watched.
+      type: str
+      returned: always
+    description:
+      description: The description for the service being watched.
+      type: str
+      returned: always
+    notify:
+      description: Enable or disable notifications being sent when Service Watchdogs
+        finds this service stopped.
+      type: bool
+      returned: always
+    enabled:
+      description: Indicates if this Service Watchdog is enabled or disabled. This
+        value is unused.
+      type: bool
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

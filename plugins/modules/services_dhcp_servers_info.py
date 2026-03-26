@@ -50,6 +50,327 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve all DHCP Servers
+  pfrest.pfsense.services_dhcp_servers_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: A list of DHCP Servers returned by the API.
+  type: list
+  elements: dict
+  returned: always
+  contains:
+    interface:
+      description: The interface to configure the DHCP server for. This field is only
+        necessary when you wantto change the interface (ID) of an existing DHCP server,
+        or you are replacing all DHCP server objects with a new configuration. Note
+        that specifying an interface in this field will update the ID of the DHCP
+        server to match the interface specified here. Leaving this field empty will
+        retain the existing interface.
+      type: str
+      returned: always
+    enable:
+      description: Enable the DHCP server for this interface.
+      type: bool
+      returned: always
+    range_from:
+      description: The starting IP address for the primary DHCP pool. This address
+        must be less than or equal to the `range_to` field.
+      type: str
+      returned: always
+    range_to:
+      description: The ending IP address for the primary DHCP pool. This address must
+        be greater than or equal to the `range_to` field.
+      type: str
+      returned: always
+    domain:
+      description: The domain to be assigned via DHCP.
+      type: str
+      returned: always
+    failover_peerip:
+      description: The interface IP address of the other firewall (failover peer)
+        in this subnet. Leave empty to disable failover peering.
+      type: str
+      returned: always
+    mac_allow:
+      description: MAC addresses this DHCP server is allowed to provide leases for.
+      type: str
+      returned: always
+    mac_deny:
+      description: MAC addresses this DHCP server is not allowed to provide leases
+        for.
+      type: str
+      returned: always
+    domainsearchlist:
+      description: The domain search list to provide via DHCP.
+      type: str
+      returned: always
+    defaultleasetime:
+      description: The default DHCP lease validity period (in seconds). This is used
+        for clients that do not ask for a specific expiration time.
+      type: int
+      returned: always
+    maxleasetime:
+      description: The maximum DHCP lease validity period (in seconds) a client can
+        request.
+      type: int
+      returned: always
+    gateway:
+      description: The gateway IPv4 address to provide via DHCP. This is only necessary
+        if you are not using the interface's IP as the gateway. Specify `none` for
+        no gateway assignment.
+      type: str
+      returned: always
+    dnsserver:
+      description: The DNS servers to provide via DHCP. Leave empty to default to
+        system nameservers.
+      type: str
+      returned: always
+    winsserver:
+      description: The WINS servers to provide via DHCP.
+      type: str
+      returned: always
+    ntpserver:
+      description: The NTP servers to provide via DHCP.
+      type: str
+      returned: always
+    staticarp:
+      description: Assign static ARP entries for DHCP leases provided by this server.
+      type: bool
+      returned: always
+    ignorebootp:
+      description: Force this DHCP server to ignore BOOTP queries.
+      type: bool
+      returned: always
+    ignoreclientuids:
+      description: Prevent recording a unique identifier (UID) in client lease data
+        if present in the client DHCP request. This option may be useful when a client
+        can dual boot using different client identifiers but the same hardware (MAC)
+        address. Note that the resulting server behavior violates the official DHCP
+        specification.
+      type: bool
+      returned: always
+    nonak:
+      description: Ignore denied clients rather than reject. This option is not compatible
+        with failover and cannot be enabled when a Failover Peer IP address is configured.
+      type: bool
+      returned: always
+    disablepingcheck:
+      description: Prevent the DHCP server from sending a ping to the address being
+        assigned, where if no response has been heard, it assigns the address.
+      type: bool
+      returned: always
+    dhcpleaseinlocaltime:
+      description: Display the DHCP lease times in local time instead of UTC.
+      type: bool
+      returned: always
+    statsgraph:
+      description: Enable adding DHCP lease statistics to the pfSense Monitoring graphs.
+      type: bool
+      returned: always
+    denyunknown:
+      description: Define how to handle unknown clients requesting DHCP leases. When
+        set to `null`, any DHCP client will get an IP address within this scope/range
+        on this interface. If set to `enabled`, any DHCP client with a MAC address
+        listed in a static mapping on any scope(s)/interface(s) will get an IP address.
+        If set to `class`, only MAC addresses listed in static mappings on this interface
+        will get an IP address within this scope/range.
+      type: str
+      returned: always
+    pool:
+      description: Additional address pools applied to this DHCP server.
+      type: list
+      returned: always
+      elements: dict
+      contains:
+        range_from:
+          description: The starting IP address for this address pool. This address
+            must be less than or equal to the `range_to` field.
+          type: str
+          returned: always
+        range_to:
+          description: The ending IP address for the this address pool. This address
+            must be greater than or equal to the `range_to` field.
+          type: str
+          returned: always
+        domain:
+          description: The domain to be assigned via DHCP.
+          type: str
+          returned: always
+        mac_allow:
+          description: MAC addresses this DHCP server is allowed to provide leases
+            for.
+          type: str
+          returned: always
+        mac_deny:
+          description: MAC addresses this DHCP server is not allowed to provide leases
+            for.
+          type: str
+          returned: always
+        domainsearchlist:
+          description: The domain search list to provide via DHCP.
+          type: str
+          returned: always
+        defaultleasetime:
+          description: The default DHCP lease validity period (in seconds). This is
+            used for clients that do not ask for a specific expiration time.
+          type: int
+          returned: always
+        maxleasetime:
+          description: The maximum DHCP lease validity period (in seconds) a client
+            can request.
+          type: int
+          returned: always
+        gateway:
+          description: The gateway IPv4 address to provide via DHCP. This is only
+            necessary if you are not using the interface's IP as the gateway. Specify
+            `none` for no gateway assignment.
+          type: str
+          returned: always
+        dnsserver:
+          description: The DNS servers to provide via DHCP. Leave empty to default
+            to system nameservers.
+          type: str
+          returned: always
+        winsserver:
+          description: The WINS servers to provide via DHCP.
+          type: str
+          returned: always
+        ntpserver:
+          description: The NTP servers to provide via DHCP.
+          type: str
+          returned: always
+        ignorebootp:
+          description: Force this DHCP server to ignore BOOTP queries.
+          type: bool
+          returned: always
+        ignoreclientuids:
+          description: Prevent recording a unique identifier (UID) in client lease
+            data if present in the client DHCP request. This option may be useful
+            when a client can dual boot using different client identifiers but the
+            same hardware (MAC) address. Note that the resulting server behavior violates
+            the official DHCP specification.
+          type: bool
+          returned: always
+        denyunknown:
+          description: Define how to handle unknown clients requesting DHCP leases.
+            When set to `null`, any DHCP client will get an IP address within this
+            scope/range on this interface. If set to `enabled`, any DHCP client with
+            a MAC address listed in a static mapping on any scope(s)/interface(s)
+            will get an IP address. If set to `class`, only MAC addresses listed in
+            static mappings on this interface will get an IP address within this scope/range.
+          type: str
+          returned: always
+    numberoptions:
+      description: The custom DHCP options to apply to this DHCP server.
+      type: list
+      returned: always
+      elements: dict
+      contains:
+        number:
+          description: The DHCP option number to configure.
+          type: int
+          returned: always
+        type:
+          description: The type of value to configure for the option.
+          type: str
+          returned: always
+        value:
+          description: The value to configure for the option.
+          type: str
+          returned: always
+    staticmap:
+      description: Static mappings applied to this DHCP server.
+      type: list
+      returned: always
+      elements: dict
+      contains:
+        mac:
+          description: The MAC address of the client this mapping is for.
+          type: str
+          returned: always
+        ipaddr:
+          description: The IP address to assign this client via DHCP.
+          type: str
+          returned: always
+        cid:
+          description: The client identifier of the client this mapping is for.
+          type: str
+          returned: always
+        hostname:
+          description: The hostname to assign this client via DHCP.
+          type: str
+          returned: always
+        domain:
+          description: The domain to be assigned via DHCP.
+          type: str
+          returned: always
+        domainsearchlist:
+          description: The domain search list to provide via DHCP.
+          type: str
+          returned: always
+        defaultleasetime:
+          description: The default DHCP lease validity period (in seconds). This is
+            used for clients that do not ask for a specific expiration time.
+          type: int
+          returned: always
+        maxleasetime:
+          description: The maximum DHCP lease validity period (in seconds) this client
+            can request.
+          type: int
+          returned: always
+        gateway:
+          description: The gateway IPv4 address to provide via DHCP. This is only
+            necessary if you are not using the interface's IP as the gateway. Specify
+            `none` for no gateway assignment.
+          type: str
+          returned: always
+        dnsserver:
+          description: The DNS servers to provide via DHCP. Leave empty to default
+            to system nameservers.
+          type: str
+          returned: always
+        winsserver:
+          description: The WINS servers to provide via DHCP.
+          type: str
+          returned: always
+        ntpserver:
+          description: The NTP servers to provide via DHCP.
+          type: str
+          returned: always
+        arp_table_static_entry:
+          description: Assign a static ARP entry for this static mapping.
+          type: bool
+          returned: always
+        descr:
+          description: The description of this static mapping.
+          type: str
+          returned: always
+
+'''
+
 
 def run_module():
     module_args = {

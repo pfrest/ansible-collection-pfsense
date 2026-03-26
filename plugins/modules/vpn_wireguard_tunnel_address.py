@@ -81,6 +81,63 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Create WireGuard Tunnel Address
+  pfrest.pfsense.vpn_wireguard_tunnel_address:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: present
+    address: example
+    mask: 1
+- name: Delete WireGuard Tunnel Address
+  pfrest.pfsense.vpn_wireguard_tunnel_address:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: absent
+    address: example
+    mask: 1
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The WireGuard Tunnel Address data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    address:
+      description: The IPv4 or IPv6 address for this WireGuard tunnel.
+      type: str
+      returned: always
+    mask:
+      description: The subnet mask for this WireGuard tunnel.
+      type: int
+      returned: always
+    descr:
+      description: A description for this WireGuard tunnel address entry.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

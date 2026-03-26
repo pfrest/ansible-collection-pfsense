@@ -50,6 +50,45 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve all HAProxy Frontend Certificateses
+  pfrest.pfsense.services_haproxy_frontend_certificates_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: A list of HAProxy Frontend Certificateses returned by the API.
+  type: list
+  elements: dict
+  returned: always
+  contains:
+    ssl_certificate:
+      description: The SSL/TLS certificate refid to add to this frontend.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

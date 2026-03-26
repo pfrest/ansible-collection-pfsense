@@ -122,6 +122,84 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Create Firewall Schedule Time Range
+  pfrest.pfsense.firewall_schedule_time_range:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: present
+    month: 1
+    day: 1
+    hour: example
+- name: Delete Firewall Schedule Time Range
+  pfrest.pfsense.firewall_schedule_time_range:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: absent
+    month: 1
+    day: 1
+    hour: example
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Firewall Schedule Time Range data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    position:
+      description: The day of the week this schedule should be active for. Use `1`
+        for every Monday, `2` for every Tuesday, `3` for every Wednesday, `4` for
+        every Thursday, `5` for every Friday, `6` for every Saturday, or `7` for every
+        Sunday. If this field has a value specified, the `month` and `day` fields
+        will be unavailable.
+      type: int
+      returned: always
+    month:
+      description: The month for each specified `day` value. Each value specified
+        must correspond with a `day` field value and must match the order exactly.
+        For example, a `month` value of `[3, 6]` and a `day` value of `[2, 17]` would
+        evaluate to March 2nd and June 17th respectively.
+      type: int
+      returned: always
+    day:
+      description: The day for each specified `month` value. Each value specified
+        must correspond with a `month` field value and must match the order exactly.
+        For example, a `month` value of `[3, 6]` and a `day` value of `[2, 17]` would
+        evaluate to March 2nd and June 17th respectively.
+      type: int
+      returned: always
+    hour:
+      description: The start time and end time for this time range in 24-hour format
+        (i.e. HH:MM-HH:MM).
+      type: str
+      returned: always
+    rangedescr:
+      description: A description detailing this firewall schedule time range's purpose.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

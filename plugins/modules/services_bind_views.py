@@ -91,6 +91,69 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Manage all BIND Views
+  pfrest.pfsense.services_bind_views:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    objects:
+    - name: example
+      descr: example
+      recursion: false
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: A list of BIND Views returned by the API.
+  type: list
+  elements: dict
+  returned: always
+  contains:
+    name:
+      description: The name of the view.
+      type: str
+      returned: always
+    descr:
+      description: A description for the view.
+      type: str
+      returned: always
+    recursion:
+      description: Enables or disables recursion for the view.
+      type: bool
+      returned: always
+    match_clients:
+      description: The access lists to match clients against.
+      type: str
+      returned: always
+    allow_recursion:
+      description: The access lists to allow recursion for.
+      type: str
+      returned: always
+    bind_custom_options:
+      description: Custom BIND options for the view.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

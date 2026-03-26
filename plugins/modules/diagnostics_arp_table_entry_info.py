@@ -50,6 +50,73 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve ARP Table Entry
+  pfrest.pfsense.diagnostics_arp_table_entry_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The ARP Table Entry data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    hostname:
+      description: The hostname associated with the ARP entry.
+      type: str
+      returned: always
+    ip_address:
+      description: The IP address associated with the ARP entry.
+      type: str
+      returned: always
+    mac_address:
+      description: The MAC address associated with the ARP entry.
+      type: str
+      returned: always
+    interface:
+      description: The interface where the ARP entry was registered.
+      type: str
+      returned: always
+    type:
+      description: The type of connection this host utilizes.
+      type: str
+      returned: always
+    permanent:
+      description: Indicates whether the ARP entry is permanent in the ARP table.
+      type: bool
+      returned: always
+    dnsresolve:
+      description: The full DNS name associated with this ARP entry.
+      type: str
+      returned: always
+    expires:
+      description: The expiration time for this ARP entry.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

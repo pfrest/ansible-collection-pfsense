@@ -56,6 +56,46 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Manage DHCP Server Backend
+  pfrest.pfsense.services_dhcp_server_backend:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    dhcpbackend: isc
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The DHCP Server Backend data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    dhcpbackend:
+      description: The backend DHCP server service to use. ISC DHCP is deprecate and
+        will be removed in a future version of pfSense.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

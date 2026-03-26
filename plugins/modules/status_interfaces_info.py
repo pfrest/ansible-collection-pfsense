@@ -50,6 +50,149 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve all Interface Statses
+  pfrest.pfsense.status_interfaces_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: A list of Interface Statses returned by the API.
+  type: list
+  elements: dict
+  returned: always
+  contains:
+    name:
+      description: The name of the interface.
+      type: str
+      returned: always
+    descr:
+      description: The description of the interface.
+      type: str
+      returned: always
+    hwif:
+      description: The hardware interface name of the interface.
+      type: str
+      returned: always
+    macaddr:
+      description: The MAC address of the interface.
+      type: str
+      returned: always
+    mtu:
+      description: The MTU of the interface.
+      type: str
+      returned: always
+    enable:
+      description: Whether the interface is enabled.
+      type: bool
+      returned: always
+    status:
+      description: The status of the interface.
+      type: str
+      returned: always
+    ipaddr:
+      description: The IPv4 address of the interface.
+      type: str
+      returned: always
+    subnet:
+      description: The IPv4 subnet of the interface.
+      type: str
+      returned: always
+    linklocal:
+      description: The IPv6 link-local address of the interface.
+      type: str
+      returned: always
+    ipaddrv6:
+      description: The IPv6 address of the interface.
+      type: str
+      returned: always
+    subnetv6:
+      description: The IPv6 subnet of the interface.
+      type: str
+      returned: always
+    inerrs:
+      description: The number of inbound errors on the interface.
+      type: int
+      returned: always
+    outerrs:
+      description: The number of outbound errors on the interface.
+      type: int
+      returned: always
+    collisions:
+      description: The number of collisions on the interface.
+      type: int
+      returned: always
+    inbytes:
+      description: The number of inbound bytes on the interface.
+      type: int
+      returned: always
+    inbytespass:
+      description: The number of inbound bytes passed on the interface.
+      type: int
+      returned: always
+    outbytes:
+      description: The number of outbound bytes on the interface.
+      type: int
+      returned: always
+    outbytespass:
+      description: The number of outbound bytes passed on the interface.
+      type: int
+      returned: always
+    inpkts:
+      description: The number of inbound packets on the interface.
+      type: int
+      returned: always
+    inpktspass:
+      description: The number of inbound packets passed on the interface.
+      type: int
+      returned: always
+    outpkts:
+      description: The number of outbound packets on the interface.
+      type: int
+      returned: always
+    outpktspass:
+      description: The number of outbound packets passed on the interface.
+      type: int
+      returned: always
+    dhcplink:
+      description: The DHCP link status of the interface.
+      type: str
+      returned: always
+    media:
+      description: The speed/duplex of the interface.
+      type: str
+      returned: always
+    gateway:
+      description: The IPv4 gateway of the interface.
+      type: str
+      returned: always
+    gatewayv6:
+      description: The IPv6 gateway of the interface.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

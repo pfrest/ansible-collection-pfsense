@@ -50,6 +50,63 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve all IPsec Phase 1 Encryptions
+  pfrest.pfsense.vpn_ipsec_phase1_encryptions_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: A list of IPsec Phase 1 Encryptions returned by the API.
+  type: list
+  elements: dict
+  returned: always
+  contains:
+    encryption_algorithm_name:
+      description: The name of the encryption algorithm to use for this P1 encryption
+        item.
+      type: str
+      returned: always
+    encryption_algorithm_keylen:
+      description: The key length for the encryption algorithm.
+      type: int
+      returned: always
+    hash_algorithm:
+      description: The hash algorithm to use for this P1 encryption item.
+      type: str
+      returned: always
+    dhgroup:
+      description: The Diffie-Hellman (DH) group to use for this P1 encryption item.
+      type: int
+      returned: always
+    prf_algorithm:
+      description: The PRF algorithm to use for this P1 encryption item. This value
+        has no affect unless the P1 entry has PRF enabled.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

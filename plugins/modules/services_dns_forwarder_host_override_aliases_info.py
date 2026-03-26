@@ -50,6 +50,53 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve all DNS Forwarder Host Override Aliases
+  pfrest.pfsense.services_dns_forwarder_host_override_aliases_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: A list of DNS Forwarder Host Override Aliases returned by the API.
+  type: list
+  elements: dict
+  returned: always
+  contains:
+    host:
+      description: The hostname of this override alias.
+      type: str
+      returned: always
+    domain:
+      description: The domain of this override alias.
+      type: str
+      returned: always
+    description:
+      description: The description of this override alias.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

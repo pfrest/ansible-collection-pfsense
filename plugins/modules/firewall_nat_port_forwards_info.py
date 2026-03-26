@@ -50,6 +50,150 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve all Port Forwards
+  pfrest.pfsense.firewall_nat_port_forwards_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: A list of Port Forwards returned by the API.
+  type: list
+  elements: dict
+  returned: always
+  contains:
+    interface:
+      description: The interface this port forward rule applies to.
+      type: str
+      returned: always
+    ipprotocol:
+      description: The IP protocol this port forward rule should match.
+      type: str
+      returned: always
+    protocol:
+      description: The IP/transport protocol this port forward rule should match.
+      type: str
+      returned: always
+    source:
+      description: 'The source address this port forward rule applies to. Valid value
+        options are: an existing interface, an IP address, a subnet CIDR, an existing
+        alias, `any`, `(self)`, `l2tp`, `pppoe`. The context of this address can be
+        inverted by prefixing the value with `!`. For interface values, the `:ip`
+        modifier can be appended to the value to use the interface''s IP address instead
+        of its entire subnet.'
+      type: str
+      returned: always
+    source_port:
+      description: 'The source port this port forward rule applies to. Set to `null`
+        to allow any source port. Valid options are: a TCP/UDP port number, a TCP/UDP
+        port range separated by `:`, an existing port type firewall alias'
+      type: str
+      returned: always
+    destination:
+      description: 'The destination address this rule applies to. Valid value options
+        are: an existing interface, an IP address, a subnet CIDR, an existing alias,
+        `any`, `(self)`, `l2tp`, `pppoe`. The context of this address can be inverted
+        by prefixing the value with `!`. For interface values, the `:ip` modifier
+        can be appended to the value to use the interface''s IP address instead of
+        its entire subnet.'
+      type: str
+      returned: always
+    destination_port:
+      description: 'The destination port this port forward rule applies to. Set to
+        `null` to allow any destination port. Valid options are: a TCP/UDP port number,
+        a TCP/UDP port range separated by `:`, an existing port type firewall alias'
+      type: str
+      returned: always
+    target:
+      description: 'The IP address or alias of the internal host to forward matching
+        traffic to. Valid value options are: an IP address, an existing alias. For
+        interface values, the `:ip` modifier can be appended to the value to use the
+        interface''s IP address instead of its entire subnet.'
+      type: str
+      returned: always
+    local_port:
+      description: 'The port on the internal host to forward matching traffic to.
+        In most cases, this must match the `destination_port` value. In the event
+        that the `desintation_port` is a range, this value should be the first value
+        in that range. Valid options are: a TCP/UDP port number, an existing port
+        type firewall alias'
+      type: str
+      returned: always
+    disabled:
+      description: Disables this port forward rule.
+      type: bool
+      returned: always
+    nordr:
+      description: Disables redirection for traffic matching this rule.
+      type: bool
+      returned: always
+    nosync:
+      description: Prevents this port forward rule from being synced to non-primary
+        CARP members.
+      type: bool
+      returned: always
+    descr:
+      description: A description for this port forward rule.
+      type: str
+      returned: always
+    natreflection:
+      description: The NAT reflection mode to use for traffic matching this port forward
+        rule. Set to `null` to use the system default.
+      type: str
+      returned: always
+    associated_rule_id:
+      description: The associated firewall rule mode. Use an empty string to require
+        a separate firewall rule to be created to pass traffic matching this port
+        forward rule. Use `new` to create a new associated firewall rule to pass traffic
+        matching this port forward rule. Use `pass` to automatically pass traffic
+        matching this port forward rule without the need for a firewall rule. Otherwise,
+        you can specify the `associated_rule_id` of an existing firewall rule to associate
+        with this port forward rule.
+      type: str
+      returned: always
+    created_time:
+      description: The unix timestamp of when this port forward rule was original
+        created.
+      type: int
+      returned: always
+    created_by:
+      description: The username and IP of the user who originally created this port
+        forward rule.
+      type: str
+      returned: always
+    updated_time:
+      description: The unix timestamp of when this port forward rule was original
+        created.
+      type: int
+      returned: always
+    updated_by:
+      description: The username and IP of the user who last updated this port forward
+        rule.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

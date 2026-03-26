@@ -103,6 +103,73 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Create Free RADIUS Interface
+  pfrest.pfsense.services_freeradius_interface:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: present
+    addr: example
+    ip_version: ipaddr
+- name: Delete Free RADIUS Interface
+  pfrest.pfsense.services_freeradius_interface:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: absent
+    addr: example
+    ip_version: ipaddr
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Free RADIUS Interface data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    addr:
+      description: The IP address of the listening interface. If you choose * then
+        it means all interfaces.
+      type: str
+      returned: always
+    port:
+      description: 'The port number of the listening interface. Different interface
+        types need different ports. Valid options are: a TCP/UDP port number'
+      type: str
+      returned: always
+    type:
+      description: 'The type of the listening interface: Authentication/Accounting.'
+      type: str
+      returned: always
+    ip_version:
+      description: The IP version of the listening interface.
+      type: str
+      returned: always
+    description:
+      description: The description for this interface.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

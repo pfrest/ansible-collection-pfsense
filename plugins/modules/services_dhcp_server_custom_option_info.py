@@ -50,6 +50,53 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve DHCP Server Custom Option
+  pfrest.pfsense.services_dhcp_server_custom_option_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The DHCP Server Custom Option data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    number:
+      description: The DHCP option number to configure.
+      type: int
+      returned: always
+    type:
+      description: The type of value to configure for the option.
+      type: str
+      returned: always
+    value:
+      description: The value to configure for the option.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

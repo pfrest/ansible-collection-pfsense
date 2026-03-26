@@ -50,6 +50,57 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve OpenVPN Server Route Status
+  pfrest.pfsense.status_openvpn_server_route_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The OpenVPN Server Route Status data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    common_name:
+      description: The common name of the OpenVPN server connection.
+      type: str
+      returned: always
+    remote_host:
+      description: The remote host of the OpenVPN server connection.
+      type: str
+      returned: always
+    virtual_addr:
+      description: The virtual address of the OpenVPN server connection.
+      type: str
+      returned: always
+    last_time:
+      description: The last time of the route was used.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

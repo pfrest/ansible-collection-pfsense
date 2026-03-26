@@ -50,6 +50,100 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve all OpenVPN Client Statuses
+  pfrest.pfsense.status_openvpn_clients_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: A list of OpenVPN Client Statuses returned by the API.
+  type: list
+  elements: dict
+  returned: always
+  contains:
+    name:
+      description: The name of the OpenVPN client.
+      type: str
+      returned: always
+    port:
+      description: 'The port number of the OpenVPN client. Valid options are: a TCP/UDP
+        port number'
+      type: str
+      returned: always
+    vpnid:
+      description: The VPN ID of the OpenVPN client this status corresponds to.
+      type: int
+      returned: always
+    mgmt:
+      description: The management interface of the OpenVPN client.
+      type: str
+      returned: always
+    status:
+      description: The current status of the OpenVPN client.
+      type: str
+      returned: always
+    state:
+      description: The current state of the OpenVPN client.
+      type: str
+      returned: always
+    state_detail:
+      description: The details for the current state of the OpenVPN client.
+      type: str
+      returned: always
+    connect_time:
+      description: The connection time of the OpenVPN client.
+      type: str
+      returned: always
+    virtual_addr:
+      description: The virtual address of the OpenVPN client.
+      type: str
+      returned: always
+    virtual_addr6:
+      description: The virtual address 6 of the OpenVPN client.
+      type: str
+      returned: always
+    remote_host:
+      description: The remote host of the OpenVPN client.
+      type: str
+      returned: always
+    remote_port:
+      description: 'The remote port of the OpenVPN client. Valid options are: a TCP/UDP
+        port number'
+      type: str
+      returned: always
+    local_host:
+      description: The local host of the OpenVPN client.
+      type: str
+      returned: always
+    local_port:
+      description: 'The local port of the OpenVPN client. Valid options are: a TCP/UDP
+        port number'
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

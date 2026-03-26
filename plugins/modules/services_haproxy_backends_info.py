@@ -50,6 +50,436 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve all HA Proxy Backends
+  pfrest.pfsense.services_haproxy_backends_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: A list of HA Proxy Backends returned by the API.
+  type: list
+  elements: dict
+  returned: always
+  contains:
+    name:
+      description: The unique name for this backend.
+      type: str
+      returned: always
+    servers:
+      description: The pool of servers this backend will use.
+      type: list
+      returned: always
+      elements: dict
+      contains:
+        name:
+          description: The unique name for this backend server.
+          type: str
+          returned: always
+        status:
+          description: The eligibility status for this backend server.
+          type: str
+          returned: always
+        address:
+          description: The hostname or IP address of this backend server. Hostname
+            values are only resolved at service startup.
+          type: str
+          returned: always
+        port:
+          description: 'The port to forward to for this backend server. Valid options
+            are: a TCP/UDP port number'
+          type: str
+          returned: always
+        weight:
+          description: The weight of this backend server when load balancing.
+          type: int
+          returned: always
+        ssl:
+          description: Enables or disables using SSL/TLS when forwarding to this backend
+            server.
+          type: bool
+          returned: always
+        sslserververify:
+          description: Enables or disables verifying the SSL/TLS certificate when
+            forwarding to this backend server.
+          type: bool
+          returned: always
+        serverid:
+          description: The unique ID for this backend server. This value is set by
+            the system for internal use and cannot be changed.
+          type: int
+          returned: always
+        advanced:
+          description: Allows adding custom HAProxy server settings to the server.
+          type: str
+          returned: always
+    balance:
+      description: The load balancing option to use for servers assigned to this backend.
+      type: str
+      returned: always
+    balance_urilen:
+      description: The number of URI characters the algorithm should consider when
+        hashing.
+      type: int
+      returned: always
+    balance_uridepth:
+      description: The maximum directory depth to be used to compute the hash. One
+        level is counted for each slash in the request.
+      type: int
+      returned: always
+    balance_uriwhole:
+      description: Enables or disables allowing the use of whole URIs, including URL
+        parameters.
+      type: bool
+      returned: always
+    acls:
+      description: The ACLs to apply to this backend.
+      type: list
+      returned: always
+      elements: dict
+      contains:
+        name:
+          description: The unique name for this backend ACL.
+          type: str
+          returned: always
+        expression:
+          description: The expression to use to determine the match for this ACL.
+          type: str
+          returned: always
+        value:
+          description: The value which indicates a match for this ACL.
+          type: str
+          returned: always
+        casesensitive:
+          description: Enables or disables case-sensitive matching for this ACL.
+          type: bool
+          returned: always
+        not:
+          description: Enables or disables inverting the context of this ACL.
+          type: bool
+          returned: always
+    actions:
+      description: The actions to apply to this backend.
+      type: list
+      returned: always
+      elements: dict
+      contains:
+        action:
+          description: The action to take when an ACL match is found.
+          type: str
+          returned: always
+        acl:
+          description: The name of the backend ACL this action is associated with.
+          type: str
+          returned: always
+        server:
+          description: The backend server to use when an ACL match is found.
+          type: str
+          returned: always
+        customaction:
+          description: The custom action to take when an ACL match is found.
+          type: str
+          returned: always
+        deny_status:
+          description: The deny status to use when an ACL match is found.
+          type: str
+          returned: always
+        realm:
+          description: The authentication realm to use when an ACL match is found.
+          type: str
+          returned: always
+        rule:
+          description: The redirect rule to use when an ACL match is found.
+          type: str
+          returned: always
+        lua_function:
+          description: The Lua function to use when an ACL match is found.
+          type: str
+          returned: always
+        name:
+          description: The name to use when an ACL match is found.
+          type: str
+          returned: always
+        fmt:
+          description: The fmt value to use when an ACL match is found.
+          type: str
+          returned: always
+        find:
+          description: The value to find when an ACL match is found.
+          type: str
+          returned: always
+        replace:
+          description: The value to replace with when an ACL match is found.
+          type: str
+          returned: always
+        path:
+          description: The path to use when an ACL match is found.
+          type: str
+          returned: always
+        status:
+          description: The status to use when an ACL match is found.
+          type: str
+          returned: always
+        reason:
+          description: The status reason to use when an ACL match is found.
+          type: str
+          returned: always
+    connection_timeout:
+      description: The amount of time (in milliseconds) to wait before giving up on
+        connections.
+      type: int
+      returned: always
+    server_timeout:
+      description: The amount of time (in milliseconds) to wait for data transferred
+        to or from the server.
+      type: int
+      returned: always
+    retries:
+      description: The number of retry attempts to allow after a connection failure
+        to the server.
+      type: int
+      returned: always
+    check_type:
+      description: The health check method to use when checking the health of backend
+        servers.
+      type: str
+      returned: always
+    checkinter:
+      description: The interval (in milliseconds) in which health checks will be performed.
+      type: int
+      returned: always
+    log_health_checks:
+      description: Enables or disables logging changes to the health check status
+      type: bool
+      returned: always
+    httpcheck_method:
+      description: The HTTP method to use for HTTP health checks.
+      type: str
+      returned: always
+    monitor_uri:
+      description: The URL to use for HTTP health checks.
+      type: str
+      returned: always
+    monitor_httpversion:
+      description: The HTTP version to use for HTTP health checks.
+      type: str
+      returned: always
+    monitor_username:
+      description: The username to use for MySQL or PostgreSQL health checks.
+      type: str
+      returned: always
+    monitor_domain:
+      description: The domain to use for SMTP or ESMTP health checks.
+      type: str
+      returned: always
+    agent_checks:
+      description: Enables or disables using a TCP connection to read an ASCII string
+        of the form.
+      type: bool
+      returned: always
+    agent_port:
+      description: 'Valid options are: a TCP/UDP port number'
+      type: str
+      returned: always
+    agent_inter:
+      description: The interval (in milliseconds) between agent checks.
+      type: int
+      returned: always
+    persist_cookie_enabled:
+      description: Enables or disables cookie based persistence.
+      type: bool
+      returned: always
+    persist_cookie_name:
+      description: The string name to track in Set-Cookie and Cookie HTTP headers.
+      type: str
+      returned: always
+    persist_cookie_mode:
+      description: The mode HAProxy uses to insert/prefix/replace or examine cookie
+        and set-cookie headers.
+      type: str
+      returned: always
+    persist_cookie_cachable:
+      description: Enables or disables allowing shared caches to cache the server
+        response.
+      type: bool
+      returned: always
+    persist_cookie_postonly:
+      description: Enables or disables only inserting cookies on POST requests.
+      type: bool
+      returned: always
+    persist_cookie_httponly:
+      description: Enables or disables preventing the use of cookies with non-HTTP
+        components.
+      type: bool
+      returned: always
+    persist_cookie_secure:
+      description: Enables or disables prevention of cookie usage over non-secure
+        channels.
+      type: bool
+      returned: always
+    haproxy_cookie_maxidle:
+      description: The max-idle time to allow. This option only applies to insert
+        mode cookies.
+      type: int
+      returned: always
+    haproxy_cookie_maxlife:
+      description: The max-life time to allow. This option only applies to insert
+        mode cookies.
+      type: int
+      returned: always
+    haproxy_cookie_domains:
+      description: The domains to set the cookies for.
+      type: str
+      returned: always
+    haproxy_cookie_dynamic_cookie_key:
+      description: The dynamic cookie secret key. This is will be used to generate
+        dynamic cookies for this backend.
+      type: str
+      returned: always
+    persist_sticky_type:
+      description: The sticky table mode to use for this backend. These options are
+        used to make sure subsequent requests from a single client go to the same
+        backend.
+      type: str
+      returned: always
+    persist_stick_expire:
+      description: The maximum duration of an entry in the stick-table since it was
+        last created, refreshed or matched.
+      type: str
+      returned: always
+    persist_stick_tablesize:
+      description: The maximum number of entries allowed in the table. This value
+        directly impacts memory usage.
+      type: str
+      returned: always
+    persist_stick_cookiename:
+      description: The cookie name to use for stick table.
+      type: str
+      returned: always
+    persist_stick_length:
+      description: The maximum number of characters allowed in a string type stick
+        table
+      type: int
+      returned: always
+    email_level:
+      description: The maximum log level to send emails for. Leave empty to disable
+        sending email alerts. If left empty, the value set in the global settings
+        will be used.
+      type: str
+      returned: always
+    email_to:
+      description: The email address to send emails to. If left empty, the value set
+        in the global settings will be used.
+      type: str
+      returned: always
+    stats_enabled:
+      description: Enables or disables the HAProxy statistics page for this backend.
+      type: bool
+      returned: always
+    stats_uri:
+      description: The statistics URL for this backend.
+      type: str
+      returned: always
+    stats_scope:
+      description: The frontends and backends stats to be shown, leave empty to show
+        all.
+      type: str
+      returned: always
+    stats_realm:
+      description: The realm that is shown when authentication is requested by HAProxy.
+      type: str
+      returned: always
+    stats_username:
+      description: The stats page username
+      type: str
+      returned: always
+    stats_password:
+      description: The stats page password.
+      type: str
+      returned: always
+    stats_admin:
+      description: The admin to make use of the options disable/enable/softstop/softstart/killsessions
+        from the stats page.
+      type: str
+      returned: always
+    stats_node:
+      description: The short name displayed in stats and helps differentiate which
+        server in the cluster is actually serving clients.
+      type: str
+      returned: always
+    stats_desc:
+      description: The verbose description for this node.
+      type: str
+      returned: always
+    stats_refresh:
+      description: The interval (in seconds) in which the stats page is refreshed.
+      type: int
+      returned: always
+    strict_transport_security:
+      description: The HSTS validity period for this backend. Leave empty to disable
+        HSTS.
+      type: int
+      returned: always
+    errorfiles:
+      description: The HAProxy error file mappings to use for this backend.
+      type: list
+      returned: always
+      elements: dict
+      contains:
+        errorcode:
+          description: The HTTP status code that will trigger this error file to be
+            used.
+          type: int
+          returned: always
+        errorfile:
+          description: The HAProxy error file object that should be used for the assigned
+            HTTP status code.
+          type: str
+          returned: always
+    cookie_attribute_secure:
+      description: Enables or disables assigning the secure attributes on cookies
+        for this backend.
+      type: bool
+      returned: always
+    advanced:
+      description: The per server pass thru to apply to each server line.
+      type: str
+      returned: always
+    advanced_backend:
+      description: The backend pass thru to apply to the backend section.
+      type: str
+      returned: always
+    transparent_clientip:
+      description: Enables or disables using the client-IP to connect to backend servers.
+      type: bool
+      returned: always
+    transparent_interface:
+      description: The interface that will connect to the backend server.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

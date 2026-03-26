@@ -81,6 +81,63 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Create WireGuard Peer Allowed IP
+  pfrest.pfsense.vpn_wireguard_peer_allowed_ip:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: present
+    address: example
+    mask: 1
+- name: Delete WireGuard Peer Allowed IP
+  pfrest.pfsense.vpn_wireguard_peer_allowed_ip:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: absent
+    address: example
+    mask: 1
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The WireGuard Peer Allowed IP data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    address:
+      description: The IPv4 or IPv6 address for this peer IP.
+      type: str
+      returned: always
+    mask:
+      description: The subnet mask for this peer IP.
+      type: int
+      returned: always
+    descr:
+      description: A description for this allowed peer IP.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

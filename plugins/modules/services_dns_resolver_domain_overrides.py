@@ -87,6 +87,68 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Manage all DNS Resolver Domain Overrides
+  pfrest.pfsense.services_dns_resolver_domain_overrides:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    objects:
+    - domain: example
+      ip: example
+      descr: example
+      forward_tls_upstream: false
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: A list of DNS Resolver Domain Overrides returned by the API.
+  type: list
+  elements: dict
+  returned: always
+  contains:
+    domain:
+      description: The domain to override.
+      type: str
+      returned: always
+    ip:
+      description: The IP address to which the domain should resolve.
+      type: str
+      returned: always
+    descr:
+      description: The description for this domain override.
+      type: str
+      returned: always
+    forward_tls_upstream:
+      description: Enables or disables forwarding DNS queries to the upstream DNS
+        server using TLS.
+      type: bool
+      returned: always
+    tls_hostname:
+      description: The hostname to use for the TLS connection to the upstream DNS
+        server.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

@@ -59,6 +59,50 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Perform Wake On LAN Send action
+  pfrest.pfsense.services_wake_on_lan_send:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    interface: example
+    mac_addr: example
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Wake On LAN Send data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    interface:
+      description: The interface the host to be woken up is connected to.
+      type: str
+      returned: always
+    mac_addr:
+      description: The MAC address of the host to be awoken.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

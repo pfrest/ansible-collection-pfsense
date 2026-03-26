@@ -50,6 +50,89 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve Free RADIUS User
+  pfrest.pfsense.services_freeradius_user_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Free RADIUS User data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    username:
+      description: The username for this user.
+      type: str
+      returned: always
+    password:
+      description: The password for this username.
+      type: str
+      returned: always
+    password_encryption:
+      description: The encryption method for the password.
+      type: str
+      returned: always
+    motp_enable:
+      description: Enable or disable the use of Mobile One-Time Password (MOTP) for
+        this user.
+      type: bool
+      returned: always
+    motp_authmethod:
+      description: The authentication method for the Mobile One-Time Password (MOTP).
+      type: str
+      returned: always
+    motp_secret:
+      description: The secret for the Mobile One-Time Password (MOTP).
+      type: str
+      returned: always
+    motp_pin:
+      description: The PIN for the Mobile One-Time Password (MOTP). It must be exactly
+        4 digits.
+      type: str
+      returned: always
+    motp_offset:
+      description: The timezone offset for this user.
+      type: int
+      returned: always
+    description:
+      description: A description for this user.
+      type: str
+      returned: always
+    framed_ip_address:
+      description: Framed-IP-Address MUST be supported by NAS. If the OpenVPN server
+        uses a subnet style Topology the RADIUS server MUST also send back an appropriate
+        Framed-IP-Netmask value matching the VPN Tunnel Network.
+      type: str
+      returned: always
+    framed_ip_netmask:
+      description: Framed-IP-Netmask MUST be supported by NAS
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

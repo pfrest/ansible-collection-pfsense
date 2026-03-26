@@ -87,6 +87,67 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Create Static Route
+  pfrest.pfsense.routing_static_route:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: present
+    network: example
+    gateway: example
+- name: Delete Static Route
+  pfrest.pfsense.routing_static_route:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    state: absent
+    network: example
+    gateway: example
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Static Route data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    network:
+      description: Sets the destination network for this static route in CIDR notation.
+      type: str
+      returned: always
+    gateway:
+      description: Sets which gateway this route applies to.
+      type: str
+      returned: always
+    descr:
+      description: Sets a description for administrative reference.
+      type: str
+      returned: always
+    disabled:
+      description: Disable this static route.
+      type: bool
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

@@ -248,6 +248,179 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Perform Open VPN Client Export action
+  pfrest.pfsense.vpn_openvpn_client_export:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    type: confzip
+    server: 1
+    pkcs11providers: example
+    pkcs11id: example
+    pass: example
+    proxyaddr: example
+    proxyport: example
+    useproxypass: none
+    proxyuser: example
+    proxypass: example
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Open VPN Client Export data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    type:
+      description: The type of OpenVPN client export to generate. This determines
+        the format and content of the export file.
+      type: str
+      returned: always
+    certref:
+      description: The reference ID of the certificate to use for this OpenVPN client
+        export. This is only applicable for OpenVPN servers that require client certificates.
+      type: str
+      returned: always
+    username:
+      description: The username of the user this client export corresponds to. This
+        is only applicable for OpenVPN servers that use the Local Database AND client
+        certificates.
+      type: str
+      returned: always
+    filename:
+      description: The filename used when exporting the OpenVPN client export. This
+        value cannot be changed
+      type: str
+      returned: always
+    binary_data:
+      description: The binary data of the OpenVPN client export. This is used to store
+        the actual exported configuration file content. When the content-type is set
+        to "application/octet-stream", this field will contain the data of the OpenVPN
+        client export download.
+      type: str
+      returned: always
+    server:
+      description: The VPN ID of the OpenVPN server this client export corresponds
+        to.
+      type: int
+      returned: always
+    useaddr:
+      description: The method to use for the OpenVPN server address listed in the
+        config export.
+      type: str
+      returned: always
+    useaddr_hostname:
+      description: The hostname to use for the OpenVPN server address.
+      type: str
+      returned: always
+    verifyservercn:
+      description: Verify the server certificate Common Name (CN) when the client
+        connects.
+      type: str
+      returned: always
+    blockoutsidedns:
+      description: Block access to DNS servers except across OpenVPN while connected,
+        forcing clients to use only VPN DNS servers.
+      type: bool
+      returned: always
+    legacy:
+      description: Do not include OpenVPN 2.5 and later settings in the client configuration.
+      type: bool
+      returned: always
+    silent:
+      description: Create Windows installer for unattended deploy.
+      type: bool
+      returned: always
+    bindmode:
+      description: The port binding mode to use. If OpenVPN client binds to the default
+        OpenVPN port (1194), two clients may not run concurrently.
+      type: str
+      returned: always
+    usepkcs11:
+      description: Use PKCS#11 storage device (cryptographic token, HSM, smart card)
+        instead of local files.
+      type: bool
+      returned: always
+    pkcs11providers:
+      description: The client local path to the PKCS#11 provider(s) (DLL, module)
+      type: str
+      returned: always
+    pkcs11id:
+      description: The object's ID on the PKCS#11 device.
+      type: str
+      returned: always
+    usetoken:
+      description: Use Microsoft Certificate Storage instead of local files.
+      type: bool
+      returned: always
+    usepass:
+      description: Use a password to protect the PKCS#12 file contents or key in Viscosity
+        bundles.
+      type: bool
+      returned: always
+    pass:
+      description: Password used to protect the certificate file contents.
+      type: str
+      returned: always
+    p12encryption:
+      description: The level of encryption to use when exporting a PKCS#12 archive.
+        Encryption support varies by Operating System and program
+      type: str
+      returned: always
+    useproxy:
+      description: Use proxy to communicate with the OpenVPN server.
+      type: bool
+      returned: always
+    useproxytype:
+      description: The proxy type to use.
+      type: str
+      returned: always
+    proxyaddr:
+      description: The IP address or hostname of the proxy server to use.
+      type: str
+      returned: always
+    proxyport:
+      description: 'The port where the proxy server is listening. Valid options are:
+        a TCP/UDP port number'
+      type: str
+      returned: always
+    useproxypass:
+      description: The type of authentication to use for the proxy server.
+      type: str
+      returned: always
+    proxyuser:
+      description: The username to use to authenticate with the proxy server.
+      type: str
+      returned: always
+    proxypass:
+      description: The password to use to authenticate with the proxy server.
+      type: str
+      returned: always
+    advancedoptions:
+      description: Additional options to add to the OpenVPN client export configuration.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

@@ -51,6 +51,58 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve Certificate Revocation List Revoked Certificate
+  pfrest.pfsense.system_crl_revoked_certificate_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Certificate Revocation List Revoked Certificate data returned by
+    the API.
+  type: dict
+  returned: always
+  contains:
+    certref:
+      description: The reference ID of the certificate to be revoked
+      type: str
+      returned: always
+    serial:
+      description: The serial number of the certificate to be revoked.
+      type: str
+      returned: always
+    reason:
+      description: The CRL reason for revocation code.
+      type: int
+      returned: always
+    revoke_time:
+      description: The unix timestamp of when the certificate was revoked.
+      type: int
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

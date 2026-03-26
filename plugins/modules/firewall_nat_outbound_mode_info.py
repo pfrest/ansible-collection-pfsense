@@ -50,6 +50,50 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve Outbound NAT Mode
+  pfrest.pfsense.firewall_nat_outbound_mode_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Outbound NAT Mode data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    mode:
+      description: The outbound NAT mode to assign this system. Set to `automatic`
+        to have this system automatically generate NAT rules this firewall, `hybrid`
+        to automatically generate NAT rules AND allow manual outbound NAT mappings
+        to be assigned, `manual` to prevent the system from automatically generating
+        NAT rules and only allow manual outbound NAT mappings, or `disabled` to disable
+        outbound NAT on this system entirely.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

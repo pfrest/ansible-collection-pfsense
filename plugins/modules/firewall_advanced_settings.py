@@ -59,6 +59,50 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Manage Firewall Advanced Settings
+  pfrest.pfsense.firewall_advanced_settings:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    aliasesresolveinterval: 9223372036854775807
+    checkaliasesurlcert: true
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Firewall Advanced Settings data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    aliasesresolveinterval:
+      description: The interval (in seconds) at which to resolve hostnames in aliases.
+      type: int
+      returned: always
+    checkaliasesurlcert:
+      description: Check the certificate of URLs used in aliases.
+      type: bool
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

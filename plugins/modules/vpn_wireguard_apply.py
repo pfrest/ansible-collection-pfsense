@@ -47,6 +47,46 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Perform Wire Guard Apply action
+  pfrest.pfsense.vpn_wireguard_apply:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Wire Guard Apply data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    applied:
+      description: Displays `true` when all WireGuard changes are applied and there
+        are no pending changes left.Displays `false` when there are pending WireGuard
+        changes that have not been applied.
+      type: bool
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

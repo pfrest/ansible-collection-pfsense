@@ -50,6 +50,49 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve BIND Access List Entry
+  pfrest.pfsense.services_bind_access_list_entry_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The BIND Access List Entry data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    value:
+      description: The network CIDR to allow.
+      type: str
+      returned: always
+    description:
+      description: A description of the access list entry.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

@@ -50,6 +50,54 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve HA Proxy Email Mailer
+  pfrest.pfsense.services_haproxy_settings_email_mailer_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The HA Proxy Email Mailer data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    name:
+      description: The descriptive name for this mail server.
+      type: str
+      returned: always
+    mailserver:
+      description: The IP or hostname of the mail server.
+      type: str
+      returned: always
+    mailserverport:
+      description: 'The port used by this mail server. Valid options are: a TCP/UDP
+        port number'
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

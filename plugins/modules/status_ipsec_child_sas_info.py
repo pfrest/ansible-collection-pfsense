@@ -50,6 +50,137 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve all IPsec Child SA Statuses
+  pfrest.pfsense.status_ipsec_child_sas_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: A list of IPsec Child SA Statuses returned by the API.
+  type: list
+  elements: dict
+  returned: always
+  contains:
+    name:
+      description: The name of the connection ID for the child SA.
+      type: str
+      returned: always
+    uniqueid:
+      description: The unique ID of the child SA.
+      type: int
+      returned: always
+    reqid:
+      description: The request ID of the child SA.
+      type: int
+      returned: always
+    state:
+      description: The current state of the child SA.
+      type: str
+      returned: always
+    mode:
+      description: The mode of the child SA.
+      type: str
+      returned: always
+    protocol:
+      description: The protocol of the child SA.
+      type: str
+      returned: always
+    encap:
+      description: Whether encapsulation is used for the child SA.
+      type: bool
+      returned: always
+    spi_in:
+      description: The incoming SPI of the child SA.
+      type: str
+      returned: always
+    spi_out:
+      description: The outgoing SPI of the child SA.
+      type: str
+      returned: always
+    encr_alg:
+      description: The encryption algorithm used by the child SA.
+      type: str
+      returned: always
+    encr_keysize:
+      description: The encryption key size used by the child SA.
+      type: int
+      returned: always
+    integ_alg:
+      description: The integrity algorithm used by the child SA.
+      type: str
+      returned: always
+    dh_group:
+      description: The Diffie-Hellman group used by the child SA.
+      type: str
+      returned: always
+    bytes_in:
+      description: The number of bytes received by the child SA.
+      type: int
+      returned: always
+    bytes_out:
+      description: The number of bytes sent by the child SA.
+      type: int
+      returned: always
+    packets_in:
+      description: The number of packets received by the child SA.
+      type: int
+      returned: always
+    packets_out:
+      description: The number of packets sent by the child SA.
+      type: int
+      returned: always
+    use_in:
+      description: The number of times the child SA has been used to receive data.
+      type: int
+      returned: always
+    use_out:
+      description: The number of times the child SA has been used to send data.
+      type: int
+      returned: always
+    rekey_time:
+      description: The time at which the child SA will be rekeyed.
+      type: int
+      returned: always
+    life_time:
+      description: The time at which the child SA will expire.
+      type: int
+      returned: always
+    install_time:
+      description: The time at which the child SA was installed.
+      type: int
+      returned: always
+    local_ts:
+      description: The local traffic selector of the child SA.
+      type: str
+      returned: always
+    remote_ts:
+      description: The remote traffic selector of the child SA.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

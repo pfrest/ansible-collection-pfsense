@@ -50,6 +50,53 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Retrieve Interface Group
+  pfrest.pfsense.interface_group_info:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    lookup_params: {}
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The Interface Group data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    ifname:
+      description: The name of this interface group.
+      type: str
+      returned: always
+    members:
+      description: The member interfaces to assign to this interface group.
+      type: str
+      returned: always
+    descr:
+      description: The description for this interface group.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

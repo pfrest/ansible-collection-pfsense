@@ -86,6 +86,65 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Manage all NTP Time Servers
+  pfrest.pfsense.services_ntp_time_servers:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    objects:
+    - timeserver: example
+      type: server
+      prefer: false
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: A list of NTP Time Servers returned by the API.
+  type: list
+  elements: dict
+  returned: always
+  contains:
+    timeserver:
+      description: The IP or hostname of the remote NTP time server, pool or peer.
+      type: str
+      returned: always
+    type:
+      description: 'The type of this timeserver. Use `server` is `timeserver` is a
+        standalone NTP server, use `pool` if `timeserver` represents an NTP pool,
+        or `peer` if `timeserver` is an NTP peer. Note: If the `timeserver` value
+        ends with the `pool.ntp.org` suffix, this field will be forced to use `pool`.'
+      type: str
+      returned: always
+    prefer:
+      description: Enable NTP favoring the use of this server more than all others.
+      type: bool
+      returned: always
+    noselect:
+      description: Prevent NTP from using this timeserver, but continue collecting
+        stats.
+      type: bool
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

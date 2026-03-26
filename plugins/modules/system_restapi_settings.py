@@ -210,6 +210,157 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Manage REST API Settings
+  pfrest.pfsense.system_restapi_settings:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    enabled: true
+    read_only: false
+    keep_backup: true
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: The REST API Settings data returned by the API.
+  type: dict
+  returned: always
+  contains:
+    enabled:
+      description: Enables or disables the API. If set to `false`, the API will no
+        longer respond to API requests and can only be re-enabled via webConfigurator.
+      type: bool
+      returned: always
+    read_only:
+      description: Enables or disables read-only API access. If enabled, the API will
+        only respond to GET requests and can only be disabled via webConfigurator.
+      type: bool
+      returned: always
+    keep_backup:
+      description: Enables or disables keeping a persistent backup of the API configuration
+        that can be used to restore the API configuration after package and systems
+        updates.
+      type: bool
+      returned: always
+    login_protection:
+      description: Enables or disables Login Protection for API authentication. When
+        enabled, Login Protection will monitor API attempts and temporarily block
+        clients who fail API authentication too many times within a period of time.
+        When disabled, Login Protection will not monitor API authentication but will
+        continue to monitor webConfigurator and SSH logins (if configured). Login
+        Protection can be configured globally in System > Advanced.
+      type: bool
+      returned: always
+    log_successful_auth:
+      description: Enables or disables logging of API authentication attempts that
+        are successful. By default, only failed API authentication attempts are logged
+        to prevent flooding the authentication logs. This field is only applicable
+        when the API `login_protection` setting is enabled.
+      type: bool
+      returned: always
+    log_level:
+      description: Sets the log level for API logging. The log level determines the
+        minimum severity of messages that should be logged.
+      type: str
+      returned: always
+    allow_pre_releases:
+      description: Enables or disables displaying pre-releases in available API updates.
+        Pre-releases contain fixes and features that are currently under development
+        and may not be fully stable. Use of pre-release versions is at your own risk.
+      type: bool
+      returned: always
+    hateoas:
+      description: Enables or disables HATEOAS. Enabling HATEOAS will allow the API
+        to include links to related resources in API responses. This is primarily
+        useful for frontend web applications and self-navigating client scripts that
+        integrate with HAL standards. Enabling HATEOAS may increase API response times,
+        especially on systems with large configurations.
+      type: bool
+      returned: always
+    expose_sensitive_fields:
+      description: Enables or disables exposing sensitive fields in API responses.
+        When enabled, sensitive fields such as passwords, private keys, and other
+        sensitive data will be included in API responses.
+      type: bool
+      returned: always
+    override_sensitive_fields:
+      description: Specifies a list of fields (formatted as ModelName:FieldName) that
+        should have their sensitive attribute overridden. Fields selected here will
+        not be considered sensitive and will be included in API responses regardless
+        of the `expose_sensitive_fields` setting.
+      type: str
+      returned: always
+    allowed_interfaces:
+      description: Sets the interfaces allowed to accept incoming API calls.
+      type: str
+      returned: always
+    represent_interfaces_as:
+      description: Specifies how the API should represent interface names. Use `descr`
+        to represent interface objects by their description name, use `id` to represent
+        interface objects by their internal pfSense ID (e.g. wan, lan, opt1), or use
+        `if` to represent interface objects by their real interface name (e.g. em0,
+        igb1, bxe3).
+      type: str
+      returned: always
+    auth_methods:
+      description: Sets the API authentication methods allowed to authenticate API
+        calls.
+      type: str
+      returned: always
+    jwt_exp:
+      description: Sets the amount of time (in seconds) JWTs are valid for.
+      type: int
+      returned: always
+    ha_sync:
+      description: Enables or disables syncing API settings to HA peers. When enabled,
+        API settings from this host will automatically be synced to any hosts defined
+        in `ha_sync_hosts`.
+      type: bool
+      returned: always
+    ha_sync_validate_certs:
+      description: Enables or disables certificate validation when syncing API configurations
+        to HA sync peers. If enabled, all hosts defined in `ha_sync_hosts` must have
+        their webConfigurator configured with a certificate trusted by this system.
+        It is strongly recommended this be enabled at all times to help mitigate Man-in-the-Middle
+        attacks.
+      type: bool
+      returned: always
+    ha_sync_hosts:
+      description: Set a list of IP addresses or hostnames to sync API settings to.
+      type: str
+      returned: always
+    ha_sync_username:
+      description: Sets the username to use when authenticating for HA sync processes.
+        This user must be the present on all hosts defined in `ha_sync_hosts`.
+      type: str
+      returned: always
+    ha_sync_password:
+      description: Sets the password to use when authenticating for HA sync processes.
+        This must be the password for the user defined in `ha_sync_username` and must
+        be the same on all hosts defined in `ha_sync_hosts`.
+      type: str
+      returned: always
+
+'''
+
 
 def run_module():
     module_args = {

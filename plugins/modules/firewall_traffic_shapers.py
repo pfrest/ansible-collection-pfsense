@@ -117,6 +117,226 @@ author:
 
 '''
 
+EXAMPLES = '''
+- name: Manage all Traffic Shapers
+  pfrest.pfsense.firewall_traffic_shapers:
+    api_host: pfsense.example.com
+    api_username: admin
+    api_password: pfsense
+    objects:
+    - interface: example
+      scheduler: HFSC
+      bandwidthtype: '%'
+      bandwidth: 1
+      enabled: true
+      qlimit: 50
+
+'''
+
+RETURNS = '''
+changed:
+  description: Whether any changes were made.
+  type: bool
+  returned: always
+status:
+  description: The HTTP status code of the API response.
+  type: int
+  returned: always
+response_id:
+  description: The unique response/error ID from the API.
+  type: str
+  returned: always
+msg:
+  description: A status message from the API.
+  type: str
+  returned: always
+data:
+  description: A list of Traffic Shapers returned by the API.
+  type: list
+  elements: dict
+  returned: always
+  contains:
+    enabled:
+      description: Enables or disables this traffic shaper.
+      type: bool
+      returned: always
+    interface:
+      description: The interface this traffic shaper will be applied to.
+      type: str
+      returned: always
+    name:
+      description: The name of this traffic shaper. This value is automatically set
+        by the system and cannot be changed.
+      type: str
+      returned: always
+    scheduler:
+      description: The scheduler type to use for this traffic shaper. Changing this
+        value will automatically update any child queues assigned to this traffic
+        shaper.
+      type: str
+      returned: always
+    bandwidthtype:
+      description: The scale type of the `bandwidth` field's value.
+      type: str
+      returned: always
+    bandwidth:
+      description: The total bandwidth amount allowed by this traffic shaper.
+      type: int
+      returned: always
+    qlimit:
+      description: The number of packets that can be held in a queue waiting to be
+        transmitted by the shaper.
+      type: int
+      returned: always
+    tbrconfig:
+      description: The size, in bytes, of the token bucket regulator. If `null`, heuristics
+        based on the interface bandwidth are used to determine the size.
+      type: int
+      returned: always
+    queue:
+      description: The child queues assigned to this traffic shaper.
+      type: list
+      returned: always
+      elements: dict
+      contains:
+        interface:
+          description: The parent interface this traffic shaper queue a child of.
+            This value is automatically determined by the queue's parent and cannot
+            be manually set or changed.
+          type: str
+          returned: always
+        enabled:
+          description: Enables or disables the traffic shaper queue.
+          type: bool
+          returned: always
+        name:
+          description: The name to assign this traffic shaper queue.
+          type: str
+          returned: always
+        priority:
+          description: The priority level for this traffic shaper queue.
+          type: int
+          returned: always
+        qlimit:
+          description: The number of packets that can be held in a queue waiting to
+            be transmitted by the shaper.
+          type: int
+          returned: always
+        description:
+          description: A description for this traffic shaper queue.
+          type: str
+          returned: always
+        default:
+          description: Mark this traffic shaper queue as the default queue.
+          type: bool
+          returned: always
+        red:
+          description: Use the 'Random Early Detection' scheduler option for this
+            traffic shaper queue.
+          type: bool
+          returned: always
+        rio:
+          description: Use the 'Random Early Detection In and Out' scheduler option
+            for this traffic shaper queue.
+          type: bool
+          returned: always
+        ecn:
+          description: Use the 'Explicit Congestion Notification' scheduler option
+            for this traffic shaper queue.
+          type: bool
+          returned: always
+        codel:
+          description: Use the 'Codel Active Queue' scheduler option for this traffic
+            shaper queue.
+          type: bool
+          returned: always
+        bandwidthtype:
+          description: The scale type of the `bandwidth` field's value.
+          type: str
+          returned: always
+        bandwidth:
+          description: The total bandwidth amount allowed by this traffic shaper.
+          type: int
+          returned: always
+        buckets:
+          description: The buckets of the object.
+          type: int
+          returned: always
+        hogs:
+          description: The bandwidth limit per host.
+          type: int
+          returned: always
+        borrow:
+          description: Allow this queue to borrow from other queues when available.
+          type: bool
+          returned: always
+        upperlimit:
+          description: Allow setting the maximum bandwidth allowed for the queue.
+            Will force hard bandwidth limiting.
+          type: bool
+          returned: always
+        upperlimit_m1:
+          description: The burst-able bandwidth limit for this traffic shaper queue.
+          type: str
+          returned: always
+        upperlimit_d:
+          description: The duration (in milliseconds) that the burst-able bandwidth
+            limit (`upperlimit_m1` is in effect.
+          type: int
+          returned: always
+        upperlimit_m2:
+          description: The normal bandwidth limit for this traffic shaper queue. If
+            `upperlimit_m1` is not defined, this limit will always be in effect. If
+            `upperlimit_m1` is defined, this limit will take effect after the `upperlimit_d`
+            duration has expired.
+          type: str
+          returned: always
+        realtime:
+          description: Allow setting the guaranteed bandwidth minimum allotted to
+            the queue.
+          type: bool
+          returned: always
+        realtime_m1:
+          description: The guaranteed minimum bandwidth limit for this traffic shaper
+            queue during real time.
+          type: str
+          returned: always
+        realtime_d:
+          description: The duration (in milliseconds) that the guaranteed bandwidth
+            limit (`realtime_m1`) is in effect.
+          type: int
+          returned: always
+        realtime_m2:
+          description: 'The maximum bandwidth this traffic shaper queue is allowed
+            to use. Note: This value should not exceed 30% of parent queue''s maximum
+            bandwidth.'
+          type: str
+          returned: always
+        linkshare:
+          description: Allow sharing bandwidth from this queue for other queues as
+            long as the real time values have been satisfied.
+          type: bool
+          returned: always
+        linkshare_m1:
+          description: The initial bandwidth limit for this traffic shaper queue when
+            link sharing.
+          type: str
+          returned: always
+        linkshare_d:
+          description: The duration (in milliseconds) that the initial bandwidth limit
+            (`linkshare_m1`) is in effect.
+          type: int
+          returned: always
+        linkshare_m2:
+          description: 'The maximum bandwidth this traffic shaper queue is allowed
+            to use. Note: This behaves exactly the same as the `bandwidth` field.
+            If this field is set, it will override whatever value is current assigned
+            to the `bandwidth` field.'
+          type: str
+          returned: always
+
+'''
+
 
 def run_module():
     module_args = {
