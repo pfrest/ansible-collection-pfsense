@@ -58,10 +58,11 @@ options:
         description: The action to take against traffic that matches this rule.
       interface:
         required: true
-        type: str
+        type: list
         default: null
         choices: []
         description: The interface where packets must originate to match this rule.
+        elements: str
       ipprotocol:
         required: true
         type: str
@@ -92,7 +93,7 @@ options:
         description: The IP/transport protocol this rule should match.
       icmptype:
         required: false
-        type: str
+        type: list
         default:
         - any
         choices:
@@ -124,6 +125,7 @@ options:
         - unreach
         description: Th ICMP subtypes this rule applies to. This field is only applicable
           when `ipprotocol` is `inet` and `protocol` is `icmp`.
+        elements: str
       source:
         required: true
         type: str
@@ -206,7 +208,7 @@ options:
         description: Allow any TCP flags.
       tcp_flags_out_of:
         required: false
-        type: str
+        type: list
         default: null
         choices:
         - fin
@@ -218,9 +220,10 @@ options:
         - ece
         - cwr
         description: The TCP flags that can be set for this rule to match.
+        elements: str
       tcp_flags_set:
         required: false
-        type: str
+        type: list
         default: null
         choices:
         - fin
@@ -232,6 +235,7 @@ options:
         - ece
         - cwr
         description: The TCP flags that must be set for this rule to match.
+        elements: str
       gateway:
         required: false
         type: str
@@ -313,12 +317,14 @@ EXAMPLES = '''
     api_password: pfsense
     objects:
     - type: pass
-      interface: example
+      interface:
+      - example
       ipprotocol: inet
       source: example
       destination: example
       protocol: tcp
-      icmptype: any
+      icmptype:
+      - any
 
 '''
 
@@ -351,8 +357,9 @@ data:
       returned: always
     interface:
       description: The interface where packets must originate to match this rule.
-      type: str
+      type: list
       returned: always
+      elements: str
     ipprotocol:
       description: The IP version(s) this rule applies to.
       type: str
@@ -364,8 +371,9 @@ data:
     icmptype:
       description: Th ICMP subtypes this rule applies to. This field is only applicable
         when `ipprotocol` is `inet` and `protocol` is `icmp`.
-      type: str
+      type: list
       returned: always
+      elements: str
     source:
       description: 'The source address this rule applies to. Valid value options are:
         an existing interface, an IP address, a subnet CIDR, an existing alias, `any`,
@@ -424,12 +432,14 @@ data:
       returned: always
     tcp_flags_out_of:
       description: The TCP flags that can be set for this rule to match.
-      type: str
+      type: list
       returned: always
+      elements: str
     tcp_flags_set:
       description: The TCP flags that must be set for this rule to match.
-      type: str
+      type: list
       returned: always
+      elements: str
     gateway:
       description: The gateway traffic matching this rule will be routed to. Set to
         `null` to use default.
@@ -507,48 +517,38 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "objects": {
-            "type": list,
+            "type": "list",
             "required": True,
-            "default": None,
-            "choices": [],
             "elements": "dict",
-            "suboptions": {'type': {'required': True, 'type': 'str', 'default': None, 'choices': ['pass', 'block', 'reject'], 'description': 'The action to take against traffic that matches this rule.'}, 'interface': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The interface where packets must originate to match this rule.'}, 'ipprotocol': {'required': True, 'type': 'str', 'default': None, 'choices': ['inet', 'inet6', 'inet46'], 'description': 'The IP version(s) this rule applies to.'}, 'protocol': {'required': False, 'type': 'str', 'default': None, 'choices': ['tcp', 'udp', 'tcp/udp', 'icmp', 'esp', 'ah', 'gre', 'ipv6', 'igmp', 'pim', 'ospf', 'carp', 'pfsync'], 'description': 'The IP/transport protocol this rule should match.'}, 'icmptype': {'required': False, 'type': 'str', 'default': ['any'], 'choices': ['any', 'althost', 'dataconv', 'echorep', 'echoreq', 'inforep', 'inforeq', 'ipv6-here', 'ipv6-where', 'maskrep', 'maskreq', 'mobredir', 'mobregrep', 'mobregreq', 'paramprob', 'photuris', 'redir', 'routeradv', 'routersol', 'skip', 'squench', 'timerep', 'timereq', 'timex', 'trace', 'unreach'], 'description': 'Th ICMP subtypes this rule applies to. This field is only applicable when `ipprotocol` is `inet` and `protocol` is `icmp`.'}, 'source': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': "The source address this rule applies to. Valid value options are: an existing interface, an IP address, a subnet CIDR, an existing alias, `any`, `(self)`, `l2tp`, `pppoe`. The context of this address can be inverted by prefixing the value with `!`. For interface values, the `:ip` modifier can be appended to the value to use the interface's IP address instead of its entire subnet."}, 'source_port': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The source port this rule applies to. Set to `null` to allow any source port. Valid options are: a TCP/UDP port number, a TCP/UDP port range separated by `:`, an existing port type firewall alias'}, 'destination': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': "The destination address this rule applies to. Valid value options are: an existing interface, an IP address, a subnet CIDR, an existing alias, `any`, `(self)`, `l2tp`, `pppoe`. The context of this address can be inverted by prefixing the value with `!`. For interface values, the `:ip` modifier can be appended to the value to use the interface's IP address instead of its entire subnet."}, 'destination_port': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The destination port this rule applies to. Set to `null` to allow any destination port. Valid options are: a TCP/UDP port number, a TCP/UDP port range separated by `:`, an existing port type firewall alias'}, 'descr': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'A description detailing the purpose or justification of this firewall rule.'}, 'disabled': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enable or disable this firewall rule.'}, 'log': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enable or disable logging of traffic that matches this rule.'}, 'tag': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'A packet matching this rule can be marked and this mark used to match on other NAT/filter rules. It is called'}, 'statetype': {'required': False, 'type': 'str', 'default': 'keep state', 'choices': ['keep state', 'sloppy state', 'synproxy state', 'none'], 'description': 'The state mechanism to use for this firewall rule.'}, 'tcp_flags_any': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Allow any TCP flags.'}, 'tcp_flags_out_of': {'required': False, 'type': 'str', 'default': None, 'choices': ['fin', 'syn', 'rst', 'psh', 'ack', 'urg', 'ece', 'cwr'], 'description': 'The TCP flags that can be set for this rule to match.'}, 'tcp_flags_set': {'required': False, 'type': 'str', 'default': None, 'choices': ['fin', 'syn', 'rst', 'psh', 'ack', 'urg', 'ece', 'cwr'], 'description': 'The TCP flags that must be set for this rule to match.'}, 'gateway': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The gateway traffic matching this rule will be routed to. Set to `null` to use default.'}, 'sched': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The name of an existing firewall schedule to assign to this firewall rule.'}, 'dnpipe': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The name of the traffic shaper limiter pipe or queue to use for incoming traffic.'}, 'pdnpipe': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The name of the traffic shaper limiter pipe or queue to use for outgoing traffic.'}, 'defaultqueue': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The name of the traffic shaper queue to assume as the default queue for traffic matching this rule.'}, 'ackqueue': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The name of the traffic shaper queue to assume as the ACK queue for ACK traffic matching this rule.'}, 'floating': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Mark this rule as a floating firewall rule.'}, 'quick': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Apply this action to traffic that matches this rule immediately. This field only applies to floating firewall rules.'}, 'direction': {'required': False, 'type': 'str', 'default': 'any', 'choices': ['any', 'in', 'out'], 'description': 'The direction of traffic this firewall rule applies to. This field only applies to floating firewall rules.'}},
+            "suboptions": {'type': {'required': True, 'type': 'str', 'default': None, 'choices': ['pass', 'block', 'reject'], 'description': 'The action to take against traffic that matches this rule.'}, 'interface': {'required': True, 'type': 'list', 'default': None, 'choices': [], 'description': 'The interface where packets must originate to match this rule.', 'elements': 'str'}, 'ipprotocol': {'required': True, 'type': 'str', 'default': None, 'choices': ['inet', 'inet6', 'inet46'], 'description': 'The IP version(s) this rule applies to.'}, 'protocol': {'required': False, 'type': 'str', 'default': None, 'choices': ['tcp', 'udp', 'tcp/udp', 'icmp', 'esp', 'ah', 'gre', 'ipv6', 'igmp', 'pim', 'ospf', 'carp', 'pfsync'], 'description': 'The IP/transport protocol this rule should match.'}, 'icmptype': {'required': False, 'type': 'list', 'default': ['any'], 'choices': ['any', 'althost', 'dataconv', 'echorep', 'echoreq', 'inforep', 'inforeq', 'ipv6-here', 'ipv6-where', 'maskrep', 'maskreq', 'mobredir', 'mobregrep', 'mobregreq', 'paramprob', 'photuris', 'redir', 'routeradv', 'routersol', 'skip', 'squench', 'timerep', 'timereq', 'timex', 'trace', 'unreach'], 'description': 'Th ICMP subtypes this rule applies to. This field is only applicable when `ipprotocol` is `inet` and `protocol` is `icmp`.', 'elements': 'str'}, 'source': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': "The source address this rule applies to. Valid value options are: an existing interface, an IP address, a subnet CIDR, an existing alias, `any`, `(self)`, `l2tp`, `pppoe`. The context of this address can be inverted by prefixing the value with `!`. For interface values, the `:ip` modifier can be appended to the value to use the interface's IP address instead of its entire subnet."}, 'source_port': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The source port this rule applies to. Set to `null` to allow any source port. Valid options are: a TCP/UDP port number, a TCP/UDP port range separated by `:`, an existing port type firewall alias'}, 'destination': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': "The destination address this rule applies to. Valid value options are: an existing interface, an IP address, a subnet CIDR, an existing alias, `any`, `(self)`, `l2tp`, `pppoe`. The context of this address can be inverted by prefixing the value with `!`. For interface values, the `:ip` modifier can be appended to the value to use the interface's IP address instead of its entire subnet."}, 'destination_port': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The destination port this rule applies to. Set to `null` to allow any destination port. Valid options are: a TCP/UDP port number, a TCP/UDP port range separated by `:`, an existing port type firewall alias'}, 'descr': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'A description detailing the purpose or justification of this firewall rule.'}, 'disabled': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enable or disable this firewall rule.'}, 'log': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enable or disable logging of traffic that matches this rule.'}, 'tag': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'A packet matching this rule can be marked and this mark used to match on other NAT/filter rules. It is called'}, 'statetype': {'required': False, 'type': 'str', 'default': 'keep state', 'choices': ['keep state', 'sloppy state', 'synproxy state', 'none'], 'description': 'The state mechanism to use for this firewall rule.'}, 'tcp_flags_any': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Allow any TCP flags.'}, 'tcp_flags_out_of': {'required': False, 'type': 'list', 'default': None, 'choices': ['fin', 'syn', 'rst', 'psh', 'ack', 'urg', 'ece', 'cwr'], 'description': 'The TCP flags that can be set for this rule to match.', 'elements': 'str'}, 'tcp_flags_set': {'required': False, 'type': 'list', 'default': None, 'choices': ['fin', 'syn', 'rst', 'psh', 'ack', 'urg', 'ece', 'cwr'], 'description': 'The TCP flags that must be set for this rule to match.', 'elements': 'str'}, 'gateway': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The gateway traffic matching this rule will be routed to. Set to `null` to use default.'}, 'sched': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The name of an existing firewall schedule to assign to this firewall rule.'}, 'dnpipe': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The name of the traffic shaper limiter pipe or queue to use for incoming traffic.'}, 'pdnpipe': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The name of the traffic shaper limiter pipe or queue to use for outgoing traffic.'}, 'defaultqueue': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The name of the traffic shaper queue to assume as the default queue for traffic matching this rule.'}, 'ackqueue': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The name of the traffic shaper queue to assume as the ACK queue for ACK traffic matching this rule.'}, 'floating': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Mark this rule as a floating firewall rule.'}, 'quick': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Apply this action to traffic that matches this rule immediately. This field only applies to floating firewall rules.'}, 'direction': {'required': False, 'type': 'str', 'default': 'any', 'choices': ['any', 'in', 'out'], 'description': 'The direction of traffic this firewall rule applies to. This field only applies to floating firewall rules.'}},
         },
     }
 
@@ -566,15 +566,20 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
+    base_module = base.BaseModule('/api/v2/firewall/rules', client)
     changed = True # TODO: determine if changes are needed by comparing existing objects to the provided list
     resp = base_module.replace_objects(
         data=module.params['objects'],
     )
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

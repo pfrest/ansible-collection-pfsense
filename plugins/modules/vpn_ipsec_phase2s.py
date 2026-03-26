@@ -159,7 +159,7 @@ options:
         description: The encryption algorithms to be used by this phase 2 entry.
       hash_algorithm_option:
         required: true
-        type: str
+        type: list
         default: null
         choices:
         - hmac_sha1
@@ -170,6 +170,7 @@ options:
         description: 'The hashing algorithms used by this IPsec phase 2 entry. Note:
           Hash is ignored with GCM algorithms. SHA1 provides weak security and should
           be avoided.'
+        elements: str
       pfsgroup:
         required: false
         type: int
@@ -264,7 +265,8 @@ EXAMPLES = '''
       remoteid_address: example
       remoteid_netbits: 1
       encryption_algorithm_option: []
-      hash_algorithm_option: hmac_sha1
+      hash_algorithm_option:
+      - hmac_sha1
       descr: example
       disabled: false
 
@@ -392,8 +394,9 @@ data:
       description: 'The hashing algorithms used by this IPsec phase 2 entry. Note:
         Hash is ignored with GCM algorithms. SHA1 provides weak security and should
         be avoided.'
-      type: str
+      type: list
       returned: always
+      elements: str
     pfsgroup:
       description: 'The PFS key group this IPsec phase 2 entry should use. Note: Groups
         1, 2, 5, 22, 23, and 24 provide weak security and should be avoided.'
@@ -434,48 +437,38 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "objects": {
-            "type": list,
+            "type": "list",
             "required": True,
-            "default": None,
-            "choices": [],
             "elements": "dict",
-            "suboptions": {'ikeid': {'required': True, 'type': 'int', 'default': None, 'choices': [], 'description': 'The `ikeid` of the parent IPsec phase 1 entry this IPsec phase 2 entry belongs to.'}, 'descr': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'A description for this IPsec phase 2 entry.'}, 'disabled': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Disables this IPsec phase 2 entry.'}, 'mode': {'required': True, 'type': 'str', 'default': None, 'choices': ['tunnel', 'tunnel6', 'transport', 'vti'], 'description': 'The IPsec phase 2 mode this entry will use.'}, 'localid_type': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': "The local ID type to use for this phase 2 entry. Valid value options are: an existing interface, `address`, `network`. For interface values, the `:ip` modifier can be appended to the value to use the interface's IP address instead of its entire subnet."}, 'localid_address': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The local network IP component of this IPsec security association.'}, 'localid_netbits': {'required': True, 'type': 'int', 'default': None, 'choices': [], 'description': 'The subnet bits of the `localid_address` network.'}, 'natlocalid_type': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': "The NAT/BINAT translation type for this IPsec phase 2 entry. Leave as `null` if NAT/BINAT is not needed. Valid value options are: an existing interface, `address`, `network`. For interface values, the `:ip` modifier can be appended to the value to use the interface's IP address instead of its entire subnet."}, 'natlocalid_address': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The NAT/BINAT local network IP component of this IPsec security association.'}, 'natlocalid_netbits': {'required': True, 'type': 'int', 'default': None, 'choices': [], 'description': 'The subnet bits of the `natlocalid_address` network.'}, 'remoteid_type': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': "The remote ID type to use for this phase 2 entry. Valid value options are: `address`, `network`. For interface values, the `:ip` modifier can be appended to the value to use the interface's IP address instead of its entire subnet."}, 'remoteid_address': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The remote network IP component of this IPsec security association.'}, 'remoteid_netbits': {'required': True, 'type': 'int', 'default': None, 'choices': [], 'description': 'The subnet bits of the `remoteid_address` network.'}, 'protocol': {'required': False, 'type': 'str', 'default': 'esp', 'choices': ['esp', 'ah'], 'description': 'the IPsec phase 2 proposal protocol for this entry. Encapsulating Security Payload (`esp`) performs encryption and authentication, Authentication Header (`ah`) is authentication only.'}, 'encryption_algorithm_option': {'required': True, 'type': 'list', 'default': None, 'choices': [], 'description': 'The encryption algorithms to be used by this phase 2 entry.'}, 'hash_algorithm_option': {'required': True, 'type': 'str', 'default': None, 'choices': ['hmac_sha1', 'hmac_sha256', 'hmac_sha384', 'hmac_sha512', 'aesxcbc'], 'description': 'The hashing algorithms used by this IPsec phase 2 entry. Note: Hash is ignored with GCM algorithms. SHA1 provides weak security and should be avoided.'}, 'pfsgroup': {'required': False, 'type': 'int', 'default': 14, 'choices': [0, 1, 2, 5, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32], 'description': 'The PFS key group this IPsec phase 2 entry should use. Note: Groups 1, 2, 5, 22, 23, and 24 provide weak security and should be avoided.'}, 'rekey_time': {'required': False, 'type': 'int', 'default': 3240, 'choices': [], 'description': 'The amount of time (in seconds) before an IKE SA establishes new keys.'}, 'rand_time': {'required': False, 'type': 'int', 'default': 360, 'choices': [], 'description': 'A random value up to this amount will be subtracted from the `rekey_time` and `reauth_time` to avoid simultaneous renegotiation.'}, 'lifetime': {'required': False, 'type': 'int', 'default': 3600, 'choices': [], 'description': 'The hard IKE SA lifetime (in seconds) after which the IKE SA will be expired.'}, 'pinghost': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The IP address to send an ICMP echo request to inside the tunnel. Can trigger initiation of a tunnel mode P2, but does not trigger initiation of a VTI mode P2.'}, 'keepalive': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': "Enables or disables checking this P2 and initiating if disconnected; does not send traffic inside the tunnel. This check ignores the P1 option 'Child SA Start Action' and works for both VTI and tunnel mode P2s. For IKEv2 without split connections, this only needs to be enabled on one P2."}},
+            "suboptions": {'ikeid': {'required': True, 'type': 'int', 'default': None, 'choices': [], 'description': 'The `ikeid` of the parent IPsec phase 1 entry this IPsec phase 2 entry belongs to.'}, 'descr': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'A description for this IPsec phase 2 entry.'}, 'disabled': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Disables this IPsec phase 2 entry.'}, 'mode': {'required': True, 'type': 'str', 'default': None, 'choices': ['tunnel', 'tunnel6', 'transport', 'vti'], 'description': 'The IPsec phase 2 mode this entry will use.'}, 'localid_type': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': "The local ID type to use for this phase 2 entry. Valid value options are: an existing interface, `address`, `network`. For interface values, the `:ip` modifier can be appended to the value to use the interface's IP address instead of its entire subnet."}, 'localid_address': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The local network IP component of this IPsec security association.'}, 'localid_netbits': {'required': True, 'type': 'int', 'default': None, 'choices': [], 'description': 'The subnet bits of the `localid_address` network.'}, 'natlocalid_type': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': "The NAT/BINAT translation type for this IPsec phase 2 entry. Leave as `null` if NAT/BINAT is not needed. Valid value options are: an existing interface, `address`, `network`. For interface values, the `:ip` modifier can be appended to the value to use the interface's IP address instead of its entire subnet."}, 'natlocalid_address': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The NAT/BINAT local network IP component of this IPsec security association.'}, 'natlocalid_netbits': {'required': True, 'type': 'int', 'default': None, 'choices': [], 'description': 'The subnet bits of the `natlocalid_address` network.'}, 'remoteid_type': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': "The remote ID type to use for this phase 2 entry. Valid value options are: `address`, `network`. For interface values, the `:ip` modifier can be appended to the value to use the interface's IP address instead of its entire subnet."}, 'remoteid_address': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The remote network IP component of this IPsec security association.'}, 'remoteid_netbits': {'required': True, 'type': 'int', 'default': None, 'choices': [], 'description': 'The subnet bits of the `remoteid_address` network.'}, 'protocol': {'required': False, 'type': 'str', 'default': 'esp', 'choices': ['esp', 'ah'], 'description': 'the IPsec phase 2 proposal protocol for this entry. Encapsulating Security Payload (`esp`) performs encryption and authentication, Authentication Header (`ah`) is authentication only.'}, 'encryption_algorithm_option': {'required': True, 'type': 'list', 'default': None, 'choices': [], 'description': 'The encryption algorithms to be used by this phase 2 entry.'}, 'hash_algorithm_option': {'required': True, 'type': 'list', 'default': None, 'choices': ['hmac_sha1', 'hmac_sha256', 'hmac_sha384', 'hmac_sha512', 'aesxcbc'], 'description': 'The hashing algorithms used by this IPsec phase 2 entry. Note: Hash is ignored with GCM algorithms. SHA1 provides weak security and should be avoided.', 'elements': 'str'}, 'pfsgroup': {'required': False, 'type': 'int', 'default': 14, 'choices': [0, 1, 2, 5, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32], 'description': 'The PFS key group this IPsec phase 2 entry should use. Note: Groups 1, 2, 5, 22, 23, and 24 provide weak security and should be avoided.'}, 'rekey_time': {'required': False, 'type': 'int', 'default': 3240, 'choices': [], 'description': 'The amount of time (in seconds) before an IKE SA establishes new keys.'}, 'rand_time': {'required': False, 'type': 'int', 'default': 360, 'choices': [], 'description': 'A random value up to this amount will be subtracted from the `rekey_time` and `reauth_time` to avoid simultaneous renegotiation.'}, 'lifetime': {'required': False, 'type': 'int', 'default': 3600, 'choices': [], 'description': 'The hard IKE SA lifetime (in seconds) after which the IKE SA will be expired.'}, 'pinghost': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The IP address to send an ICMP echo request to inside the tunnel. Can trigger initiation of a tunnel mode P2, but does not trigger initiation of a VTI mode P2.'}, 'keepalive': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': "Enables or disables checking this P2 and initiating if disconnected; does not send traffic inside the tunnel. This check ignores the P1 option 'Child SA Start Action' and works for both VTI and tunnel mode P2s. For IKEv2 without split connections, this only needs to be enabled on one P2."}},
         },
     }
 
@@ -493,15 +486,20 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
+    base_module = base.BaseModule('/api/v2/vpn/ipsec/phase2s', client)
     changed = True # TODO: determine if changes are needed by comparing existing objects to the provided list
     resp = base_module.replace_objects(
         data=module.params['objects'],
     )
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

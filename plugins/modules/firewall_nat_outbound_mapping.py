@@ -52,12 +52,9 @@ options:
   lookup_fields:
     type: list
     elements: str
-    required: false
-    default: null
+    required: true
     description: The list of fields to use when looking up existing resources. This
-      should be a list of field names that uniquely identify a resource. If not specified,
-      the module will attempt to use the 'id' field if it exists, or all fields marked
-      as 'unique' in the schema.
+      should be a list of field names that uniquely identify a resource.
   interface:
     required: true
     type: str
@@ -341,150 +338,125 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "state": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'present',
             "choices": ['present', 'absent'],
         },
         "lookup_fields": {
-            "type": list,
-            "required": False,
-            "default": None,
-            "choices": [],
+            "type": "list",
+            "required": True,
             "elements": "str",
-            "suboptions": {},
         },
         "interface": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "protocol": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
             "choices": ['tcp', 'udp', 'tcp/udp', 'icmp', 'esp', 'ah', 'gre', 'ipv6', 'igmp', 'pim', 'ospf'],
         },
         "disabled": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "nonat": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "nosync": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "source": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "source_port": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "destination": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "destination_port": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "target": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "target_subnet": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 128,
-            "choices": [],
         },
         "nat_port": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "static_nat_port": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "poolopts": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
             "choices": ['round-robin', 'round-robin sticky-address', 'random', 'random sticky-address', 'source-hash', 'bitmask'],
         },
         "source_hash_key": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '0x6f3f38a910783005876778e37577e881',
-            "choices": [],
         },
         "descr": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
     }
 
@@ -502,16 +474,21 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
-    changed, data = base_module.set_object_state(
+    base_module = base.BaseModule('/api/v2/firewall/nat/outbound/mapping', client)
+    changed, resp = base_module.set_object_state(
         state=module.params['state'],
         data=module.params,
         lookup_fields=module.params['lookup_fields']
     )
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

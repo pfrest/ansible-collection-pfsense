@@ -52,12 +52,9 @@ options:
   lookup_fields:
     type: list
     elements: str
-    required: false
-    default: null
+    required: true
     description: The list of fields to use when looking up existing resources. This
-      should be a list of field names that uniquely identify a resource. If not specified,
-      the module will attempt to use the 'id' field if it exists, or all fields marked
-      as 'unique' in the schema.
+      should be a list of field names that uniquely identify a resource.
   description:
     required: false
     type: str
@@ -228,10 +225,11 @@ options:
       certificate.
   data_ciphers:
     required: true
-    type: str
+    type: list
     default: null
     choices: []
     description: The encryption algorithms/ciphers allowed by this OpenVPN client.
+    elements: str
   data_ciphers_fallback:
     required: true
     type: str
@@ -270,7 +268,7 @@ options:
       this client and client hosts.
   remote_network:
     required: false
-    type: str
+    type: list
     default: []
     choices: []
     description: IPv4 networks that will be routed through the tunnel, so that a site-to-site
@@ -278,9 +276,10 @@ options:
       as a list of one or more CIDR ranges or host/network type aliases. If this is
       a site-to-site VPN, enter the remote LAN/s here. May be left empty for non site-to-site
       VPN.
+    elements: str
   remote_networkv6:
     required: false
-    type: str
+    type: list
     default: []
     choices: []
     description: IPv6 networks that will be routed through the tunnel, so that a site-to-site
@@ -288,6 +287,7 @@ options:
       as a list of one or more CIDR ranges or host/network type aliases. If this is
       a site-to-site VPN, enter the remote LAN/s here. May be left empty for non site-to-site
       VPN.
+    elements: str
   use_shaper:
     required: false
     type: int
@@ -393,10 +393,11 @@ options:
       a timeout and the configured `ping_action` is performed.
   custom_options:
     required: false
-    type: str
+    type: list
     default: []
     choices: []
     description: Additional options to add to the OpenVPN client configuration.
+    elements: str
   udp_fast_io:
     required: false
     type: bool
@@ -479,7 +480,8 @@ EXAMPLES = '''
     proxy_passwd: example
     tls_type: auth
     caref: example
-    data_ciphers: example
+    data_ciphers: &id001
+    - example
     data_ciphers_fallback: example
     digest: example
 - name: Delete Open VPN Client
@@ -498,7 +500,7 @@ EXAMPLES = '''
     proxy_passwd: example
     tls_type: auth
     caref: example
-    data_ciphers: example
+    data_ciphers: *id001
     data_ciphers_fallback: example
     digest: example
 
@@ -644,8 +646,9 @@ data:
       returned: always
     data_ciphers:
       description: The encryption algorithms/ciphers allowed by this OpenVPN client.
-      type: str
+      type: list
       returned: always
+      elements: str
     data_ciphers_fallback:
       description: The fallback encryption algorithm/cipher used for data channel
         packets when communicating with clients that do not support data encryption
@@ -678,16 +681,18 @@ data:
         tables. Expressed as a list of one or more CIDR ranges or host/network type
         aliases. If this is a site-to-site VPN, enter the remote LAN/s here. May be
         left empty for non site-to-site VPN.
-      type: str
+      type: list
       returned: always
+      elements: str
     remote_networkv6:
       description: IPv6 networks that will be routed through the tunnel, so that a
         site-to-site VPN can be established without manually changing the routing
         tables. Expressed as a list of one or more CIDR ranges or host/network type
         aliases. If this is a site-to-site VPN, enter the remote LAN/s here. May be
         left empty for non site-to-site VPN.
-      type: str
+      type: list
       returned: always
+      elements: str
     use_shaper:
       description: Maximum outgoing bandwidth (in bytes per second) for this tunnel.
         Use `null` no limit.
@@ -756,8 +761,9 @@ data:
       returned: always
     custom_options:
       description: Additional options to add to the OpenVPN client configuration.
-      type: str
+      type: list
       returned: always
+      elements: str
     udp_fast_io:
       description: Enables or disables fast I/O operations with UDP writes to tun/tap
         (Experimental).
@@ -788,351 +794,308 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "state": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'present',
             "choices": ['present', 'absent'],
         },
         "lookup_fields": {
-            "type": list,
-            "required": False,
-            "default": None,
-            "choices": [],
+            "type": "list",
+            "required": True,
             "elements": "str",
-            "suboptions": {},
         },
         "description": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "disable": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "mode": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
             "choices": ['p2p_tls'],
         },
         "dev_mode": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
             "choices": ['tun', 'tap'],
         },
         "protocol": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
             "choices": ['UDP4', 'UDP6', 'UDP', 'TCP4', 'TCP6', 'TCP'],
         },
         "interface": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "server_addr": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "server_port": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "local_port": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "proxy_addr": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "proxy_port": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "proxy_authtype": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'none',
             "choices": ['none', 'basic', 'ntlm'],
         },
         "proxy_user": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "proxy_passwd": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "auth_user": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "auth_pass": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "auth_retry_none": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "tls": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "tls_type": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
             "choices": ['auth', 'crypt'],
         },
         "tlsauth_keydir": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'default',
             "choices": ['default', '0', '1', '2'],
         },
         "caref": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "certref": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "data_ciphers": {
-            "type": str,
+            "type": "list",
             "required": True,
             "default": None,
-            "choices": [],
+            "elements": "str",
         },
         "data_ciphers_fallback": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "digest": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "remote_cert_tls": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "tunnel_network": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "tunnel_networkv6": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "remote_network": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
+            "elements": "str",
         },
         "remote_networkv6": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
+            "elements": "str",
         },
         "use_shaper": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "allow_compression": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'no',
             "choices": ['no', 'yes', 'asym'],
         },
         "passtos": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "route_no_pull": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "route_no_exec": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "dns_add": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "topology": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'subnet',
             "choices": ['subnet', 'net30'],
         },
         "inactive_seconds": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 300,
-            "choices": [],
         },
         "ping_method": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'keepalive',
             "choices": ['keepalive', 'ping'],
         },
         "keepalive_interval": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 10,
-            "choices": [],
         },
         "keepalive_timeout": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 60,
-            "choices": [],
         },
         "ping_seconds": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 10,
-            "choices": [],
         },
         "ping_action": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'ping_restart',
             "choices": ['ping_restart', 'ping_exit'],
         },
         "ping_action_seconds": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 60,
-            "choices": [],
         },
         "custom_options": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
+            "elements": "str",
         },
         "udp_fast_io": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "exit_notify": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'none',
             "choices": ['1', '2', '3', '4', '5', 'none'],
         },
         "sndrcvbuf": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": None,
             "choices": [65536, 131072, 262144, 524288, 1048576, 2097152],
         },
         "create_gw": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'both',
             "choices": ['both', 'v4only', 'v6only'],
         },
         "verbosity_level": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 1,
             "choices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
@@ -1153,16 +1116,21 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
-    changed, data = base_module.set_object_state(
+    base_module = base.BaseModule('/api/v2/vpn/openvpn/client', client)
+    changed, resp = base_module.set_object_state(
         state=module.params['state'],
         data=module.params,
         lookup_fields=module.params['lookup_fields']
     )
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

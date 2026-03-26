@@ -52,12 +52,9 @@ options:
   lookup_fields:
     type: list
     elements: str
-    required: false
-    default: null
+    required: true
     description: The list of fields to use when looking up existing resources. This
-      should be a list of field names that uniquely identify a resource. If not specified,
-      the module will attempt to use the 'id' field if it exists, or all fields marked
-      as 'unique' in the schema.
+      should be a list of field names that uniquely identify a resource.
   action:
     required: true
     type: str
@@ -332,144 +329,119 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "state": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'present',
             "choices": ['present', 'absent'],
         },
         "lookup_fields": {
-            "type": list,
-            "required": False,
-            "default": None,
-            "choices": [],
+            "type": "list",
+            "required": True,
             "elements": "str",
-            "suboptions": {},
         },
         "action": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
             "choices": ['use_backend', 'custom', 'http-request_allow', 'http-request_deny', 'http-request_tarpit', 'http-request_auth', 'http-request_redirect', 'http-request_lua', 'http-request_use-service', 'http-request_add-header', 'http-request_set-header', 'http-request_del-header', 'http-request_replace-header', 'http-request_replace-path', 'http-request_replace-value', 'http-request_set-method', 'http-request_set-path', 'http-request_set-query', 'http-request_set-uri', 'http-response_allow', 'http-response_deny', 'http-response_lua', 'http-response_add-header', 'http-response_set-header', 'http-response_del-header', 'http-response_replace-header', 'http-response_replace-value', 'http-response_set-status', 'http-after-response_add-header', 'http-after-response_set-header', 'http-after-response_del-header', 'http-after-response_replace-header', 'http-after-response_replace-value', 'http-after-response_set-status', 'tcp-request_connection_accept', 'tcp-request_connection_reject', 'tcp-request_content_accept', 'tcp-request_content_reject', 'tcp-request_content_lua', 'tcp-request_content_use-service', 'tcp-response_content_accept', 'tcp-response_content_close', 'tcp-response_content_reject', 'tcp-response_content_lua'],
         },
         "acl": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "backend": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "customaction": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "deny_status": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "realm": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "rule": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "lua_function": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "name": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "fmt": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "find": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "replace": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "path": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "status": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "reason": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
     }
 
@@ -487,16 +459,21 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
-    changed, data = base_module.set_object_state(
+    base_module = base.BaseModule('/api/v2/services/haproxy/frontend/action', client)
+    changed, resp = base_module.set_object_state(
         state=module.params['state'],
         data=module.params,
         lookup_fields=module.params['lookup_fields']
     )
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

@@ -127,19 +127,21 @@ options:
       data will be included in API responses.
   override_sensitive_fields:
     required: false
-    type: str
+    type: list
     default: []
     choices: []
     description: Specifies a list of fields (formatted as ModelName:FieldName) that
       should have their sensitive attribute overridden. Fields selected here will
       not be considered sensitive and will be included in API responses regardless
       of the `expose_sensitive_fields` setting.
+    elements: str
   allowed_interfaces:
     required: false
-    type: str
+    type: list
     default: []
     choices: []
     description: Sets the interfaces allowed to accept incoming API calls.
+    elements: str
   represent_interfaces_as:
     required: false
     type: str
@@ -155,11 +157,12 @@ options:
       igb1, bxe3).
   auth_methods:
     required: false
-    type: str
+    type: list
     default:
     - BasicAuth
     choices: []
     description: Sets the API authentication methods allowed to authenticate API calls.
+    elements: str
   jwt_exp:
     required: false
     type: int
@@ -186,10 +189,11 @@ options:
       attacks.
   ha_sync_hosts:
     required: false
-    type: str
+    type: list
     default: []
     choices: []
     description: Set a list of IP addresses or hostnames to sync API settings to.
+    elements: str
   ha_sync_username:
     required: false
     type: str
@@ -306,12 +310,14 @@ data:
         should have their sensitive attribute overridden. Fields selected here will
         not be considered sensitive and will be included in API responses regardless
         of the `expose_sensitive_fields` setting.
-      type: str
+      type: list
       returned: always
+      elements: str
     allowed_interfaces:
       description: Sets the interfaces allowed to accept incoming API calls.
-      type: str
+      type: list
       returned: always
+      elements: str
     represent_interfaces_as:
       description: Specifies how the API should represent interface names. Use `descr`
         to represent interface objects by their description name, use `id` to represent
@@ -323,8 +329,9 @@ data:
     auth_methods:
       description: Sets the API authentication methods allowed to authenticate API
         calls.
-      type: str
+      type: list
       returned: always
+      elements: str
     jwt_exp:
       description: Sets the amount of time (in seconds) JWTs are valid for.
       type: int
@@ -345,8 +352,9 @@ data:
       returned: always
     ha_sync_hosts:
       description: Set a list of IP addresses or hostnames to sync API settings to.
-      type: str
+      type: list
       returned: always
+      elements: str
     ha_sync_username:
       description: Sets the username to use when authenticating for HA sync processes.
         This user must be the present on all hosts defined in `ha_sync_hosts`.
@@ -365,154 +373,133 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "enabled": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "read_only": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "keep_backup": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "login_protection": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "log_successful_auth": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "log_level": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'LOG_WARNING',
             "choices": ['LOG_DEBUG', 'LOG_INFO', 'LOG_NOTICE', 'LOG_WARNING', 'LOG_ERR', 'LOG_CRIT', 'LOG_ALERT', 'LOG_EMERG'],
         },
         "allow_pre_releases": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "hateoas": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "expose_sensitive_fields": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "override_sensitive_fields": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
+            "elements": "str",
         },
         "allowed_interfaces": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
+            "elements": "str",
         },
         "represent_interfaces_as": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'descr',
             "choices": ['descr', 'id', 'if'],
         },
         "auth_methods": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": ['BasicAuth'],
-            "choices": [],
+            "elements": "str",
         },
         "jwt_exp": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 3600,
-            "choices": [],
         },
         "ha_sync": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "ha_sync_validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "ha_sync_hosts": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
+            "elements": "str",
         },
         "ha_sync_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "ha_sync_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
     }
 
@@ -530,11 +517,16 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
+    base_module = base.BaseModule('/api/v2/system/restapi/settings', client)
+
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
 
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

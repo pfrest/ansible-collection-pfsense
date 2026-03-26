@@ -75,12 +75,13 @@ options:
           entry.
       users:
         required: false
-        type: str
+        type: list
         default: []
         choices: []
         description: The users that this entry applies to. Only users in this list
           will be affected by this entry. Leave empty if this entry should apply to
           all users.
+        elements: str
       sched:
         required: false
         type: str
@@ -159,8 +160,9 @@ data:
     users:
       description: The users that this entry applies to. Only users in this list will
         be affected by this entry. Leave empty if this entry should apply to all users.
-      type: str
+      type: list
       returned: always
+      elements: str
     sched:
       description: The firewall schedule that this entry will use. This entry will
         only be active during the times specified in the schedule. Leave empty to
@@ -178,48 +180,38 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "objects": {
-            "type": list,
+            "type": "list",
             "required": True,
-            "default": None,
-            "choices": [],
             "elements": "dict",
-            "suboptions": {'type': {'required': False, 'type': 'str', 'default': 'allow', 'choices': ['allow', 'deny'], 'description': 'The type of access this entry provides. "allow" entries permit access to the REST API from the specified networks. "deny" entries block access to the REST API from the specified networks.'}, 'weight': {'required': False, 'type': 'int', 'default': 1, 'choices': [], 'description': 'The weight of this entry. Entries with lower weights are evaluated first. If multiple entries match a request, the entry with the lowest weight will be applied.'}, 'network': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The network (in CIDR notation) that this entry applies to. Clients interacting with the REST API from this network will be affected by this entry.'}, 'users': {'required': False, 'type': 'str', 'default': [], 'choices': [], 'description': 'The users that this entry applies to. Only users in this list will be affected by this entry. Leave empty if this entry should apply to all users.'}, 'sched': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The firewall schedule that this entry will use. This entry will only be active during the times specified in the schedule. Leave empty to apply this entry at all times.'}, 'descr': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'A description of this access list entry. This field is optional.'}},
+            "suboptions": {'type': {'required': False, 'type': 'str', 'default': 'allow', 'choices': ['allow', 'deny'], 'description': 'The type of access this entry provides. "allow" entries permit access to the REST API from the specified networks. "deny" entries block access to the REST API from the specified networks.'}, 'weight': {'required': False, 'type': 'int', 'default': 1, 'choices': [], 'description': 'The weight of this entry. Entries with lower weights are evaluated first. If multiple entries match a request, the entry with the lowest weight will be applied.'}, 'network': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The network (in CIDR notation) that this entry applies to. Clients interacting with the REST API from this network will be affected by this entry.'}, 'users': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The users that this entry applies to. Only users in this list will be affected by this entry. Leave empty if this entry should apply to all users.', 'elements': 'str'}, 'sched': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The firewall schedule that this entry will use. This entry will only be active during the times specified in the schedule. Leave empty to apply this entry at all times.'}, 'descr': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'A description of this access list entry. This field is optional.'}},
         },
     }
 
@@ -237,15 +229,20 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
+    base_module = base.BaseModule('/api/v2/system/restapi/access_list', client)
     changed = True # TODO: determine if changes are needed by comparing existing objects to the provided list
     resp = base_module.replace_objects(
         data=module.params['objects'],
     )
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

@@ -126,8 +126,9 @@ data:
       returned: always
     pkcs11providers:
       description: The client local path to the PKCS#11 provider(s) (DLL, module)
-      type: str
+      type: list
       returned: always
+      elements: str
     pkcs11id:
       description: The object's ID on the PKCS#11 device.
       type: str
@@ -190,46 +191,36 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "lookup_params": {
-            "type": dict,
+            "type": "dict",
             "required": False,
-            "default": None,
-            "choices": [],
         },
     }
 
@@ -247,13 +238,18 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
+    base_module = base.BaseModule('/api/v2/vpn/openvpn/client_export/config', client)
     changed = False
     resp = base_module.lookup_object(lookup_params=module.params['lookup_params'])
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

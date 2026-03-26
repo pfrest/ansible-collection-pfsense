@@ -52,12 +52,9 @@ options:
   lookup_fields:
     type: list
     elements: str
-    required: false
-    default: null
+    required: true
     description: The list of fields to use when looking up existing resources. This
-      should be a list of field names that uniquely identify a resource. If not specified,
-      the module will attempt to use the 'id' field if it exists, or all fields marked
-      as 'unique' in the schema.
+      should be a list of field names that uniquely identify a resource.
   name:
     required: true
     type: str
@@ -288,10 +285,11 @@ options:
       cookies.
   haproxy_cookie_domains:
     required: false
-    type: str
+    type: list
     default: []
     choices: []
     description: The domains to set the cookies for.
+    elements: str
   haproxy_cookie_dynamic_cookie_key:
     required: false
     type: str
@@ -377,11 +375,12 @@ options:
     description: The statistics URL for this backend.
   stats_scope:
     required: false
-    type: str
+    type: list
     default: []
     choices: []
     description: The frontends and backends stats to be shown, leave empty to show
       all.
+    elements: str
   stats_realm:
     required: false
     type: str
@@ -786,8 +785,9 @@ data:
       returned: always
     haproxy_cookie_domains:
       description: The domains to set the cookies for.
-      type: str
+      type: list
       returned: always
+      elements: str
     haproxy_cookie_dynamic_cookie_key:
       description: The dynamic cookie secret key. This is will be used to generate
         dynamic cookies for this backend.
@@ -840,8 +840,9 @@ data:
     stats_scope:
       description: The frontends and backends stats to be shown, leave empty to show
         all.
-      type: str
+      type: list
       returned: always
+      elements: str
     stats_realm:
       description: The realm that is shown when authentication is requested by HAProxy.
       type: str
@@ -921,396 +922,336 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "state": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'present',
             "choices": ['present', 'absent'],
         },
         "lookup_fields": {
-            "type": list,
-            "required": False,
-            "default": None,
-            "choices": [],
+            "type": "list",
+            "required": True,
             "elements": "str",
-            "suboptions": {},
         },
         "name": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "servers": {
-            "type": list,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
         },
         "balance": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
             "choices": ['', 'roundrobin', 'static-rr', 'leastconn', 'source', 'uri'],
         },
         "balance_urilen": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "balance_uridepth": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "balance_uriwhole": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "acls": {
-            "type": list,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
         },
         "actions": {
-            "type": list,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
         },
         "connection_timeout": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 30000,
-            "choices": [],
         },
         "server_timeout": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 30000,
-            "choices": [],
         },
         "retries": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "check_type": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'none',
             "choices": ['none', 'Basic', 'HTTP', 'LDAP', 'MySQL', 'PostgreSQL', 'Redis', 'SMTP', 'ESMTP', 'SSL'],
         },
         "checkinter": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "log_health_checks": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "httpcheck_method": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'OPTIONS',
             "choices": ['OPTIONS', 'HEAD', 'GET', 'POST', 'PUT', 'DELETE', 'TRACE'],
         },
         "monitor_uri": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '/',
-            "choices": [],
         },
         "monitor_httpversion": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'HTTP/1.0',
-            "choices": [],
         },
         "monitor_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "monitor_domain": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "agent_checks": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "agent_port": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "agent_inter": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 2000,
-            "choices": [],
         },
         "persist_cookie_enabled": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "persist_cookie_name": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "persist_cookie_mode": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'passive',
             "choices": ['passive', 'passive-silent', 'reset', 'set', 'set-silent', 'insert-only', 'insert-only-silent', 'session-prefix', 'passive-session-prefix'],
         },
         "persist_cookie_cachable": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "persist_cookie_postonly": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "persist_cookie_httponly": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "persist_cookie_secure": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "haproxy_cookie_maxidle": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "haproxy_cookie_maxlife": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "haproxy_cookie_domains": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
+            "elements": "str",
         },
         "haproxy_cookie_dynamic_cookie_key": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "persist_sticky_type": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'none',
             "choices": ['none', 'stick_sslsessionid', 'stick_sourceipv4', 'stick_sourceipv6', 'stick_cookie_value', 'stick_rdp_cookie'],
         },
         "persist_stick_expire": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "persist_stick_tablesize": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "persist_stick_cookiename": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "persist_stick_length": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "email_level": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
             "choices": ['', 'dontlog', 'emerg', 'alert', 'crit', 'err', 'warning', 'notice', 'info', 'debug'],
         },
         "email_to": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "stats_enabled": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "stats_uri": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "stats_scope": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
+            "elements": "str",
         },
         "stats_realm": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "stats_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "stats_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "stats_admin": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "stats_node": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "stats_desc": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "stats_refresh": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 10,
-            "choices": [],
         },
         "strict_transport_security": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "errorfiles": {
-            "type": list,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
         },
         "cookie_attribute_secure": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "advanced": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "advanced_backend": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "transparent_clientip": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "transparent_interface": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
     }
 
@@ -1328,16 +1269,21 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
-    changed, data = base_module.set_object_state(
+    base_module = base.BaseModule('/api/v2/services/haproxy/backend', client)
+    changed, resp = base_module.set_object_state(
         state=module.params['state'],
         data=module.params,
         lookup_fields=module.params['lookup_fields']
     )
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

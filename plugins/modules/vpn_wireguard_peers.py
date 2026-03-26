@@ -204,46 +204,36 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "objects": {
-            "type": list,
+            "type": "list",
             "required": True,
-            "default": None,
-            "choices": [],
             "elements": "dict",
             "suboptions": {'enabled': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables this WireGuard peer.'}, 'tun': {'required': False, 'type': 'str', 'default': 'unassigned', 'choices': [], 'description': 'The WireGuard tunnel for this peer.'}, 'endpoint': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The IP address or hostname of the remote peer. Set to `null` to make this a dynamic endpoint.'}, 'port': {'required': False, 'type': 'str', 'default': '51820', 'choices': [], 'description': 'The port used by the remote peer. Valid options are: a TCP/UDP port number'}, 'descr': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The description for this peer.'}, 'persistentkeepalive': {'required': False, 'type': 'int', 'default': None, 'choices': [], 'description': 'The interval (in seconds) for Keep Alive packets sent to this peer. Set to `null` to disable.'}, 'publickey': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The public key for this peer.'}, 'presharedkey': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The pre-shared key for this tunnel.'}, 'allowedips': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The allowed IP/subnets for this WireGuard peer.'}},
         },
@@ -263,15 +253,20 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
+    base_module = base.BaseModule('/api/v2/vpn/wireguard/peers', client)
     changed = True # TODO: determine if changes are needed by comparing existing objects to the provided list
     resp = base_module.replace_objects(
         data=module.params['objects'],
     )
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

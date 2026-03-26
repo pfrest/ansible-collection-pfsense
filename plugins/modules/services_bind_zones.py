@@ -77,10 +77,11 @@ options:
         description: The type of this BIND zone.
       view:
         required: false
-        type: str
+        type: list
         default: []
         choices: []
         description: The views this BIND zone belongs to.
+        elements: str
       reversev4:
         required: false
         type: bool
@@ -126,10 +127,11 @@ options:
         description: The IP address of the slave server for this BIND zone.
       forwarders:
         required: true
-        type: str
+        type: list
         default: null
         choices: []
         description: The forwarders for this BIND zone.
+        elements: str
       ttl:
         required: false
         type: int
@@ -206,23 +208,26 @@ options:
         description: The update policy for this BIND zone.
       allowupdate:
         required: false
-        type: str
+        type: list
         default: []
         choices: []
         description: The access lists that are allowed to submit dynamic updates for
           'master' zones (e.g. dynamic DNS).
+        elements: str
       allowtransfer:
         required: false
-        type: str
+        type: list
         default: []
         choices: []
         description: The access lists that are allowed to transfer this BIND zone.
+        elements: str
       allowquery:
         required: false
-        type: str
+        type: list
         default: []
         choices: []
         description: The access lists that are allowed to query this BIND zone.
+        elements: str
       regdhcpstatic:
         required: false
         type: bool
@@ -257,7 +262,8 @@ EXAMPLES = '''
     api_password: pfsense
     objects:
     - name: example
-      forwarders: example
+      forwarders:
+      - example
       baseip: example
       nameserver: example
       mail: example
@@ -308,8 +314,9 @@ data:
       returned: always
     view:
       description: The views this BIND zone belongs to.
-      type: str
+      type: list
       returned: always
+      elements: str
     reversev4:
       description: Enable reverse DNS for this BIND zone.
       type: bool
@@ -341,8 +348,9 @@ data:
       returned: always
     forwarders:
       description: The forwarders for this BIND zone.
-      type: str
+      type: list
       returned: always
+      elements: str
     ttl:
       description: The default TTL interval (in seconds) for records within this BIND
         zone without a specific TTL.
@@ -398,16 +406,19 @@ data:
     allowupdate:
       description: The access lists that are allowed to submit dynamic updates for
         'master' zones (e.g. dynamic DNS).
-      type: str
+      type: list
       returned: always
+      elements: str
     allowtransfer:
       description: The access lists that are allowed to transfer this BIND zone.
-      type: str
+      type: list
       returned: always
+      elements: str
     allowquery:
       description: The access lists that are allowed to query this BIND zone.
-      type: str
+      type: list
       returned: always
+      elements: str
     regdhcpstatic:
       description: Register DHCP static mappings as records in this BIND zone.
       type: bool
@@ -446,48 +457,38 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "objects": {
-            "type": list,
+            "type": "list",
             "required": True,
-            "default": None,
-            "choices": [],
             "elements": "dict",
-            "suboptions": {'disabled': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Disable this BIND zone.'}, 'name': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The name of this BIND zone.'}, 'description': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'A description for this BIND zone.'}, 'type': {'required': False, 'type': 'str', 'default': 'master', 'choices': ['master', 'slave', 'forward', 'redirect'], 'description': 'The type of this BIND zone.'}, 'view': {'required': False, 'type': 'str', 'default': [], 'choices': [], 'description': 'The views this BIND zone belongs to.'}, 'reversev4': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enable reverse DNS for this BIND zone.'}, 'reversev6': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enable reverse IPv6 DNS for this BIND zone.'}, 'rpz': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enable this zone as part of a response policy.'}, 'custom': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'Custom BIND options for this BIND zone.'}, 'dnssec': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enable DNSSEC for this BIND zone.'}, 'backupkeys': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enable backing up DNSSEC keys in the XML configuration for this BIND zone.'}, 'slaveip': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The IP address of the slave server for this BIND zone.'}, 'forwarders': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The forwarders for this BIND zone.'}, 'ttl': {'required': False, 'type': 'int', 'default': None, 'choices': [], 'description': 'The default TTL interval (in seconds) for records within this BIND zone without a specific TTL.'}, 'baseip': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The IP address of the base domain for this zone. This sets an A record for the base domain.'}, 'nameserver': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The SOA nameserver for this zone.'}, 'mail': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The SOA email address (RNAME) for this zone. This must be in an FQDN format.'}, 'serial': {'required': True, 'type': 'int', 'default': None, 'choices': [], 'description': 'The SOA serial number for this zone.'}, 'refresh': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The SOA refresh interval for this zone. TTL-style time-unit suffixes are supported (e.g. 1h, 1d, 1w), otherwise time in seconds is assumed.'}, 'retry': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The SOA retry interval for this zone. TTL-style time-unit suffixes are supported (e.g. 1h, 1d, 1w), otherwise time in seconds is assumed.'}, 'expire': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The SOA expiry interval for this zone. TTL-style time-unit suffixes are supported (e.g. 1h, 1d, 1w), otherwise time in seconds is assumed.'}, 'minimum': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The SOA minimum TTL interval (in seconds) for this zone. This is also referred to as the negative TTL. TTL-style time-unit suffixes are supported (e.g. 1h, 1d, 1w), otherwise time in seconds is assumed.'}, 'enable_updatepolicy': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enable a specific dynamic update policy for this BIND zone.'}, 'updatepolicy': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The update policy for this BIND zone.'}, 'allowupdate': {'required': False, 'type': 'str', 'default': [], 'choices': [], 'description': "The access lists that are allowed to submit dynamic updates for 'master' zones (e.g. dynamic DNS)."}, 'allowtransfer': {'required': False, 'type': 'str', 'default': [], 'choices': [], 'description': 'The access lists that are allowed to transfer this BIND zone.'}, 'allowquery': {'required': False, 'type': 'str', 'default': [], 'choices': [], 'description': 'The access lists that are allowed to query this BIND zone.'}, 'regdhcpstatic': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Register DHCP static mappings as records in this BIND zone.'}, 'customzonerecords': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'Custom records for this BIND zone.'}, 'records': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The records for this BIND zone.'}},
+            "suboptions": {'disabled': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Disable this BIND zone.'}, 'name': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The name of this BIND zone.'}, 'description': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'A description for this BIND zone.'}, 'type': {'required': False, 'type': 'str', 'default': 'master', 'choices': ['master', 'slave', 'forward', 'redirect'], 'description': 'The type of this BIND zone.'}, 'view': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The views this BIND zone belongs to.', 'elements': 'str'}, 'reversev4': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enable reverse DNS for this BIND zone.'}, 'reversev6': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enable reverse IPv6 DNS for this BIND zone.'}, 'rpz': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enable this zone as part of a response policy.'}, 'custom': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'Custom BIND options for this BIND zone.'}, 'dnssec': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enable DNSSEC for this BIND zone.'}, 'backupkeys': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enable backing up DNSSEC keys in the XML configuration for this BIND zone.'}, 'slaveip': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The IP address of the slave server for this BIND zone.'}, 'forwarders': {'required': True, 'type': 'list', 'default': None, 'choices': [], 'description': 'The forwarders for this BIND zone.', 'elements': 'str'}, 'ttl': {'required': False, 'type': 'int', 'default': None, 'choices': [], 'description': 'The default TTL interval (in seconds) for records within this BIND zone without a specific TTL.'}, 'baseip': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The IP address of the base domain for this zone. This sets an A record for the base domain.'}, 'nameserver': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The SOA nameserver for this zone.'}, 'mail': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The SOA email address (RNAME) for this zone. This must be in an FQDN format.'}, 'serial': {'required': True, 'type': 'int', 'default': None, 'choices': [], 'description': 'The SOA serial number for this zone.'}, 'refresh': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The SOA refresh interval for this zone. TTL-style time-unit suffixes are supported (e.g. 1h, 1d, 1w), otherwise time in seconds is assumed.'}, 'retry': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The SOA retry interval for this zone. TTL-style time-unit suffixes are supported (e.g. 1h, 1d, 1w), otherwise time in seconds is assumed.'}, 'expire': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The SOA expiry interval for this zone. TTL-style time-unit suffixes are supported (e.g. 1h, 1d, 1w), otherwise time in seconds is assumed.'}, 'minimum': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The SOA minimum TTL interval (in seconds) for this zone. This is also referred to as the negative TTL. TTL-style time-unit suffixes are supported (e.g. 1h, 1d, 1w), otherwise time in seconds is assumed.'}, 'enable_updatepolicy': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enable a specific dynamic update policy for this BIND zone.'}, 'updatepolicy': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The update policy for this BIND zone.'}, 'allowupdate': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': "The access lists that are allowed to submit dynamic updates for 'master' zones (e.g. dynamic DNS).", 'elements': 'str'}, 'allowtransfer': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The access lists that are allowed to transfer this BIND zone.', 'elements': 'str'}, 'allowquery': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The access lists that are allowed to query this BIND zone.', 'elements': 'str'}, 'regdhcpstatic': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Register DHCP static mappings as records in this BIND zone.'}, 'customzonerecords': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'Custom records for this BIND zone.'}, 'records': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The records for this BIND zone.'}},
         },
     }
 
@@ -505,15 +506,20 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
+    base_module = base.BaseModule('/api/v2/services/bind/zones', client)
     changed = True # TODO: determine if changes are needed by comparing existing objects to the provided list
     resp = base_module.replace_objects(
         data=module.params['objects'],
     )
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

@@ -52,12 +52,9 @@ options:
   lookup_fields:
     type: list
     elements: str
-    required: false
-    default: null
+    required: true
     description: The list of fields to use when looking up existing resources. This
-      should be a list of field names that uniquely identify a resource. If not specified,
-      the module will attempt to use the 'id' field if it exists, or all fields marked
-      as 'unique' in the schema.
+      should be a list of field names that uniquely identify a resource.
   name:
     required: true
     type: str
@@ -72,10 +69,11 @@ options:
     description: The password of this local user.
   priv:
     required: false
-    type: str
+    type: list
     default: []
     choices: []
     description: The privileges assigned to this local user.
+    elements: str
   disabled:
     required: false
     type: bool
@@ -97,11 +95,12 @@ options:
       string for no expiration
   cert:
     required: false
-    type: str
+    type: list
     default: []
     choices: []
     description: The user certificates to assign this user. Items must be existing
       certificate `refid`s.
+    elements: str
   authorizedkeys:
     required: false
     type: str
@@ -181,8 +180,9 @@ data:
       returned: always
     priv:
       description: The privileges assigned to this local user.
-      type: str
+      type: list
       returned: always
+      elements: str
     disabled:
       description: Disable this local user.
       type: bool
@@ -199,8 +199,9 @@ data:
     cert:
       description: The user certificates to assign this user. Items must be existing
         certificate `refid`s.
-      type: str
+      type: list
       returned: always
+      elements: str
     authorizedkeys:
       description: The SSH authorized keys to assign this user.
       type: str
@@ -216,108 +217,90 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "state": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'present',
             "choices": ['present', 'absent'],
         },
         "lookup_fields": {
-            "type": list,
-            "required": False,
-            "default": None,
-            "choices": [],
+            "type": "list",
+            "required": True,
             "elements": "str",
-            "suboptions": {},
         },
         "name": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "password": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "priv": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
+            "elements": "str",
         },
         "disabled": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "descr": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "expires": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "cert": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
+            "elements": "str",
         },
         "authorizedkeys": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "ipsecpsk": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
     }
 
@@ -335,16 +318,21 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
-    changed, data = base_module.set_object_state(
+    base_module = base.BaseModule('/api/v2/user', client)
+    changed, resp = base_module.set_object_state(
         state=module.params['state'],
         data=module.params,
         lookup_fields=module.params['lookup_fields']
     )
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

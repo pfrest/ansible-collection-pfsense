@@ -309,11 +309,9 @@ def get_module_options_for_resource_module(endpoint_url: str) -> dict:
         "lookup_fields": {
             "type": "list",
             "elements": "str",
-            "required": False,
-            "default": None,
+            "required": True,
             "description": "The list of fields to use when looking up existing resources. This should be a list of "
-                           "field names that uniquely identify a resource. If not specified, the module will attempt "
-                           "to use the 'id' field if it exists, or all fields marked as 'unique' in the schema."
+                           "field names that uniquely identify a resource."
         },
         **get_module_options_from_fields(endpoint_url)
     }
@@ -339,13 +337,20 @@ def get_module_options_from_fields(endpoint_url: str) -> dict:
         descr = field_schema.get("help_text", "")
         descr = " ".join(filter(None, descr.split())).replace("\n", " ")
 
+        base_type = schema_type_to_ansible_type(field_schema.get("type", "str"))
+
         opts[field_name] = {
             "required": field_schema.get("required", False),
-            "type": schema_type_to_ansible_type(field_schema.get("type", "str")),
+            "type": base_type,
             "default": field_schema.get("default", None),
             "choices": field_schema.get("choices", None),
             "description": descr
         }
+
+        # If the field is 'many' enabled and not already a list type, wrap it as a list
+        if field_schema.get("many", False) and base_type != "list":
+            opts[field_name]["type"] = "list"
+            opts[field_name]["elements"] = base_type
 
     return opts
 
@@ -471,6 +476,12 @@ def get_returns_contains_for_model(model_class: str, visited: set = None) -> dic
             "returned": "always",
         }
 
+        # If the field is 'many' enabled and not already a list type, wrap it as a list
+        base_returns_type = schema_type_to_returns_type(field_schema.get("type", "string"))
+        if field_schema.get("many", False) and base_returns_type != "list":
+            field_entry["type"] = "list"
+            field_entry["elements"] = base_returns_type
+
         # Recursively handle nested model fields
         nested_model = field_schema.get("nested_model_class")
         if nested_model:
@@ -495,10 +506,12 @@ def get_example_value_for_field(field_name: str, field_schema: dict):
     Returns:
         A representative example value for the field.
     """
+    is_many = field_schema.get("many", False)
+
     # Use first available choice for constrained fields
     choices = field_schema.get("choices") or []
     if choices:
-        return choices[0]
+        return [choices[0]] if is_many else choices[0]
 
     # Use the default value if it is meaningful
     default = field_schema.get("default")
@@ -514,7 +527,13 @@ def get_example_value_for_field(field_name: str, field_schema: dict):
         "boolean": False,
         "array": [],
     }
-    return placeholders.get(field_type, "example")
+    value = placeholders.get(field_type, "example")
+
+    # Wrap in a list for many-enabled fields that aren't already a list type
+    if is_many and field_type != "array":
+        return [value]
+
+    return value
 
 
 def generate_module_returns(endpoint_url: str, module_type: str) -> dict:
@@ -690,8 +709,37 @@ def generate_module_documentation(endpoint_url: str, module_type: str) -> dict:
         ]
     }
 
+def schema_to_dict_file(schema_json: str) -> dict:
+    """
+    Converts the REST API's native schema from a JSON string intto a Python dictionary
+    and embeds it into module_utils/schema.py as variable to be consumed by modules.
+
+    Args:
+        schema_json (str): The native schema as a JSON formatted string
+
+    Returns:
+        dict: The native schema as a Python dictionary
+    """
+    try:
+        data_dict = json.loads(schema_json)
+        formatted_dict = repr(data_dict)
+
+        # 3. Write to the target Python file
+        with open("plugins/module_utils/schema_dict.py", 'w+') as f:
+            f.write(f'# Generated file - do not edit manually\n')
+            f.write(f'SCHEMA_DICT = {formatted_dict}\n')
+    except json.JSONDecodeError as e:
+        print(f"Invalid JSON string provided: {e}")
+    except IOError as e:
+        print(f"File writing error: {e}")
+
+
 
 if __name__ == "__main__":
+    # Convert the schema file to a dict
+    with open(args.schema, "r", encoding="utf-8") as schema_json_file:
+        schema_to_dict_file(schema_json_file.read())
+
     # Load the generator configuration file
     generator_config = {}
     generator_config_path = Path(__file__).parent / "generator.yml"

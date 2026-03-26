@@ -283,10 +283,11 @@ options:
           mode cookies.
       haproxy_cookie_domains:
         required: false
-        type: str
+        type: list
         default: []
         choices: []
         description: The domains to set the cookies for.
+        elements: str
       haproxy_cookie_dynamic_cookie_key:
         required: false
         type: str
@@ -374,11 +375,12 @@ options:
         description: The statistics URL for this backend.
       stats_scope:
         required: false
-        type: str
+        type: list
         default: []
         choices: []
         description: The frontends and backends stats to be shown, leave empty to
           show all.
+        elements: str
       stats_realm:
         required: false
         type: str
@@ -781,8 +783,9 @@ data:
       returned: always
     haproxy_cookie_domains:
       description: The domains to set the cookies for.
-      type: str
+      type: list
       returned: always
+      elements: str
     haproxy_cookie_dynamic_cookie_key:
       description: The dynamic cookie secret key. This is will be used to generate
         dynamic cookies for this backend.
@@ -835,8 +838,9 @@ data:
     stats_scope:
       description: The frontends and backends stats to be shown, leave empty to show
         all.
-      type: str
+      type: list
       returned: always
+      elements: str
     stats_realm:
       description: The realm that is shown when authentication is requested by HAProxy.
       type: str
@@ -916,48 +920,38 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "objects": {
-            "type": list,
+            "type": "list",
             "required": True,
-            "default": None,
-            "choices": [],
             "elements": "dict",
-            "suboptions": {'name': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The unique name for this backend.'}, 'servers': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The pool of servers this backend will use.'}, 'balance': {'required': False, 'type': 'str', 'default': '', 'choices': ['', 'roundrobin', 'static-rr', 'leastconn', 'source', 'uri'], 'description': 'The load balancing option to use for servers assigned to this backend.'}, 'balance_urilen': {'required': False, 'type': 'int', 'default': None, 'choices': [], 'description': 'The number of URI characters the algorithm should consider when hashing.'}, 'balance_uridepth': {'required': False, 'type': 'int', 'default': None, 'choices': [], 'description': 'The maximum directory depth to be used to compute the hash. One level is counted for each slash in the request.'}, 'balance_uriwhole': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables allowing the use of whole URIs, including URL parameters.'}, 'acls': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The ACLs to apply to this backend.'}, 'actions': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The actions to apply to this backend.'}, 'connection_timeout': {'required': False, 'type': 'int', 'default': 30000, 'choices': [], 'description': 'The amount of time (in milliseconds) to wait before giving up on connections.'}, 'server_timeout': {'required': False, 'type': 'int', 'default': 30000, 'choices': [], 'description': 'The amount of time (in milliseconds) to wait for data transferred to or from the server.'}, 'retries': {'required': False, 'type': 'int', 'default': None, 'choices': [], 'description': 'The number of retry attempts to allow after a connection failure to the server.'}, 'check_type': {'required': False, 'type': 'str', 'default': 'none', 'choices': ['none', 'Basic', 'HTTP', 'LDAP', 'MySQL', 'PostgreSQL', 'Redis', 'SMTP', 'ESMTP', 'SSL'], 'description': 'The health check method to use when checking the health of backend servers.'}, 'checkinter': {'required': False, 'type': 'int', 'default': None, 'choices': [], 'description': 'The interval (in milliseconds) in which health checks will be performed.'}, 'log_health_checks': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables logging changes to the health check status'}, 'httpcheck_method': {'required': False, 'type': 'str', 'default': 'OPTIONS', 'choices': ['OPTIONS', 'HEAD', 'GET', 'POST', 'PUT', 'DELETE', 'TRACE'], 'description': 'The HTTP method to use for HTTP health checks.'}, 'monitor_uri': {'required': False, 'type': 'str', 'default': '/', 'choices': [], 'description': 'The URL to use for HTTP health checks.'}, 'monitor_httpversion': {'required': False, 'type': 'str', 'default': 'HTTP/1.0', 'choices': [], 'description': 'The HTTP version to use for HTTP health checks.'}, 'monitor_username': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The username to use for MySQL or PostgreSQL health checks.'}, 'monitor_domain': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The domain to use for SMTP or ESMTP health checks.'}, 'agent_checks': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables using a TCP connection to read an ASCII string of the form.'}, 'agent_port': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'Valid options are: a TCP/UDP port number'}, 'agent_inter': {'required': False, 'type': 'int', 'default': 2000, 'choices': [], 'description': 'The interval (in milliseconds) between agent checks.'}, 'persist_cookie_enabled': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables cookie based persistence.'}, 'persist_cookie_name': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The string name to track in Set-Cookie and Cookie HTTP headers.'}, 'persist_cookie_mode': {'required': False, 'type': 'str', 'default': 'passive', 'choices': ['passive', 'passive-silent', 'reset', 'set', 'set-silent', 'insert-only', 'insert-only-silent', 'session-prefix', 'passive-session-prefix'], 'description': 'The mode HAProxy uses to insert/prefix/replace or examine cookie and set-cookie headers.'}, 'persist_cookie_cachable': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables allowing shared caches to cache the server response.'}, 'persist_cookie_postonly': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables only inserting cookies on POST requests.'}, 'persist_cookie_httponly': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables preventing the use of cookies with non-HTTP components.'}, 'persist_cookie_secure': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables prevention of cookie usage over non-secure channels.'}, 'haproxy_cookie_maxidle': {'required': False, 'type': 'int', 'default': None, 'choices': [], 'description': 'The max-idle time to allow. This option only applies to insert mode cookies.'}, 'haproxy_cookie_maxlife': {'required': False, 'type': 'int', 'default': None, 'choices': [], 'description': 'The max-life time to allow. This option only applies to insert mode cookies.'}, 'haproxy_cookie_domains': {'required': False, 'type': 'str', 'default': [], 'choices': [], 'description': 'The domains to set the cookies for.'}, 'haproxy_cookie_dynamic_cookie_key': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The dynamic cookie secret key. This is will be used to generate dynamic cookies for this backend.'}, 'persist_sticky_type': {'required': False, 'type': 'str', 'default': 'none', 'choices': ['none', 'stick_sslsessionid', 'stick_sourceipv4', 'stick_sourceipv6', 'stick_cookie_value', 'stick_rdp_cookie'], 'description': 'The sticky table mode to use for this backend. These options are used to make sure subsequent requests from a single client go to the same backend.'}, 'persist_stick_expire': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The maximum duration of an entry in the stick-table since it was last created, refreshed or matched.'}, 'persist_stick_tablesize': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The maximum number of entries allowed in the table. This value directly impacts memory usage.'}, 'persist_stick_cookiename': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The cookie name to use for stick table.'}, 'persist_stick_length': {'required': False, 'type': 'int', 'default': None, 'choices': [], 'description': 'The maximum number of characters allowed in a string type stick table'}, 'email_level': {'required': False, 'type': 'str', 'default': '', 'choices': ['', 'dontlog', 'emerg', 'alert', 'crit', 'err', 'warning', 'notice', 'info', 'debug'], 'description': 'The maximum log level to send emails for. Leave empty to disable sending email alerts. If left empty, the value set in the global settings will be used.'}, 'email_to': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The email address to send emails to. If left empty, the value set in the global settings will be used.'}, 'stats_enabled': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables the HAProxy statistics page for this backend.'}, 'stats_uri': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The statistics URL for this backend.'}, 'stats_scope': {'required': False, 'type': 'str', 'default': [], 'choices': [], 'description': 'The frontends and backends stats to be shown, leave empty to show all.'}, 'stats_realm': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The realm that is shown when authentication is requested by HAProxy.'}, 'stats_username': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The stats page username'}, 'stats_password': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The stats page password.'}, 'stats_admin': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The admin to make use of the options disable/enable/softstop/softstart/killsessions from the stats page.'}, 'stats_node': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The short name displayed in stats and helps differentiate which server in the cluster is actually serving clients.'}, 'stats_desc': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The verbose description for this node.'}, 'stats_refresh': {'required': False, 'type': 'int', 'default': 10, 'choices': [], 'description': 'The interval (in seconds) in which the stats page is refreshed.'}, 'strict_transport_security': {'required': False, 'type': 'int', 'default': None, 'choices': [], 'description': 'The HSTS validity period for this backend. Leave empty to disable HSTS.'}, 'errorfiles': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The HAProxy error file mappings to use for this backend.'}, 'cookie_attribute_secure': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables assigning the secure attributes on cookies for this backend.'}, 'advanced': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The per server pass thru to apply to each server line.'}, 'advanced_backend': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The backend pass thru to apply to the backend section.'}, 'transparent_clientip': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables using the client-IP to connect to backend servers.'}, 'transparent_interface': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The interface that will connect to the backend server.'}},
+            "suboptions": {'name': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The unique name for this backend.'}, 'servers': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The pool of servers this backend will use.'}, 'balance': {'required': False, 'type': 'str', 'default': '', 'choices': ['', 'roundrobin', 'static-rr', 'leastconn', 'source', 'uri'], 'description': 'The load balancing option to use for servers assigned to this backend.'}, 'balance_urilen': {'required': False, 'type': 'int', 'default': None, 'choices': [], 'description': 'The number of URI characters the algorithm should consider when hashing.'}, 'balance_uridepth': {'required': False, 'type': 'int', 'default': None, 'choices': [], 'description': 'The maximum directory depth to be used to compute the hash. One level is counted for each slash in the request.'}, 'balance_uriwhole': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables allowing the use of whole URIs, including URL parameters.'}, 'acls': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The ACLs to apply to this backend.'}, 'actions': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The actions to apply to this backend.'}, 'connection_timeout': {'required': False, 'type': 'int', 'default': 30000, 'choices': [], 'description': 'The amount of time (in milliseconds) to wait before giving up on connections.'}, 'server_timeout': {'required': False, 'type': 'int', 'default': 30000, 'choices': [], 'description': 'The amount of time (in milliseconds) to wait for data transferred to or from the server.'}, 'retries': {'required': False, 'type': 'int', 'default': None, 'choices': [], 'description': 'The number of retry attempts to allow after a connection failure to the server.'}, 'check_type': {'required': False, 'type': 'str', 'default': 'none', 'choices': ['none', 'Basic', 'HTTP', 'LDAP', 'MySQL', 'PostgreSQL', 'Redis', 'SMTP', 'ESMTP', 'SSL'], 'description': 'The health check method to use when checking the health of backend servers.'}, 'checkinter': {'required': False, 'type': 'int', 'default': None, 'choices': [], 'description': 'The interval (in milliseconds) in which health checks will be performed.'}, 'log_health_checks': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables logging changes to the health check status'}, 'httpcheck_method': {'required': False, 'type': 'str', 'default': 'OPTIONS', 'choices': ['OPTIONS', 'HEAD', 'GET', 'POST', 'PUT', 'DELETE', 'TRACE'], 'description': 'The HTTP method to use for HTTP health checks.'}, 'monitor_uri': {'required': False, 'type': 'str', 'default': '/', 'choices': [], 'description': 'The URL to use for HTTP health checks.'}, 'monitor_httpversion': {'required': False, 'type': 'str', 'default': 'HTTP/1.0', 'choices': [], 'description': 'The HTTP version to use for HTTP health checks.'}, 'monitor_username': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The username to use for MySQL or PostgreSQL health checks.'}, 'monitor_domain': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The domain to use for SMTP or ESMTP health checks.'}, 'agent_checks': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables using a TCP connection to read an ASCII string of the form.'}, 'agent_port': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'Valid options are: a TCP/UDP port number'}, 'agent_inter': {'required': False, 'type': 'int', 'default': 2000, 'choices': [], 'description': 'The interval (in milliseconds) between agent checks.'}, 'persist_cookie_enabled': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables cookie based persistence.'}, 'persist_cookie_name': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The string name to track in Set-Cookie and Cookie HTTP headers.'}, 'persist_cookie_mode': {'required': False, 'type': 'str', 'default': 'passive', 'choices': ['passive', 'passive-silent', 'reset', 'set', 'set-silent', 'insert-only', 'insert-only-silent', 'session-prefix', 'passive-session-prefix'], 'description': 'The mode HAProxy uses to insert/prefix/replace or examine cookie and set-cookie headers.'}, 'persist_cookie_cachable': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables allowing shared caches to cache the server response.'}, 'persist_cookie_postonly': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables only inserting cookies on POST requests.'}, 'persist_cookie_httponly': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables preventing the use of cookies with non-HTTP components.'}, 'persist_cookie_secure': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables prevention of cookie usage over non-secure channels.'}, 'haproxy_cookie_maxidle': {'required': False, 'type': 'int', 'default': None, 'choices': [], 'description': 'The max-idle time to allow. This option only applies to insert mode cookies.'}, 'haproxy_cookie_maxlife': {'required': False, 'type': 'int', 'default': None, 'choices': [], 'description': 'The max-life time to allow. This option only applies to insert mode cookies.'}, 'haproxy_cookie_domains': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The domains to set the cookies for.', 'elements': 'str'}, 'haproxy_cookie_dynamic_cookie_key': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The dynamic cookie secret key. This is will be used to generate dynamic cookies for this backend.'}, 'persist_sticky_type': {'required': False, 'type': 'str', 'default': 'none', 'choices': ['none', 'stick_sslsessionid', 'stick_sourceipv4', 'stick_sourceipv6', 'stick_cookie_value', 'stick_rdp_cookie'], 'description': 'The sticky table mode to use for this backend. These options are used to make sure subsequent requests from a single client go to the same backend.'}, 'persist_stick_expire': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The maximum duration of an entry in the stick-table since it was last created, refreshed or matched.'}, 'persist_stick_tablesize': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The maximum number of entries allowed in the table. This value directly impacts memory usage.'}, 'persist_stick_cookiename': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The cookie name to use for stick table.'}, 'persist_stick_length': {'required': False, 'type': 'int', 'default': None, 'choices': [], 'description': 'The maximum number of characters allowed in a string type stick table'}, 'email_level': {'required': False, 'type': 'str', 'default': '', 'choices': ['', 'dontlog', 'emerg', 'alert', 'crit', 'err', 'warning', 'notice', 'info', 'debug'], 'description': 'The maximum log level to send emails for. Leave empty to disable sending email alerts. If left empty, the value set in the global settings will be used.'}, 'email_to': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The email address to send emails to. If left empty, the value set in the global settings will be used.'}, 'stats_enabled': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables the HAProxy statistics page for this backend.'}, 'stats_uri': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The statistics URL for this backend.'}, 'stats_scope': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The frontends and backends stats to be shown, leave empty to show all.', 'elements': 'str'}, 'stats_realm': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The realm that is shown when authentication is requested by HAProxy.'}, 'stats_username': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The stats page username'}, 'stats_password': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The stats page password.'}, 'stats_admin': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The admin to make use of the options disable/enable/softstop/softstart/killsessions from the stats page.'}, 'stats_node': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The short name displayed in stats and helps differentiate which server in the cluster is actually serving clients.'}, 'stats_desc': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The verbose description for this node.'}, 'stats_refresh': {'required': False, 'type': 'int', 'default': 10, 'choices': [], 'description': 'The interval (in seconds) in which the stats page is refreshed.'}, 'strict_transport_security': {'required': False, 'type': 'int', 'default': None, 'choices': [], 'description': 'The HSTS validity period for this backend. Leave empty to disable HSTS.'}, 'errorfiles': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The HAProxy error file mappings to use for this backend.'}, 'cookie_attribute_secure': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables assigning the secure attributes on cookies for this backend.'}, 'advanced': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The per server pass thru to apply to each server line.'}, 'advanced_backend': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The backend pass thru to apply to the backend section.'}, 'transparent_clientip': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables using the client-IP to connect to backend servers.'}, 'transparent_interface': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The interface that will connect to the backend server.'}},
         },
     }
 
@@ -975,15 +969,20 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
+    base_module = base.BaseModule('/api/v2/services/haproxy/backends', client)
     changed = True # TODO: determine if changes are needed by comparing existing objects to the provided list
     resp = base_module.replace_objects(
         data=module.params['objects'],
     )
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

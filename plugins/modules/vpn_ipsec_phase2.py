@@ -52,12 +52,9 @@ options:
   lookup_fields:
     type: list
     elements: str
-    required: false
-    default: null
+    required: true
     description: The list of fields to use when looking up existing resources. This
-      should be a list of field names that uniquely identify a resource. If not specified,
-      the module will attempt to use the 'id' field if it exists, or all fields marked
-      as 'unique' in the schema.
+      should be a list of field names that uniquely identify a resource.
   ikeid:
     required: true
     type: int
@@ -167,7 +164,7 @@ options:
     description: The encryption algorithms to be used by this phase 2 entry.
   hash_algorithm_option:
     required: true
-    type: str
+    type: list
     default: null
     choices:
     - hmac_sha1
@@ -177,6 +174,7 @@ options:
     - aesxcbc
     description: 'The hashing algorithms used by this IPsec phase 2 entry. Note: Hash
       is ignored with GCM algorithms. SHA1 provides weak security and should be avoided.'
+    elements: str
   pfsgroup:
     required: false
     type: int
@@ -268,7 +266,8 @@ EXAMPLES = '''
     remoteid_address: example
     remoteid_netbits: 1
     encryption_algorithm_option: &id001 []
-    hash_algorithm_option: hmac_sha1
+    hash_algorithm_option: &id002
+    - hmac_sha1
 - name: Delete IPsec Phase 2
   pfrest.pfsense.vpn_ipsec_phase2:
     api_host: pfsense.example.com
@@ -286,7 +285,7 @@ EXAMPLES = '''
     remoteid_address: example
     remoteid_netbits: 1
     encryption_algorithm_option: *id001
-    hash_algorithm_option: hmac_sha1
+    hash_algorithm_option: *id002
 
 '''
 
@@ -411,8 +410,9 @@ data:
       description: 'The hashing algorithms used by this IPsec phase 2 entry. Note:
         Hash is ignored with GCM algorithms. SHA1 provides weak security and should
         be avoided.'
-      type: str
+      type: list
       returned: always
+      elements: str
     pfsgroup:
       description: 'The PFS key group this IPsec phase 2 entry should use. Note: Groups
         1, 2, 5, 22, 23, and 24 provide weak security and should be avoided.'
@@ -453,186 +453,158 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "state": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'present',
             "choices": ['present', 'absent'],
         },
         "lookup_fields": {
-            "type": list,
-            "required": False,
-            "default": None,
-            "choices": [],
+            "type": "list",
+            "required": True,
             "elements": "str",
-            "suboptions": {},
         },
         "ikeid": {
-            "type": int,
+            "type": "int",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "descr": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "disabled": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "mode": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
             "choices": ['tunnel', 'tunnel6', 'transport', 'vti'],
         },
         "localid_type": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "localid_address": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "localid_netbits": {
-            "type": int,
+            "type": "int",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "natlocalid_type": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "natlocalid_address": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "natlocalid_netbits": {
-            "type": int,
+            "type": "int",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "remoteid_type": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "remoteid_address": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "remoteid_netbits": {
-            "type": int,
+            "type": "int",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "protocol": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'esp',
             "choices": ['esp', 'ah'],
         },
         "encryption_algorithm_option": {
-            "type": list,
+            "type": "list",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "hash_algorithm_option": {
-            "type": str,
+            "type": "list",
             "required": True,
             "default": None,
             "choices": ['hmac_sha1', 'hmac_sha256', 'hmac_sha384', 'hmac_sha512', 'aesxcbc'],
+            "elements": "str",
         },
         "pfsgroup": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 14,
             "choices": [0, 1, 2, 5, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32],
         },
         "rekey_time": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 3240,
-            "choices": [],
         },
         "rand_time": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 360,
-            "choices": [],
         },
         "lifetime": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 3600,
-            "choices": [],
         },
         "pinghost": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "keepalive": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
     }
 
@@ -650,16 +622,21 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
-    changed, data = base_module.set_object_state(
+    base_module = base.BaseModule('/api/v2/vpn/ipsec/phase2', client)
+    changed, resp = base_module.set_object_state(
         state=module.params['state'],
         data=module.params,
         lookup_fields=module.params['lookup_fields']
     )
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

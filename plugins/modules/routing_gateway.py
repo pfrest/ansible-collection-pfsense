@@ -52,12 +52,9 @@ options:
   lookup_fields:
     type: list
     elements: str
-    required: false
-    default: null
+    required: true
     description: The list of fields to use when looking up existing resources. This
-      should be a list of field names that uniquely identify a resource. If not specified,
-      the module will attempt to use the 'id' field if it exists, or all fields marked
-      as 'unique' in the schema.
+      should be a list of field names that uniquely identify a resource.
   name:
     required: true
     type: str
@@ -377,192 +374,160 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "state": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'present',
             "choices": ['present', 'absent'],
         },
         "lookup_fields": {
-            "type": list,
-            "required": False,
-            "default": None,
-            "choices": [],
+            "type": "list",
+            "required": True,
             "elements": "str",
-            "suboptions": {},
         },
         "name": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "descr": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "disabled": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "ipprotocol": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
             "choices": ['inet', 'inet6'],
         },
         "interface": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "gateway": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "monitor_disable": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "monitor": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "action_disable": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "force_down": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "dpinger_dont_add_static_route": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "gw_down_kill_states": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
             "choices": ['', 'none', 'down'],
         },
         "nonlocalgateway": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "weight": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 1,
-            "choices": [],
         },
         "data_payload": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 1,
-            "choices": [],
         },
         "latencylow": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 200,
-            "choices": [],
         },
         "latencyhigh": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 500,
-            "choices": [],
         },
         "losslow": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 10,
-            "choices": [],
         },
         "losshigh": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 20,
-            "choices": [],
         },
         "interval": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 500,
-            "choices": [],
         },
         "loss_interval": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 2000,
-            "choices": [],
         },
         "time_period": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 60000,
-            "choices": [],
         },
         "alert_interval": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 1000,
-            "choices": [],
         },
     }
 
@@ -580,16 +545,21 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
-    changed, data = base_module.set_object_state(
+    base_module = base.BaseModule('/api/v2/routing/gateway', client)
+    changed, resp = base_module.set_object_state(
         state=module.params['state'],
         data=module.params,
         lookup_fields=module.params['lookup_fields']
     )
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

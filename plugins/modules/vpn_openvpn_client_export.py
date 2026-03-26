@@ -150,10 +150,11 @@ options:
       instead of local files.
   pkcs11providers:
     required: true
-    type: str
+    type: list
     default: null
     choices: []
     description: The client local path to the PKCS#11 provider(s) (DLL, module)
+    elements: str
   pkcs11id:
     required: true
     type: str
@@ -256,7 +257,8 @@ EXAMPLES = '''
     api_password: pfsense
     type: confzip
     server: 1
-    pkcs11providers: example
+    pkcs11providers:
+    - example
     pkcs11id: example
     pass: example
     proxyaddr: example
@@ -361,8 +363,9 @@ data:
       returned: always
     pkcs11providers:
       description: The client local path to the PKCS#11 provider(s) (DLL, module)
-      type: str
+      type: list
       returned: always
+      elements: str
     pkcs11id:
       description: The object's ID on the PKCS#11 device.
       type: str
@@ -425,196 +428,170 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "type": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
             "choices": ['confzip', 'conf_yealink_t28', 'conf_yealink_t38g', 'conf_yealink_t38g2', 'conf_snom', 'confinline', 'confinlinedroid', 'confinlineconnect', 'confinlinevisc', 'inst-Win7', 'inst-Win10', 'inst-x86-previous', 'inst-x64-previous', 'inst-x86-current', 'inst-x64-current', 'visc'],
         },
         "certref": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "server": {
-            "type": int,
+            "type": "int",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "useaddr": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'serveraddr',
             "choices": ['serveraddr', 'servermagic', 'servermagichost', 'serverhostname', 'other'],
         },
         "useaddr_hostname": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "verifyservercn": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'auto',
             "choices": ['auto', 'none'],
         },
         "blockoutsidedns": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "legacy": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "silent": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "bindmode": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'nobind',
             "choices": ['nobind', 'lport0', 'bind'],
         },
         "usepkcs11": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "pkcs11providers": {
-            "type": str,
+            "type": "list",
             "required": True,
             "default": None,
-            "choices": [],
+            "elements": "str",
         },
         "pkcs11id": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "usetoken": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "usepass": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "pass": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "p12encryption": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'high',
             "choices": ['high', 'low', 'legacy'],
         },
         "useproxy": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "useproxytype": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'http',
             "choices": ['http', 'socks'],
         },
         "proxyaddr": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "proxyport": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "useproxypass": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
             "choices": ['none', 'basic', 'ntlm'],
         },
         "proxyuser": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "proxypass": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "advancedoptions": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
     }
 
@@ -632,12 +609,17 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
+    base_module = base.BaseModule('/api/v2/vpn/openvpn/client_export', client)
     changed, resp = base_module.execute_action(data=module.params)
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

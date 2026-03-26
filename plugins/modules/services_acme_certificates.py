@@ -1180,46 +1180,36 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "objects": {
-            "type": list,
+            "type": "list",
             "required": True,
-            "default": None,
-            "choices": [],
             "elements": "dict",
             "suboptions": {'name': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The name of the ACME certificate.'}, 'descr': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'A description of the ACME certificate.'}, 'status': {'required': False, 'type': 'str', 'default': 'active', 'choices': ['active', 'disabled'], 'description': 'The activation status of the ACME certificate.'}, 'acmeaccount': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The ACME account key to use for the ACME certificate.'}, 'keylength': {'required': False, 'type': 'str', 'default': '2048', 'choices': ['2048', '3072', '4096', 'ec-256', 'ec-384', 'custom'], 'description': 'The length of the private key to use for the ACME certificate.'}, 'keypaste': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The custom private key to use for the ACME certificate.'}, 'preferredchain': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The preferred certificate chain to use for the ACME certificate.'}, 'oscpstaple': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Whether to enable OCSP Stapling for the ACME certificate.'}, 'dnssleep': {'required': False, 'type': 'int', 'default': None, 'choices': [], 'description': 'The number of seconds to wait for DNS propagation before requesting verification.'}, 'renewafter': {'required': False, 'type': 'int', 'default': 60, 'choices': [], 'description': 'The number of days before expiration to renew the ACME certificate.'}, 'a_domainlist': {'required': True, 'type': 'list', 'default': None, 'choices': [], 'description': 'The list of domain verifications to include in the ACME certificate.'}, 'a_actionlist': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The list of actions to perform on the ACME certificate after being issued/renewed.'}},
         },
@@ -1239,15 +1229,20 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
+    base_module = base.BaseModule('/api/v2/services/acme/certificates', client)
     changed = True # TODO: determine if changes are needed by comparing existing objects to the provided list
     resp = base_module.replace_objects(
         data=module.params['objects'],
     )
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

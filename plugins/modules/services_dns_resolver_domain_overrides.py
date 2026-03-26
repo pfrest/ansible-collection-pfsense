@@ -153,46 +153,36 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "objects": {
-            "type": list,
+            "type": "list",
             "required": True,
-            "default": None,
-            "choices": [],
             "elements": "dict",
             "suboptions": {'domain': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The domain to override.'}, 'ip': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The IP address to which the domain should resolve.'}, 'descr': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The description for this domain override.'}, 'forward_tls_upstream': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables forwarding DNS queries to the upstream DNS server using TLS.'}, 'tls_hostname': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The hostname to use for the TLS connection to the upstream DNS server.'}},
         },
@@ -212,15 +202,20 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
+    base_module = base.BaseModule('/api/v2/services/dns_resolver/domain_overrides', client)
     changed = True # TODO: determine if changes are needed by comparing existing objects to the provided list
     resp = base_module.replace_objects(
         data=module.params['objects'],
     )
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

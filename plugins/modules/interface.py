@@ -52,12 +52,9 @@ options:
   lookup_fields:
     type: list
     elements: str
-    required: false
-    default: null
+    required: true
     description: The list of fields to use when looking up existing resources. This
-      should be a list of field names that uniquely identify a resource. If not specified,
-      the module will attempt to use the 'id' field if it exists, or all fields marked
-      as 'unique' in the schema.
+      should be a list of field names that uniquely identify a resource.
   if:
     required: true
     type: str
@@ -173,11 +170,12 @@ options:
       count by the DHCP client.
   dhcprejectfrom:
     required: false
-    type: str
+    type: list
     default: []
     choices: []
     description: Sets a list of IPv4 DHCP server addresses to reject DHCP offers for
       on this interface.
+    elements: str
   adv_dhcp_config_advanced:
     required: false
     type: bool
@@ -494,8 +492,9 @@ data:
     dhcprejectfrom:
       description: Sets a list of IPv4 DHCP server addresses to reject DHCP offers
         for on this interface.
-      type: str
+      type: list
       returned: always
+      elements: str
     adv_dhcp_config_advanced:
       description: Enables or disables the advanced DHCP settings on this interface.
       type: bool
@@ -617,312 +616,262 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "state": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'present',
             "choices": ['present', 'absent'],
         },
         "lookup_fields": {
-            "type": list,
-            "required": False,
-            "default": None,
-            "choices": [],
+            "type": "list",
+            "required": True,
             "elements": "str",
-            "suboptions": {},
         },
         "if": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "enable": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "descr": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "spoofmac": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "mtu": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "mss": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "media": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "mediaopt": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "blockpriv": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "blockbogons": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "typev4": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
             "choices": ['static', 'dhcp', 'none'],
         },
         "ipaddr": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "subnet": {
-            "type": int,
+            "type": "int",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "gateway": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "dhcphostname": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "alias_address": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "alias_subnet": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 32,
-            "choices": [],
         },
         "dhcprejectfrom": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
+            "elements": "str",
         },
         "adv_dhcp_config_advanced": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "adv_dhcp_pt_values": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'SavedCfg',
             "choices": ['SavedCfg'],
         },
         "adv_dhcp_pt_timeout": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "adv_dhcp_pt_retry": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "adv_dhcp_pt_select_timeout": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "adv_dhcp_pt_reboot": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "adv_dhcp_pt_backoff_cutoff": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "adv_dhcp_pt_initial_interval": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "adv_dhcp_send_options": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "adv_dhcp_request_options": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "adv_dhcp_required_options": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "adv_dhcp_option_modifiers": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "adv_dhcp_config_file_override": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "adv_dhcp_config_file_override_path": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "typev6": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
             "choices": ['staticv6', 'dhcp6', 'slaac', '6rd', 'track6', '6to4', 'none'],
         },
         "ipaddrv6": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "subnetv6": {
-            "type": int,
+            "type": "int",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "gatewayv6": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "ipv6usev4iface": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "slaacusev4iface": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "prefix_6rd": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "gateway_6rd": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "prefix_6rd_v4plen": {
-            "type": int,
+            "type": "int",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "track6_interface": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "track6_prefix_id_hex": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '0',
-            "choices": [],
         },
     }
 
@@ -940,16 +889,21 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
-    changed, data = base_module.set_object_state(
+    base_module = base.BaseModule('/api/v2/interface', client)
+    changed, resp = base_module.set_object_state(
         state=module.params['state'],
         data=module.params,
         lookup_fields=module.params['lookup_fields']
     )
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

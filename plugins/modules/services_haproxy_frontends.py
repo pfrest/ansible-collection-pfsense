@@ -462,46 +462,36 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "objects": {
-            "type": list,
+            "type": "list",
             "required": True,
-            "default": None,
-            "choices": [],
             "elements": "dict",
             "suboptions": {'name': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The unique name for this HAProxy frontend.'}, 'descr': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The description for this HAProxy frontend.'}, 'status': {'required': False, 'type': 'str', 'default': 'active', 'choices': ['active', 'disabled'], 'description': 'The activation status for this HAProxy frontend.'}, 'a_extaddr': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The external addresses assigned to this frontend.'}, 'max_connections': {'required': False, 'type': 'int', 'default': None, 'choices': [], 'description': 'The maximum number of connections allowed by this frontend.'}, 'type': {'required': True, 'type': 'str', 'default': None, 'choices': ['http', 'https', 'tcp'], 'description': 'The processing type for this frontend.'}, 'ha_acls': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The ACLs to apply to this frontend.'}, 'a_actionitems': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The actions to take when an ACL match is found.'}, 'backend_serverpool': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The default backend to use for this frontend.'}, 'socket_stats': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables collecting and providing separate statistics for each socket.'}, 'dontlognull': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables logging connections with no data transferred.'}, 'dontlog_normal': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables only logging anomalous (not normal) connection.'}, 'log_separate_errors': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables changing the log level from info to err on potentially interesting info.'}, 'log_detailed': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables more detailed logging.'}, 'a_errorfiles': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The custom error files to use for this frontend.'}, 'client_timeout': {'required': False, 'type': 'int', 'default': 30000, 'choices': [], 'description': 'The amount of time (in milliseconds) to wait for data from the client.'}, 'forwardfor': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': "Enables or disables the HTTP X-Forwarded-For header which contains the client's IP address."}, 'httpclose': {'required': False, 'type': 'str', 'default': 'http-keep-alive', 'choices': ['http-keep-alive', 'http-tunnel', 'httpclose', 'http-server-close', 'forceclose'], 'description': 'The `httpclose` option this frontend will operate.'}, 'advanced_bind': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'Custom value to pass behind each bind option.'}, 'advanced': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'Custom configuration to pass to this frontend.'}, 'ssloffloadcert': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The default SSL/TLS certificate refid to use for this frontend.'}, 'ha_certificates': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The additional SSL/TLS certificates to use on this frontend.'}},
         },
@@ -521,15 +511,20 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
+    base_module = base.BaseModule('/api/v2/services/haproxy/frontends', client)
     changed = True # TODO: determine if changes are needed by comparing existing objects to the provided list
     resp = base_module.replace_objects(
         data=module.params['objects'],
     )
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

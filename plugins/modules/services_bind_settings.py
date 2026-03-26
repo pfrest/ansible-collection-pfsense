@@ -60,11 +60,12 @@ options:
       IPv4 and IPv6.
   listenon:
     required: false
-    type: str
+    type: list
     default:
     - All
     choices: []
     description: The interfaces to listen on for DNS requests.
+    elements: str
   bind_notify:
     required: false
     type: bool
@@ -106,7 +107,7 @@ options:
     description: The minimum severity of events to log.
   log_options:
     required: false
-    type: str
+    type: list
     default:
     - default
     choices:
@@ -128,6 +129,7 @@ options:
     - dnssec
     - lame-servers
     description: The categories to log.
+    elements: str
   rate_enabled:
     required: false
     type: bool
@@ -156,10 +158,11 @@ options:
       than this server performing its own recursion.
   bind_forwarder_ips:
     required: true
-    type: str
+    type: list
     default: null
     choices: []
     description: The IP addresses of the DNS servers to forward queries to.
+    elements: str
   bind_dnssec_validation:
     required: false
     type: str
@@ -206,7 +209,8 @@ EXAMPLES = '''
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
-    bind_forwarder_ips: example
+    bind_forwarder_ips:
+    - example
 
 '''
 
@@ -243,8 +247,9 @@ data:
       returned: always
     listenon:
       description: The interfaces to listen on for DNS requests.
-      type: str
+      type: list
       returned: always
+      elements: str
     bind_notify:
       description: Notify slave server after any update on master.
       type: bool
@@ -267,8 +272,9 @@ data:
       returned: always
     log_options:
       description: The categories to log.
-      type: str
+      type: list
       returned: always
+      elements: str
     rate_enabled:
       description: Enable rate limiting for the BIND service.
       type: bool
@@ -289,8 +295,9 @@ data:
       returned: always
     bind_forwarder_ips:
       description: The IP addresses of the DNS servers to forward queries to.
-      type: str
+      type: list
       returned: always
+      elements: str
     bind_dnssec_validation:
       description: Enable DNSSEC validation when BIND is acting as a recursive resolver.
       type: str
@@ -320,154 +327,134 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "enable_bind": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "bind_ip_version": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
             "choices": ['', '-4', '-6'],
         },
         "listenon": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": ['All'],
-            "choices": [],
+            "elements": "str",
         },
         "bind_notify": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "bind_hide_version": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "bind_ram_limit": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '256M',
-            "choices": [],
         },
         "bind_logging": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "log_severity": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'critical',
             "choices": ['critical', 'error', 'warning', 'notice', 'info', 'debug 1', 'debug 3', 'debug 5', 'dynamic'],
         },
         "log_options": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": ['default'],
             "choices": ['default', 'general', 'database', 'security', 'config', 'resolver', 'xfer-in', 'xfer-out', 'notify', 'client', 'unmatched', 'queries', 'network', 'update', 'dispatch', 'dnssec', 'lame-servers'],
+            "elements": "str",
         },
         "rate_enabled": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "rate_limit": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 15,
-            "choices": [],
         },
         "log_only": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "bind_forwarder": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "bind_forwarder_ips": {
-            "type": str,
+            "type": "list",
             "required": True,
             "default": None,
-            "choices": [],
+            "elements": "str",
         },
         "bind_dnssec_validation": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'auto',
             "choices": ['auto', 'on', 'off'],
         },
         "listenport": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '53',
-            "choices": [],
         },
         "controlport": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '953',
-            "choices": [],
         },
         "bind_custom_options": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "bind_global_settings": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
     }
 
@@ -485,11 +472,16 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
+    base_module = base.BaseModule('/api/v2/services/bind/settings', client)
+
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
 
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

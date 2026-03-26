@@ -7,6 +7,9 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils.schema import Nativ
 from ansible_collections.pfrest.pfsense.plugins.module_utils.rest import RestClient
 
 
+INTERNAL_ARGS = ['api_host', 'api_port', 'api_username', 'api_password', 'api_key', 'validate_certs', 'lookup_fields', 'state']
+
+
 class BaseModule:
     """
     A base class that contains all common utilities and logic for Ansible modules in this collection.
@@ -31,15 +34,17 @@ class BaseModule:
     endpoint_schema: dict
     rest_client: RestClient
 
-    def __init__(self, rest_client: RestClient):
+    def __init__(self, endpoint: str, rest_client: RestClient):
         """
         Initialize the BaseModule with connection parameters.
 
         Args:
+            endpoint (str): The URL this module interacts with.
             rest_client (RestClient): An instance of RestClient for REST API communications.
         """
         self.rest_client = rest_client
         self.full_schema = NativeSchema()
+        self.endpoint = endpoint
         self.model_schema = self.full_schema.get_model_schema_by_endpoint(self.endpoint)
         self.endpoint_schema = self.full_schema.get_endpoint_schema(self.endpoint)
         self.many = self.endpoint_schema.get("many")
@@ -61,32 +66,36 @@ class BaseModule:
         endpoint = self.endpoint_plural if self.model_schema["many"] else self.endpoint_singular
 
         # Query all objects of this model using the lookup fields
-        resp = self.rest_client.get(endpoint, params=lookup_params)
-        data = resp.json().get('data', None)
+        resp_obj = self.rest_client.get(endpoint, params=lookup_params)
+        resp = resp_obj.json()
 
         # Return an empty dict if no objects found
-        if not data:
-            return {}
+        if not resp.get("data", None):
+            resp['data'] = {}
 
         # Do not proceed if the lookup fields matched multiple existing objects for 'many' models
-        if self.model_schema["many"] and len(data) > 1:
+        if self.model_schema["many"] and len(resp.get('data')) > 1:
             raise LookupError(
                 f"Lookup fields matched multiple existing objects for model '{self.model_name}'."
             )
 
+        # Always ensure 'data' is a dict, not list
+        if isinstance(resp.get("data"), list):
+            resp["data"] = resp["data"][0]
+
         # Otherwise, for non 'many' models, return the single object found
-        return data[0] if self.model_schema["many"] else data
+        return resp
 
     def create_object(self, data: dict) -> dict:
         """
         Create a new object for the module's model.
 
         Returns:
-            dict: The created object.
+            dict: The full API response dictionary.
         """
         self.validate_data_fields(data)
         resp = self.rest_client.post(self.endpoint_singular, data=data)
-        return resp.json().get('data', {})
+        return resp.json()
 
     def update_object(self, data: dict) -> dict:
         """
@@ -96,11 +105,11 @@ class BaseModule:
             data (dict): The data to update the object with.
 
         Returns:
-            dict: The updated object.
+            dict: The full API response dictionary.
         """
         self.validate_data_fields(data)
         resp = self.rest_client.patch(self.endpoint_singular, data=data)
-        return resp.json().get('data', {})
+        return resp.json()
 
     def delete_object(self, object_id: int|str) -> dict:
         """
@@ -111,7 +120,7 @@ class BaseModule:
         """
         return self.rest_client.delete(self.endpoint_singular, params={"id": object_id}).json()
 
-    def lookup_objects(self, lookup_params: dict = None) -> list[dict]:
+    def lookup_objects(self, lookup_params: dict = None) -> dict:
         """
         Lookup existing objects based on the module's lookup fields.
 
@@ -119,16 +128,14 @@ class BaseModule:
             lookup_params (dict): A dictionary of query parameters to filter the lookup.
 
         Returns:
-            list[dict]: A list of existing objects that match the lookup query.
+            dict: The full API response dictionary.
         """
         # Variables
         lookup_params = lookup_params or {}
 
         # Query all objects of this model using the lookup fields
         resp = self.rest_client.get(self.endpoint_plural, params=lookup_params)
-        data = resp.json().get('data', [])
-
-        return data
+        return resp.json()
 
     def replace_objects(self, data: list[dict]) -> dict:
         """
@@ -138,10 +145,10 @@ class BaseModule:
             data (list[dict]): The list of objects to replace existing objects with.
 
         Returns:
-            list: The response data from the replace operation.
+            dict: The full API response dictionary.
         """
         resp = self.rest_client.put(self.endpoint_plural, data=data)
-        return resp.json().get('data', [])
+        return resp.json()
 
     def execute_action(self, data: dict) -> tuple[bool, dict]:
         """
@@ -171,34 +178,34 @@ class BaseModule:
         Returns:
             tuple[bool, dict]: First item indicates whether the object was changed, second item is the response data
         """
-        # Keep track of whether a change was made
-        changed = False
-        response = {}
-
         # Construct the lookup query
         lookup_query = self.get_lookup_query(lookup_fields, data)
 
         # Lookup existing object
-        existing_object = self.lookup_object(lookup_query)
+        lookup = self.lookup_object(lookup_query)
+        existing_object = lookup.get("data", {})
 
         # Add the ID to the data if the object exists
         if existing_object and "id" in existing_object:
             data["id"] = existing_object.get("id")
 
+        # Exclude internal args from our data
+        data = self.exclude_internal_args(data)
+
         # When state is present and our lookup did not find an existing object, create it
         if state == 'present' and not existing_object:
-            response = self.create_object(data)
-            changed = True
-        # When state is present and our lookup found an existing object, update it if needed
-        elif state == 'present' and existing_object and self.object_needs_update(data, existing_object):
-            response = self.update_object(data)
-            changed = True
-        # When state is absent and our lookup found an existing object, delete it
-        elif state == 'absent' and existing_object:
-            response = self.delete_object(existing_object.get("id"))
-            changed = True
+            return True, self.create_object(data)
 
-        return changed, response
+        # When state is present and our lookup found an existing object, update it if needs updating
+        if state == 'present' and existing_object and self.object_needs_update(data, existing_object):
+            return True, self.update_object(data)
+
+        # When the state is absent, and the object exists, delete it
+        if state == 'absent' and existing_object:
+            return True, self.delete_object(existing_object.get("id"))
+
+        # Otherwise, nothing needs doing.
+        return False, lookup
 
     @staticmethod
     def object_needs_update(new_object: dict, existing_object: dict) -> bool:
@@ -234,6 +241,22 @@ class BaseModule:
             query[lookup_field] = data.get(lookup_field)
         return query
 
+    @staticmethod
+    def exclude_internal_args(data: dict) -> dict:
+        """
+        Exclude internal arguments from the provided data dictionary.
+
+        Args:
+            data (dict): The original data dictionary containing potential internal arguments.
+
+        Returns:
+            dict: A dictionary with the internal arguments removed.
+        """
+        for arg in INTERNAL_ARGS:
+            del data[arg]
+        return data
+
+
     def validate_lookup_fields(self) -> None:
         """
         Check if the lookup fields defined in the module parameters are valid.
@@ -248,6 +271,10 @@ class BaseModule:
 
         # Ensure the lookup fields existing in the module schema
         for lookup_field in self.module.params.get('lookup_fields', []):
+            # Always allow 'id'
+            if lookup_field == 'id':
+                continue
+
             if lookup_field not in self.model_schema.get("fields", {}):
                 raise LookupError(
                     f"Lookup field '{lookup_field}' does not exist for model '{self.model_name}'."
@@ -264,6 +291,10 @@ class BaseModule:
             LookupError: If any field in the data does not exist in the model schema.
         """
         for field in data.keys():
+            # Skip internal args or 'id' (since it's not a schema defined field)
+            if field in INTERNAL_ARGS or field == 'id':
+                continue
+
             # Ensure this field exists in the model schema
             if field not in self.model_schema.get("fields", {}):
                 raise LookupError(

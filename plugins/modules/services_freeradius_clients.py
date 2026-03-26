@@ -243,46 +243,36 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "objects": {
-            "type": list,
+            "type": "list",
             "required": True,
-            "default": None,
-            "choices": [],
             "elements": "dict",
             "suboptions": {'addr': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The IP address or network of the RADIUS client(s) in CIDR notation. This is the IP of the NAS (switch, access point, firewall, router, etc.)'}, 'ip_version': {'required': False, 'type': 'str', 'default': 'ipaddr', 'choices': ['ipaddr', 'ipv6addr'], 'description': 'The IP version of the this Client.'}, 'description': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The description for this interface.'}, 'shortname': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'A short name for the client. This is generally the hostname of the NAS.'}, 'secret': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'This is the shared secret (password) which the NAS (switch, accesspoint, etc.) needs to communicate with the RADIUS server.'}, 'proto': {'required': False, 'type': 'str', 'default': 'udp', 'choices': ['udp', 'tcp'], 'description': 'The protocol the client uses.'}, 'nastype': {'required': False, 'type': 'str', 'default': 'other', 'choices': ['cisco', 'cvx', 'computone', 'digitro', 'livingston', 'juniper', 'max40xx', 'mikrotik', 'mikrotik_snmp', 'dot1x', 'other'], 'description': 'The NAS type of the client. This is used by checkrad.pl for simultaneous use checks.'}, 'msgauth': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'RFC5080 requires Message-Authenticator in Access-Request. But older NAS (switches or accesspoints) do not include that.'}, 'maxconn': {'required': False, 'type': 'int', 'default': 16, 'choices': [], 'description': 'Takes only effect if you use TCP as protocol. Limits the number of simultaneous TCP connections from a client.'}, 'naslogin': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'If supported by your NAS, you can use SNMP or finger for simultaneous-use checks instead of (s)radutmp file and accounting. Leave empty to choose (s)radutmp.'}, 'naspassword': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'If supported by your NAS, you can use SNMP or finger for simultaneous-use checks instead of (s)radutmp file and accounting. Leave empty to choose (s)radutmp.'}},
         },
@@ -302,15 +292,20 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
+    base_module = base.BaseModule('/api/v2/services/freeradius/clients', client)
     changed = True # TODO: determine if changes are needed by comparing existing objects to the provided list
     resp = base_module.replace_objects(
         data=module.params['objects'],
     )
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

@@ -55,10 +55,11 @@ options:
         description: The name of this interface group.
       members:
         required: false
-        type: str
+        type: list
         default: []
         choices: []
         description: The member interfaces to assign to this interface group.
+        elements: str
       descr:
         required: false
         type: str
@@ -81,7 +82,8 @@ EXAMPLES = '''
     api_password: pfsense
     objects:
     - ifname: example
-      members: example
+      members:
+      - example
       descr: example
 
 '''
@@ -115,8 +117,9 @@ data:
       returned: always
     members:
       description: The member interfaces to assign to this interface group.
-      type: str
+      type: list
       returned: always
+      elements: str
     descr:
       description: The description for this interface group.
       type: str
@@ -128,48 +131,38 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "objects": {
-            "type": list,
+            "type": "list",
             "required": True,
-            "default": None,
-            "choices": [],
             "elements": "dict",
-            "suboptions": {'ifname': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The name of this interface group.'}, 'members': {'required': False, 'type': 'str', 'default': [], 'choices': [], 'description': 'The member interfaces to assign to this interface group.'}, 'descr': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The description for this interface group.'}},
+            "suboptions": {'ifname': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The name of this interface group.'}, 'members': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The member interfaces to assign to this interface group.', 'elements': 'str'}, 'descr': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The description for this interface group.'}},
         },
     }
 
@@ -187,15 +180,20 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
+    base_module = base.BaseModule('/api/v2/interface/groups', client)
     changed = True # TODO: determine if changes are needed by comparing existing objects to the provided list
     resp = base_module.replace_objects(
         data=module.params['objects'],
     )
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

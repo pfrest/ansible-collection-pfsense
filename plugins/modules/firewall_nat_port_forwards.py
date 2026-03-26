@@ -350,46 +350,36 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "objects": {
-            "type": list,
+            "type": "list",
             "required": True,
-            "default": None,
-            "choices": [],
             "elements": "dict",
             "suboptions": {'interface': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The interface this port forward rule applies to.'}, 'ipprotocol': {'required': False, 'type': 'str', 'default': 'inet', 'choices': ['inet', 'inet6', 'inet46'], 'description': 'The IP protocol this port forward rule should match.'}, 'protocol': {'required': True, 'type': 'str', 'default': None, 'choices': ['any', 'tcp', 'udp', 'tcp/udp', 'icmp', 'esp', 'ah', 'gre', 'ipv6', 'igmp', 'pim', 'ospf'], 'description': 'The IP/transport protocol this port forward rule should match.'}, 'source': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': "The source address this port forward rule applies to. Valid value options are: an existing interface, an IP address, a subnet CIDR, an existing alias, `any`, `(self)`, `l2tp`, `pppoe`. The context of this address can be inverted by prefixing the value with `!`. For interface values, the `:ip` modifier can be appended to the value to use the interface's IP address instead of its entire subnet."}, 'source_port': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The source port this port forward rule applies to. Set to `null` to allow any source port. Valid options are: a TCP/UDP port number, a TCP/UDP port range separated by `:`, an existing port type firewall alias'}, 'destination': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': "The destination address this rule applies to. Valid value options are: an existing interface, an IP address, a subnet CIDR, an existing alias, `any`, `(self)`, `l2tp`, `pppoe`. The context of this address can be inverted by prefixing the value with `!`. For interface values, the `:ip` modifier can be appended to the value to use the interface's IP address instead of its entire subnet."}, 'destination_port': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The destination port this port forward rule applies to. Set to `null` to allow any destination port. Valid options are: a TCP/UDP port number, a TCP/UDP port range separated by `:`, an existing port type firewall alias'}, 'target': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': "The IP address or alias of the internal host to forward matching traffic to. Valid value options are: an IP address, an existing alias. For interface values, the `:ip` modifier can be appended to the value to use the interface's IP address instead of its entire subnet."}, 'local_port': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The port on the internal host to forward matching traffic to. In most cases, this must match the `destination_port` value. In the event that the `desintation_port` is a range, this value should be the first value in that range. Valid options are: a TCP/UDP port number, an existing port type firewall alias'}, 'disabled': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Disables this port forward rule.'}, 'nordr': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Disables redirection for traffic matching this rule.'}, 'nosync': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Prevents this port forward rule from being synced to non-primary CARP members.'}, 'descr': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'A description for this port forward rule.'}, 'natreflection': {'required': False, 'type': 'str', 'default': None, 'choices': ['enable', 'disable', 'purenat'], 'description': 'The NAT reflection mode to use for traffic matching this port forward rule. Set to `null` to use the system default.'}, 'associated_rule_id': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The associated firewall rule mode. Use an empty string to require a separate firewall rule to be created to pass traffic matching this port forward rule. Use `new` to create a new associated firewall rule to pass traffic matching this port forward rule. Use `pass` to automatically pass traffic matching this port forward rule without the need for a firewall rule. Otherwise, you can specify the `associated_rule_id` of an existing firewall rule to associate with this port forward rule.'}},
         },
@@ -409,15 +399,20 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
+    base_module = base.BaseModule('/api/v2/firewall/nat/port_forwards', client)
     changed = True # TODO: determine if changes are needed by comparing existing objects to the provided list
     resp = base_module.replace_objects(
         data=module.params['objects'],
     )
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

@@ -135,28 +135,32 @@ options:
     description: The type of certificate to generate.
   dn_dns_sans:
     required: false
-    type: str
+    type: list
     default: []
     choices: []
     description: The DNS Subject Alternative Names (SANs) for the certificate.
+    elements: str
   dn_email_sans:
     required: false
-    type: str
+    type: list
     default: []
     choices: []
     description: The Email Subject Alternative Names (SANs) for the certificate.
+    elements: str
   dn_ip_sans:
     required: false
-    type: str
+    type: list
     default: []
     choices: []
     description: The IP Subject Alternative Names (SANs) for the certificate.
+    elements: str
   dn_uri_sans:
     required: false
-    type: str
+    type: list
     default: []
     choices: []
     description: The URI Subject Alternative Names (SANs) for the certificate.
+    elements: str
 author:
 - Jared Hendrickson (@jaredhendrickson13)
 
@@ -258,20 +262,24 @@ data:
       returned: always
     dn_dns_sans:
       description: The DNS Subject Alternative Names (SANs) for the certificate.
-      type: str
+      type: list
       returned: always
+      elements: str
     dn_email_sans:
       description: The Email Subject Alternative Names (SANs) for the certificate.
-      type: str
+      type: list
       returned: always
+      elements: str
     dn_ip_sans:
       description: The IP Subject Alternative Names (SANs) for the certificate.
-      type: str
+      type: list
       returned: always
+      elements: str
     dn_uri_sans:
       description: The URI Subject Alternative Names (SANs) for the certificate.
-      type: str
+      type: list
       returned: always
+      elements: str
     csr:
       description: The X509 certificate signing request string. You will need to provide
         this to a certificate authority to sign the certificate.
@@ -288,142 +296,124 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "descr": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "keytype": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
             "choices": ['RSA', 'ECDSA'],
         },
         "keylen": {
-            "type": int,
+            "type": "int",
             "required": True,
             "default": None,
             "choices": [1024, 2048, 3072, 4096, 6144, 7680, 8192, 15360, 16384],
         },
         "ecname": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "digest_alg": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "lifetime": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 3650,
-            "choices": [],
         },
         "dn_commonname": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "dn_country": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "dn_state": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "dn_city": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "dn_organization": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "dn_organizationalunit": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "type": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'user',
             "choices": ['server', 'user'],
         },
         "dn_dns_sans": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
+            "elements": "str",
         },
         "dn_email_sans": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
+            "elements": "str",
         },
         "dn_ip_sans": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
+            "elements": "str",
         },
         "dn_uri_sans": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
+            "elements": "str",
         },
     }
 
@@ -441,12 +431,17 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
+    base_module = base.BaseModule('/api/v2/system/certificate/signing_request', client)
     changed, resp = base_module.execute_action(data=module.params)
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

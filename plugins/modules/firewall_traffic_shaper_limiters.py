@@ -804,46 +804,36 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "objects": {
-            "type": list,
+            "type": "list",
             "required": True,
-            "default": None,
-            "choices": [],
             "elements": "dict",
             "suboptions": {'name': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The unique name for this limiter.'}, 'enabled': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables this limiter and its child queues.'}, 'mask': {'required': False, 'type': 'str', 'default': 'none', 'choices': ['none', 'srcaddress', 'dstaddress'], 'description': 'If `source` or `destination` slots is chosen a dynamic pipe with the bandwidth, delay, packet loss and queue size given above will be created for each source/destination IP address encountered, respectively. This makes it possible to easily specify bandwidth limits per host or subnet.'}, 'maskbits': {'required': False, 'type': 'int', 'default': 32, 'choices': [], 'description': 'The IPv4 mask bits to use when determine the scope of the dynamic pipe for IPv4 traffic.'}, 'maskbitsv6': {'required': False, 'type': 'int', 'default': 128, 'choices': [], 'description': 'The IPv6 mask bits to use when determine the scope of the dynamic pipe for IPv4 traffic.'}, 'qlimit': {'required': False, 'type': 'int', 'default': None, 'choices': [], 'description': "The length of the limiter's queue which the scheduler and AQM are responsible for. Set to `null` to assume default."}, 'ecn': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enable or disable ECN. ECN sets a reserved TCP flag when the queue is nearing or exceeding capacity. Not all AQMs or schedulers support this.'}, 'description': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The verbose description for this limiter.'}, 'aqm': {'required': True, 'type': 'str', 'default': None, 'choices': ['droptail', 'codel', 'pie', 'red', 'gred'], 'description': 'The Active Queue Management (AQM) algorithm to use for this limiter. AQM is the intelligent drop of network packets inside the limiter, when it becomes full or gets close to becoming full, with the goal of reducing network congestion.'}, 'sched': {'required': True, 'type': 'str', 'default': None, 'choices': ['wf2q+', 'fifo', 'qfq', 'rr', 'prio', 'fq_codel', 'fq_pie'], 'description': "The scheduler to use for this limiter. The scheduler manages the sequence of network packets in the limiter's queue."}, 'param_codel_target': {'required': False, 'type': 'int', 'default': 0, 'choices': [], 'description': 'The value for the CoDel target parameter.'}, 'param_codel_interval': {'required': False, 'type': 'int', 'default': 0, 'choices': [], 'description': 'The value for the CoDel interval parameter.'}, 'param_pie_target': {'required': False, 'type': 'int', 'default': 0, 'choices': [], 'description': 'The value for the PIE target parameter.'}, 'param_pie_tupdate': {'required': False, 'type': 'int', 'default': 0, 'choices': [], 'description': 'The value for the PIE tupdate parameter.'}, 'param_pie_alpha': {'required': False, 'type': 'int', 'default': 0, 'choices': [], 'description': 'The value for the PIE alpha parameter.'}, 'param_pie_beta': {'required': False, 'type': 'int', 'default': 0, 'choices': [], 'description': 'The value for the PIE beta parameter.'}, 'param_pie_max_burst': {'required': False, 'type': 'int', 'default': 0, 'choices': [], 'description': 'The value for the PIE max_burst parameter.'}, 'param_pie_max_ecnth': {'required': False, 'type': 'int', 'default': 0, 'choices': [], 'description': 'The value for the PIE ecnth parameter.'}, 'pie_onoff': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enable or disable turning PIE on and off depending on queue load.'}, 'pie_capdrop': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enable or disable cap drop adjustment.'}, 'pie_qdelay': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Set queue delay type to timestamps (true) or departure rate estimation (false).'}, 'pie_pderand': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enable or disable drop probability de-randomisation.'}, 'param_red_w_q': {'required': False, 'type': 'int', 'default': 1, 'choices': [], 'description': 'The value for the RED w_q parameter.'}, 'param_red_min_th': {'required': False, 'type': 'int', 'default': 0, 'choices': [], 'description': 'The value for the RED min_th parameter.'}, 'param_red_max_th': {'required': False, 'type': 'int', 'default': 1, 'choices': [], 'description': 'The value for the RED max_th parameter.'}, 'param_red_max_p': {'required': False, 'type': 'int', 'default': 1, 'choices': [], 'description': 'The value for the RED max_p parameter.'}, 'param_gred_w_q': {'required': False, 'type': 'int', 'default': 1, 'choices': [], 'description': 'The value for the GRED w_q parameter.'}, 'param_gred_min_th': {'required': False, 'type': 'int', 'default': 0, 'choices': [], 'description': 'The value for the GRED min_th parameter.'}, 'param_gred_max_th': {'required': False, 'type': 'int', 'default': 1, 'choices': [], 'description': 'The value for the GRED max_th parameter.'}, 'param_gred_max_p': {'required': False, 'type': 'int', 'default': 1, 'choices': [], 'description': 'The value for the GRED max_p parameter.'}, 'param_fq_codel_target': {'required': False, 'type': 'int', 'default': 0, 'choices': [], 'description': 'The value for the FQ CoDel target parameter.'}, 'param_fq_codel_interval': {'required': False, 'type': 'int', 'default': 0, 'choices': [], 'description': 'The value for the FQ CoDel interval parameter.'}, 'param_fq_codel_quantum': {'required': False, 'type': 'int', 'default': None, 'choices': [], 'description': 'The value for the FQ CoDel quantum parameter.'}, 'param_fq_codel_limit': {'required': False, 'type': 'int', 'default': None, 'choices': [], 'description': 'The value for the FQ CoDel limit parameter.'}, 'param_fq_codel_flows': {'required': False, 'type': 'int', 'default': None, 'choices': [], 'description': 'The value for the FQ CoDel flows parameter.'}, 'param_fq_pie_target': {'required': False, 'type': 'int', 'default': 0, 'choices': [], 'description': 'The value for the FQ PIE target parameter.'}, 'param_fq_pie_tupdate': {'required': False, 'type': 'int', 'default': 0, 'choices': [], 'description': 'The value for the FQ PIE tupdate parameter.'}, 'param_fq_pie_alpha': {'required': False, 'type': 'int', 'default': 0, 'choices': [], 'description': 'The value for the FQ PIE alpha parameter.'}, 'param_fq_pie_beta': {'required': False, 'type': 'int', 'default': 0, 'choices': [], 'description': 'The value for the FQ PIE beta parameter.'}, 'param_fq_pie_max_burst': {'required': False, 'type': 'int', 'default': 0, 'choices': [], 'description': 'The value for the FQ PIE max_burst parameter.'}, 'param_fq_pie_max_ecnth': {'required': False, 'type': 'int', 'default': 0, 'choices': [], 'description': 'The value for the FQ PIE ecnth parameter.'}, 'param_fq_pie_quantum': {'required': False, 'type': 'int', 'default': None, 'choices': [], 'description': 'The value for the FQ PIE quantum parameter.'}, 'param_fq_pie_limit': {'required': False, 'type': 'int', 'default': None, 'choices': [], 'description': 'The value for the FQ PIE limit parameter.'}, 'param_fq_pie_flows': {'required': False, 'type': 'int', 'default': None, 'choices': [], 'description': 'The value for the FQ PIE flows parameter.'}, 'delay': {'required': False, 'type': 'int', 'default': None, 'choices': [], 'description': 'The amount of delay (in milliseconds) added to traffic passing through this limiter.'}, 'plr': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The amount of packet loss (in percentage) added to traffic passing through the limiter.'}, 'buckets': {'required': False, 'type': 'int', 'default': None, 'choices': [], 'description': "The limiter's bucket size (slots)."}, 'bandwidth': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The bandwidth profiles for this limiter.'}, 'queue': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The child queues for this limiter.'}},
         },
@@ -863,15 +853,20 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
+    base_module = base.BaseModule('/api/v2/firewall/traffic_shaper/limiters', client)
     changed = True # TODO: determine if changes are needed by comparing existing objects to the provided list
     resp = base_module.replace_objects(
         data=module.params['objects'],
     )
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

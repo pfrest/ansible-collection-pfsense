@@ -225,46 +225,36 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "objects": {
-            "type": list,
+            "type": "list",
             "required": True,
-            "default": None,
-            "choices": [],
             "elements": "dict",
             "suboptions": {'username': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The username for this user.'}, 'password': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The password for this username.'}, 'password_encryption': {'required': False, 'type': 'str', 'default': 'Cleartext-Password', 'choices': ['Cleartext-Password', 'MD5-Password', 'MD5-Password-hashed', 'NT-Password-hashed'], 'description': 'The encryption method for the password.'}, 'motp_enable': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enable or disable the use of Mobile One-Time Password (MOTP) for this user.'}, 'motp_authmethod': {'required': False, 'type': 'str', 'default': 'googleauth', 'choices': ['motp', 'googleauth'], 'description': 'The authentication method for the Mobile One-Time Password (MOTP).'}, 'motp_secret': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The secret for the Mobile One-Time Password (MOTP).'}, 'motp_pin': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The PIN for the Mobile One-Time Password (MOTP). It must be exactly 4 digits.'}, 'motp_offset': {'required': False, 'type': 'int', 'default': 0, 'choices': [], 'description': 'The timezone offset for this user.'}, 'description': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'A description for this user.'}, 'framed_ip_address': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'Framed-IP-Address MUST be supported by NAS. If the OpenVPN server uses a subnet style Topology the RADIUS server MUST also send back an appropriate Framed-IP-Netmask value matching the VPN Tunnel Network.'}, 'framed_ip_netmask': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'Framed-IP-Netmask MUST be supported by NAS'}},
         },
@@ -284,15 +274,20 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
+    base_module = base.BaseModule('/api/v2/services/freeradius/users', client)
     changed = True # TODO: determine if changes are needed by comparing existing objects to the provided list
     resp = base_module.replace_objects(
         data=module.params['objects'],
     )
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

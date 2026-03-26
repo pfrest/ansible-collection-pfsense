@@ -50,10 +50,11 @@ options:
     description: Enables or disables the DHCP relay.
   interface:
     required: false
-    type: str
+    type: list
     default: []
     choices: []
     description: The downstream interfaces to listen on for DHCP requests.
+    elements: str
   agentoption:
     required: false
     type: bool
@@ -70,10 +71,11 @@ options:
       and started in MASTER status.
   server:
     required: true
-    type: str
+    type: list
     default: null
     choices: []
     description: The IPv4 addresses of the DHCP server to relay requests to.
+    elements: str
 author:
 - Jared Hendrickson (@jaredhendrickson13)
 
@@ -85,7 +87,8 @@ EXAMPLES = '''
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
-    server: example
+    server:
+    - example
 
 '''
 
@@ -117,8 +120,9 @@ data:
       returned: always
     interface:
       description: The downstream interfaces to listen on for DHCP requests.
-      type: str
+      type: list
       returned: always
+      elements: str
     agentoption:
       description: Enables or disables appending the circuit ID (interface number)
         and the agent ID to the DHCP request.
@@ -131,8 +135,9 @@ data:
       returned: always
     server:
       description: The IPv4 addresses of the DHCP server to relay requests to.
-      type: str
+      type: list
       returned: always
+      elements: str
 
 '''
 
@@ -140,70 +145,59 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "enable": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "interface": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
+            "elements": "str",
         },
         "agentoption": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "carpstatusvip": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'none',
-            "choices": [],
         },
         "server": {
-            "type": str,
+            "type": "list",
             "required": True,
             "default": None,
-            "choices": [],
+            "elements": "str",
         },
     }
 
@@ -221,11 +215,16 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
+    base_module = base.BaseModule('/api/v2/services/dhcp_relay', client)
+
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
 
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

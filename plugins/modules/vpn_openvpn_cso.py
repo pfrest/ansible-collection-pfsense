@@ -52,12 +52,9 @@ options:
   lookup_fields:
     type: list
     elements: str
-    required: false
-    default: null
+    required: true
     description: The list of fields to use when looking up existing resources. This
-      should be a list of field names that uniquely identify a resource. If not specified,
-      the module will attempt to use the 'id' field if it exists, or all fields marked
-      as 'unique' in the schema.
+      should be a list of field names that uniquely identify a resource.
   common_name:
     required: true
     type: str
@@ -87,11 +84,12 @@ options:
     description: The description for this client specific override.
   server_list:
     required: false
-    type: str
+    type: list
     default: []
     choices: []
     description: The OpenVPN servers that will utilize this override. When no servers
       are specified, the override will apply to all servers.
+    elements: str
   tunnel_network:
     required: false
     type: str
@@ -108,32 +106,36 @@ options:
       the server and client hosts.
   local_network:
     required: false
-    type: str
+    type: list
     default: []
     choices: []
     description: The IPv4 server-side networks that will be accessible from this particular
       client.
+    elements: str
   local_networkv6:
     required: false
-    type: str
+    type: list
     default: []
     choices: []
     description: the IPv6 server-side networks that will be accessible from this particular
       client.
+    elements: str
   remote_network:
     required: false
-    type: str
+    type: list
     default: []
     choices: []
     description: The IPv4 client-side networks that will be routed to this client
       specifically using iroute, so that a site-to-site VPN can be established.
+    elements: str
   remote_networkv6:
     required: false
-    type: str
+    type: list
     default: []
     choices: []
     description: The IPv6 client-side networks that will be routed to this client
       specifically using iroute, so that a site-to-site VPN can be established.
+    elements: str
   gwredir:
     required: false
     type: bool
@@ -149,7 +151,7 @@ options:
       client settings.
   remove_options:
     required: false
-    type: str
+    type: list
     default: []
     choices:
     - remove_route
@@ -166,6 +168,7 @@ options:
     - remove_netbios_scope
     - remove_wins
     description: Specifies the push-remove options to apply to the client
+    elements: str
   dns_domain:
     required: false
     type: str
@@ -247,10 +250,11 @@ options:
     description: The secondary WINS server to provide to the client.
   custom_options:
     required: false
-    type: str
+    type: list
     default: []
     choices: []
     description: Additional OpenVPN options to add for this client.
+    elements: str
 author:
 - Jared Hendrickson (@jaredhendrickson13)
 
@@ -318,8 +322,9 @@ data:
     server_list:
       description: The OpenVPN servers that will utilize this override. When no servers
         are specified, the override will apply to all servers.
-      type: str
+      type: list
       returned: always
+      elements: str
     tunnel_network:
       description: The IPv4 virtual network used for private communications between
         the server and client hosts.
@@ -333,23 +338,27 @@ data:
     local_network:
       description: The IPv4 server-side networks that will be accessible from this
         particular client.
-      type: str
+      type: list
       returned: always
+      elements: str
     local_networkv6:
       description: the IPv6 server-side networks that will be accessible from this
         particular client.
-      type: str
+      type: list
       returned: always
+      elements: str
     remote_network:
       description: The IPv4 client-side networks that will be routed to this client
         specifically using iroute, so that a site-to-site VPN can be established.
-      type: str
+      type: list
       returned: always
+      elements: str
     remote_networkv6:
       description: The IPv6 client-side networks that will be routed to this client
         specifically using iroute, so that a site-to-site VPN can be established.
-      type: str
+      type: list
       returned: always
+      elements: str
     gwredir:
       description: Enable forcing all client-generated traffic through the tunnel.
       type: bool
@@ -361,8 +370,9 @@ data:
       returned: always
     remove_options:
       description: Specifies the push-remove options to apply to the client
-      type: str
+      type: list
       returned: always
+      elements: str
     dns_domain:
       description: The default domain to provide to the client.
       type: str
@@ -415,8 +425,9 @@ data:
       returned: always
     custom_options:
       description: Additional OpenVPN options to add for this client.
-      type: str
+      type: list
       returned: always
+      elements: str
 
 '''
 
@@ -424,216 +435,187 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "state": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'present',
             "choices": ['present', 'absent'],
         },
         "lookup_fields": {
-            "type": list,
-            "required": False,
-            "default": None,
-            "choices": [],
+            "type": "list",
+            "required": True,
             "elements": "str",
-            "suboptions": {},
         },
         "common_name": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "disable": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "block": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "description": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "server_list": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
+            "elements": "str",
         },
         "tunnel_network": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "tunnel_networkv6": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "local_network": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
+            "elements": "str",
         },
         "local_networkv6": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
+            "elements": "str",
         },
         "remote_network": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
+            "elements": "str",
         },
         "remote_networkv6": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
+            "elements": "str",
         },
         "gwredir": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "push_reset": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "remove_options": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": [],
             "choices": ['remove_route', 'remove_iroute', 'remove_redirect_gateway', 'remove_inactive', 'remove_ping', 'remove_ping_action', 'remove_dnsdomain', 'remove_dnsservers', 'remove_blockoutsidedns', 'remove_ntpservers', 'remove_netbios_ntype', 'remove_netbios_scope', 'remove_wins'],
+            "elements": "str",
         },
         "dns_domain": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "dns_server1": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "dns_server2": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "dns_server3": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "dns_server4": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "ntp_server1": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "ntp_server2": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "netbios_enable": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "netbios_ntype": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 0,
             "choices": [0, 1, 2, 4, 8],
         },
         "netbios_scope": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "wins_server1": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "wins_server2": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "custom_options": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
+            "elements": "str",
         },
     }
 
@@ -651,16 +633,21 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
-    changed, data = base_module.set_object_state(
+    base_module = base.BaseModule('/api/v2/vpn/openvpn/cso', client)
+    changed, resp = base_module.set_object_state(
         state=module.params['state'],
         data=module.params,
         lookup_fields=module.params['lookup_fields']
     )
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

@@ -2,7 +2,8 @@
 Module containing schema-related utilities for Ansible modules.
 """
 import json
-import pathlib
+
+from .schema_dict import SCHEMA_DICT
 
 
 class NativeSchema:
@@ -13,10 +14,7 @@ class NativeSchema:
         """
         Initialize the NativeSchema object and fetch the schema.
         """
-        # Load the embedded schema from the JSON file included in the collection.
-        file_path = pathlib.Path(__file__).parent.joinpath("assets", "schema.json")
-        with open(file_path, 'r') as f:
-            self.full_schema = json.load(f)
+        self.full_schema = SCHEMA_DICT
     
     def get_endpoint_schema(self, endpoint: str) -> dict:
         """

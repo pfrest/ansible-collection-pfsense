@@ -105,7 +105,6 @@ class RestClient:
             verify=self.validate_certs,
             timeout=self.timeout,
         )
-        response.raise_for_status()
         return response
     
     def post(self, endpoint: str, data: dict = None) -> requests.Response:
@@ -129,7 +128,6 @@ class RestClient:
             verify=self.validate_certs,
             timeout=self.timeout,
         )
-        response.raise_for_status()
         return response
     
     def patch(self, endpoint: str, data: dict = None) -> requests.Response:
@@ -153,7 +151,6 @@ class RestClient:
             verify=self.validate_certs,
             timeout=self.timeout,
         )
-        response.raise_for_status()
         return response
     
     def put(self, endpoint: str, data: dict|list = None) -> requests.Response:
@@ -177,7 +174,6 @@ class RestClient:
             verify=self.validate_certs,
             timeout=self.timeout,
         )
-        response.raise_for_status()
         return response
     
     def delete(self, endpoint: str, params: dict = None) -> requests.Response:
@@ -201,6 +197,5 @@ class RestClient:
             verify=self.validate_certs,
             timeout=self.timeout,
         )
-        response.raise_for_status()
         return response
     

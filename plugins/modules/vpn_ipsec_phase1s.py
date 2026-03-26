@@ -526,46 +526,36 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "objects": {
-            "type": list,
+            "type": "list",
             "required": True,
-            "default": None,
-            "choices": [],
             "elements": "dict",
             "suboptions": {'descr': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'A description for this IPsec phase 1 entry.'}, 'disabled': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Disables this IPsec phase 1 entry.'}, 'iketype': {'required': True, 'type': 'str', 'default': None, 'choices': ['ikev1', 'ikev2', 'auto'], 'description': 'The IKE protocol version this phase 1 entry will use.'}, 'mode': {'required': True, 'type': 'str', 'default': None, 'choices': ['main', 'aggressive'], 'description': 'The IKEv1 negotiation mode this phase 1 entry will use.'}, 'protocol': {'required': True, 'type': 'str', 'default': None, 'choices': ['inet', 'inet6', 'both'], 'description': 'The IP version this phase 1 entry will use.'}, 'interface': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The interface for the local endpoint of this phase 1 entry. This should be an interface that is reachable by the remote peer.'}, 'remote_gateway': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The IP address or hostname of the remote gateway.'}, 'authentication_method': {'required': True, 'type': 'str', 'default': None, 'choices': ['pre_shared_key', 'cert'], 'description': 'The IPsec authentication method this tunnel will use.'}, 'myid_type': {'required': True, 'type': 'str', 'default': None, 'choices': ['myaddress', 'address', 'fqdn', 'user_fqdn', 'asn1dn', 'keyid tag', 'dyn_dns', 'auto'], 'description': 'The identifier type used by the local end of the tunnel.'}, 'myid_data': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The identifier value used by the local end of the tunnel. This must be a value that corresponds with the current `myid_type` value.'}, 'peerid_type': {'required': True, 'type': 'str', 'default': None, 'choices': ['any', 'peeraddress', 'address', 'fqdn', 'user_fqdn', 'asn1dn', 'keyid tag', 'dyn_dns', 'auto'], 'description': 'The identifier type used by the remote end of the tunnel.'}, 'peerid_data': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The identifier value used by the remote end of the tunnel. This must be a value that corresponds with the current `peerid_type` value.'}, 'pre_shared_key': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The Pre-Shared Key (PSK) value. This key must match on both peers and should be long and random to protect the tunnel and its contents. A weak Pre-Shared Key can lead to a tunnel compromise.'}, 'certref': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The certificate which identifies this system. The certificate must have at least one non-wildcard SAN.'}, 'caref': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The certificate authority to use when validating the peer certificate.'}, 'rekey_time': {'required': False, 'type': 'int', 'default': 25920, 'choices': [], 'description': 'The amount of time (in seconds) before an child SA establishes new keys.'}, 'reauth_time': {'required': False, 'type': 'int', 'default': 0, 'choices': [], 'description': 'The amount of time (in seconds) before an child SA is torn down and recreated from scratch, including authentication.'}, 'rand_time': {'required': False, 'type': 'int', 'default': 2880, 'choices': [], 'description': 'A random value up to this amount will be subtracted from the `rekey_time` to avoid simultaneous renegotiation.'}, 'lifetime': {'required': False, 'type': 'int', 'default': 28800, 'choices': [], 'description': 'The hard child SA lifetime (in seconds) after which the child SA will be expired.'}, 'startaction': {'required': False, 'type': 'str', 'default': '', 'choices': ['', 'none', 'start', 'trap'], 'description': 'The option used to force specific initiation/responder behavior for child SA (P2) entries.'}, 'closeaction': {'required': False, 'type': 'str', 'default': '', 'choices': ['', 'none', 'start', 'trap'], 'description': 'The option used to control the behavior when the remote peer unexpectedly closes a child SA (P2)'}, 'nat_traversal': {'required': False, 'type': 'str', 'default': 'on', 'choices': ['on', 'force'], 'description': 'The option used to enable the use of NAT-T (i.e. the encapsulation of ESP in UDP packets) if needed, which can help with clients that are behind restrictive firewalls.'}, 'gw_duplicates': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables the allowance of multiple phase 1 configurations with the same remote gateway endpoint.'}, 'mobike': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables the use of MOBIKE for this tunnel.'}, 'splitconn': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables the use split connection entries with multiple phase 2 configurations. Required for remote endpoints that support only a single traffic selector per child SA.'}, 'prfselect_enable': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables manual Pseudo-Random Function (PRF) selection.'}, 'ikeport': {'required': False, 'type': 'str', 'default': '500', 'choices': [], 'description': 'The UDP port for IKE on the remote gateway. Valid options are: a TCP/UDP port number'}, 'nattport': {'required': False, 'type': 'str', 'default': '4500', 'choices': [], 'description': 'The UDP port for NAT-T on the remote gateway. Valid options are: a TCP/UDP port number'}, 'dpd_delay': {'required': False, 'type': 'int', 'default': 10, 'choices': [], 'description': 'The delay (in seconds) between sending peer acknowledgement messages.'}, 'dpd_maxfail': {'required': False, 'type': 'int', 'default': 5, 'choices': [], 'description': 'The number of consecutive failures allowed before disconnecting.'}, 'encryption': {'required': True, 'type': 'list', 'default': None, 'choices': [], 'description': 'The encryption algorithms supported by this P1 encryption.'}},
         },
@@ -585,15 +575,20 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
+    base_module = base.BaseModule('/api/v2/vpn/ipsec/phase1s', client)
     changed = True # TODO: determine if changes are needed by comparing existing objects to the provided list
     resp = base_module.replace_objects(
         data=module.params['objects'],
     )
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

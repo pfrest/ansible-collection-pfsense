@@ -119,10 +119,11 @@ options:
           instead of local files.
       pkcs11providers:
         required: true
-        type: str
+        type: list
         default: null
         choices: []
         description: The client local path to the PKCS#11 provider(s) (DLL, module)
+        elements: str
       pkcs11id:
         required: true
         type: str
@@ -228,7 +229,8 @@ EXAMPLES = '''
     api_password: pfsense
     objects:
     - server: 1
-      pkcs11providers: example
+      pkcs11providers:
+      - example
       pkcs11id: example
       pass: example
       proxyaddr: example
@@ -308,8 +310,9 @@ data:
       returned: always
     pkcs11providers:
       description: The client local path to the PKCS#11 provider(s) (DLL, module)
-      type: str
+      type: list
       returned: always
+      elements: str
     pkcs11id:
       description: The object's ID on the PKCS#11 device.
       type: str
@@ -372,48 +375,38 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "objects": {
-            "type": list,
+            "type": "list",
             "required": True,
-            "default": None,
-            "choices": [],
             "elements": "dict",
-            "suboptions": {'server': {'required': True, 'type': 'int', 'default': None, 'choices': [], 'description': 'The VPN ID of the OpenVPN server this client export corresponds to.'}, 'useaddr': {'required': False, 'type': 'str', 'default': 'serveraddr', 'choices': ['serveraddr', 'servermagic', 'servermagichost', 'serverhostname', 'other'], 'description': 'The method to use for the OpenVPN server address listed in the config export.'}, 'useaddr_hostname': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The hostname to use for the OpenVPN server address.'}, 'verifyservercn': {'required': False, 'type': 'str', 'default': 'auto', 'choices': ['auto', 'none'], 'description': 'Verify the server certificate Common Name (CN) when the client connects.'}, 'blockoutsidedns': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Block access to DNS servers except across OpenVPN while connected, forcing clients to use only VPN DNS servers.'}, 'legacy': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Do not include OpenVPN 2.5 and later settings in the client configuration.'}, 'silent': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Create Windows installer for unattended deploy.'}, 'bindmode': {'required': False, 'type': 'str', 'default': 'nobind', 'choices': ['nobind', 'lport0', 'bind'], 'description': 'The port binding mode to use. If OpenVPN client binds to the default OpenVPN port (1194), two clients may not run concurrently.'}, 'usepkcs11': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Use PKCS#11 storage device (cryptographic token, HSM, smart card) instead of local files.'}, 'pkcs11providers': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The client local path to the PKCS#11 provider(s) (DLL, module)'}, 'pkcs11id': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': "The object's ID on the PKCS#11 device."}, 'usetoken': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Use Microsoft Certificate Storage instead of local files.'}, 'usepass': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Use a password to protect the PKCS#12 file contents or key in Viscosity bundles.'}, 'pass': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'Password used to protect the certificate file contents.'}, 'p12encryption': {'required': False, 'type': 'str', 'default': 'high', 'choices': ['high', 'low', 'legacy'], 'description': 'The level of encryption to use when exporting a PKCS#12 archive. Encryption support varies by Operating System and program'}, 'useproxy': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Use proxy to communicate with the OpenVPN server.'}, 'useproxytype': {'required': False, 'type': 'str', 'default': 'http', 'choices': ['http', 'socks'], 'description': 'The proxy type to use.'}, 'proxyaddr': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The IP address or hostname of the proxy server to use.'}, 'proxyport': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The port where the proxy server is listening. Valid options are: a TCP/UDP port number'}, 'useproxypass': {'required': True, 'type': 'str', 'default': None, 'choices': ['none', 'basic', 'ntlm'], 'description': 'The type of authentication to use for the proxy server.'}, 'proxyuser': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The username to use to authenticate with the proxy server.'}, 'proxypass': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The password to use to authenticate with the proxy server.'}, 'advancedoptions': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'Additional options to add to the OpenVPN client export configuration.'}},
+            "suboptions": {'server': {'required': True, 'type': 'int', 'default': None, 'choices': [], 'description': 'The VPN ID of the OpenVPN server this client export corresponds to.'}, 'useaddr': {'required': False, 'type': 'str', 'default': 'serveraddr', 'choices': ['serveraddr', 'servermagic', 'servermagichost', 'serverhostname', 'other'], 'description': 'The method to use for the OpenVPN server address listed in the config export.'}, 'useaddr_hostname': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The hostname to use for the OpenVPN server address.'}, 'verifyservercn': {'required': False, 'type': 'str', 'default': 'auto', 'choices': ['auto', 'none'], 'description': 'Verify the server certificate Common Name (CN) when the client connects.'}, 'blockoutsidedns': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Block access to DNS servers except across OpenVPN while connected, forcing clients to use only VPN DNS servers.'}, 'legacy': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Do not include OpenVPN 2.5 and later settings in the client configuration.'}, 'silent': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Create Windows installer for unattended deploy.'}, 'bindmode': {'required': False, 'type': 'str', 'default': 'nobind', 'choices': ['nobind', 'lport0', 'bind'], 'description': 'The port binding mode to use. If OpenVPN client binds to the default OpenVPN port (1194), two clients may not run concurrently.'}, 'usepkcs11': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Use PKCS#11 storage device (cryptographic token, HSM, smart card) instead of local files.'}, 'pkcs11providers': {'required': True, 'type': 'list', 'default': None, 'choices': [], 'description': 'The client local path to the PKCS#11 provider(s) (DLL, module)', 'elements': 'str'}, 'pkcs11id': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': "The object's ID on the PKCS#11 device."}, 'usetoken': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Use Microsoft Certificate Storage instead of local files.'}, 'usepass': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Use a password to protect the PKCS#12 file contents or key in Viscosity bundles.'}, 'pass': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'Password used to protect the certificate file contents.'}, 'p12encryption': {'required': False, 'type': 'str', 'default': 'high', 'choices': ['high', 'low', 'legacy'], 'description': 'The level of encryption to use when exporting a PKCS#12 archive. Encryption support varies by Operating System and program'}, 'useproxy': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Use proxy to communicate with the OpenVPN server.'}, 'useproxytype': {'required': False, 'type': 'str', 'default': 'http', 'choices': ['http', 'socks'], 'description': 'The proxy type to use.'}, 'proxyaddr': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The IP address or hostname of the proxy server to use.'}, 'proxyport': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The port where the proxy server is listening. Valid options are: a TCP/UDP port number'}, 'useproxypass': {'required': True, 'type': 'str', 'default': None, 'choices': ['none', 'basic', 'ntlm'], 'description': 'The type of authentication to use for the proxy server.'}, 'proxyuser': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The username to use to authenticate with the proxy server.'}, 'proxypass': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The password to use to authenticate with the proxy server.'}, 'advancedoptions': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'Additional options to add to the OpenVPN client export configuration.'}},
         },
     }
 
@@ -431,15 +424,20 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
+    base_module = base.BaseModule('/api/v2/vpn/openvpn/client_export/configs', client)
     changed = True # TODO: determine if changes are needed by comparing existing objects to the provided list
     resp = base_module.replace_objects(
         data=module.params['objects'],
     )
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

@@ -52,12 +52,9 @@ options:
   lookup_fields:
     type: list
     elements: str
-    required: false
-    default: null
+    required: true
     description: The list of fields to use when looking up existing resources. This
-      should be a list of field names that uniquely identify a resource. If not specified,
-      the module will attempt to use the 'id' field if it exists, or all fields marked
-      as 'unique' in the schema.
+      should be a list of field names that uniquely identify a resource.
   type:
     required: true
     type: str
@@ -69,10 +66,11 @@ options:
     description: The action to take against traffic that matches this rule.
   interface:
     required: true
-    type: str
+    type: list
     default: null
     choices: []
     description: The interface where packets must originate to match this rule.
+    elements: str
   ipprotocol:
     required: true
     type: str
@@ -103,7 +101,7 @@ options:
     description: The IP/transport protocol this rule should match.
   icmptype:
     required: false
-    type: str
+    type: list
     default:
     - any
     choices:
@@ -135,6 +133,7 @@ options:
     - unreach
     description: Th ICMP subtypes this rule applies to. This field is only applicable
       when `ipprotocol` is `inet` and `protocol` is `icmp`.
+    elements: str
   source:
     required: true
     type: str
@@ -216,7 +215,7 @@ options:
     description: Allow any TCP flags.
   tcp_flags_out_of:
     required: false
-    type: str
+    type: list
     default: null
     choices:
     - fin
@@ -228,9 +227,10 @@ options:
     - ece
     - cwr
     description: The TCP flags that can be set for this rule to match.
+    elements: str
   tcp_flags_set:
     required: false
-    type: str
+    type: list
     default: null
     choices:
     - fin
@@ -242,6 +242,7 @@ options:
     - ece
     - cwr
     description: The TCP flags that must be set for this rule to match.
+    elements: str
   gateway:
     required: false
     type: str
@@ -320,7 +321,8 @@ EXAMPLES = '''
     api_password: pfsense
     state: present
     type: pass
-    interface: example
+    interface: &id001
+    - example
     ipprotocol: inet
     source: example
     destination: example
@@ -331,7 +333,7 @@ EXAMPLES = '''
     api_password: pfsense
     state: absent
     type: pass
-    interface: example
+    interface: *id001
     ipprotocol: inet
     source: example
     destination: example
@@ -366,8 +368,9 @@ data:
       returned: always
     interface:
       description: The interface where packets must originate to match this rule.
-      type: str
+      type: list
       returned: always
+      elements: str
     ipprotocol:
       description: The IP version(s) this rule applies to.
       type: str
@@ -379,8 +382,9 @@ data:
     icmptype:
       description: Th ICMP subtypes this rule applies to. This field is only applicable
         when `ipprotocol` is `inet` and `protocol` is `icmp`.
-      type: str
+      type: list
       returned: always
+      elements: str
     source:
       description: 'The source address this rule applies to. Valid value options are:
         an existing interface, an IP address, a subnet CIDR, an existing alias, `any`,
@@ -439,12 +443,14 @@ data:
       returned: always
     tcp_flags_out_of:
       description: The TCP flags that can be set for this rule to match.
-      type: str
+      type: list
       returned: always
+      elements: str
     tcp_flags_set:
       description: The TCP flags that must be set for this rule to match.
-      type: str
+      type: list
       returned: always
+      elements: str
     gateway:
       description: The gateway traffic matching this rule will be routed to. Set to
         `null` to use default.
@@ -522,207 +528,182 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "state": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'present',
             "choices": ['present', 'absent'],
         },
         "lookup_fields": {
-            "type": list,
-            "required": False,
-            "default": None,
-            "choices": [],
+            "type": "list",
+            "required": True,
             "elements": "str",
-            "suboptions": {},
         },
         "type": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
             "choices": ['pass', 'block', 'reject'],
         },
         "interface": {
-            "type": str,
+            "type": "list",
             "required": True,
             "default": None,
-            "choices": [],
+            "elements": "str",
         },
         "ipprotocol": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
             "choices": ['inet', 'inet6', 'inet46'],
         },
         "protocol": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
             "choices": ['tcp', 'udp', 'tcp/udp', 'icmp', 'esp', 'ah', 'gre', 'ipv6', 'igmp', 'pim', 'ospf', 'carp', 'pfsync'],
         },
         "icmptype": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": ['any'],
             "choices": ['any', 'althost', 'dataconv', 'echorep', 'echoreq', 'inforep', 'inforeq', 'ipv6-here', 'ipv6-where', 'maskrep', 'maskreq', 'mobredir', 'mobregrep', 'mobregreq', 'paramprob', 'photuris', 'redir', 'routeradv', 'routersol', 'skip', 'squench', 'timerep', 'timereq', 'timex', 'trace', 'unreach'],
+            "elements": "str",
         },
         "source": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "source_port": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "destination": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "destination_port": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "descr": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "disabled": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "log": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "tag": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "statetype": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'keep state',
             "choices": ['keep state', 'sloppy state', 'synproxy state', 'none'],
         },
         "tcp_flags_any": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "tcp_flags_out_of": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": None,
             "choices": ['fin', 'syn', 'rst', 'psh', 'ack', 'urg', 'ece', 'cwr'],
+            "elements": "str",
         },
         "tcp_flags_set": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": None,
             "choices": ['fin', 'syn', 'rst', 'psh', 'ack', 'urg', 'ece', 'cwr'],
+            "elements": "str",
         },
         "gateway": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "sched": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "dnpipe": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "pdnpipe": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "defaultqueue": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "ackqueue": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "floating": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "quick": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "direction": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'any',
             "choices": ['any', 'in', 'out'],
@@ -743,16 +724,21 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
-    changed, data = base_module.set_object_state(
+    base_module = base.BaseModule('/api/v2/firewall/rule', client)
+    changed, resp = base_module.set_object_state(
         state=module.params['state'],
         data=module.params,
         lookup_fields=module.params['lookup_fields']
     )
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

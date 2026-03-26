@@ -52,12 +52,9 @@ options:
   lookup_fields:
     type: list
     elements: str
-    required: false
-    default: null
+    required: true
     description: The list of fields to use when looking up existing resources. This
-      should be a list of field names that uniquely identify a resource. If not specified,
-      the module will attempt to use the 'id' field if it exists, or all fields marked
-      as 'unique' in the schema.
+      should be a list of field names that uniquely identify a resource.
   type:
     required: true
     type: str
@@ -489,240 +486,203 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "state": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'present',
             "choices": ['present', 'absent'],
         },
         "lookup_fields": {
-            "type": list,
-            "required": False,
-            "default": None,
-            "choices": [],
+            "type": "list",
+            "required": True,
             "elements": "str",
-            "suboptions": {},
         },
         "type": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
             "choices": ['ldap', 'radius'],
         },
         "name": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "host": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "ldap_port": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "ldap_urltype": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
             "choices": ['Standard TCP', 'STARTTLS Encrypt', 'SSL/TLS Encrypted'],
         },
         "ldap_protver": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 3,
             "choices": [2, 3],
         },
         "ldap_timeout": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 25,
-            "choices": [],
         },
         "ldap_caref": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'global',
-            "choices": [],
         },
         "ldap_scope": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
             "choices": ['one', 'subtree'],
         },
         "ldap_basedn": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "ldap_authcn": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "ldap_extended_enabled": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "ldap_extended_query": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "ldap_binddn": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "ldap_bindpw": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "ldap_attr_user": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'cn',
-            "choices": [],
         },
         "ldap_attr_group": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'cn',
-            "choices": [],
         },
         "ldap_attr_member": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'member',
-            "choices": [],
         },
         "ldap_rfc2307": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "ldap_rfc2307_userdn": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "ldap_attr_groupobj": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'posixGroup',
-            "choices": [],
         },
         "ldap_pam_groupdn": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "ldap_utf8": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "ldap_nostrip_at": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "ldap_allow_unauthenticated": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "radius_secret": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "radius_auth_port": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '1812',
-            "choices": [],
         },
         "radius_acct_port": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '1813',
-            "choices": [],
         },
         "radius_protocol": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'MSCHAPv2',
             "choices": ['MSCHAPv2', 'MSCHAPv1', 'CHAP_MD5', 'PAP'],
         },
         "radius_timeout": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 5,
-            "choices": [],
         },
         "radius_nasip_attribute": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
     }
 
@@ -740,16 +700,21 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
-    changed, data = base_module.set_object_state(
+    base_module = base.BaseModule('/api/v2/user/auth_server', client)
+    changed, resp = base_module.set_object_state(
         state=module.params['state'],
         data=module.params,
         lookup_fields=module.params['lookup_fields']
     )
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

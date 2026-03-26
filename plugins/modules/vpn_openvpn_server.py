@@ -52,12 +52,9 @@ options:
   lookup_fields:
     type: list
     elements: str
-    required: false
-    default: null
+    required: true
     description: The list of fields to use when looking up existing resources. This
-      should be a list of field names that uniquely identify a resource. If not specified,
-      the module will attempt to use the 'id' field if it exists, or all fields marked
-      as 'unique' in the schema.
+      should be a list of field names that uniquely identify a resource.
   description:
     required: false
     type: str
@@ -82,12 +79,13 @@ options:
     description: The OpenVPN server mode.
   authmode:
     required: false
-    type: str
+    type: list
     default:
     - Local Database
     choices: []
     description: The name of the authentication server to use as the authentication
       backend for this OpenVPN server
+    elements: str
   dev_mode:
     required: true
     type: str
@@ -205,10 +203,11 @@ options:
       secp384r1 is used as a fallback.
   data_ciphers:
     required: true
-    type: str
+    type: list
     default: null
     choices: []
     description: The encryption algorithms/ciphers allowed by this OpenVPN server.
+    elements: str
   data_ciphers_fallback:
     required: true
     type: str
@@ -300,25 +299,27 @@ options:
     description: Enable forcing all client-generated IPv6 traffic through the tunnel.
   local_network:
     required: false
-    type: str
+    type: list
     default: []
     choices: []
     description: The IPv4 networks that will be accessible from the remote endpoint.
       Expressed as a list of one or more CIDR ranges or host/network type aliases.
       This may be left blank if not adding a route to the local network through this
       tunnel on the remote machine. This is generally set to the LAN network.
+    elements: str
   local_networkv6:
     required: false
-    type: str
+    type: list
     default: []
     choices: []
     description: The IPv6 networks that will be accessible from the remote endpoint.
       Expressed as a list of one or more CIDR ranges or host/network type aliases.
       This may be left blank if not adding a route to the local network through this
       tunnel on the remote machine. This is generally set to the LAN network.
+    elements: str
   remote_network:
     required: false
-    type: str
+    type: list
     default: []
     choices: []
     description: IPv4 networks that will be routed through the tunnel, so that a site-to-site
@@ -326,9 +327,10 @@ options:
       as a list of one or more CIDR ranges or host/network type aliases. If this is
       a site-to-site VPN, enter the remote LAN/s here. May be left empty for non site-to-site
       VPN.
+    elements: str
   remote_networkv6:
     required: false
-    type: str
+    type: list
     default: []
     choices: []
     description: IPv6 networks that will be routed through the tunnel, so that a site-to-site
@@ -336,6 +338,7 @@ options:
       as a list of one or more CIDR ranges or host/network type aliases. If this is
       a site-to-site VPN, enter the remote LAN/s here. May be left empty for non site-to-site
       VPN.
+    elements: str
   maxclients:
     required: false
     type: int
@@ -553,10 +556,11 @@ options:
     description: The secondary WINS server to provide to clients.
   custom_options:
     required: false
-    type: str
+    type: list
     default: []
     choices: []
     description: Additional options to add to the OpenVPN server configuration.
+    elements: str
   username_as_common_name:
     required: false
     type: bool
@@ -627,7 +631,8 @@ EXAMPLES = '''
     certref: example
     dh_length: example
     ecdh_curve: example
-    data_ciphers: example
+    data_ciphers: &id001
+    - example
     data_ciphers_fallback: example
     digest: example
     serverbridge_interface: example
@@ -648,7 +653,7 @@ EXAMPLES = '''
     certref: example
     dh_length: example
     ecdh_curve: example
-    data_ciphers: example
+    data_ciphers: *id001
     data_ciphers_fallback: example
     digest: example
     serverbridge_interface: example
@@ -704,8 +709,9 @@ data:
     authmode:
       description: The name of the authentication server to use as the authentication
         backend for this OpenVPN server
-      type: str
+      type: list
       returned: always
+      elements: str
     dev_mode:
       description: The carrier mode for this OpenVPN server. `tun` mode carries IPv4
         and IPv6 (layer 3) and is the most common and compatible mode across all platforms.
@@ -778,8 +784,9 @@ data:
       returned: always
     data_ciphers:
       description: The encryption algorithms/ciphers allowed by this OpenVPN server.
-      type: str
+      type: list
       returned: always
+      elements: str
     data_ciphers_fallback:
       description: The fallback encryption algorithm/cipher used for data channel
         packets when communicating with clients that do not support data encryption
@@ -848,31 +855,35 @@ data:
         Expressed as a list of one or more CIDR ranges or host/network type aliases.
         This may be left blank if not adding a route to the local network through
         this tunnel on the remote machine. This is generally set to the LAN network.
-      type: str
+      type: list
       returned: always
+      elements: str
     local_networkv6:
       description: The IPv6 networks that will be accessible from the remote endpoint.
         Expressed as a list of one or more CIDR ranges or host/network type aliases.
         This may be left blank if not adding a route to the local network through
         this tunnel on the remote machine. This is generally set to the LAN network.
-      type: str
+      type: list
       returned: always
+      elements: str
     remote_network:
       description: IPv4 networks that will be routed through the tunnel, so that a
         site-to-site VPN can be established without manually changing the routing
         tables. Expressed as a list of one or more CIDR ranges or host/network type
         aliases. If this is a site-to-site VPN, enter the remote LAN/s here. May be
         left empty for non site-to-site VPN.
-      type: str
+      type: list
       returned: always
+      elements: str
     remote_networkv6:
       description: IPv6 networks that will be routed through the tunnel, so that a
         site-to-site VPN can be established without manually changing the routing
         tables. Expressed as a list of one or more CIDR ranges or host/network type
         aliases. If this is a site-to-site VPN, enter the remote LAN/s here. May be
         left empty for non site-to-site VPN.
-      type: str
+      type: list
       returned: always
+      elements: str
     maxclients:
       description: The maximum number of clients allowed to concurrently connect to
         this server.
@@ -1015,8 +1026,9 @@ data:
       returned: always
     custom_options:
       description: Additional options to add to the OpenVPN server configuration.
-      type: str
+      type: list
       returned: always
+      elements: str
     username_as_common_name:
       description: Enables or disable the username of the client being used in place
         of the certificate common name for purposes such as determining Client Specific
@@ -1044,477 +1056,416 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "state": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'present',
             "choices": ['present', 'absent'],
         },
         "lookup_fields": {
-            "type": list,
-            "required": False,
-            "default": None,
-            "choices": [],
+            "type": "list",
+            "required": True,
             "elements": "str",
-            "suboptions": {},
         },
         "description": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "disable": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "mode": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
             "choices": ['p2p_tls', 'server_tls', 'server_user', 'server_tls_user'],
         },
         "authmode": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": ['Local Database'],
-            "choices": [],
+            "elements": "str",
         },
         "dev_mode": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
             "choices": ['tun', 'tap'],
         },
         "protocol": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
             "choices": ['UDP4', 'UDP6', 'UDP', 'TCP4', 'TCP6', 'TCP'],
         },
         "interface": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "local_port": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '1194',
-            "choices": [],
         },
         "use_tls": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "tls": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "tls_type": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
             "choices": ['auth', 'crypt'],
         },
         "tlsauth_keydir": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'default',
             "choices": ['default', '0', '1', '2'],
         },
         "caref": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "certref": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "cert_depth": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 1,
             "choices": [1, 2, 3, 4, 5],
         },
         "dh_length": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "ecdh_curve": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "data_ciphers": {
-            "type": str,
+            "type": "list",
             "required": True,
             "default": None,
-            "choices": [],
+            "elements": "str",
         },
         "data_ciphers_fallback": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "digest": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "strictusercn": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "remote_cert_tls": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "tunnel_network": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "tunnel_networkv6": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "serverbridge_dhcp": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "serverbridge_interface": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "serverbridge_routegateway": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "serverbridge_dhcp_start": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "serverbridge_dhcp_end": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "gwredir": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "gwredir6": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "local_network": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
+            "elements": "str",
         },
         "local_networkv6": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
+            "elements": "str",
         },
         "remote_network": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
+            "elements": "str",
         },
         "remote_networkv6": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
+            "elements": "str",
         },
         "maxclients": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "allow_compression": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'no',
             "choices": ['no', 'yes', 'asym'],
         },
         "passtos": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "client2client": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "duplicate_cn": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "connlimit": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "dynamic_ip": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "topology": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'subnet',
             "choices": ['subnet', 'net30'],
         },
         "inactive_seconds": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 300,
-            "choices": [],
         },
         "ping_method": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'keepalive',
             "choices": ['keepalive', 'ping'],
         },
         "keepalive_interval": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 10,
-            "choices": [],
         },
         "keepalive_timeout": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 60,
-            "choices": [],
         },
         "ping_seconds": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 10,
-            "choices": [],
         },
         "ping_push": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "ping_action": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'ping_restart',
             "choices": ['ping_restart', 'ping_exit'],
         },
         "ping_action_seconds": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 60,
-            "choices": [],
         },
         "ping_action_push": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "dns_domain": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "dns_server1": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "dns_server2": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "dns_server3": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "dns_server4": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "push_blockoutsidedns": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "push_register_dns": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "ntp_server1": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "ntp_server2": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "netbios_enable": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "netbios_ntype": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 0,
             "choices": [0, 1, 2, 4, 8],
         },
         "netbios_scope": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "wins_server1": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "wins_server2": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "custom_options": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
+            "elements": "str",
         },
         "username_as_common_name": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "sndrcvbuf": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": None,
             "choices": [65536, 131072, 262144, 524288, 1048576, 2097152],
         },
         "create_gw": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'both',
             "choices": ['both', 'v4only', 'v6only'],
         },
         "verbosity_level": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 1,
             "choices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
@@ -1535,16 +1486,21 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
-    changed, data = base_module.set_object_state(
+    base_module = base.BaseModule('/api/v2/vpn/openvpn/server', client)
+    changed, resp = base_module.set_object_state(
         state=module.params['state'],
         data=module.params,
         lookup_fields=module.params['lookup_fields']
     )
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

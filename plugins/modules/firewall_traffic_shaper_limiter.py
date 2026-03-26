@@ -52,12 +52,9 @@ options:
   lookup_fields:
     type: list
     elements: str
-    required: false
-    default: null
+    required: true
     description: The list of fields to use when looking up existing resources. This
-      should be a list of field names that uniquely identify a resource. If not specified,
-      the module will attempt to use the 'id' field if it exists, or all fields marked
-      as 'unique' in the schema.
+      should be a list of field names that uniquely identify a resource.
   name:
     required: true
     type: str
@@ -816,348 +813,291 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "state": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'present',
             "choices": ['present', 'absent'],
         },
         "lookup_fields": {
-            "type": list,
-            "required": False,
-            "default": None,
-            "choices": [],
+            "type": "list",
+            "required": True,
             "elements": "str",
-            "suboptions": {},
         },
         "name": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "enabled": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "mask": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'none',
             "choices": ['none', 'srcaddress', 'dstaddress'],
         },
         "maskbits": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 32,
-            "choices": [],
         },
         "maskbitsv6": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 128,
-            "choices": [],
         },
         "qlimit": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "ecn": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "description": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "aqm": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
             "choices": ['droptail', 'codel', 'pie', 'red', 'gred'],
         },
         "sched": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
             "choices": ['wf2q+', 'fifo', 'qfq', 'rr', 'prio', 'fq_codel', 'fq_pie'],
         },
         "param_codel_target": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 0,
-            "choices": [],
         },
         "param_codel_interval": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 0,
-            "choices": [],
         },
         "param_pie_target": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 0,
-            "choices": [],
         },
         "param_pie_tupdate": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 0,
-            "choices": [],
         },
         "param_pie_alpha": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 0,
-            "choices": [],
         },
         "param_pie_beta": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 0,
-            "choices": [],
         },
         "param_pie_max_burst": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 0,
-            "choices": [],
         },
         "param_pie_max_ecnth": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 0,
-            "choices": [],
         },
         "pie_onoff": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "pie_capdrop": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "pie_qdelay": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "pie_pderand": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "param_red_w_q": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 1,
-            "choices": [],
         },
         "param_red_min_th": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 0,
-            "choices": [],
         },
         "param_red_max_th": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 1,
-            "choices": [],
         },
         "param_red_max_p": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 1,
-            "choices": [],
         },
         "param_gred_w_q": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 1,
-            "choices": [],
         },
         "param_gred_min_th": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 0,
-            "choices": [],
         },
         "param_gred_max_th": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 1,
-            "choices": [],
         },
         "param_gred_max_p": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 1,
-            "choices": [],
         },
         "param_fq_codel_target": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 0,
-            "choices": [],
         },
         "param_fq_codel_interval": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 0,
-            "choices": [],
         },
         "param_fq_codel_quantum": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "param_fq_codel_limit": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "param_fq_codel_flows": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "param_fq_pie_target": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 0,
-            "choices": [],
         },
         "param_fq_pie_tupdate": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 0,
-            "choices": [],
         },
         "param_fq_pie_alpha": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 0,
-            "choices": [],
         },
         "param_fq_pie_beta": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 0,
-            "choices": [],
         },
         "param_fq_pie_max_burst": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 0,
-            "choices": [],
         },
         "param_fq_pie_max_ecnth": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 0,
-            "choices": [],
         },
         "param_fq_pie_quantum": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "param_fq_pie_limit": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "param_fq_pie_flows": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "delay": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "plr": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "buckets": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "bandwidth": {
-            "type": list,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
         },
         "queue": {
-            "type": list,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
         },
     }
 
@@ -1175,16 +1115,21 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
-    changed, data = base_module.set_object_state(
+    base_module = base.BaseModule('/api/v2/firewall/traffic_shaper/limiter', client)
+    changed, resp = base_module.set_object_state(
         state=module.params['state'],
         data=module.params,
         lookup_fields=module.params['lookup_fields']
     )
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

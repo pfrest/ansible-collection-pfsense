@@ -200,8 +200,9 @@ data:
       returned: always
     data_ciphers:
       description: The encryption algorithms/ciphers allowed by this OpenVPN client.
-      type: str
+      type: list
       returned: always
+      elements: str
     data_ciphers_fallback:
       description: The fallback encryption algorithm/cipher used for data channel
         packets when communicating with clients that do not support data encryption
@@ -234,16 +235,18 @@ data:
         tables. Expressed as a list of one or more CIDR ranges or host/network type
         aliases. If this is a site-to-site VPN, enter the remote LAN/s here. May be
         left empty for non site-to-site VPN.
-      type: str
+      type: list
       returned: always
+      elements: str
     remote_networkv6:
       description: IPv6 networks that will be routed through the tunnel, so that a
         site-to-site VPN can be established without manually changing the routing
         tables. Expressed as a list of one or more CIDR ranges or host/network type
         aliases. If this is a site-to-site VPN, enter the remote LAN/s here. May be
         left empty for non site-to-site VPN.
-      type: str
+      type: list
       returned: always
+      elements: str
     use_shaper:
       description: Maximum outgoing bandwidth (in bytes per second) for this tunnel.
         Use `null` no limit.
@@ -312,8 +315,9 @@ data:
       returned: always
     custom_options:
       description: Additional options to add to the OpenVPN client configuration.
-      type: str
+      type: list
       returned: always
+      elements: str
     udp_fast_io:
       description: Enables or disables fast I/O operations with UDP writes to tun/tap
         (Experimental).
@@ -344,46 +348,36 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "lookup_params": {
-            "type": dict,
+            "type": "dict",
             "required": False,
-            "default": None,
-            "choices": [],
         },
     }
 
@@ -401,13 +395,18 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
+    base_module = base.BaseModule('/api/v2/vpn/openvpn/client', client)
     changed = False
     resp = base_module.lookup_object(lookup_params=module.params['lookup_params'])
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

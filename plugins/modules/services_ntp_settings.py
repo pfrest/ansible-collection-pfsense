@@ -50,10 +50,11 @@ options:
     description: Enables or disabled the NTP server.
   interface:
     required: false
-    type: str
+    type: list
     default: []
     choices: []
     description: The interfaces the NTP server will listen on.
+    elements: str
   ntpmaxpeers:
     required: false
     type: int
@@ -234,8 +235,9 @@ data:
       returned: always
     interface:
       description: The interfaces the NTP server will listen on.
-      type: str
+      type: list
       returned: always
+      elements: str
     ntpmaxpeers:
       description: The maximum number of candidate peers in the NTP pool.
       type: int
@@ -310,139 +312,119 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "enable": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "interface": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
+            "elements": "str",
         },
         "ntpmaxpeers": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 5,
-            "choices": [],
         },
         "orphan": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 12,
-            "choices": [],
         },
         "ntpminpoll": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
             "choices": ['', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', 'omit'],
         },
         "ntpmaxpoll": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
             "choices": ['', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', 'omit'],
         },
         "dnsresolv": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'auto',
             "choices": ['auto', 'inet', 'inet6'],
         },
         "logpeer": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "logsys": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "clockstats": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "loopstats": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "peerstats": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "statsgraph": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "leapsec": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "serverauth": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "serverauthkey": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "serverauthalgo": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'md5',
             "choices": ['md5', 'sha1', 'sha256'],
@@ -463,11 +445,16 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
+    base_module = base.BaseModule('/api/v2/services/ntp/settings', client)
+
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
 
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

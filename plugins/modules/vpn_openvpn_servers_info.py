@@ -107,8 +107,9 @@ data:
     authmode:
       description: The name of the authentication server to use as the authentication
         backend for this OpenVPN server
-      type: str
+      type: list
       returned: always
+      elements: str
     dev_mode:
       description: The carrier mode for this OpenVPN server. `tun` mode carries IPv4
         and IPv6 (layer 3) and is the most common and compatible mode across all platforms.
@@ -181,8 +182,9 @@ data:
       returned: always
     data_ciphers:
       description: The encryption algorithms/ciphers allowed by this OpenVPN server.
-      type: str
+      type: list
       returned: always
+      elements: str
     data_ciphers_fallback:
       description: The fallback encryption algorithm/cipher used for data channel
         packets when communicating with clients that do not support data encryption
@@ -251,31 +253,35 @@ data:
         Expressed as a list of one or more CIDR ranges or host/network type aliases.
         This may be left blank if not adding a route to the local network through
         this tunnel on the remote machine. This is generally set to the LAN network.
-      type: str
+      type: list
       returned: always
+      elements: str
     local_networkv6:
       description: The IPv6 networks that will be accessible from the remote endpoint.
         Expressed as a list of one or more CIDR ranges or host/network type aliases.
         This may be left blank if not adding a route to the local network through
         this tunnel on the remote machine. This is generally set to the LAN network.
-      type: str
+      type: list
       returned: always
+      elements: str
     remote_network:
       description: IPv4 networks that will be routed through the tunnel, so that a
         site-to-site VPN can be established without manually changing the routing
         tables. Expressed as a list of one or more CIDR ranges or host/network type
         aliases. If this is a site-to-site VPN, enter the remote LAN/s here. May be
         left empty for non site-to-site VPN.
-      type: str
+      type: list
       returned: always
+      elements: str
     remote_networkv6:
       description: IPv6 networks that will be routed through the tunnel, so that a
         site-to-site VPN can be established without manually changing the routing
         tables. Expressed as a list of one or more CIDR ranges or host/network type
         aliases. If this is a site-to-site VPN, enter the remote LAN/s here. May be
         left empty for non site-to-site VPN.
-      type: str
+      type: list
       returned: always
+      elements: str
     maxclients:
       description: The maximum number of clients allowed to concurrently connect to
         this server.
@@ -418,8 +424,9 @@ data:
       returned: always
     custom_options:
       description: Additional options to add to the OpenVPN server configuration.
-      type: str
+      type: list
       returned: always
+      elements: str
     username_as_common_name:
       description: Enables or disable the username of the client being used in place
         of the certificate common name for purposes such as determining Client Specific
@@ -447,46 +454,36 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "query_params": {
-            "type": dict,
+            "type": "dict",
             "required": False,
-            "default": None,
-            "choices": [],
         },
     }
 
@@ -504,13 +501,18 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
+    base_module = base.BaseModule('/api/v2/vpn/openvpn/servers', client)
     changed = False
     resp = base_module.lookup_objects(lookup_params=module.params['query_params'])
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

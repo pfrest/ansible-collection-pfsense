@@ -52,15 +52,12 @@ options:
   lookup_fields:
     type: list
     elements: str
-    required: false
-    default: null
+    required: true
     description: The list of fields to use when looking up existing resources. This
-      should be a list of field names that uniquely identify a resource. If not specified,
-      the module will attempt to use the 'id' field if it exists, or all fields marked
-      as 'unique' in the schema.
+      should be a list of field names that uniquely identify a resource.
   position:
     required: false
-    type: int
+    type: list
     default: null
     choices:
     - 1
@@ -74,9 +71,10 @@ options:
       every Monday, `2` for every Tuesday, `3` for every Wednesday, `4` for every
       Thursday, `5` for every Friday, `6` for every Saturday, or `7` for every Sunday.
       If this field has a value specified, the `month` and `day` fields will be unavailable.
+    elements: int
   month:
     required: true
-    type: int
+    type: list
     default: null
     choices:
     - 1
@@ -95,15 +93,17 @@ options:
       correspond with a `day` field value and must match the order exactly. For example,
       a `month` value of `[3, 6]` and a `day` value of `[2, 17]` would evaluate to
       March 2nd and June 17th respectively.
+    elements: int
   day:
     required: true
-    type: int
+    type: list
     default: null
     choices: []
     description: The day for each specified `month` value. Each value specified must
       correspond with a `month` field value and must match the order exactly. For
       example, a `month` value of `[3, 6]` and a `day` value of `[2, 17]` would evaluate
       to March 2nd and June 17th respectively.
+    elements: int
   hour:
     required: true
     type: str
@@ -129,8 +129,10 @@ EXAMPLES = '''
     api_username: admin
     api_password: pfsense
     state: present
-    month: 1
-    day: 1
+    month: &id001
+    - 1
+    day: &id002
+    - 1
     hour: example
 - name: Delete Firewall Schedule Time Range
   pfrest.pfsense.firewall_schedule_time_range:
@@ -138,8 +140,8 @@ EXAMPLES = '''
     api_username: admin
     api_password: pfsense
     state: absent
-    month: 1
-    day: 1
+    month: *id001
+    day: *id002
     hour: example
 
 '''
@@ -172,22 +174,25 @@ data:
         every Thursday, `5` for every Friday, `6` for every Saturday, or `7` for every
         Sunday. If this field has a value specified, the `month` and `day` fields
         will be unavailable.
-      type: int
+      type: list
       returned: always
+      elements: int
     month:
       description: The month for each specified `day` value. Each value specified
         must correspond with a `day` field value and must match the order exactly.
         For example, a `month` value of `[3, 6]` and a `day` value of `[2, 17]` would
         evaluate to March 2nd and June 17th respectively.
-      type: int
+      type: list
       returned: always
+      elements: int
     day:
       description: The day for each specified `month` value. Each value specified
         must correspond with a `month` field value and must match the order exactly.
         For example, a `month` value of `[3, 6]` and a `day` value of `[2, 17]` would
         evaluate to March 2nd and June 17th respectively.
-      type: int
+      type: list
       returned: always
+      elements: int
     hour:
       description: The start time and end time for this time range in 24-hour format
         (i.e. HH:MM-HH:MM).
@@ -204,84 +209,73 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "state": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'present',
             "choices": ['present', 'absent'],
         },
         "lookup_fields": {
-            "type": list,
-            "required": False,
-            "default": None,
-            "choices": [],
+            "type": "list",
+            "required": True,
             "elements": "str",
-            "suboptions": {},
         },
         "position": {
-            "type": int,
+            "type": "list",
             "required": False,
             "default": None,
             "choices": [1, 2, 3, 4, 5, 6, 7],
+            "elements": "int",
         },
         "month": {
-            "type": int,
+            "type": "list",
             "required": True,
             "default": None,
             "choices": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+            "elements": "int",
         },
         "day": {
-            "type": int,
+            "type": "list",
             "required": True,
             "default": None,
-            "choices": [],
+            "elements": "int",
         },
         "hour": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "rangedescr": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
     }
 
@@ -299,16 +293,21 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
-    changed, data = base_module.set_object_state(
+    base_module = base.BaseModule('/api/v2/firewall/schedule/time_range', client)
+    changed, resp = base_module.set_object_state(
         state=module.params['state'],
         data=module.params,
         lookup_fields=module.params['lookup_fields']
     )
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

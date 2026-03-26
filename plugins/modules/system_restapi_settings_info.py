@@ -144,12 +144,14 @@ data:
         should have their sensitive attribute overridden. Fields selected here will
         not be considered sensitive and will be included in API responses regardless
         of the `expose_sensitive_fields` setting.
-      type: str
+      type: list
       returned: always
+      elements: str
     allowed_interfaces:
       description: Sets the interfaces allowed to accept incoming API calls.
-      type: str
+      type: list
       returned: always
+      elements: str
     represent_interfaces_as:
       description: Specifies how the API should represent interface names. Use `descr`
         to represent interface objects by their description name, use `id` to represent
@@ -161,8 +163,9 @@ data:
     auth_methods:
       description: Sets the API authentication methods allowed to authenticate API
         calls.
-      type: str
+      type: list
       returned: always
+      elements: str
     jwt_exp:
       description: Sets the amount of time (in seconds) JWTs are valid for.
       type: int
@@ -183,8 +186,9 @@ data:
       returned: always
     ha_sync_hosts:
       description: Set a list of IP addresses or hostnames to sync API settings to.
-      type: str
+      type: list
       returned: always
+      elements: str
     ha_sync_username:
       description: Sets the username to use when authenticating for HA sync processes.
         This user must be the present on all hosts defined in `ha_sync_hosts`.
@@ -203,46 +207,36 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "lookup_params": {
-            "type": dict,
+            "type": "dict",
             "required": False,
-            "default": None,
-            "choices": [],
         },
     }
 
@@ -260,13 +254,18 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
+    base_module = base.BaseModule('/api/v2/system/restapi/settings', client)
     changed = False
     resp = base_module.lookup_object(lookup_params=module.params['lookup_params'])
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

@@ -52,12 +52,9 @@ options:
   lookup_fields:
     type: list
     elements: str
-    required: false
-    default: null
+    required: true
     description: The list of fields to use when looking up existing resources. This
-      should be a list of field names that uniquely identify a resource. If not specified,
-      the module will attempt to use the 'id' field if it exists, or all fields marked
-      as 'unique' in the schema.
+      should be a list of field names that uniquely identify a resource.
   descr:
     required: false
     type: str
@@ -551,240 +548,207 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "state": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'present',
             "choices": ['present', 'absent'],
         },
         "lookup_fields": {
-            "type": list,
-            "required": False,
-            "default": None,
-            "choices": [],
+            "type": "list",
+            "required": True,
             "elements": "str",
-            "suboptions": {},
         },
         "descr": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "disabled": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "iketype": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
             "choices": ['ikev1', 'ikev2', 'auto'],
         },
         "mode": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
             "choices": ['main', 'aggressive'],
         },
         "protocol": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
             "choices": ['inet', 'inet6', 'both'],
         },
         "interface": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "remote_gateway": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "authentication_method": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
             "choices": ['pre_shared_key', 'cert'],
         },
         "myid_type": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
             "choices": ['myaddress', 'address', 'fqdn', 'user_fqdn', 'asn1dn', 'keyid tag', 'dyn_dns', 'auto'],
         },
         "myid_data": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "peerid_type": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
             "choices": ['any', 'peeraddress', 'address', 'fqdn', 'user_fqdn', 'asn1dn', 'keyid tag', 'dyn_dns', 'auto'],
         },
         "peerid_data": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "pre_shared_key": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "certref": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "caref": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "rekey_time": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 25920,
-            "choices": [],
         },
         "reauth_time": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 0,
-            "choices": [],
         },
         "rand_time": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 2880,
-            "choices": [],
         },
         "lifetime": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 28800,
-            "choices": [],
         },
         "startaction": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
             "choices": ['', 'none', 'start', 'trap'],
         },
         "closeaction": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
             "choices": ['', 'none', 'start', 'trap'],
         },
         "nat_traversal": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'on',
             "choices": ['on', 'force'],
         },
         "gw_duplicates": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "mobike": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "splitconn": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "prfselect_enable": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "ikeport": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '500',
-            "choices": [],
         },
         "nattport": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '4500',
-            "choices": [],
         },
         "dpd_delay": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 10,
-            "choices": [],
         },
         "dpd_maxfail": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 5,
-            "choices": [],
         },
         "encryption": {
-            "type": list,
+            "type": "list",
             "required": True,
             "default": None,
-            "choices": [],
         },
     }
 
@@ -802,16 +766,21 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
-    changed, data = base_module.set_object_state(
+    base_module = base.BaseModule('/api/v2/vpn/ipsec/phase1', client)
+    changed, resp = base_module.set_object_state(
         state=module.params['state'],
         data=module.params,
         lookup_fields=module.params['lookup_fields']
     )
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

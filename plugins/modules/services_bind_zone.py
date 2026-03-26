@@ -52,12 +52,9 @@ options:
   lookup_fields:
     type: list
     elements: str
-    required: false
-    default: null
+    required: true
     description: The list of fields to use when looking up existing resources. This
-      should be a list of field names that uniquely identify a resource. If not specified,
-      the module will attempt to use the 'id' field if it exists, or all fields marked
-      as 'unique' in the schema.
+      should be a list of field names that uniquely identify a resource.
   disabled:
     required: false
     type: bool
@@ -88,10 +85,11 @@ options:
     description: The type of this BIND zone.
   view:
     required: false
-    type: str
+    type: list
     default: []
     choices: []
     description: The views this BIND zone belongs to.
+    elements: str
   reversev4:
     required: false
     type: bool
@@ -137,10 +135,11 @@ options:
     description: The IP address of the slave server for this BIND zone.
   forwarders:
     required: true
-    type: str
+    type: list
     default: null
     choices: []
     description: The forwarders for this BIND zone.
+    elements: str
   ttl:
     required: false
     type: int
@@ -217,23 +216,26 @@ options:
     description: The update policy for this BIND zone.
   allowupdate:
     required: false
-    type: str
+    type: list
     default: []
     choices: []
     description: The access lists that are allowed to submit dynamic updates for 'master'
       zones (e.g. dynamic DNS).
+    elements: str
   allowtransfer:
     required: false
-    type: str
+    type: list
     default: []
     choices: []
     description: The access lists that are allowed to transfer this BIND zone.
+    elements: str
   allowquery:
     required: false
-    type: str
+    type: list
     default: []
     choices: []
     description: The access lists that are allowed to query this BIND zone.
+    elements: str
   regdhcpstatic:
     required: false
     type: bool
@@ -265,7 +267,8 @@ EXAMPLES = '''
     api_password: pfsense
     state: present
     name: example
-    forwarders: example
+    forwarders: &id001
+    - example
     baseip: example
     nameserver: example
     mail: example
@@ -277,7 +280,7 @@ EXAMPLES = '''
     api_password: pfsense
     state: absent
     name: example
-    forwarders: example
+    forwarders: *id001
     baseip: example
     nameserver: example
     mail: example
@@ -325,8 +328,9 @@ data:
       returned: always
     view:
       description: The views this BIND zone belongs to.
-      type: str
+      type: list
       returned: always
+      elements: str
     reversev4:
       description: Enable reverse DNS for this BIND zone.
       type: bool
@@ -358,8 +362,9 @@ data:
       returned: always
     forwarders:
       description: The forwarders for this BIND zone.
-      type: str
+      type: list
       returned: always
+      elements: str
     ttl:
       description: The default TTL interval (in seconds) for records within this BIND
         zone without a specific TTL.
@@ -415,16 +420,19 @@ data:
     allowupdate:
       description: The access lists that are allowed to submit dynamic updates for
         'master' zones (e.g. dynamic DNS).
-      type: str
+      type: list
       returned: always
+      elements: str
     allowtransfer:
       description: The access lists that are allowed to transfer this BIND zone.
-      type: str
+      type: list
       returned: always
+      elements: str
     allowquery:
       description: The access lists that are allowed to query this BIND zone.
-      type: str
+      type: list
       returned: always
+      elements: str
     regdhcpstatic:
       description: Register DHCP static mappings as records in this BIND zone.
       type: bool
@@ -463,234 +471,199 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "state": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'present',
             "choices": ['present', 'absent'],
         },
         "lookup_fields": {
-            "type": list,
-            "required": False,
-            "default": None,
-            "choices": [],
+            "type": "list",
+            "required": True,
             "elements": "str",
-            "suboptions": {},
         },
         "disabled": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "name": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "description": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "type": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'master',
             "choices": ['master', 'slave', 'forward', 'redirect'],
         },
         "view": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
+            "elements": "str",
         },
         "reversev4": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "reversev6": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "rpz": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "custom": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "dnssec": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "backupkeys": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "slaveip": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "forwarders": {
-            "type": str,
+            "type": "list",
             "required": True,
             "default": None,
-            "choices": [],
+            "elements": "str",
         },
         "ttl": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "baseip": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "nameserver": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "mail": {
-            "type": str,
+            "type": "str",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "serial": {
-            "type": int,
+            "type": "int",
             "required": True,
             "default": None,
-            "choices": [],
         },
         "refresh": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "retry": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "expire": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "minimum": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": None,
-            "choices": [],
         },
         "enable_updatepolicy": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "updatepolicy": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "allowupdate": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
+            "elements": "str",
         },
         "allowtransfer": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
+            "elements": "str",
         },
         "allowquery": {
-            "type": str,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
+            "elements": "str",
         },
         "regdhcpstatic": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": False,
-            "choices": [],
         },
         "customzonerecords": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": '',
-            "choices": [],
         },
         "records": {
-            "type": list,
+            "type": "list",
             "required": False,
             "default": [],
-            "choices": [],
         },
     }
 
@@ -708,16 +681,21 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
-    changed, data = base_module.set_object_state(
+    base_module = base.BaseModule('/api/v2/services/bind/zone', client)
+    changed, resp = base_module.set_object_state(
         state=module.params['state'],
         data=module.params,
         lookup_fields=module.params['lookup_fields']
     )
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

@@ -93,23 +93,26 @@ options:
           in this subnet. Leave empty to disable failover peering.
       mac_allow:
         required: false
-        type: str
+        type: list
         default: []
         choices: []
         description: MAC addresses this DHCP server is allowed to provide leases for.
+        elements: str
       mac_deny:
         required: false
-        type: str
+        type: list
         default: []
         choices: []
         description: MAC addresses this DHCP server is not allowed to provide leases
           for.
+        elements: str
       domainsearchlist:
         required: false
-        type: str
+        type: list
         default: []
         choices: []
         description: The domain search list to provide via DHCP.
+        elements: str
       defaultleasetime:
         required: false
         type: int
@@ -134,23 +137,26 @@ options:
           no gateway assignment.
       dnsserver:
         required: false
-        type: str
+        type: list
         default: []
         choices: []
         description: The DNS servers to provide via DHCP. Leave empty to default to
           system nameservers.
+        elements: str
       winsserver:
         required: false
-        type: str
+        type: list
         default: []
         choices: []
         description: The WINS servers to provide via DHCP.
+        elements: str
       ntpserver:
         required: false
-        type: str
+        type: list
         default: []
         choices: []
         description: The NTP servers to provide via DHCP.
+        elements: str
       staticarp:
         required: false
         type: bool
@@ -310,17 +316,20 @@ data:
       returned: always
     mac_allow:
       description: MAC addresses this DHCP server is allowed to provide leases for.
-      type: str
+      type: list
       returned: always
+      elements: str
     mac_deny:
       description: MAC addresses this DHCP server is not allowed to provide leases
         for.
-      type: str
+      type: list
       returned: always
+      elements: str
     domainsearchlist:
       description: The domain search list to provide via DHCP.
-      type: str
+      type: list
       returned: always
+      elements: str
     defaultleasetime:
       description: The default DHCP lease validity period (in seconds). This is used
         for clients that do not ask for a specific expiration time.
@@ -340,16 +349,19 @@ data:
     dnsserver:
       description: The DNS servers to provide via DHCP. Leave empty to default to
         system nameservers.
-      type: str
+      type: list
       returned: always
+      elements: str
     winsserver:
       description: The WINS servers to provide via DHCP.
-      type: str
+      type: list
       returned: always
+      elements: str
     ntpserver:
       description: The NTP servers to provide via DHCP.
-      type: str
+      type: list
       returned: always
+      elements: str
     staticarp:
       description: Assign static ARP entries for DHCP leases provided by this server.
       type: bool
@@ -416,17 +428,20 @@ data:
         mac_allow:
           description: MAC addresses this DHCP server is allowed to provide leases
             for.
-          type: str
+          type: list
           returned: always
+          elements: str
         mac_deny:
           description: MAC addresses this DHCP server is not allowed to provide leases
             for.
-          type: str
+          type: list
           returned: always
+          elements: str
         domainsearchlist:
           description: The domain search list to provide via DHCP.
-          type: str
+          type: list
           returned: always
+          elements: str
         defaultleasetime:
           description: The default DHCP lease validity period (in seconds). This is
             used for clients that do not ask for a specific expiration time.
@@ -446,16 +461,19 @@ data:
         dnsserver:
           description: The DNS servers to provide via DHCP. Leave empty to default
             to system nameservers.
-          type: str
+          type: list
           returned: always
+          elements: str
         winsserver:
           description: The WINS servers to provide via DHCP.
-          type: str
+          type: list
           returned: always
+          elements: str
         ntpserver:
           description: The NTP servers to provide via DHCP.
-          type: str
+          type: list
           returned: always
+          elements: str
         ignorebootp:
           description: Force this DHCP server to ignore BOOTP queries.
           type: bool
@@ -523,8 +541,9 @@ data:
           returned: always
         domainsearchlist:
           description: The domain search list to provide via DHCP.
-          type: str
+          type: list
           returned: always
+          elements: str
         defaultleasetime:
           description: The default DHCP lease validity period (in seconds). This is
             used for clients that do not ask for a specific expiration time.
@@ -544,16 +563,19 @@ data:
         dnsserver:
           description: The DNS servers to provide via DHCP. Leave empty to default
             to system nameservers.
-          type: str
+          type: list
           returned: always
+          elements: str
         winsserver:
           description: The WINS servers to provide via DHCP.
-          type: str
+          type: list
           returned: always
+          elements: str
         ntpserver:
           description: The NTP servers to provide via DHCP.
-          type: str
+          type: list
           returned: always
+          elements: str
         arp_table_static_entry:
           description: Assign a static ARP entry for this static mapping.
           type: bool
@@ -569,48 +591,38 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "objects": {
-            "type": list,
+            "type": "list",
             "required": True,
-            "default": None,
-            "choices": [],
             "elements": "dict",
-            "suboptions": {'interface': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The interface to configure the DHCP server for. This field is only necessary when you wantto change the interface (ID) of an existing DHCP server, or you are replacing all DHCP server objects with a new configuration. Note that specifying an interface in this field will update the ID of the DHCP server to match the interface specified here. Leaving this field empty will retain the existing interface.'}, 'enable': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enable the DHCP server for this interface.'}, 'range_from': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The starting IP address for the primary DHCP pool. This address must be less than or equal to the `range_to` field.'}, 'range_to': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The ending IP address for the primary DHCP pool. This address must be greater than or equal to the `range_to` field.'}, 'domain': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The domain to be assigned via DHCP.'}, 'failover_peerip': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The interface IP address of the other firewall (failover peer) in this subnet. Leave empty to disable failover peering.'}, 'mac_allow': {'required': False, 'type': 'str', 'default': [], 'choices': [], 'description': 'MAC addresses this DHCP server is allowed to provide leases for.'}, 'mac_deny': {'required': False, 'type': 'str', 'default': [], 'choices': [], 'description': 'MAC addresses this DHCP server is not allowed to provide leases for.'}, 'domainsearchlist': {'required': False, 'type': 'str', 'default': [], 'choices': [], 'description': 'The domain search list to provide via DHCP.'}, 'defaultleasetime': {'required': False, 'type': 'int', 'default': 7200, 'choices': [], 'description': 'The default DHCP lease validity period (in seconds). This is used for clients that do not ask for a specific expiration time.'}, 'maxleasetime': {'required': False, 'type': 'int', 'default': 86400, 'choices': [], 'description': 'The maximum DHCP lease validity period (in seconds) a client can request.'}, 'gateway': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': "The gateway IPv4 address to provide via DHCP. This is only necessary if you are not using the interface's IP as the gateway. Specify `none` for no gateway assignment."}, 'dnsserver': {'required': False, 'type': 'str', 'default': [], 'choices': [], 'description': 'The DNS servers to provide via DHCP. Leave empty to default to system nameservers.'}, 'winsserver': {'required': False, 'type': 'str', 'default': [], 'choices': [], 'description': 'The WINS servers to provide via DHCP.'}, 'ntpserver': {'required': False, 'type': 'str', 'default': [], 'choices': [], 'description': 'The NTP servers to provide via DHCP.'}, 'staticarp': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Assign static ARP entries for DHCP leases provided by this server.'}, 'ignorebootp': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Force this DHCP server to ignore BOOTP queries.'}, 'ignoreclientuids': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Prevent recording a unique identifier (UID) in client lease data if present in the client DHCP request. This option may be useful when a client can dual boot using different client identifiers but the same hardware (MAC) address. Note that the resulting server behavior violates the official DHCP specification.'}, 'nonak': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Ignore denied clients rather than reject. This option is not compatible with failover and cannot be enabled when a Failover Peer IP address is configured.'}, 'disablepingcheck': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Prevent the DHCP server from sending a ping to the address being assigned, where if no response has been heard, it assigns the address.'}, 'dhcpleaseinlocaltime': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Display the DHCP lease times in local time instead of UTC.'}, 'statsgraph': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enable adding DHCP lease statistics to the pfSense Monitoring graphs.'}, 'denyunknown': {'required': False, 'type': 'str', 'default': None, 'choices': ['enabled', 'class'], 'description': 'Define how to handle unknown clients requesting DHCP leases. When set to `null`, any DHCP client will get an IP address within this scope/range on this interface. If set to `enabled`, any DHCP client with a MAC address listed in a static mapping on any scope(s)/interface(s) will get an IP address. If set to `class`, only MAC addresses listed in static mappings on this interface will get an IP address within this scope/range.'}, 'pool': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'Additional address pools applied to this DHCP server.'}, 'numberoptions': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The custom DHCP options to apply to this DHCP server.'}, 'staticmap': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'Static mappings applied to this DHCP server.'}},
+            "suboptions": {'interface': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The interface to configure the DHCP server for. This field is only necessary when you wantto change the interface (ID) of an existing DHCP server, or you are replacing all DHCP server objects with a new configuration. Note that specifying an interface in this field will update the ID of the DHCP server to match the interface specified here. Leaving this field empty will retain the existing interface.'}, 'enable': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enable the DHCP server for this interface.'}, 'range_from': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The starting IP address for the primary DHCP pool. This address must be less than or equal to the `range_to` field.'}, 'range_to': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The ending IP address for the primary DHCP pool. This address must be greater than or equal to the `range_to` field.'}, 'domain': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The domain to be assigned via DHCP.'}, 'failover_peerip': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The interface IP address of the other firewall (failover peer) in this subnet. Leave empty to disable failover peering.'}, 'mac_allow': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'MAC addresses this DHCP server is allowed to provide leases for.', 'elements': 'str'}, 'mac_deny': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'MAC addresses this DHCP server is not allowed to provide leases for.', 'elements': 'str'}, 'domainsearchlist': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The domain search list to provide via DHCP.', 'elements': 'str'}, 'defaultleasetime': {'required': False, 'type': 'int', 'default': 7200, 'choices': [], 'description': 'The default DHCP lease validity period (in seconds). This is used for clients that do not ask for a specific expiration time.'}, 'maxleasetime': {'required': False, 'type': 'int', 'default': 86400, 'choices': [], 'description': 'The maximum DHCP lease validity period (in seconds) a client can request.'}, 'gateway': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': "The gateway IPv4 address to provide via DHCP. This is only necessary if you are not using the interface's IP as the gateway. Specify `none` for no gateway assignment."}, 'dnsserver': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The DNS servers to provide via DHCP. Leave empty to default to system nameservers.', 'elements': 'str'}, 'winsserver': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The WINS servers to provide via DHCP.', 'elements': 'str'}, 'ntpserver': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The NTP servers to provide via DHCP.', 'elements': 'str'}, 'staticarp': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Assign static ARP entries for DHCP leases provided by this server.'}, 'ignorebootp': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Force this DHCP server to ignore BOOTP queries.'}, 'ignoreclientuids': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Prevent recording a unique identifier (UID) in client lease data if present in the client DHCP request. This option may be useful when a client can dual boot using different client identifiers but the same hardware (MAC) address. Note that the resulting server behavior violates the official DHCP specification.'}, 'nonak': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Ignore denied clients rather than reject. This option is not compatible with failover and cannot be enabled when a Failover Peer IP address is configured.'}, 'disablepingcheck': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Prevent the DHCP server from sending a ping to the address being assigned, where if no response has been heard, it assigns the address.'}, 'dhcpleaseinlocaltime': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Display the DHCP lease times in local time instead of UTC.'}, 'statsgraph': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enable adding DHCP lease statistics to the pfSense Monitoring graphs.'}, 'denyunknown': {'required': False, 'type': 'str', 'default': None, 'choices': ['enabled', 'class'], 'description': 'Define how to handle unknown clients requesting DHCP leases. When set to `null`, any DHCP client will get an IP address within this scope/range on this interface. If set to `enabled`, any DHCP client with a MAC address listed in a static mapping on any scope(s)/interface(s) will get an IP address. If set to `class`, only MAC addresses listed in static mappings on this interface will get an IP address within this scope/range.'}, 'pool': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'Additional address pools applied to this DHCP server.'}, 'numberoptions': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The custom DHCP options to apply to this DHCP server.'}, 'staticmap': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'Static mappings applied to this DHCP server.'}},
         },
     }
 
@@ -628,15 +640,20 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
+    base_module = base.BaseModule('/api/v2/services/dhcp_servers', client)
     changed = True # TODO: determine if changes are needed by comparing existing objects to the provided list
     resp = base_module.replace_objects(
         data=module.params['objects'],
     )
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)

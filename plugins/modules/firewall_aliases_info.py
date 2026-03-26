@@ -104,15 +104,17 @@ data:
         `type` is set to `port`, each entry must be a valid port or port range. You
         may also specify an existing alias's `name` as an entry to created nested
         aliases.
-      type: str
+      type: list
       returned: always
+      elements: str
     detail:
       description: Sets descriptions for each alias `address`. Values must match the
         order of the `address` value it relates to. For example, the first value specified
         here is the description for the first value specified in the `address` field.
         This value cannot contain
-      type: str
+      type: list
       returned: always
+      elements: str
 
 '''
 
@@ -120,46 +122,36 @@ data:
 def run_module():
     module_args = {
         "api_host": {
-            "type": str,
+            "type": "str",
             "required": True,
-            "default": None,
-            "choices": [],
         },
         "api_port": {
-            "type": int,
+            "type": "int",
             "required": False,
             "default": 443,
-            "choices": [],
         },
         "api_username": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'admin',
-            "choices": [],
         },
         "api_password": {
-            "type": str,
+            "type": "str",
             "required": False,
             "default": 'pfsense',
-            "choices": [],
         },
         "api_key": {
-            "type": str,
+            "type": "str",
             "required": False,
-            "default": None,
-            "choices": [],
         },
         "validate_certs": {
-            "type": bool,
+            "type": "bool",
             "required": False,
             "default": True,
-            "choices": [],
         },
         "query_params": {
-            "type": dict,
+            "type": "dict",
             "required": False,
-            "default": None,
-            "choices": [],
         },
     }
 
@@ -177,13 +169,18 @@ def run_module():
         validate_certs=module.params['validate_certs']
     )
 
-    base_module = base.BaseModule(client)
+    base_module = base.BaseModule('/api/v2/firewall/aliases', client)
     changed = False
     resp = base_module.lookup_objects(lookup_params=module.params['query_params'])
 
+    # Capture the response message and clear it (prevent duplicate message/msg in result)
+    message = resp.get('message', '')
+    if 'message' in resp:
+        del resp['message']
+
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if resp['status'] != 200:
-        module.fail_json(msg=resp['message'], **resp)
+    if 'code' not in resp or resp['code'] != 200:
+        module.fail_json(msg=message, **resp)
 
     result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)
