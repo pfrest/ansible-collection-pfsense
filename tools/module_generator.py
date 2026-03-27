@@ -9,6 +9,7 @@ Usage::
 
     python tools/module_generator.py plugins/module_utils/assets/schema.json
 """
+
 import argparse
 import json
 import subprocess
@@ -59,23 +60,23 @@ def get_module_types(endpoint_url: str) -> list[str]:
         list[str]: A list of module types the endpoint supports.
     """
     module_types = []
-    endpoint_schema = native_schema.full_schema['endpoints'][endpoint_url]
+    endpoint_schema = native_schema.full_schema["endpoints"][endpoint_url]
 
     # Module supports 'resource' type if POST, PATCH, DELETE and is 'many' enabled
     if is_endpoint_resource_type(endpoint_schema):
-        module_types.append('resource')
+        module_types.append("resource")
     # Module supports 'collection' type if a many endpoint and supports PUT requests
     if is_endpoint_collection_type(endpoint_schema):
-        module_types.append('collection')
+        module_types.append("collection")
     # Module supports 'singleton' type if a non-many endpoint and supports PATCH
     if is_endpoint_singleton_type(endpoint_schema):
-        module_types.append('singleton')
+        module_types.append("singleton")
     # Module supports 'action' type if a many endpoint that supports POST without PATCH or DELETE
     if is_endpoint_action_type(endpoint_schema):
-        module_types.append('action')
+        module_types.append("action")
     # Module supports 'info' type if supports GET requests
     if "GET" in endpoint_schema.get("request_method_options", []):
-        module_types.append('info')
+        module_types.append("info")
 
     return module_types
 
@@ -145,9 +146,9 @@ def is_endpoint_singleton_type(endpoint_schema: dict) -> bool:
 
     # A singleton type must be an endpoint that only supports PATCH method and not POST or DELETE
     if (
-        "PATCH" in supported_methods and
-        "POST" not in supported_methods and
-        "DELETE" not in supported_methods
+        "PATCH" in supported_methods
+        and "POST" not in supported_methods
+        and "DELETE" not in supported_methods
     ):
         return True
 
@@ -174,9 +175,9 @@ def is_endpoint_action_type(endpoint_schema: dict) -> bool:
 
     # Endpoint is only action type if it supports POST but not PATCH or DELETE
     if (
-        "POST" in supported_methods and
-        "PATCH" not in supported_methods and
-        "DELETE" not in supported_methods
+        "POST" in supported_methods
+        and "PATCH" not in supported_methods
+        and "DELETE" not in supported_methods
     ):
         return True
 
@@ -215,7 +216,7 @@ def schema_type_to_ansible_type(schema_type: str) -> str:
         "integer": "int",
         "float": "float",
         "boolean": "bool",
-        "array": "list"
+        "array": "list",
     }
     return type_mapping.get(schema_type, "str")
 
@@ -291,12 +292,14 @@ def get_module_options_for_info_module(endpoint_url: str) -> dict:
 
     if endpoint_schema["many"]:
         opts["query_params"] = {
-            "type": "dict", "description": "Optional query parameters for filtering the results."
+            "type": "dict",
+            "description": "Optional query parameters for filtering the results.",
         }
         return opts
 
     opts["lookup_params"] = {
-        "type": "dict", "description": "Parameters to lookup the specific resource to retrieve."
+        "type": "dict",
+        "description": "Parameters to lookup the specific resource to retrieve.",
     }
     return opts
 
@@ -318,8 +321,8 @@ def get_module_options_for_collection_module(endpoint_url: str) -> dict:
             "required": True,
             "suboptions": get_module_options_from_fields(endpoint_url),
             "description": "The list of items to manage in the collection. Each item "
-                           "should be a dictionary representing the desired state of "
-                           "a single resource within the collection."
+            "should be a dictionary representing the desired state of "
+            "a single resource within the collection.",
         }
     }
 
@@ -339,17 +342,17 @@ def get_module_options_for_resource_module(endpoint_url: str) -> dict:
             "type": "str",
             "choices": ["present", "absent"],
             "default": "present",
-            "description": "Whether the resource should be present or absent."
+            "description": "Whether the resource should be present or absent.",
         },
         "lookup_fields": {
             "type": "list",
             "elements": "str",
             "required": True,
             "description": "The list of fields to use when looking up existing resources. "
-                           "This should be a list of field names that uniquely identify a "
-                           "resource."
+            "This should be a list of field names that uniquely identify a "
+            "resource.",
         },
-        **get_module_options_from_fields(endpoint_url)
+        **get_module_options_from_fields(endpoint_url),
     }
 
 
@@ -394,7 +397,9 @@ def _build_field_options(model_schema: dict, visited: set) -> dict:
         base_type = schema_type_to_ansible_type(field_schema.get("type", "str"))
 
         # Required fields are only truly required if they don't have conditions
-        required = (field_schema.get("required", False) and not field_schema.get("conditions", []))
+        required = field_schema.get("required", False) and not field_schema.get(
+            "conditions", []
+        )
 
         opts[field_name] = {
             "required": required,
@@ -402,7 +407,7 @@ def _build_field_options(model_schema: dict, visited: set) -> dict:
             "default": field_schema.get("default", None),
             "choices": field_schema.get("choices", None),
             "no_log": field_schema.get("sensitive", False),
-            "description": descr
+            "description": descr,
         }
 
         # If the field is 'many' enabled and not already a list type, wrap it as a list
@@ -440,51 +445,51 @@ def get_module_options(endpoint_url: str, module_type: str) -> dict:
         dict: The module options based on the endpoint and module type.
     """
     standard_options = {
-        "api_host":
-            {
-                "type": "str",
-                "required": True,
-                "description": "The hostname or IP address of the pfSense device."
-            },
-        "api_port":
-            {
-                "type": "int",
-                "default": 443,
-                "description": "The port number of the pfSense API."
-            },
-        "api_username":
-            {
-                "type": "str",
-                "default": "admin",
-                "description": "The username to authenticate with the pfSense API."
-            },
-        "api_password":
-            {
-                "type": "str",
-                "default": "pfsense",
-                "no_log": True,
-                "description": "The password to authenticate with the pfSense API."
-            },
-        "api_key":
-            {
-                "type": "str",
-                "no_log": True,
-                "description": "An API key to use for authentication."
-            },
-        "validate_certs":
-            {
-                "type": "bool",
-                "default": True,
-                "description": "Whether to validate SSL certificates when connecting to the API."
-            },
+        "api_host": {
+            "type": "str",
+            "required": True,
+            "description": "The hostname or IP address of the pfSense device.",
+        },
+        "api_port": {
+            "type": "int",
+            "default": 443,
+            "description": "The port number of the pfSense API.",
+        },
+        "api_username": {
+            "type": "str",
+            "default": "admin",
+            "description": "The username to authenticate with the pfSense API.",
+        },
+        "api_password": {
+            "type": "str",
+            "default": "pfsense",
+            "no_log": True,
+            "description": "The password to authenticate with the pfSense API.",
+        },
+        "api_key": {
+            "type": "str",
+            "no_log": True,
+            "description": "An API key to use for authentication.",
+        },
+        "validate_certs": {
+            "type": "bool",
+            "default": True,
+            "description": "Whether to validate SSL certificates when connecting to the API.",
+        },
     }
 
     if module_type == "info":
         return {**standard_options, **get_module_options_for_info_module(endpoint_url)}
     if module_type == "collection":
-        return {**standard_options, **get_module_options_for_collection_module(endpoint_url)}
+        return {
+            **standard_options,
+            **get_module_options_for_collection_module(endpoint_url),
+        }
     if module_type == "resource":
-        return {**standard_options, **get_module_options_for_resource_module(endpoint_url)}
+        return {
+            **standard_options,
+            **get_module_options_for_resource_module(endpoint_url),
+        }
 
     return {**standard_options, **get_module_options_from_fields(endpoint_url)}
 
@@ -544,13 +549,16 @@ def get_returns_contains_for_model(model_class: str, visited: set = None) -> dic
         help_text = " ".join(filter(None, help_text.split()))
 
         field_entry = {
-            "description": help_text or f"The {field_name.replace('_', ' ')} of the object.",
+            "description": help_text
+            or f"The {field_name.replace('_', ' ')} of the object.",
             "type": schema_type_to_returns_type(field_schema.get("type", "string")),
             "returned": "always",
         }
 
         # If the field is 'many' enabled and not already a list type, wrap it as a list
-        base_returns_type = schema_type_to_returns_type(field_schema.get("type", "string"))
+        base_returns_type = schema_type_to_returns_type(
+            field_schema.get("type", "string")
+        )
         if field_schema.get("many", False) and base_returns_type != "list":
             field_entry["type"] = "list"
             field_entry["elements"] = base_returns_type
@@ -589,7 +597,8 @@ def get_example_value_for_field(field_schema: dict, visited: set | None = None):
             nested_schema = native_schema.get_model_schema(nested_model_class)
             child_visited = visited | {nested_model_class}
             writable = {
-                n: s for n, s in nested_schema.get("fields", {}).items()
+                n: s
+                for n, s in nested_schema.get("fields", {}).items()
                 if not s.get("read_only", False)
             }
 
@@ -618,7 +627,13 @@ def get_example_value_for_field(field_schema: dict, visited: set | None = None):
         value = field_schema["default"]
     # Fall back to type-based placeholders
     else:
-        plcholders = {"string": "string", "integer": 1, "float": 1.0, "boolean": False, "array": []}
+        plcholders = {
+            "string": "string",
+            "integer": 1,
+            "float": 1.0,
+            "boolean": False,
+            "array": [],
+        }
         value = plcholders.get(field_schema.get("type", "string"), "string")
 
     # Wrap in a list for many-enabled fields that aren't already a list type
@@ -646,7 +661,9 @@ def generate_module_returns(endpoint_url: str, module_type: str) -> dict:
     contains = get_returns_contains_for_model(model_schema["class"])
 
     # For many-endpoint info/collection modules, the response data is a list
-    if module_type in ("collection",) or (module_type == "info" and endpoint_schema.get("many")):
+    if module_type in ("collection",) or (
+        module_type == "info" and endpoint_schema.get("many")
+    ):
         data_entry = {
             "description": f"A list of {model_schema['verbose_name_plural']} returned by the API.",
             "type": "list",
@@ -719,7 +736,9 @@ def generate_module_examples(endpoint_url: str, module_type: str) -> list:
     required_fields = {}
     optional_fields = {}
     for field_name, field_schema in model_schema.get("fields", {}).items():
-        if field_schema.get("read_only", False) or field_schema.get("write_only", False):
+        if field_schema.get("read_only", False) or field_schema.get(
+            "write_only", False
+        ):
             continue
         value = get_example_value_for_field(field_schema)
         if field_schema.get("required", False):
@@ -731,25 +750,31 @@ def generate_module_examples(endpoint_url: str, module_type: str) -> list:
 
     if module_type == "resource":
         # Present example with all required fields
-        examples.append({
-            "name": f"Create {model_name}",
-            fqcn: {**connection_params, "state": "present", **required_fields},
-        })
+        examples.append(
+            {
+                "name": f"Create {model_name}",
+                fqcn: {**connection_params, "state": "present", **required_fields},
+            }
+        )
         # Absent example showing how to delete the resource
-        examples.append({
-            "name": f"Delete {model_name}",
-            fqcn: {**connection_params, "state": "absent", **required_fields},
-        })
+        examples.append(
+            {
+                "name": f"Delete {model_name}",
+                fqcn: {**connection_params, "state": "absent", **required_fields},
+            }
+        )
 
     elif module_type == "collection":
         # Show a representative object inside the objects list
         obj = dict(required_fields)
         for k, v in list(optional_fields.items())[:2]:
             obj[k] = v
-        examples.append({
-            "name": f"Manage all {model_name_plural}",
-            fqcn: {**connection_params, "objects": [obj] if obj else [{}]},
-        })
+        examples.append(
+            {
+                "name": f"Manage all {model_name_plural}",
+                fqcn: {**connection_params, "objects": [obj] if obj else [{}]},
+            }
+        )
 
     elif module_type == "singleton":
         params = dict(connection_params)
@@ -767,15 +792,19 @@ def generate_module_examples(endpoint_url: str, module_type: str) -> list:
 
     elif module_type == "info":
         if endpoint_schema.get("many"):
-            examples.append({
-                "name": f"Retrieve all {model_name_plural}",
-                fqcn: dict(connection_params),
-            })
+            examples.append(
+                {
+                    "name": f"Retrieve all {model_name_plural}",
+                    fqcn: dict(connection_params),
+                }
+            )
         else:
-            examples.append({
-                "name": f"Retrieve {model_name}",
-                fqcn: {**connection_params, "lookup_params": {}},
-            })
+            examples.append(
+                {
+                    "name": f"Retrieve {model_name}",
+                    fqcn: {**connection_params, "lookup_params": {}},
+                }
+            )
 
     return examples
 
@@ -822,11 +851,12 @@ def generate_module_documentation(endpoint_url: str, module_type: str) -> dict:
         "module": get_module_name(endpoint_url, module_type),
         "description": [get_module_short_description(endpoint_url, module_type)],
         "short_description": get_module_short_description(endpoint_url, module_type),
-        "options": _strip_argspec_only_keys(get_module_options(endpoint_url, module_type)),
-        "author": [
-            "Jared Hendrickson (@jaredhendrickson13)"
-        ]
+        "options": _strip_argspec_only_keys(
+            get_module_options(endpoint_url, module_type)
+        ),
+        "author": ["Jared Hendrickson (@jaredhendrickson13)"],
     }
+
 
 def schema_to_dict_file(schema_json: str, template: jinja2.Template) -> None:
     """Embed the native schema as a Python dict in ``schema_dict.py``.
@@ -929,7 +959,7 @@ def render_module(
 
 def main() -> None:
     """Entry-point: embed the schema dict, then generate all modules."""
-    global native_schema # pylint: disable=global-statement
+    global native_schema  # pylint: disable=global-statement
 
     # Load generator config (contains the exclude list).
     config = load_generator_config()
@@ -943,7 +973,9 @@ def main() -> None:
     # below also uses the fresh data.
     with args.schema.open("r", encoding="utf-8") as fh:
         print("Embedding native schema from JSON file... ", end="")
-        schema_to_dict_file(fh.read(),template=env.get_template("embedded_schema.py.j2"))
+        schema_to_dict_file(
+            fh.read(), template=env.get_template("embedded_schema.py.j2")
+        )
         print("done.")
     native_schema = NativeSchema()
 
@@ -968,7 +1000,10 @@ def main() -> None:
 
     # Auto-format all generated files in a single black invocation.
     if generated_files:
-        print(f"Formatting {len(generated_files)} generated file(s) with black... ", end="")
+        print(
+            f"Formatting {len(generated_files)} generated file(s) with black... ",
+            end="",
+        )
         try:
             subprocess.run(
                 ["black", "--quiet", *(str(p) for p in generated_files)],

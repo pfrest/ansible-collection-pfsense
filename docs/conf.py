@@ -38,5 +38,3 @@ suppress_warnings = ["ref.any"]
 nitpicky = False
 
 smartquotes = False
-
-
