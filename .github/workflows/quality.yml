@@ -50,7 +50,6 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python3 -m pip install -r requirements-dev.txt
-          pip install .
 
       - name: Check documentation lint
         run: antsibull-docs lint-collection-docs --plugin-docs .
