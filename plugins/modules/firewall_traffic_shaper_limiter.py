@@ -7,11 +7,14 @@
 # GENERATED MODULE BY ADDING THIS MODULES NAME TO THE
 # tools/generator.yml FILE.
 ###############################################################
+"""An Ansible module for interacting with /api/v2/firewall/traffic_shaper/limiter."""
+
+# pylint: disable=too-many-lines,duplicate-code
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 
-DOCUMENTATION = '''
+DOCUMENTATION = r"""
 module: firewall_traffic_shaper_limiter
 description:
 - Manage individual Traffic Shaper Limiters.
@@ -32,12 +35,10 @@ options:
   api_password:
     type: str
     default: pfsense
-    no_log: true
     description: The password to authenticate with the pfSense API.
   api_key:
     type: str
-    no_log: true
-    description: An optional API key for authentication instead of username/password.
+    description: An API key to use for authentication.
   validate_certs:
     type: bool
     default: true
@@ -371,25 +372,264 @@ options:
     default: []
     choices: []
     description: The bandwidth profiles for this limiter.
+    elements: dict
+    suboptions:
+      bw:
+        required: true
+        type: int
+        default: null
+        choices: []
+        description: The amount of bandwidth this profile allows.
+      bwscale:
+        required: true
+        type: str
+        default: null
+        choices:
+        - b
+        - Kb
+        - Mb
+        description: The scale factor of the `bw` fields value.
+      bwsched:
+        required: false
+        type: str
+        default: none
+        choices: []
+        description: The schedule to assign this bandwidth profile. When this firewall
+          schedule is active, this bandwidth profile will be used.
   queue:
     required: false
     type: list
     default: []
     choices: []
     description: The child queues for this limiter.
+    elements: dict
+    suboptions:
+      name:
+        required: true
+        type: str
+        default: null
+        choices: []
+        description: The unique name for this limiter queue.
+      enabled:
+        required: false
+        type: bool
+        default: false
+        choices: []
+        description: Enables or disables this limiter queue.
+      mask:
+        required: false
+        type: str
+        default: none
+        choices:
+        - none
+        - srcaddress
+        - dstaddress
+        description: If `source` or `destination` slots is chosen a dynamic pipe with
+          the bandwidth, delay, packet loss and queue size given above will be created
+          for each source/destination IP address encountered, respectively. This makes
+          it possible to easily specify bandwidth limits per host or subnet.
+      maskbits:
+        required: false
+        type: int
+        default: 32
+        choices: []
+        description: The IPv4 mask bits to use when determine the scope of the dynamic
+          pipe for IPv4 traffic.
+      maskbitsv6:
+        required: false
+        type: int
+        default: 128
+        choices: []
+        description: The IPv6 mask bits to use when determine the scope of the dynamic
+          pipe for IPv4 traffic.
+      qlimit:
+        required: false
+        type: int
+        default: null
+        choices: []
+        description: The length of the limiter's queue which the scheduler and AQM
+          are responsible for. Set to `null` to assume default.
+      ecn:
+        required: false
+        type: bool
+        default: false
+        choices: []
+        description: Enable or disable ECN. ECN sets a reserved TCP flag when the
+          queue is nearing or exceeding capacity. Not all AQMs or schedulers support
+          this.
+      description:
+        required: false
+        type: str
+        default: ''
+        choices: []
+        description: The verbose description for this limiter queue.
+      aqm:
+        required: true
+        type: str
+        default: null
+        choices:
+        - droptail
+        - codel
+        - pie
+        - red
+        - gred
+        description: The Active Queue Management (AQM) algorithm to use for this queue.
+          AQM is the intelligent drop of network packets inside the queue, when it
+          becomes full or gets close to becoming full, with the goal of reducing network
+          congestion.
+      param_codel_target:
+        required: false
+        type: int
+        default: 0
+        choices: []
+        description: The value for the CoDel target parameter.
+      param_codel_interval:
+        required: false
+        type: int
+        default: 0
+        choices: []
+        description: The value for the CoDel interval parameter.
+      param_pie_target:
+        required: false
+        type: int
+        default: 0
+        choices: []
+        description: The value for the PIE target parameter.
+      param_pie_tupdate:
+        required: false
+        type: int
+        default: 0
+        choices: []
+        description: The value for the PIE tupdate parameter.
+      param_pie_alpha:
+        required: false
+        type: int
+        default: 0
+        choices: []
+        description: The value for the PIE alpha parameter.
+      param_pie_beta:
+        required: false
+        type: int
+        default: 0
+        choices: []
+        description: The value for the PIE beta parameter.
+      param_pie_max_burst:
+        required: false
+        type: int
+        default: 0
+        choices: []
+        description: The value for the PIE max_burst parameter.
+      param_pie_max_ecnth:
+        required: false
+        type: int
+        default: 0
+        choices: []
+        description: The value for the PIE ecnth parameter.
+      pie_onoff:
+        required: false
+        type: bool
+        default: false
+        choices: []
+        description: Enable or disable turning PIE on and off depending on queue load.
+      pie_capdrop:
+        required: false
+        type: bool
+        default: false
+        choices: []
+        description: Enable or disable cap drop adjustment.
+      pie_qdelay:
+        required: false
+        type: bool
+        default: false
+        choices: []
+        description: Set queue delay type to timestamps (true) or departure rate estimation
+          (false).
+      pie_pderand:
+        required: false
+        type: bool
+        default: false
+        choices: []
+        description: Enable or disable drop probability de-randomisation.
+      param_red_w_q:
+        required: false
+        type: int
+        default: 1
+        choices: []
+        description: The value for the RED w_q parameter.
+      param_red_min_th:
+        required: false
+        type: int
+        default: 0
+        choices: []
+        description: The value for the RED min_th parameter.
+      param_red_max_th:
+        required: false
+        type: int
+        default: 1
+        choices: []
+        description: The value for the RED max_th parameter.
+      param_red_max_p:
+        required: false
+        type: int
+        default: 1
+        choices: []
+        description: The value for the RED max_p parameter.
+      param_gred_w_q:
+        required: false
+        type: int
+        default: 1
+        choices: []
+        description: The value for the GRED w_q parameter.
+      param_gred_min_th:
+        required: false
+        type: int
+        default: 0
+        choices: []
+        description: The value for the GRED min_th parameter.
+      param_gred_max_th:
+        required: false
+        type: int
+        default: 1
+        choices: []
+        description: The value for the GRED max_th parameter.
+      param_gred_max_p:
+        required: false
+        type: int
+        default: 1
+        choices: []
+        description: The value for the GRED max_p parameter.
+      weight:
+        required: false
+        type: int
+        default: null
+        choices: []
+        description: The share of the parent limiter this queue gets.
+      plr:
+        required: false
+        type: str
+        default: null
+        choices: []
+        description: The amount of packet loss (in percentage) added to traffic passing
+          through this limiter queue.
+      buckets:
+        required: false
+        type: int
+        default: null
+        choices: []
+        description: The limiter queue's bucket size (slots).
 author:
 - Jared Hendrickson (@jaredhendrickson13)
 
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Create Traffic Shaper Limiter
   pfrest.pfsense.firewall_traffic_shaper_limiter:
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
     state: present
-    name: example
+    name: string
     aqm: droptail
     sched: wf2q+
 - name: Delete Traffic Shaper Limiter
@@ -398,13 +638,13 @@ EXAMPLES = '''
     api_username: admin
     api_password: pfsense
     state: absent
-    name: example
+    name: string
     aqm: droptail
     sched: wf2q+
 
-'''
+"""
 
-RETURNS = '''
+RETURN = """
 changed:
   description: Whether any changes were made.
   type: bool
@@ -807,333 +1047,608 @@ data:
           type: int
           returned: always
 
-'''
+"""
 
 
 def run_module():
+    """Runs this resource module against /api/v2/firewall/traffic_shaper/limiter."""
+
     module_args = {
         "api_host": {
             "type": "str",
             "required": True,
+            "no_log": False,
         },
         "api_port": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 443,
         },
         "api_username": {
             "type": "str",
             "required": False,
-            "default": 'admin',
+            "no_log": False,
+            "default": "admin",
         },
         "api_password": {
             "type": "str",
             "required": False,
-            "default": 'pfsense',
+            "no_log": True,
+            "default": "pfsense",
         },
         "api_key": {
             "type": "str",
             "required": False,
+            "no_log": True,
         },
         "validate_certs": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": True,
         },
         "state": {
             "type": "str",
             "required": False,
-            "default": 'present',
-            "choices": ['present', 'absent'],
+            "no_log": False,
+            "default": "present",
+            "choices": ["present", "absent"],
         },
         "lookup_fields": {
             "type": "list",
             "required": True,
+            "no_log": False,
             "elements": "str",
         },
         "name": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
         },
         "enabled": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "mask": {
             "type": "str",
             "required": False,
-            "default": 'none',
-            "choices": ['none', 'srcaddress', 'dstaddress'],
+            "no_log": False,
+            "default": "none",
+            "choices": ["none", "srcaddress", "dstaddress"],
         },
         "maskbits": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 32,
         },
         "maskbitsv6": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 128,
         },
         "qlimit": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "ecn": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "description": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "aqm": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
-            "choices": ['droptail', 'codel', 'pie', 'red', 'gred'],
+            "choices": ["droptail", "codel", "pie", "red", "gred"],
         },
         "sched": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
-            "choices": ['wf2q+', 'fifo', 'qfq', 'rr', 'prio', 'fq_codel', 'fq_pie'],
+            "choices": ["wf2q+", "fifo", "qfq", "rr", "prio", "fq_codel", "fq_pie"],
         },
         "param_codel_target": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 0,
         },
         "param_codel_interval": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 0,
         },
         "param_pie_target": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 0,
         },
         "param_pie_tupdate": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 0,
         },
         "param_pie_alpha": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 0,
         },
         "param_pie_beta": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 0,
         },
         "param_pie_max_burst": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 0,
         },
         "param_pie_max_ecnth": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 0,
         },
         "pie_onoff": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "pie_capdrop": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "pie_qdelay": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "pie_pderand": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "param_red_w_q": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 1,
         },
         "param_red_min_th": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 0,
         },
         "param_red_max_th": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 1,
         },
         "param_red_max_p": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 1,
         },
         "param_gred_w_q": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 1,
         },
         "param_gred_min_th": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 0,
         },
         "param_gred_max_th": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 1,
         },
         "param_gred_max_p": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 1,
         },
         "param_fq_codel_target": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 0,
         },
         "param_fq_codel_interval": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 0,
         },
         "param_fq_codel_quantum": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "param_fq_codel_limit": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "param_fq_codel_flows": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "param_fq_pie_target": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 0,
         },
         "param_fq_pie_tupdate": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 0,
         },
         "param_fq_pie_alpha": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 0,
         },
         "param_fq_pie_beta": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 0,
         },
         "param_fq_pie_max_burst": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 0,
         },
         "param_fq_pie_max_ecnth": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 0,
         },
         "param_fq_pie_quantum": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "param_fq_pie_limit": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "param_fq_pie_flows": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "delay": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "plr": {
             "type": "str",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "buckets": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "bandwidth": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
+            "elements": "dict",
+            "options": {
+                "bw": {
+                    "type": "int",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "bwscale": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                    "choices": ["b", "Kb", "Mb"],
+                },
+                "bwsched": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "none",
+                },
+            },
         },
         "queue": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
+            "elements": "dict",
+            "options": {
+                "name": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "enabled": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "mask": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "none",
+                    "choices": ["none", "srcaddress", "dstaddress"],
+                },
+                "maskbits": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 32,
+                },
+                "maskbitsv6": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 128,
+                },
+                "qlimit": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "ecn": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "description": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "",
+                },
+                "aqm": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                    "choices": ["droptail", "codel", "pie", "red", "gred"],
+                },
+                "param_codel_target": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 0,
+                },
+                "param_codel_interval": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 0,
+                },
+                "param_pie_target": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 0,
+                },
+                "param_pie_tupdate": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 0,
+                },
+                "param_pie_alpha": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 0,
+                },
+                "param_pie_beta": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 0,
+                },
+                "param_pie_max_burst": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 0,
+                },
+                "param_pie_max_ecnth": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 0,
+                },
+                "pie_onoff": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "pie_capdrop": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "pie_qdelay": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "pie_pderand": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "param_red_w_q": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 1,
+                },
+                "param_red_min_th": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 0,
+                },
+                "param_red_max_th": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 1,
+                },
+                "param_red_max_p": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 1,
+                },
+                "param_gred_w_q": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 1,
+                },
+                "param_gred_min_th": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 0,
+                },
+                "param_gred_max_th": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 1,
+                },
+                "param_gred_max_p": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 1,
+                },
+                "weight": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "plr": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "buckets": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+            },
         },
     }
 
-    module = AnsibleModule(
-        argument_spec=module_args,
-        supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
 
     client = rest.RestClient(
-        host=module.params['api_host'],
-        port=module.params['api_port'],
-        username=module.params['api_username'],
-        password=module.params['api_password'],
-        api_key=module.params['api_key'],
-        validate_certs=module.params['validate_certs']
+        host=module.params["api_host"],
+        port=module.params["api_port"],
+        username=module.params["api_username"],
+        password=module.params["api_password"],
+        api_key=module.params["api_key"],
+        validate_certs=module.params["validate_certs"],
     )
 
-    base_module = base.BaseModule('/api/v2/firewall/traffic_shaper/limiter', client)
+    base_module = base.BaseModule("/api/v2/firewall/traffic_shaper/limiter", client)
     changed, resp = base_module.set_object_state(
-        state=module.params['state'],
+        state=module.params["state"],
         data=module.params,
-        lookup_fields=module.params['lookup_fields']
+        lookup_fields=module.params["lookup_fields"],
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)
-    message = resp.get('message', '')
-    if 'message' in resp:
-        del resp['message']
+    message = resp.get("message", "")
+    if "message" in resp:
+        del resp["message"]
 
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if 'code' not in resp or resp['code'] != 200:
+    if "code" not in resp or resp["code"] != 200:
         module.fail_json(msg=message, **resp)
 
-    result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
+    result = {"changed": changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_module()

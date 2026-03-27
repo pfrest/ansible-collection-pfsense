@@ -7,11 +7,14 @@
 # GENERATED MODULE BY ADDING THIS MODULES NAME TO THE
 # tools/generator.yml FILE.
 ###############################################################
+"""An Ansible module for interacting with /api/v2/services/bind/zones."""
+
+# pylint: disable=too-many-lines,duplicate-code
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 
-DOCUMENTATION = '''
+DOCUMENTATION = r"""
 module: services_bind_zones
 description:
 - Manage all BIND Zones.
@@ -32,12 +35,10 @@ options:
   api_password:
     type: str
     default: pfsense
-    no_log: true
     description: The password to authenticate with the pfSense API.
   api_key:
     type: str
-    no_log: true
-    description: An optional API key for authentication instead of username/password.
+    description: An API key to use for authentication.
   validate_certs:
     type: bool
     default: true
@@ -126,7 +127,7 @@ options:
         choices: []
         description: The IP address of the slave server for this BIND zone.
       forwarders:
-        required: true
+        required: false
         type: list
         default: null
         choices: []
@@ -140,27 +141,27 @@ options:
         description: The default TTL interval (in seconds) for records within this
           BIND zone without a specific TTL.
       baseip:
-        required: true
+        required: false
         type: str
         default: null
         choices: []
         description: The IP address of the base domain for this zone. This sets an
           A record for the base domain.
       nameserver:
-        required: true
+        required: false
         type: str
         default: null
         choices: []
         description: The SOA nameserver for this zone.
       mail:
-        required: true
+        required: false
         type: str
         default: null
         choices: []
         description: The SOA email address (RNAME) for this zone. This must be in
           an FQDN format.
       serial:
-        required: true
+        required: false
         type: int
         default: null
         choices: []
@@ -246,34 +247,71 @@ options:
         default: []
         choices: []
         description: The records for this BIND zone.
+        elements: dict
+        suboptions:
+          name:
+            required: true
+            type: str
+            default: null
+            choices: []
+            description: The domain name for this record.
+          type:
+            required: true
+            type: str
+            default: null
+            choices:
+            - A
+            - AAAA
+            - CNAME
+            - MX
+            - NS
+            - LOC
+            - PTR
+            - SRV
+            - TXT
+            - SPF
+            description: The type of record.
+          rdata:
+            required: true
+            type: str
+            default: null
+            choices: []
+            description: The data for this record. This can be an IP address, domain
+              name, or other data depending on the record type.
+          priority:
+            required: false
+            type: int
+            default: null
+            choices: []
+            description: The priority for this record.
     description: The list of items to manage in the collection. Each item should be
       a dictionary representing the desired state of a single resource within the
       collection.
 author:
 - Jared Hendrickson (@jaredhendrickson13)
 
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Manage all BIND Zones
   pfrest.pfsense.services_bind_zones:
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
     objects:
-    - name: example
+    - name: string
       forwarders:
-      - example
-      baseip: example
-      nameserver: example
-      mail: example
+      - string
+      baseip: string
+      nameserver: string
+      mail: string
       serial: 1
       disabled: false
-      description: example
+      description: string
 
-'''
+"""
 
-RETURNS = '''
+RETURN = """
 changed:
   description: Whether any changes were made.
   type: bool
@@ -451,79 +489,310 @@ data:
           type: int
           returned: always
 
-'''
+"""
 
 
 def run_module():
+    """Runs this collection module against /api/v2/services/bind/zones."""
+
     module_args = {
         "api_host": {
             "type": "str",
             "required": True,
+            "no_log": False,
         },
         "api_port": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 443,
         },
         "api_username": {
             "type": "str",
             "required": False,
-            "default": 'admin',
+            "no_log": False,
+            "default": "admin",
         },
         "api_password": {
             "type": "str",
             "required": False,
-            "default": 'pfsense',
+            "no_log": True,
+            "default": "pfsense",
         },
         "api_key": {
             "type": "str",
             "required": False,
+            "no_log": True,
         },
         "validate_certs": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": True,
         },
         "objects": {
             "type": "list",
             "required": True,
+            "no_log": False,
             "elements": "dict",
-            "suboptions": {'disabled': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Disable this BIND zone.'}, 'name': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The name of this BIND zone.'}, 'description': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'A description for this BIND zone.'}, 'type': {'required': False, 'type': 'str', 'default': 'master', 'choices': ['master', 'slave', 'forward', 'redirect'], 'description': 'The type of this BIND zone.'}, 'view': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The views this BIND zone belongs to.', 'elements': 'str'}, 'reversev4': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enable reverse DNS for this BIND zone.'}, 'reversev6': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enable reverse IPv6 DNS for this BIND zone.'}, 'rpz': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enable this zone as part of a response policy.'}, 'custom': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'Custom BIND options for this BIND zone.'}, 'dnssec': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enable DNSSEC for this BIND zone.'}, 'backupkeys': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enable backing up DNSSEC keys in the XML configuration for this BIND zone.'}, 'slaveip': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The IP address of the slave server for this BIND zone.'}, 'forwarders': {'required': True, 'type': 'list', 'default': None, 'choices': [], 'description': 'The forwarders for this BIND zone.', 'elements': 'str'}, 'ttl': {'required': False, 'type': 'int', 'default': None, 'choices': [], 'description': 'The default TTL interval (in seconds) for records within this BIND zone without a specific TTL.'}, 'baseip': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The IP address of the base domain for this zone. This sets an A record for the base domain.'}, 'nameserver': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The SOA nameserver for this zone.'}, 'mail': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The SOA email address (RNAME) for this zone. This must be in an FQDN format.'}, 'serial': {'required': True, 'type': 'int', 'default': None, 'choices': [], 'description': 'The SOA serial number for this zone.'}, 'refresh': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The SOA refresh interval for this zone. TTL-style time-unit suffixes are supported (e.g. 1h, 1d, 1w), otherwise time in seconds is assumed.'}, 'retry': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The SOA retry interval for this zone. TTL-style time-unit suffixes are supported (e.g. 1h, 1d, 1w), otherwise time in seconds is assumed.'}, 'expire': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The SOA expiry interval for this zone. TTL-style time-unit suffixes are supported (e.g. 1h, 1d, 1w), otherwise time in seconds is assumed.'}, 'minimum': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The SOA minimum TTL interval (in seconds) for this zone. This is also referred to as the negative TTL. TTL-style time-unit suffixes are supported (e.g. 1h, 1d, 1w), otherwise time in seconds is assumed.'}, 'enable_updatepolicy': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enable a specific dynamic update policy for this BIND zone.'}, 'updatepolicy': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The update policy for this BIND zone.'}, 'allowupdate': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': "The access lists that are allowed to submit dynamic updates for 'master' zones (e.g. dynamic DNS).", 'elements': 'str'}, 'allowtransfer': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The access lists that are allowed to transfer this BIND zone.', 'elements': 'str'}, 'allowquery': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The access lists that are allowed to query this BIND zone.', 'elements': 'str'}, 'regdhcpstatic': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Register DHCP static mappings as records in this BIND zone.'}, 'customzonerecords': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'Custom records for this BIND zone.'}, 'records': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The records for this BIND zone.'}},
+            "options": {
+                "disabled": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "name": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "description": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "",
+                },
+                "type": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "master",
+                    "choices": ["master", "slave", "forward", "redirect"],
+                },
+                "view": {
+                    "type": "list",
+                    "required": False,
+                    "no_log": False,
+                    "default": [],
+                    "elements": "str",
+                },
+                "reversev4": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "reversev6": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "rpz": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "custom": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "",
+                },
+                "dnssec": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "backupkeys": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "slaveip": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "",
+                },
+                "forwarders": {
+                    "type": "list",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                    "elements": "str",
+                },
+                "ttl": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "baseip": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "nameserver": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "mail": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "serial": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "refresh": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "retry": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "expire": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "minimum": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "enable_updatepolicy": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "updatepolicy": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "",
+                },
+                "allowupdate": {
+                    "type": "list",
+                    "required": False,
+                    "no_log": False,
+                    "default": [],
+                    "elements": "str",
+                },
+                "allowtransfer": {
+                    "type": "list",
+                    "required": False,
+                    "no_log": False,
+                    "default": [],
+                    "elements": "str",
+                },
+                "allowquery": {
+                    "type": "list",
+                    "required": False,
+                    "no_log": False,
+                    "default": [],
+                    "elements": "str",
+                },
+                "regdhcpstatic": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "customzonerecords": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "",
+                },
+                "records": {
+                    "type": "list",
+                    "required": False,
+                    "no_log": False,
+                    "default": [],
+                    "elements": "dict",
+                    "options": {
+                        "name": {
+                            "type": "str",
+                            "required": True,
+                            "no_log": False,
+                            "default": None,
+                        },
+                        "type": {
+                            "type": "str",
+                            "required": True,
+                            "no_log": False,
+                            "default": None,
+                            "choices": [
+                                "A",
+                                "AAAA",
+                                "CNAME",
+                                "MX",
+                                "NS",
+                                "LOC",
+                                "PTR",
+                                "SRV",
+                                "TXT",
+                                "SPF",
+                            ],
+                        },
+                        "rdata": {
+                            "type": "str",
+                            "required": True,
+                            "no_log": False,
+                            "default": None,
+                        },
+                        "priority": {
+                            "type": "int",
+                            "required": False,
+                            "no_log": False,
+                            "default": None,
+                        },
+                    },
+                },
+            },
         },
     }
 
-    module = AnsibleModule(
-        argument_spec=module_args,
-        supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
 
     client = rest.RestClient(
-        host=module.params['api_host'],
-        port=module.params['api_port'],
-        username=module.params['api_username'],
-        password=module.params['api_password'],
-        api_key=module.params['api_key'],
-        validate_certs=module.params['validate_certs']
+        host=module.params["api_host"],
+        port=module.params["api_port"],
+        username=module.params["api_username"],
+        password=module.params["api_password"],
+        api_key=module.params["api_key"],
+        validate_certs=module.params["validate_certs"],
     )
 
-    base_module = base.BaseModule('/api/v2/services/bind/zones', client)
-    changed = True # TODO: determine if changes are needed by comparing existing objects to the provided list
-    resp = base_module.replace_objects(
-        data=module.params['objects'],
+    base_module = base.BaseModule("/api/v2/services/bind/zones", client)
+    changed, resp = base_module.replace_objects(
+        data=module.params["objects"],
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)
-    message = resp.get('message', '')
-    if 'message' in resp:
-        del resp['message']
+    message = resp.get("message", "")
+    if "message" in resp:
+        del resp["message"]
 
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if 'code' not in resp or resp['code'] != 200:
+    if "code" not in resp or resp["code"] != 200:
         module.fail_json(msg=message, **resp)
 
-    result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
+    result = {"changed": changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_module()

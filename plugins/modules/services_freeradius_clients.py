@@ -7,11 +7,14 @@
 # GENERATED MODULE BY ADDING THIS MODULES NAME TO THE
 # tools/generator.yml FILE.
 ###############################################################
+"""An Ansible module for interacting with /api/v2/services/freeradius/clients."""
+
+# pylint: disable=too-many-lines,duplicate-code
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 
-DOCUMENTATION = '''
+DOCUMENTATION = r"""
 module: services_freeradius_clients
 description:
 - Manage all Free RADIUS Clients.
@@ -32,12 +35,10 @@ options:
   api_password:
     type: str
     default: pfsense
-    no_log: true
     description: The password to authenticate with the pfSense API.
   api_key:
     type: str
-    no_log: true
-    description: An optional API key for authentication instead of username/password.
+    description: An API key to use for authentication.
   validate_certs:
     type: bool
     default: true
@@ -144,24 +145,24 @@ options:
 author:
 - Jared Hendrickson (@jaredhendrickson13)
 
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Manage all Free RADIUS Clients
   pfrest.pfsense.services_freeradius_clients:
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
     objects:
-    - addr: example
-      shortname: example
-      secret: example
+    - addr: string
+      shortname: string
+      secret: string
       ip_version: ipaddr
-      description: example
+      description: string
 
-'''
+"""
 
-RETURNS = '''
+RETURN = """
 changed:
   description: Whether any changes were made.
   type: bool
@@ -237,79 +238,166 @@ data:
       type: str
       returned: always
 
-'''
+"""
 
 
 def run_module():
+    """Runs this collection module against /api/v2/services/freeradius/clients."""
+
     module_args = {
         "api_host": {
             "type": "str",
             "required": True,
+            "no_log": False,
         },
         "api_port": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 443,
         },
         "api_username": {
             "type": "str",
             "required": False,
-            "default": 'admin',
+            "no_log": False,
+            "default": "admin",
         },
         "api_password": {
             "type": "str",
             "required": False,
-            "default": 'pfsense',
+            "no_log": True,
+            "default": "pfsense",
         },
         "api_key": {
             "type": "str",
             "required": False,
+            "no_log": True,
         },
         "validate_certs": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": True,
         },
         "objects": {
             "type": "list",
             "required": True,
+            "no_log": False,
             "elements": "dict",
-            "suboptions": {'addr': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The IP address or network of the RADIUS client(s) in CIDR notation. This is the IP of the NAS (switch, access point, firewall, router, etc.)'}, 'ip_version': {'required': False, 'type': 'str', 'default': 'ipaddr', 'choices': ['ipaddr', 'ipv6addr'], 'description': 'The IP version of the this Client.'}, 'description': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The description for this interface.'}, 'shortname': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'A short name for the client. This is generally the hostname of the NAS.'}, 'secret': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'This is the shared secret (password) which the NAS (switch, accesspoint, etc.) needs to communicate with the RADIUS server.'}, 'proto': {'required': False, 'type': 'str', 'default': 'udp', 'choices': ['udp', 'tcp'], 'description': 'The protocol the client uses.'}, 'nastype': {'required': False, 'type': 'str', 'default': 'other', 'choices': ['cisco', 'cvx', 'computone', 'digitro', 'livingston', 'juniper', 'max40xx', 'mikrotik', 'mikrotik_snmp', 'dot1x', 'other'], 'description': 'The NAS type of the client. This is used by checkrad.pl for simultaneous use checks.'}, 'msgauth': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'RFC5080 requires Message-Authenticator in Access-Request. But older NAS (switches or accesspoints) do not include that.'}, 'maxconn': {'required': False, 'type': 'int', 'default': 16, 'choices': [], 'description': 'Takes only effect if you use TCP as protocol. Limits the number of simultaneous TCP connections from a client.'}, 'naslogin': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'If supported by your NAS, you can use SNMP or finger for simultaneous-use checks instead of (s)radutmp file and accounting. Leave empty to choose (s)radutmp.'}, 'naspassword': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'If supported by your NAS, you can use SNMP or finger for simultaneous-use checks instead of (s)radutmp file and accounting. Leave empty to choose (s)radutmp.'}},
+            "options": {
+                "addr": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "ip_version": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "ipaddr",
+                    "choices": ["ipaddr", "ipv6addr"],
+                },
+                "description": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "",
+                },
+                "shortname": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "secret": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": True,
+                    "default": None,
+                },
+                "proto": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "udp",
+                    "choices": ["udp", "tcp"],
+                },
+                "nastype": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "other",
+                    "choices": [
+                        "cisco",
+                        "cvx",
+                        "computone",
+                        "digitro",
+                        "livingston",
+                        "juniper",
+                        "max40xx",
+                        "mikrotik",
+                        "mikrotik_snmp",
+                        "dot1x",
+                        "other",
+                    ],
+                },
+                "msgauth": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "maxconn": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 16,
+                },
+                "naslogin": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "",
+                },
+                "naspassword": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": True,
+                    "default": "",
+                },
+            },
         },
     }
 
-    module = AnsibleModule(
-        argument_spec=module_args,
-        supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
 
     client = rest.RestClient(
-        host=module.params['api_host'],
-        port=module.params['api_port'],
-        username=module.params['api_username'],
-        password=module.params['api_password'],
-        api_key=module.params['api_key'],
-        validate_certs=module.params['validate_certs']
+        host=module.params["api_host"],
+        port=module.params["api_port"],
+        username=module.params["api_username"],
+        password=module.params["api_password"],
+        api_key=module.params["api_key"],
+        validate_certs=module.params["validate_certs"],
     )
 
-    base_module = base.BaseModule('/api/v2/services/freeradius/clients', client)
-    changed = True # TODO: determine if changes are needed by comparing existing objects to the provided list
-    resp = base_module.replace_objects(
-        data=module.params['objects'],
+    base_module = base.BaseModule("/api/v2/services/freeradius/clients", client)
+    changed, resp = base_module.replace_objects(
+        data=module.params["objects"],
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)
-    message = resp.get('message', '')
-    if 'message' in resp:
-        del resp['message']
+    message = resp.get("message", "")
+    if "message" in resp:
+        del resp["message"]
 
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if 'code' not in resp or resp['code'] != 200:
+    if "code" not in resp or resp["code"] != 200:
         module.fail_json(msg=message, **resp)
 
-    result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
+    result = {"changed": changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_module()

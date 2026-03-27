@@ -7,11 +7,14 @@
 # GENERATED MODULE BY ADDING THIS MODULES NAME TO THE
 # tools/generator.yml FILE.
 ###############################################################
+"""An Ansible module for interacting with /api/v2/services/haproxy/frontend/acl."""
+
+# pylint: disable=too-many-lines,duplicate-code
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 
-DOCUMENTATION = '''
+DOCUMENTATION = r"""
 module: services_haproxy_frontend_acl
 description:
 - Manage individual HAProxy Frontend Access Control Lists.
@@ -32,12 +35,10 @@ options:
   api_password:
     type: str
     default: pfsense
-    no_log: true
     description: The password to authenticate with the pfSense API.
   api_key:
     type: str
-    no_log: true
-    description: An optional API key for authentication instead of username/password.
+    description: An API key to use for authentication.
   validate_certs:
     type: bool
     default: true
@@ -113,31 +114,31 @@ options:
 author:
 - Jared Hendrickson (@jaredhendrickson13)
 
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Create HAProxy Frontend Access Control List
   pfrest.pfsense.services_haproxy_frontend_acl:
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
     state: present
-    name: example
+    name: string
     expression: host_starts_with
-    value: example
+    value: string
 - name: Delete HAProxy Frontend Access Control List
   pfrest.pfsense.services_haproxy_frontend_acl:
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
     state: absent
-    name: example
+    name: string
     expression: host_starts_with
-    value: example
+    value: string
 
-'''
+"""
 
-RETURNS = '''
+RETURN = """
 changed:
   description: Whether any changes were made.
   type: bool
@@ -180,111 +181,149 @@ data:
       type: bool
       returned: always
 
-'''
+"""
 
 
 def run_module():
+    """Runs this resource module against /api/v2/services/haproxy/frontend/acl."""
+
     module_args = {
         "api_host": {
             "type": "str",
             "required": True,
+            "no_log": False,
         },
         "api_port": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 443,
         },
         "api_username": {
             "type": "str",
             "required": False,
-            "default": 'admin',
+            "no_log": False,
+            "default": "admin",
         },
         "api_password": {
             "type": "str",
             "required": False,
-            "default": 'pfsense',
+            "no_log": True,
+            "default": "pfsense",
         },
         "api_key": {
             "type": "str",
             "required": False,
+            "no_log": True,
         },
         "validate_certs": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": True,
         },
         "state": {
             "type": "str",
             "required": False,
-            "default": 'present',
-            "choices": ['present', 'absent'],
+            "no_log": False,
+            "default": "present",
+            "choices": ["present", "absent"],
         },
         "lookup_fields": {
             "type": "list",
             "required": True,
+            "no_log": False,
             "elements": "str",
         },
         "name": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
         },
         "expression": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
-            "choices": ['host_starts_with', 'host_ends_with', 'host_matches', 'host_regex', 'host_contains', 'path_starts_with', 'path_ends_with', 'path_matches', 'path_regex', 'path_contains', 'path_dir', 'url_parameter', 'ssl_c_verify_code', 'ssl_c_verify', 'ssl_c_ca_commonname', 'source_ip', 'backendservercount', 'traffic_is_http', 'traffic_is_ssl', 'ssl_sni_matches', 'ssl_sni_contains', 'ssl_sni_starts_with', 'ssl_sni_ends_with', 'ssl_sni_regex', 'custom'],
+            "choices": [
+                "host_starts_with",
+                "host_ends_with",
+                "host_matches",
+                "host_regex",
+                "host_contains",
+                "path_starts_with",
+                "path_ends_with",
+                "path_matches",
+                "path_regex",
+                "path_contains",
+                "path_dir",
+                "url_parameter",
+                "ssl_c_verify_code",
+                "ssl_c_verify",
+                "ssl_c_ca_commonname",
+                "source_ip",
+                "backendservercount",
+                "traffic_is_http",
+                "traffic_is_ssl",
+                "ssl_sni_matches",
+                "ssl_sni_contains",
+                "ssl_sni_starts_with",
+                "ssl_sni_ends_with",
+                "ssl_sni_regex",
+                "custom",
+            ],
         },
         "value": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
         },
         "casesensitive": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "not": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
     }
 
-    module = AnsibleModule(
-        argument_spec=module_args,
-        supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
 
     client = rest.RestClient(
-        host=module.params['api_host'],
-        port=module.params['api_port'],
-        username=module.params['api_username'],
-        password=module.params['api_password'],
-        api_key=module.params['api_key'],
-        validate_certs=module.params['validate_certs']
+        host=module.params["api_host"],
+        port=module.params["api_port"],
+        username=module.params["api_username"],
+        password=module.params["api_password"],
+        api_key=module.params["api_key"],
+        validate_certs=module.params["validate_certs"],
     )
 
-    base_module = base.BaseModule('/api/v2/services/haproxy/frontend/acl', client)
+    base_module = base.BaseModule("/api/v2/services/haproxy/frontend/acl", client)
     changed, resp = base_module.set_object_state(
-        state=module.params['state'],
+        state=module.params["state"],
         data=module.params,
-        lookup_fields=module.params['lookup_fields']
+        lookup_fields=module.params["lookup_fields"],
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)
-    message = resp.get('message', '')
-    if 'message' in resp:
-        del resp['message']
+    message = resp.get("message", "")
+    if "message" in resp:
+        del resp["message"]
 
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if 'code' not in resp or resp['code'] != 200:
+    if "code" not in resp or resp["code"] != 200:
         module.fail_json(msg=message, **resp)
 
-    result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
+    result = {"changed": changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_module()

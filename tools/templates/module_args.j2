@@ -1,20 +1,24 @@
-    module_args = {
-{%- for name, arg in module_args.items() %}
-        "{{ name }}": {
-            "type": "{{ arg.type }}",
-            "required": {{ arg.required | default(False) }},
+{% macro render_options(opts) -%}
+{
+{%- for name, arg in opts.items() %}
+"{{ name }}": {
+"type": "{{ arg.type }}",
+"required": {{ arg.required | default(False) }},
+"no_log": {{ arg.no_log | default(False) }},
 {%- if arg.default is defined %}
-            "default": {{ arg.default | default(None) | repr }},
+"default": {{ arg.default | default(None) | repr }},
 {%- endif %}
 {%- if arg.choices %}
-            "choices": {{ arg.choices }},
+"choices": {{ arg.choices }},
 {%- endif %}
 {%- if arg.elements is defined %}
-            "elements": "{{ arg.elements }}",
+"elements": "{{ arg.elements }}",
+{%- endif %}
 {%- if arg.suboptions is defined %}
-            "suboptions": {{ arg.suboptions | repr }},
+"options": {{ render_options(arg.suboptions) }},
 {%- endif %}
-{%- endif %}
-        },
+},
 {%- endfor %}
-    }
+}
+{%- endmacro %}
+    module_args = {{ render_options(module_args) }}

@@ -7,11 +7,14 @@
 # GENERATED MODULE BY ADDING THIS MODULES NAME TO THE
 # tools/generator.yml FILE.
 ###############################################################
+"""An Ansible module for interacting with /api/v2/services/dhcp_server/static_mapping."""
+
+# pylint: disable=too-many-lines,duplicate-code
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 
-DOCUMENTATION = '''
+DOCUMENTATION = r"""
 module: services_dhcp_server_static_mapping
 description:
 - Manage individual DHCP Server Static Mappings.
@@ -32,12 +35,10 @@ options:
   api_password:
     type: str
     default: pfsense
-    no_log: true
     description: The password to authenticate with the pfSense API.
   api_key:
     type: str
-    no_log: true
-    description: An optional API key for authentication instead of username/password.
+    description: An API key to use for authentication.
   validate_certs:
     type: bool
     default: true
@@ -151,27 +152,27 @@ options:
 author:
 - Jared Hendrickson (@jaredhendrickson13)
 
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Create DHCP Server Static Mapping
   pfrest.pfsense.services_dhcp_server_static_mapping:
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
     state: present
-    mac: example
+    mac: string
 - name: Delete DHCP Server Static Mapping
   pfrest.pfsense.services_dhcp_server_static_mapping:
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
     state: absent
-    mac: example
+    mac: string
 
-'''
+"""
 
-RETURNS = '''
+RETURN = """
 changed:
   description: Whether any changes were made.
   type: bool
@@ -259,159 +260,180 @@ data:
       type: str
       returned: always
 
-'''
+"""
 
 
 def run_module():
+    """Runs this resource module against /api/v2/services/dhcp_server/static_mapping."""
+
     module_args = {
         "api_host": {
             "type": "str",
             "required": True,
+            "no_log": False,
         },
         "api_port": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 443,
         },
         "api_username": {
             "type": "str",
             "required": False,
-            "default": 'admin',
+            "no_log": False,
+            "default": "admin",
         },
         "api_password": {
             "type": "str",
             "required": False,
-            "default": 'pfsense',
+            "no_log": True,
+            "default": "pfsense",
         },
         "api_key": {
             "type": "str",
             "required": False,
+            "no_log": True,
         },
         "validate_certs": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": True,
         },
         "state": {
             "type": "str",
             "required": False,
-            "default": 'present',
-            "choices": ['present', 'absent'],
+            "no_log": False,
+            "default": "present",
+            "choices": ["present", "absent"],
         },
         "lookup_fields": {
             "type": "list",
             "required": True,
+            "no_log": False,
             "elements": "str",
         },
         "mac": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
         },
         "ipaddr": {
             "type": "str",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "cid": {
             "type": "str",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "hostname": {
             "type": "str",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "domain": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "domainsearchlist": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
             "elements": "str",
         },
         "defaultleasetime": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 7200,
         },
         "maxleasetime": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 86400,
         },
         "gateway": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "dnsserver": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
             "elements": "str",
         },
         "winsserver": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
             "elements": "str",
         },
         "ntpserver": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
             "elements": "str",
         },
         "arp_table_static_entry": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "descr": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
     }
 
-    module = AnsibleModule(
-        argument_spec=module_args,
-        supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
 
     client = rest.RestClient(
-        host=module.params['api_host'],
-        port=module.params['api_port'],
-        username=module.params['api_username'],
-        password=module.params['api_password'],
-        api_key=module.params['api_key'],
-        validate_certs=module.params['validate_certs']
+        host=module.params["api_host"],
+        port=module.params["api_port"],
+        username=module.params["api_username"],
+        password=module.params["api_password"],
+        api_key=module.params["api_key"],
+        validate_certs=module.params["validate_certs"],
     )
 
-    base_module = base.BaseModule('/api/v2/services/dhcp_server/static_mapping', client)
+    base_module = base.BaseModule("/api/v2/services/dhcp_server/static_mapping", client)
     changed, resp = base_module.set_object_state(
-        state=module.params['state'],
+        state=module.params["state"],
         data=module.params,
-        lookup_fields=module.params['lookup_fields']
+        lookup_fields=module.params["lookup_fields"],
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)
-    message = resp.get('message', '')
-    if 'message' in resp:
-        del resp['message']
+    message = resp.get("message", "")
+    if "message" in resp:
+        del resp["message"]
 
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if 'code' not in resp or resp['code'] != 200:
+    if "code" not in resp or resp["code"] != 200:
         module.fail_json(msg=message, **resp)
 
-    result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
+    result = {"changed": changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_module()

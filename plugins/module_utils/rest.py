@@ -1,6 +1,7 @@
 """
 Module containing a client for Ansible to communicate with pfSense-pkg-RESTAPI.
 """
+
 import base64
 import requests
 
@@ -21,6 +22,7 @@ class RestClient:
         password (str): The password for authentication. (if basic auth is used)
         api_key (str): The API key for authentication (if key auth is used).
     """
+
     host: str
     port: int
     scheme: str
@@ -32,6 +34,7 @@ class RestClient:
     password: str
     api_key: str
 
+    # pylint: disable=too-many-arguments,too-many-positional-arguments
     def __init__(
         self,
         host: str,
@@ -80,11 +83,13 @@ class RestClient:
             credentials = f"{self.username}:{self.password}"
             encoded_credentials = base64.b64encode(credentials.encode()).decode()
             return {"Authorization": f"Basic {encoded_credentials}"}
-        elif self.auth_mode == "key":
+        if self.auth_mode == "key":
             return {"Authorization": f"x-api-key {self.api_key}"}
-        else:
-            raise ValueError(f"Unsupported auth_mode {self.auth_mode} was provided. Please use 'basic' or 'key'.")
-        
+
+        raise ValueError(
+            f"Unsupported auth_mode {self.auth_mode} was provided. Please use 'basic' or 'key'."
+        )
+
     def get(self, endpoint: str, params: dict = None) -> requests.Response:
         """
         Perform a GET request to the specified endpoint.
@@ -106,7 +111,7 @@ class RestClient:
             timeout=self.timeout,
         )
         return response
-    
+
     def post(self, endpoint: str, data: dict = None) -> requests.Response:
         """
         Perform a POST request to the specified endpoint.
@@ -129,7 +134,7 @@ class RestClient:
             timeout=self.timeout,
         )
         return response
-    
+
     def patch(self, endpoint: str, data: dict = None) -> requests.Response:
         """
         Perform a PATCH request to the specified endpoint.
@@ -152,8 +157,8 @@ class RestClient:
             timeout=self.timeout,
         )
         return response
-    
-    def put(self, endpoint: str, data: dict|list = None) -> requests.Response:
+
+    def put(self, endpoint: str, data: dict | list = None) -> requests.Response:
         """
         Perform a PUT request to the specified endpoint.
 
@@ -175,7 +180,7 @@ class RestClient:
             timeout=self.timeout,
         )
         return response
-    
+
     def delete(self, endpoint: str, params: dict = None) -> requests.Response:
         """
         Perform a DELETE request to the specified endpoint.
@@ -198,4 +203,3 @@ class RestClient:
             timeout=self.timeout,
         )
         return response
-    

@@ -7,11 +7,14 @@
 # GENERATED MODULE BY ADDING THIS MODULES NAME TO THE
 # tools/generator.yml FILE.
 ###############################################################
+"""An Ansible module for interacting with /api/v2/vpn/wireguard/tunnels."""
+
+# pylint: disable=too-many-lines,duplicate-code
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 
-DOCUMENTATION = '''
+DOCUMENTATION = r"""
 module: vpn_wireguard_tunnels
 description:
 - Manage all WireGuard Tunnels.
@@ -32,12 +35,10 @@ options:
   api_password:
     type: str
     default: pfsense
-    no_log: true
     description: The password to authenticate with the pfSense API.
   api_key:
     type: str
-    no_log: true
-    description: An optional API key for authentication instead of username/password.
+    description: An API key to use for authentication.
   validate_certs:
     type: bool
     default: true
@@ -87,28 +88,48 @@ options:
         description: The IPv4 or IPv6 addresses to assign this WireGuard tunnel interface.
           This field is ignored if this tunnel interface is assigned to an existing
           pfSense interface object.
+        elements: dict
+        suboptions:
+          address:
+            required: true
+            type: str
+            default: null
+            choices: []
+            description: The IPv4 or IPv6 address for this WireGuard tunnel.
+          mask:
+            required: true
+            type: int
+            default: null
+            choices: []
+            description: The subnet mask for this WireGuard tunnel.
+          descr:
+            required: false
+            type: str
+            default: ''
+            choices: []
+            description: A description for this WireGuard tunnel address entry.
     description: The list of items to manage in the collection. Each item should be
       a dictionary representing the desired state of a single resource within the
       collection.
 author:
 - Jared Hendrickson (@jaredhendrickson13)
 
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Manage all WireGuard Tunnels
   pfrest.pfsense.vpn_wireguard_tunnels:
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
     objects:
-    - privatekey: example
+    - privatekey: string
       enabled: true
-      descr: example
+      descr: string
 
-'''
+"""
 
-RETURNS = '''
+RETURN = """
 changed:
   description: Whether any changes were made.
   type: bool
@@ -184,79 +205,142 @@ data:
           type: str
           returned: always
 
-'''
+"""
 
 
 def run_module():
+    """Runs this collection module against /api/v2/vpn/wireguard/tunnels."""
+
     module_args = {
         "api_host": {
             "type": "str",
             "required": True,
+            "no_log": False,
         },
         "api_port": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 443,
         },
         "api_username": {
             "type": "str",
             "required": False,
-            "default": 'admin',
+            "no_log": False,
+            "default": "admin",
         },
         "api_password": {
             "type": "str",
             "required": False,
-            "default": 'pfsense',
+            "no_log": True,
+            "default": "pfsense",
         },
         "api_key": {
             "type": "str",
             "required": False,
+            "no_log": True,
         },
         "validate_certs": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": True,
         },
         "objects": {
             "type": "list",
             "required": True,
+            "no_log": False,
             "elements": "dict",
-            "suboptions": {'enabled': {'required': False, 'type': 'bool', 'default': True, 'choices': [], 'description': 'Enables or disables this tunnels and any associated peers.'}, 'descr': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'A description for this WireGuard tunnel.'}, 'listenport': {'required': False, 'type': 'str', 'default': '51820', 'choices': [], 'description': 'The port WireGuard will listen on for this tunnel. Valid options are: a TCP/UDP port number'}, 'privatekey': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The private key for this tunnel.'}, 'mtu': {'required': False, 'type': 'int', 'default': 1420, 'choices': [], 'description': 'The MTU for this WireGuard tunnel interface. This value is ignored if this tunnel is assigned as a pfSense interface.'}, 'addresses': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The IPv4 or IPv6 addresses to assign this WireGuard tunnel interface. This field is ignored if this tunnel interface is assigned to an existing pfSense interface object.'}},
+            "options": {
+                "enabled": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": True,
+                },
+                "descr": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "",
+                },
+                "listenport": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "51820",
+                },
+                "privatekey": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": True,
+                    "default": None,
+                },
+                "mtu": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 1420,
+                },
+                "addresses": {
+                    "type": "list",
+                    "required": False,
+                    "no_log": False,
+                    "default": [],
+                    "elements": "dict",
+                    "options": {
+                        "address": {
+                            "type": "str",
+                            "required": True,
+                            "no_log": False,
+                            "default": None,
+                        },
+                        "mask": {
+                            "type": "int",
+                            "required": True,
+                            "no_log": False,
+                            "default": None,
+                        },
+                        "descr": {
+                            "type": "str",
+                            "required": False,
+                            "no_log": False,
+                            "default": "",
+                        },
+                    },
+                },
+            },
         },
     }
 
-    module = AnsibleModule(
-        argument_spec=module_args,
-        supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
 
     client = rest.RestClient(
-        host=module.params['api_host'],
-        port=module.params['api_port'],
-        username=module.params['api_username'],
-        password=module.params['api_password'],
-        api_key=module.params['api_key'],
-        validate_certs=module.params['validate_certs']
+        host=module.params["api_host"],
+        port=module.params["api_port"],
+        username=module.params["api_username"],
+        password=module.params["api_password"],
+        api_key=module.params["api_key"],
+        validate_certs=module.params["validate_certs"],
     )
 
-    base_module = base.BaseModule('/api/v2/vpn/wireguard/tunnels', client)
-    changed = True # TODO: determine if changes are needed by comparing existing objects to the provided list
-    resp = base_module.replace_objects(
-        data=module.params['objects'],
+    base_module = base.BaseModule("/api/v2/vpn/wireguard/tunnels", client)
+    changed, resp = base_module.replace_objects(
+        data=module.params["objects"],
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)
-    message = resp.get('message', '')
-    if 'message' in resp:
-        del resp['message']
+    message = resp.get("message", "")
+    if "message" in resp:
+        del resp["message"]
 
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if 'code' not in resp or resp['code'] != 200:
+    if "code" not in resp or resp["code"] != 200:
         module.fail_json(msg=message, **resp)
 
-    result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
+    result = {"changed": changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_module()

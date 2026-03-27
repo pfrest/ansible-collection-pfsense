@@ -1,29 +1,51 @@
+"""Automatically generate Ansible modules from the REST API native schema.
+
+This script reads the pfSense REST API schema and uses Jinja2 templates to
+generate fully documented Ansible module ``.py`` files.  It is driven
+entirely by the schema -- when the API evolves, re-running this script
+brings every module up to date.
+
+Usage::
+
+    python tools/module_generator.py plugins/module_utils/assets/schema.json
 """
-A helper script o automatically generate Ansible modules based on the REST API schema.
-"""
-import json
-import yaml
 import argparse
-import jinja2
+import json
+import subprocess
 from pathlib import Path
+
+import jinja2
+import yaml
 
 from ansible_collections.pfrest.pfsense.plugins.module_utils.schema import NativeSchema
 
-# Set up argument parsing
-argparse = argparse.ArgumentParser(
-    description="Generate Ansible modules based on a REST API native schema file."
-)
-argparse.add_argument(
-    "schema",
-    type=Path,
-    help="Path to the REST API native schema JSON file.",
-)
-args = argparse.parse_args()
+# Resolved directory paths used throughout the script.
+TOOLS_DIR = Path(__file__).parent
+TEMPLATES_DIR = TOOLS_DIR / "templates"
+MODULES_DIR = TOOLS_DIR.parent / "plugins" / "modules"
+SCHEMA_DICT_PATH = TOOLS_DIR.parent / "plugins" / "module_utils" / "embedded_schema.py"
+GENERATOR_CONFIG_PATH = TOOLS_DIR.parent / "generator.yml"
 
-# Load the schema file into a NativeSchema object
-with args.schema.open("r", encoding="utf-8") as schema_file:
-    native_schema_json = json.load(schema_file)
-    native_schema = NativeSchema()
+
+def parse_args() -> argparse.Namespace:
+    """Parse and return command-line arguments.
+
+    Returns:
+        An ``argparse.Namespace`` containing the ``schema`` path.
+    """
+    parser = argparse.ArgumentParser(
+        description="Generate Ansible modules based on a REST API native schema file.",
+    )
+    parser.add_argument(
+        "schema",
+        type=Path,
+        help="Path to the REST API native schema JSON file.",
+    )
+    return parser.parse_args()
+
+
+args = parse_args()
+native_schema = NativeSchema()
 
 
 def get_module_types(endpoint_url: str) -> list[str]:
@@ -39,19 +61,19 @@ def get_module_types(endpoint_url: str) -> list[str]:
     module_types = []
     endpoint_schema = native_schema.full_schema['endpoints'][endpoint_url]
 
-    # Module supports 'resource' type if it supports POST, PATCH, DELETE and is 'many' enabled
+    # Module supports 'resource' type if POST, PATCH, DELETE and is 'many' enabled
     if is_endpoint_resource_type(endpoint_schema):
         module_types.append('resource')
-    # Module supports 'collection' type if it is a many endpoint and supports PUT requests
+    # Module supports 'collection' type if a many endpoint and supports PUT requests
     if is_endpoint_collection_type(endpoint_schema):
         module_types.append('collection')
-    # Module supports 'singleton' type if it is a non-many endpoint and supports PATCH
+    # Module supports 'singleton' type if a non-many endpoint and supports PATCH
     if is_endpoint_singleton_type(endpoint_schema):
         module_types.append('singleton')
-    # Module supports 'action' type if it is a many endpoint that supports POST without PATCH or DELETE
+    # Module supports 'action' type if a many endpoint that supports POST without PATCH or DELETE
     if is_endpoint_action_type(endpoint_schema):
         module_types.append('action')
-    # Module supports 'info' type if it supports GET requests
+    # Module supports 'info' type if supports GET requests
     if "GET" in endpoint_schema.get("request_method_options", []):
         module_types.append('info')
 
@@ -122,7 +144,11 @@ def is_endpoint_singleton_type(endpoint_schema: dict) -> bool:
         return False
 
     # A singleton type must be an endpoint that only supports PATCH method and not POST or DELETE
-    if "PATCH" in supported_methods and "POST" not in supported_methods and "DELETE" not in supported_methods:
+    if (
+        "PATCH" in supported_methods and
+        "POST" not in supported_methods and
+        "DELETE" not in supported_methods
+    ):
         return True
 
     return False
@@ -147,7 +173,11 @@ def is_endpoint_action_type(endpoint_schema: dict) -> bool:
         return False
 
     # Endpoint is only action type if it supports POST but not PATCH or DELETE
-    if "POST" in supported_methods and "PATCH" not in supported_methods and "DELETE" not in supported_methods:
+    if (
+        "POST" in supported_methods and
+        "PATCH" not in supported_methods and
+        "DELETE" not in supported_methods
+    ):
         return True
 
     return False
@@ -230,17 +260,17 @@ def get_module_short_description(endpoint_url: str, module_type: str) -> str:
 
     if module_type == "info" and endpoint["many"]:
         return f"Retrieve information about many {model_name_plural}."
-    elif module_type == "info" and not endpoint["many"] and model["many"]:
+    if module_type == "info" and not endpoint["many"] and model["many"]:
         return f"Retrieve information about a single {model_name}."
-    elif module_type == "info" and not endpoint["many"] and not model["many"]:
+    if module_type == "info" and not endpoint["many"] and not model["many"]:
         return f"Retrieve information about the {model_name}."
-    elif module_type == "resource":
+    if module_type == "resource":
         return f"Manage individual {model_name_plural}."
-    elif module_type == "collection":
+    if module_type == "collection":
         return f"Manage all {model_name_plural}."
-    elif module_type == "singleton":
+    if module_type == "singleton":
         return f"Manage {model_name_plural}."
-    elif module_type == "action":
+    if module_type == "action":
         return f"Perform the {model_name} action."
 
     return f"Module for {endpoint_url}."
@@ -260,10 +290,14 @@ def get_module_options_for_info_module(endpoint_url: str) -> dict:
     opts = {}
 
     if endpoint_schema["many"]:
-        opts["query_params"] = {"type": "dict", "description": "Optional query parameters for filtering the results."}
+        opts["query_params"] = {
+            "type": "dict", "description": "Optional query parameters for filtering the results."
+        }
         return opts
 
-    opts["lookup_params"] = {"type": "dict", "description": "Parameters to lookup the specific resource to retrieve."}
+    opts["lookup_params"] = {
+        "type": "dict", "description": "Parameters to lookup the specific resource to retrieve."
+    }
     return opts
 
 
@@ -283,8 +317,9 @@ def get_module_options_for_collection_module(endpoint_url: str) -> dict:
             "elements": "dict",
             "required": True,
             "suboptions": get_module_options_from_fields(endpoint_url),
-            "description": "The list of items to manage in the collection. Each item should be a dictionary "
-                           "representing the desired state of a single resource within the collection."
+            "description": "The list of items to manage in the collection. Each item "
+                           "should be a dictionary representing the desired state of "
+                           "a single resource within the collection."
         }
     }
 
@@ -310,8 +345,9 @@ def get_module_options_for_resource_module(endpoint_url: str) -> dict:
             "type": "list",
             "elements": "str",
             "required": True,
-            "description": "The list of fields to use when looking up existing resources. This should be a list of "
-                           "field names that uniquely identify a resource."
+            "description": "The list of fields to use when looking up existing resources. "
+                           "This should be a list of field names that uniquely identify a "
+                           "resource."
         },
         **get_module_options_from_fields(endpoint_url)
     }
@@ -328,6 +364,24 @@ def get_module_options_from_fields(endpoint_url: str) -> dict:
         dict: The module options based on the fields defined in the model schema for the endpoint.
     """
     model_schema = native_schema.get_model_schema_by_endpoint(endpoint_url)
+    return _build_field_options(model_schema, visited=set())
+
+
+def _build_field_options(model_schema: dict, visited: set) -> dict:
+    """
+    Build the module options dict from a model schema's fields.
+
+    This is the recursive workhorse behind :func:`get_module_options_from_fields`.
+    When a field references a nested model (via ``nested_model_class``), the
+    function recurses into that model to produce ``suboptions``.
+
+    Args:
+        model_schema: The model schema dict containing a ``fields`` mapping.
+        visited: A set of model class names already processed (cycle guard).
+
+    Returns:
+        A dict mapping field names to their Ansible option metadata.
+    """
     opts = {}
     for field_name, field_schema in model_schema.get("fields", {}).items():
         if field_schema.get("read_only", False):
@@ -339,11 +393,15 @@ def get_module_options_from_fields(endpoint_url: str) -> dict:
 
         base_type = schema_type_to_ansible_type(field_schema.get("type", "str"))
 
+        # Required fields are only truly required if they don't have conditions
+        required = (field_schema.get("required", False) and not field_schema.get("conditions", []))
+
         opts[field_name] = {
-            "required": field_schema.get("required", False),
+            "required": required,
             "type": base_type,
             "default": field_schema.get("default", None),
             "choices": field_schema.get("choices", None),
+            "no_log": field_schema.get("sensitive", False),
             "description": descr
         }
 
@@ -351,6 +409,21 @@ def get_module_options_from_fields(endpoint_url: str) -> dict:
         if field_schema.get("many", False) and base_type != "list":
             opts[field_name]["type"] = "list"
             opts[field_name]["elements"] = base_type
+
+        # Recursively build suboptions for nested model fields
+        nested_model_class = field_schema.get("nested_model_class")
+        if nested_model_class and nested_model_class not in visited:
+            try:
+                nested_model_schema = native_schema.get_model_schema(nested_model_class)
+                nested_opts = _build_field_options(
+                    nested_model_schema, visited | {nested_model_class}
+                )
+                if nested_opts:
+                    opts[field_name]["type"] = "list"
+                    opts[field_name]["elements"] = "dict"
+                    opts[field_name]["suboptions"] = nested_opts
+            except LookupError:
+                pass
 
     return opts
 
@@ -396,7 +469,7 @@ def get_module_options(endpoint_url: str, module_type: str) -> dict:
             {
                 "type": "str",
                 "no_log": True,
-                "description": "An optional API key for authentication instead of username/password."
+                "description": "An API key to use for authentication."
             },
         "validate_certs":
             {
@@ -408,12 +481,12 @@ def get_module_options(endpoint_url: str, module_type: str) -> dict:
 
     if module_type == "info":
         return {**standard_options, **get_module_options_for_info_module(endpoint_url)}
-    elif module_type == "collection":
+    if module_type == "collection":
         return {**standard_options, **get_module_options_for_collection_module(endpoint_url)}
-    elif module_type == "resource":
+    if module_type == "resource":
         return {**standard_options, **get_module_options_for_resource_module(endpoint_url)}
-    else:
-        return {**standard_options, **get_module_options_from_fields(endpoint_url)}
+
+    return {**standard_options, **get_module_options_from_fields(endpoint_url)}
 
 
 def schema_type_to_returns_type(schema_type: str) -> str:
@@ -495,42 +568,61 @@ def get_returns_contains_for_model(model_class: str, visited: set = None) -> dic
     return contains
 
 
-def get_example_value_for_field(field_name: str, field_schema: dict):
+def get_example_value_for_field(field_schema: dict, visited: set | None = None):
     """
     Returns a realistic example value for a field based on its schema.
 
     Args:
-        field_name (str): The name of the field.
         field_schema (dict): The schema dict for the field.
+        visited (set | None): Model class names already visited (cycle guard).
 
     Returns:
         A representative example value for the field.
     """
+    visited = visited or set()
     is_many = field_schema.get("many", False)
+
+    # Handle nested model fields by building an example from the nested model's fields
+    nested_model_class = field_schema.get("nested_model_class")
+    if nested_model_class and nested_model_class not in visited:
+        try:
+            nested_schema = native_schema.get_model_schema(nested_model_class)
+            child_visited = visited | {nested_model_class}
+            writable = {
+                n: s for n, s in nested_schema.get("fields", {}).items()
+                if not s.get("read_only", False)
+            }
+
+            # Use required fields first; fall back to first 2 optional fields
+            example_obj = {
+                n: get_example_value_for_field(s, child_visited)
+                for n, s in writable.items()
+                if s.get("required", False)
+            }
+            if not example_obj:
+                example_obj = {
+                    n: get_example_value_for_field(s, child_visited)
+                    for n, s in list(writable.items())[:2]
+                }
+
+            return [example_obj] if is_many else example_obj
+        except LookupError:
+            pass
 
     # Use first available choice for constrained fields
     choices = field_schema.get("choices") or []
     if choices:
-        return [choices[0]] if is_many else choices[0]
-
+        value = choices[0]
     # Use the default value if it is meaningful
-    default = field_schema.get("default")
-    if default is not None and default != "" and default != []:
-        return default
-
+    elif field_schema.get("default") not in (None, "", []):
+        value = field_schema["default"]
     # Fall back to type-based placeholders
-    field_type = field_schema.get("type", "string")
-    placeholders = {
-        "string": "example",
-        "integer": 1,
-        "float": 1.0,
-        "boolean": False,
-        "array": [],
-    }
-    value = placeholders.get(field_type, "example")
+    else:
+        plcholders = {"string": "string", "integer": 1, "float": 1.0, "boolean": False, "array": []}
+        value = plcholders.get(field_schema.get("type", "string"), "string")
 
     # Wrap in a list for many-enabled fields that aren't already a list type
-    if is_many and field_type != "array":
+    if is_many and not isinstance(value, list):
         return [value]
 
     return value
@@ -608,6 +700,7 @@ def generate_module_examples(endpoint_url: str, module_type: str) -> list:
     Returns:
         list: A list of task dicts representing usage examples for the module.
     """
+    # pylint: disable=too-many-locals,too-many-branches
     model_schema = native_schema.get_model_schema_by_endpoint(endpoint_url)
     endpoint_schema = native_schema.get_endpoint_schema(endpoint_url)
     module_name = get_module_name(endpoint_url, module_type)
@@ -628,7 +721,7 @@ def generate_module_examples(endpoint_url: str, module_type: str) -> list:
     for field_name, field_schema in model_schema.get("fields", {}).items():
         if field_schema.get("read_only", False) or field_schema.get("write_only", False):
             continue
-        value = get_example_value_for_field(field_name, field_schema)
+        value = get_example_value_for_field(field_schema)
         if field_schema.get("required", False):
             required_fields[field_name] = value
         else:
@@ -687,6 +780,32 @@ def generate_module_examples(endpoint_url: str, module_type: str) -> list:
     return examples
 
 
+def _strip_argspec_only_keys(options: dict) -> dict:
+    """Return a deep copy of *options* with argument_spec-only keys removed.
+
+    Keys like ``no_log`` are valid in the Python ``argument_spec`` but are
+    **not** permitted in Ansible's ``DOCUMENTATION`` YAML schema.  This
+    helper recursively walks the options tree and drops those keys so the
+    generated ``DOCUMENTATION`` passes ``antsibull-docs`` validation.
+
+    Args:
+        options: The module options dict (may contain nested ``suboptions``).
+
+    Returns:
+        A new dict safe for use in the ``DOCUMENTATION`` string.
+    """
+    # Keys that belong in argument_spec but NOT in DOCUMENTATION options
+    _argspec_only = {"no_log"}
+
+    cleaned: dict = {}
+    for name, spec in options.items():
+        new_spec = {k: v for k, v in spec.items() if k not in _argspec_only}
+        if "suboptions" in new_spec:
+            new_spec["suboptions"] = _strip_argspec_only_keys(new_spec["suboptions"])
+        cleaned[name] = new_spec
+    return cleaned
+
+
 def generate_module_documentation(endpoint_url: str, module_type: str) -> dict:
     """
     Generates the module documentation string based on the endpoint and module type.
@@ -696,100 +815,169 @@ def generate_module_documentation(endpoint_url: str, module_type: str) -> dict:
         module_type (str): The module type.
 
     Returns:
-        dict: The module documentation as a dictionary that can be serialized to YAML for the Ansible
-        module DOCUMENTATION string.
+        dict: The module documentation as a dictionary that can be serialized t
+            o YAML for the Ansible module DOCUMENTATION string.
     """
     return {
         "module": get_module_name(endpoint_url, module_type),
         "description": [get_module_short_description(endpoint_url, module_type)],
         "short_description": get_module_short_description(endpoint_url, module_type),
-        "options": get_module_options(endpoint_url, module_type),
+        "options": _strip_argspec_only_keys(get_module_options(endpoint_url, module_type)),
         "author": [
             "Jared Hendrickson (@jaredhendrickson13)"
         ]
     }
 
-def schema_to_dict_file(schema_json: str) -> dict:
-    """
-    Converts the REST API's native schema from a JSON string intto a Python dictionary
-    and embeds it into module_utils/schema.py as variable to be consumed by modules.
+def schema_to_dict_file(schema_json: str, template: jinja2.Template) -> None:
+    """Embed the native schema as a Python dict in ``schema_dict.py``.
+
+    This allows modules to load the schema at runtime without reading a
+    JSON file from the filesystem (which fails inside Ansible's zip
+    payload).
 
     Args:
-        schema_json (str): The native schema as a JSON formatted string
-
-    Returns:
-        dict: The native schema as a Python dictionary
+        schema_json (str): The native schema as a JSON-formatted string.
+        template (jinja2.Template): The template to use for rendering.
     """
     try:
         data_dict = json.loads(schema_json)
-        formatted_dict = repr(data_dict)
+    except json.JSONDecodeError as exc:
+        print(f"Invalid JSON string provided: {exc}")
+        return
 
-        # 3. Write to the target Python file
-        with open("plugins/module_utils/schema_dict.py", 'w+') as f:
-            f.write(f'# Generated file - do not edit manually\n')
-            f.write(f'SCHEMA_DICT = {formatted_dict}\n')
-    except json.JSONDecodeError as e:
-        print(f"Invalid JSON string provided: {e}")
-    except IOError as e:
-        print(f"File writing error: {e}")
+    try:
+        with open(SCHEMA_DICT_PATH, "w", encoding="utf-8") as fh:
+            fh.write(template.render(schema_dict=data_dict))
+    except OSError as exc:
+        print(f"File writing error: {exc}")
 
+
+def load_generator_config() -> dict:
+    """Load the generator configuration from ``generator.yml``.
+
+    The config file lives alongside this script and may contain an
+    ``exclude_modules`` list of module names to skip during generation.
+
+    Returns:
+        The parsed YAML configuration as a dict, or an empty dict if the
+        file does not exist or is empty.
+    """
+    if not GENERATOR_CONFIG_PATH.exists():
+        return {}
+    with GENERATOR_CONFIG_PATH.open("r", encoding="utf-8") as fh:
+        return yaml.safe_load(fh) or {}
+
+
+def create_jinja_env() -> jinja2.Environment:
+    """Create and configure the Jinja2 template environment.
+
+    The environment is pointed at the ``templates/`` directory next to
+    this script and has a custom ``repr`` filter registered for use in
+    the module-args template.
+
+    Returns:
+        A ready-to-use ``jinja2.Environment``.
+    """
+    env = jinja2.Environment(
+        loader=jinja2.FileSystemLoader(searchpath=TEMPLATES_DIR),
+    )
+    env.filters["repr"] = repr
+    return env
+
+
+def render_module(
+    endpoint_url: str,
+    module_type: str,
+    template: jinja2.Template,
+) -> str:
+    """Render a single Ansible module source file from the Jinja2 template.
+
+    Generates the DOCUMENTATION, EXAMPLES, and RETURNS YAML blocks from
+    the schema then feeds them, along with the runtime module-args dict,
+    into the template.
+
+    Args:
+        endpoint_url: The REST API endpoint URL to generate a module for.
+        module_type: The module type string (e.g. ``"resource"``).
+        template: The pre-loaded Jinja2 ``module.py.j2`` template.
+
+    Returns:
+        The fully rendered Python source code for the module.
+    """
+    doc = generate_module_documentation(endpoint_url, module_type)
+    # module_args needs the full options (including no_log); doc["options"]
+    # has already been stripped of argument_spec-only keys for DOCUMENTATION.
+    module_args = get_module_options(endpoint_url, module_type)
+    return template.render(
+        module_args=module_args,
+        module_type=module_type,
+        endpoint_schema=native_schema.get_endpoint_schema(endpoint_url),
+        documentation=yaml.dump(doc, sort_keys=False, indent=2),
+        returns=yaml.dump(
+            generate_module_returns(endpoint_url, module_type),
+            sort_keys=False,
+            indent=2,
+        ),
+        examples=yaml.dump(
+            generate_module_examples(endpoint_url, module_type),
+            sort_keys=False,
+            default_flow_style=False,
+            allow_unicode=True,
+        ),
+    )
+
+
+def main() -> None:
+    """Entry-point: embed the schema dict, then generate all modules."""
+    global native_schema # pylint: disable=global-statement
+
+    # Load generator config (contains the exclude list).
+    config = load_generator_config()
+    exclude_modules: list[str] = config.get("exclude_modules") or []
+
+    # Prepare the Jinja2 environment and template once (not per-module).
+    env = create_jinja_env()
+    template = env.get_template("module.py.j2")
+
+    # Embed the schema as a Python dict for runtime use by modules.
+    # below also uses the fresh data.
+    with args.schema.open("r", encoding="utf-8") as fh:
+        print("Embedding native schema from JSON file... ", end="")
+        schema_to_dict_file(fh.read(),template=env.get_template("embedded_schema.py.j2"))
+        print("done.")
+    native_schema = NativeSchema()
+
+    # Walk every endpoint and generate the appropriate module(s).
+    generated_files: list[Path] = []
+    for endpoint_url in native_schema.full_schema.get("endpoints", {}).keys():
+        for module_type in get_module_types(endpoint_url):
+            module_name = get_module_name(endpoint_url, module_type)
+
+            # Honour the exclude list from generator.yml.
+            if module_name in exclude_modules:
+                print(f"Skipping excluded module '{module_name}'... done.")
+                continue
+
+            # Render the module source and write it to disk.
+            print(f"Generating module '{module_name}'... ", end="")
+            source = render_module(endpoint_url, module_type, template)
+            output_path = MODULES_DIR / f"{module_name}.py"
+            output_path.write_text(source, encoding="utf-8")
+            generated_files.append(output_path)
+            print("done.")
+
+    # Auto-format all generated files in a single black invocation.
+    if generated_files:
+        print(f"Formatting {len(generated_files)} generated file(s) with black... ", end="")
+        try:
+            subprocess.run(
+                ["black", "--quiet", *(str(p) for p in generated_files)],
+                check=True,
+            )
+            print("done.")
+        except subprocess.CalledProcessError as exc:
+            print(f"failed (exit {exc.returncode}).")
 
 
 if __name__ == "__main__":
-    # Convert the schema file to a dict
-    with open(args.schema, "r", encoding="utf-8") as schema_json_file:
-        schema_to_dict_file(schema_json_file.read())
-
-    # Load the generator configuration file
-    generator_config = {}
-    generator_config_path = Path(__file__).parent / "generator.yml"
-    if generator_config_path.exists():
-        with generator_config_path.open("r", encoding="utf-8") as config_file:
-            generator_config = yaml.safe_load(config_file) or {}
-
-    exclude_modules = generator_config.get("exclude_modules") or []
-
-    # Iterate over all endpoints in the schema and determine their module types
-    for endpoint in native_schema.full_schema.get("endpoints").keys():
-        mod_types = get_module_types(endpoint)
-        for mod_type in mod_types:
-            doc = generate_module_documentation(endpoint, mod_type)
-            module_name = doc.get("module")
-
-            # Skip modules that are excluded in the generator config
-            if module_name in exclude_modules:
-                print(f"Skipping module: {module_name} (excluded in generator.yml)")
-                continue
-
-            print(f"Generating module: {module_name}... ", end="")
-
-            # Load the Jinja2 template
-            template_loader = jinja2.FileSystemLoader(searchpath=Path(__file__).parent / "templates")
-            template_env = jinja2.Environment(loader=template_loader)
-            template_env.filters['repr'] = repr
-            template = template_env.get_template("module.py.j2")
-
-            # Render the template with the module details
-            rendered_module = template.render(
-                module_args=doc.get("options", {}),
-                module_type=mod_type,
-                endpoint_schema=native_schema.get_endpoint_schema(endpoint),
-                documentation=yaml.dump(doc, sort_keys=False, indent=2),
-                returns=yaml.dump(
-                    generate_module_returns(endpoint, mod_type),
-                    sort_keys=False,
-                    indent=2,
-                ),
-                examples=yaml.dump(
-                    generate_module_examples(endpoint, mod_type),
-                    sort_keys=False,
-                    default_flow_style=False,
-                    allow_unicode=True,
-                ),
-            )
-
-            # Write the rendered module to a .py file
-            output_path = Path(__file__).parent.parent / "plugins" / "modules" / f"{module_name}.py"
-            with output_path.open("w", encoding="utf-8") as output_file:
-                output_file.write(rendered_module)
-            print("done.")
+    main()

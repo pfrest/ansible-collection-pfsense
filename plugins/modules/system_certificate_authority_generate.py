@@ -7,11 +7,14 @@
 # GENERATED MODULE BY ADDING THIS MODULES NAME TO THE
 # tools/generator.yml FILE.
 ###############################################################
+"""An Ansible module for interacting with /api/v2/system/certificate_authority/generate."""
+
+# pylint: disable=too-many-lines,duplicate-code
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 
-DOCUMENTATION = '''
+DOCUMENTATION = r"""
 module: system_certificate_authority_generate
 description:
 - Perform the Certificate Authority (Generated) action.
@@ -32,12 +35,10 @@ options:
   api_password:
     type: str
     default: pfsense
-    no_log: true
     description: The password to authenticate with the pfSense API.
   api_key:
     type: str
-    no_log: true
-    description: An optional API key for authentication instead of username/password.
+    description: An API key to use for authentication.
   validate_certs:
     type: bool
     default: true
@@ -70,7 +71,7 @@ options:
     description: Indicates if this certificate authority is an intermediate certificate
       authority.
   caref:
-    required: true
+    required: false
     type: str
     default: null
     choices: []
@@ -85,7 +86,7 @@ options:
     - ECDSA
     description: The type of key pair to generate.
   keylen:
-    required: true
+    required: false
     type: int
     default: null
     choices:
@@ -100,7 +101,7 @@ options:
     - 16384
     description: The length of the RSA key pair to generate.
   ecname:
-    required: true
+    required: false
     type: str
     default: null
     choices: []
@@ -156,24 +157,24 @@ options:
 author:
 - Jared Hendrickson (@jaredhendrickson13)
 
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Perform Certificate Authority (Generated) action
   pfrest.pfsense.system_certificate_authority_generate:
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
-    descr: example
-    caref: example
+    descr: string
+    caref: string
     keytype: RSA
     keylen: 1024
-    ecname: example
-    digest_alg: example
+    ecname: string
+    digest_alg: string
 
-'''
+"""
 
-RETURNS = '''
+RETURN = """
 changed:
   description: Whether any changes were made.
   type: bool
@@ -283,152 +284,175 @@ data:
       type: str
       returned: always
 
-'''
+"""
 
 
 def run_module():
+    """Runs this action module against /api/v2/system/certificate_authority/generate."""
+
     module_args = {
         "api_host": {
             "type": "str",
             "required": True,
+            "no_log": False,
         },
         "api_port": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 443,
         },
         "api_username": {
             "type": "str",
             "required": False,
-            "default": 'admin',
+            "no_log": False,
+            "default": "admin",
         },
         "api_password": {
             "type": "str",
             "required": False,
-            "default": 'pfsense',
+            "no_log": True,
+            "default": "pfsense",
         },
         "api_key": {
             "type": "str",
             "required": False,
+            "no_log": True,
         },
         "validate_certs": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": True,
         },
         "descr": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
         },
         "trust": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "randomserial": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "is_intermediate": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "caref": {
             "type": "str",
-            "required": True,
+            "required": False,
+            "no_log": False,
             "default": None,
         },
         "keytype": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
-            "choices": ['RSA', 'ECDSA'],
+            "choices": ["RSA", "ECDSA"],
         },
         "keylen": {
             "type": "int",
-            "required": True,
+            "required": False,
+            "no_log": False,
             "default": None,
             "choices": [1024, 2048, 3072, 4096, 6144, 7680, 8192, 15360, 16384],
         },
         "ecname": {
             "type": "str",
-            "required": True,
+            "required": False,
+            "no_log": False,
             "default": None,
         },
         "digest_alg": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
         },
         "lifetime": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 3650,
         },
         "dn_commonname": {
             "type": "str",
             "required": False,
-            "default": 'internal-ca',
+            "no_log": False,
+            "default": "internal-ca",
         },
         "dn_country": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "dn_state": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "dn_city": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "dn_organization": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "dn_organizationalunit": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
     }
 
-    module = AnsibleModule(
-        argument_spec=module_args,
-        supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
 
     client = rest.RestClient(
-        host=module.params['api_host'],
-        port=module.params['api_port'],
-        username=module.params['api_username'],
-        password=module.params['api_password'],
-        api_key=module.params['api_key'],
-        validate_certs=module.params['validate_certs']
+        host=module.params["api_host"],
+        port=module.params["api_port"],
+        username=module.params["api_username"],
+        password=module.params["api_password"],
+        api_key=module.params["api_key"],
+        validate_certs=module.params["validate_certs"],
     )
 
-    base_module = base.BaseModule('/api/v2/system/certificate_authority/generate', client)
+    base_module = base.BaseModule(
+        "/api/v2/system/certificate_authority/generate", client
+    )
     changed, resp = base_module.execute_action(data=module.params)
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)
-    message = resp.get('message', '')
-    if 'message' in resp:
-        del resp['message']
+    message = resp.get("message", "")
+    if "message" in resp:
+        del resp["message"]
 
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if 'code' not in resp or resp['code'] != 200:
+    if "code" not in resp or resp["code"] != 200:
         module.fail_json(msg=message, **resp)
 
-    result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
+    result = {"changed": changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_module()

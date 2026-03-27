@@ -5,10 +5,6 @@
 # This is useful when a module has been manually customized and should not be
 # overwritten by the generator.
 exclude_modules: []
-# Example:
-#   exclude_modules:
-#     - firewall_rule
-#     - firewall_rules_info
 
 
 

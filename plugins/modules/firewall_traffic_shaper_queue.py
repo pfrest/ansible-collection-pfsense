@@ -7,11 +7,14 @@
 # GENERATED MODULE BY ADDING THIS MODULES NAME TO THE
 # tools/generator.yml FILE.
 ###############################################################
+"""An Ansible module for interacting with /api/v2/firewall/traffic_shaper/queue."""
+
+# pylint: disable=too-many-lines,duplicate-code
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 
-DOCUMENTATION = '''
+DOCUMENTATION = r"""
 module: firewall_traffic_shaper_queue
 description:
 - Manage individual Traffic Shaper Queues.
@@ -32,12 +35,10 @@ options:
   api_password:
     type: str
     default: pfsense
-    no_log: true
     description: The password to authenticate with the pfSense API.
   api_key:
     type: str
-    no_log: true
-    description: An optional API key for authentication instead of username/password.
+    description: An API key to use for authentication.
   validate_certs:
     type: bool
     default: true
@@ -132,7 +133,7 @@ options:
     - Gb
     description: The scale type of the `bandwidth` field's value.
   bandwidth:
-    required: true
+    required: false
     type: int
     default: null
     choices: []
@@ -176,7 +177,7 @@ options:
     description: The duration (in milliseconds) that the burst-able bandwidth limit
       (`upperlimit_m1` is in effect.
   upperlimit_m2:
-    required: true
+    required: false
     type: str
     default: null
     choices: []
@@ -204,7 +205,7 @@ options:
     description: The duration (in milliseconds) that the guaranteed bandwidth limit
       (`realtime_m1`) is in effect.
   realtime_m2:
-    required: true
+    required: false
     type: str
     default: null
     choices: []
@@ -232,7 +233,7 @@ options:
     description: The duration (in milliseconds) that the initial bandwidth limit (`linkshare_m1`)
       is in effect.
   linkshare_m2:
-    required: true
+    required: false
     type: str
     default: null
     choices: []
@@ -243,37 +244,37 @@ options:
 author:
 - Jared Hendrickson (@jaredhendrickson13)
 
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Create Traffic Shaper Queue
   pfrest.pfsense.firewall_traffic_shaper_queue:
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
     state: present
-    name: example
+    name: string
     qlimit: 1
     bandwidth: 1
-    upperlimit_m2: example
-    realtime_m2: example
-    linkshare_m2: example
+    upperlimit_m2: string
+    realtime_m2: string
+    linkshare_m2: string
 - name: Delete Traffic Shaper Queue
   pfrest.pfsense.firewall_traffic_shaper_queue:
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
     state: absent
-    name: example
+    name: string
     qlimit: 1
     bandwidth: 1
-    upperlimit_m2: example
-    realtime_m2: example
-    linkshare_m2: example
+    upperlimit_m2: string
+    realtime_m2: string
+    linkshare_m2: string
 
-'''
+"""
 
-RETURNS = '''
+RETURN = """
 changed:
   description: Whether any changes were made.
   type: bool
@@ -430,221 +431,255 @@ data:
       type: str
       returned: always
 
-'''
+"""
 
 
 def run_module():
+    """Runs this resource module against /api/v2/firewall/traffic_shaper/queue."""
+
     module_args = {
         "api_host": {
             "type": "str",
             "required": True,
+            "no_log": False,
         },
         "api_port": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 443,
         },
         "api_username": {
             "type": "str",
             "required": False,
-            "default": 'admin',
+            "no_log": False,
+            "default": "admin",
         },
         "api_password": {
             "type": "str",
             "required": False,
-            "default": 'pfsense',
+            "no_log": True,
+            "default": "pfsense",
         },
         "api_key": {
             "type": "str",
             "required": False,
+            "no_log": True,
         },
         "validate_certs": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": True,
         },
         "state": {
             "type": "str",
             "required": False,
-            "default": 'present',
-            "choices": ['present', 'absent'],
+            "no_log": False,
+            "default": "present",
+            "choices": ["present", "absent"],
         },
         "lookup_fields": {
             "type": "list",
             "required": True,
+            "no_log": False,
             "elements": "str",
         },
         "enabled": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "name": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
         },
         "priority": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 1,
         },
         "qlimit": {
             "type": "int",
             "required": True,
+            "no_log": False,
             "default": None,
         },
         "description": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "default": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "red": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "rio": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "ecn": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "codel": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "bandwidthtype": {
             "type": "str",
             "required": False,
-            "default": 'Mb',
-            "choices": ['%', 'b', 'Kb', 'Mb', 'Gb'],
+            "no_log": False,
+            "default": "Mb",
+            "choices": ["%", "b", "Kb", "Mb", "Gb"],
         },
         "bandwidth": {
             "type": "int",
-            "required": True,
+            "required": False,
+            "no_log": False,
             "default": None,
         },
         "buckets": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "hogs": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "borrow": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "upperlimit": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "upperlimit_m1": {
             "type": "str",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "upperlimit_d": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "upperlimit_m2": {
             "type": "str",
-            "required": True,
+            "required": False,
+            "no_log": False,
             "default": None,
         },
         "realtime": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "realtime_m1": {
             "type": "str",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "realtime_d": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "realtime_m2": {
             "type": "str",
-            "required": True,
+            "required": False,
+            "no_log": False,
             "default": None,
         },
         "linkshare": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "linkshare_m1": {
             "type": "str",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "linkshare_d": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "linkshare_m2": {
             "type": "str",
-            "required": True,
+            "required": False,
+            "no_log": False,
             "default": None,
         },
     }
 
-    module = AnsibleModule(
-        argument_spec=module_args,
-        supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
 
     client = rest.RestClient(
-        host=module.params['api_host'],
-        port=module.params['api_port'],
-        username=module.params['api_username'],
-        password=module.params['api_password'],
-        api_key=module.params['api_key'],
-        validate_certs=module.params['validate_certs']
+        host=module.params["api_host"],
+        port=module.params["api_port"],
+        username=module.params["api_username"],
+        password=module.params["api_password"],
+        api_key=module.params["api_key"],
+        validate_certs=module.params["validate_certs"],
     )
 
-    base_module = base.BaseModule('/api/v2/firewall/traffic_shaper/queue', client)
+    base_module = base.BaseModule("/api/v2/firewall/traffic_shaper/queue", client)
     changed, resp = base_module.set_object_state(
-        state=module.params['state'],
+        state=module.params["state"],
         data=module.params,
-        lookup_fields=module.params['lookup_fields']
+        lookup_fields=module.params["lookup_fields"],
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)
-    message = resp.get('message', '')
-    if 'message' in resp:
-        del resp['message']
+    message = resp.get("message", "")
+    if "message" in resp:
+        del resp["message"]
 
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if 'code' not in resp or resp['code'] != 200:
+    if "code" not in resp or resp["code"] != 200:
         module.fail_json(msg=message, **resp)
 
-    result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
+    result = {"changed": changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_module()

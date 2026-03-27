@@ -7,11 +7,14 @@
 # GENERATED MODULE BY ADDING THIS MODULES NAME TO THE
 # tools/generator.yml FILE.
 ###############################################################
+"""An Ansible module for interacting with /api/v2/services/cron/jobs."""
+
+# pylint: disable=too-many-lines,duplicate-code
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 
-DOCUMENTATION = '''
+DOCUMENTATION = r"""
 module: services_cron_jobs
 description:
 - Manage all Cron Jobs.
@@ -32,12 +35,10 @@ options:
   api_password:
     type: str
     default: pfsense
-    no_log: true
     description: The password to authenticate with the pfSense API.
   api_key:
     type: str
-    no_log: true
-    description: An optional API key for authentication instead of username/password.
+    description: An API key to use for authentication.
   validate_certs:
     type: bool
     default: true
@@ -56,28 +57,28 @@ options:
           @ event string. (0-59, ranges, divided, @ event or delay, *=all). When using
           a special @ event, such as @reboot, the other time fields must be empty.
       hour:
-        required: true
+        required: false
         type: str
         default: null
         choices: []
         description: The hour(s) at which the command will be executed. (0-23, ranges,
           or divided, *=all)
       mday:
-        required: true
+        required: false
         type: str
         default: null
         choices: []
         description: The day(s) of the month on which the command will be executed.
           (1-31, ranges, or divided, *=all).
       month:
-        required: true
+        required: false
         type: str
         default: null
         choices: []
         description: The month(s) of the year in which the command will be executed.
           (1-31, ranges, or divided, *=all).
       wday:
-        required: true
+        required: false
         type: str
         default: null
         choices: []
@@ -102,26 +103,26 @@ options:
 author:
 - Jared Hendrickson (@jaredhendrickson13)
 
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Manage all Cron Jobs
   pfrest.pfsense.services_cron_jobs:
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
     objects:
-    - minute: example
-      hour: example
-      mday: example
-      month: example
-      wday: example
-      who: example
-      command: example
+    - minute: string
+      hour: string
+      mday: string
+      month: string
+      wday: string
+      who: string
+      command: string
 
-'''
+"""
 
-RETURNS = '''
+RETURN = """
 changed:
   description: Whether any changes were made.
   type: bool
@@ -180,79 +181,127 @@ data:
       type: str
       returned: always
 
-'''
+"""
 
 
 def run_module():
+    """Runs this collection module against /api/v2/services/cron/jobs."""
+
     module_args = {
         "api_host": {
             "type": "str",
             "required": True,
+            "no_log": False,
         },
         "api_port": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 443,
         },
         "api_username": {
             "type": "str",
             "required": False,
-            "default": 'admin',
+            "no_log": False,
+            "default": "admin",
         },
         "api_password": {
             "type": "str",
             "required": False,
-            "default": 'pfsense',
+            "no_log": True,
+            "default": "pfsense",
         },
         "api_key": {
             "type": "str",
             "required": False,
+            "no_log": True,
         },
         "validate_certs": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": True,
         },
         "objects": {
             "type": "list",
             "required": True,
+            "no_log": False,
             "elements": "dict",
-            "suboptions": {'minute': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The minute(s) at which the command will be executed or a special @ event string. (0-59, ranges, divided, @ event or delay, *=all). When using a special @ event, such as @reboot, the other time fields must be empty.'}, 'hour': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The hour(s) at which the command will be executed. (0-23, ranges, or divided, *=all)'}, 'mday': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The day(s) of the month on which the command will be executed. (1-31, ranges, or divided, *=all).'}, 'month': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The month(s) of the year in which the command will be executed. (1-31, ranges, or divided, *=all).'}, 'wday': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The day(s) of the week on which the command will be executed. (0-7, 7=Sun or use names, ranges, or divided, *=all).'}, 'who': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The OS user to use when cron runs the command.'}, 'command': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The command to run. Use full file paths for this command and include an command parameters.'}},
+            "options": {
+                "minute": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "hour": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "mday": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "month": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "wday": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "who": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "command": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+            },
         },
     }
 
-    module = AnsibleModule(
-        argument_spec=module_args,
-        supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
 
     client = rest.RestClient(
-        host=module.params['api_host'],
-        port=module.params['api_port'],
-        username=module.params['api_username'],
-        password=module.params['api_password'],
-        api_key=module.params['api_key'],
-        validate_certs=module.params['validate_certs']
+        host=module.params["api_host"],
+        port=module.params["api_port"],
+        username=module.params["api_username"],
+        password=module.params["api_password"],
+        api_key=module.params["api_key"],
+        validate_certs=module.params["validate_certs"],
     )
 
-    base_module = base.BaseModule('/api/v2/services/cron/jobs', client)
-    changed = True # TODO: determine if changes are needed by comparing existing objects to the provided list
-    resp = base_module.replace_objects(
-        data=module.params['objects'],
+    base_module = base.BaseModule("/api/v2/services/cron/jobs", client)
+    changed, resp = base_module.replace_objects(
+        data=module.params["objects"],
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)
-    message = resp.get('message', '')
-    if 'message' in resp:
-        del resp['message']
+    message = resp.get("message", "")
+    if "message" in resp:
+        del resp["message"]
 
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if 'code' not in resp or resp['code'] != 200:
+    if "code" not in resp or resp["code"] != 200:
         module.fail_json(msg=message, **resp)
 
-    result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
+    result = {"changed": changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_module()

@@ -7,11 +7,14 @@
 # GENERATED MODULE BY ADDING THIS MODULES NAME TO THE
 # tools/generator.yml FILE.
 ###############################################################
+"""An Ansible module for interacting with /api/v2/services/freeradius/user."""
+
+# pylint: disable=too-many-lines,duplicate-code
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 
-DOCUMENTATION = '''
+DOCUMENTATION = r"""
 module: services_freeradius_user
 description:
 - Manage individual Free RADIUS Users.
@@ -32,12 +35,10 @@ options:
   api_password:
     type: str
     default: pfsense
-    no_log: true
     description: The password to authenticate with the pfSense API.
   api_key:
     type: str
-    no_log: true
-    description: An optional API key for authentication instead of username/password.
+    description: An API key to use for authentication.
   validate_certs:
     type: bool
     default: true
@@ -62,7 +63,7 @@ options:
     choices: []
     description: The username for this user.
   password:
-    required: true
+    required: false
     type: str
     default: null
     choices: []
@@ -93,13 +94,13 @@ options:
     - googleauth
     description: The authentication method for the Mobile One-Time Password (MOTP).
   motp_secret:
-    required: true
+    required: false
     type: str
     default: null
     choices: []
     description: The secret for the Mobile One-Time Password (MOTP).
   motp_pin:
-    required: true
+    required: false
     type: str
     default: null
     choices: []
@@ -134,33 +135,33 @@ options:
 author:
 - Jared Hendrickson (@jaredhendrickson13)
 
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Create Free RADIUS User
   pfrest.pfsense.services_freeradius_user:
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
     state: present
-    username: example
-    password: example
-    motp_secret: example
-    motp_pin: example
+    username: string
+    password: string
+    motp_secret: string
+    motp_pin: string
 - name: Delete Free RADIUS User
   pfrest.pfsense.services_freeradius_user:
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
     state: absent
-    username: example
-    password: example
-    motp_secret: example
-    motp_pin: example
+    username: string
+    password: string
+    motp_secret: string
+    motp_pin: string
 
-'''
+"""
 
-RETURNS = '''
+RETURN = """
 changed:
   description: Whether any changes were made.
   type: bool
@@ -231,142 +232,165 @@ data:
       type: str
       returned: always
 
-'''
+"""
 
 
 def run_module():
+    """Runs this resource module against /api/v2/services/freeradius/user."""
+
     module_args = {
         "api_host": {
             "type": "str",
             "required": True,
+            "no_log": False,
         },
         "api_port": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 443,
         },
         "api_username": {
             "type": "str",
             "required": False,
-            "default": 'admin',
+            "no_log": False,
+            "default": "admin",
         },
         "api_password": {
             "type": "str",
             "required": False,
-            "default": 'pfsense',
+            "no_log": True,
+            "default": "pfsense",
         },
         "api_key": {
             "type": "str",
             "required": False,
+            "no_log": True,
         },
         "validate_certs": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": True,
         },
         "state": {
             "type": "str",
             "required": False,
-            "default": 'present',
-            "choices": ['present', 'absent'],
+            "no_log": False,
+            "default": "present",
+            "choices": ["present", "absent"],
         },
         "lookup_fields": {
             "type": "list",
             "required": True,
+            "no_log": False,
             "elements": "str",
         },
         "username": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
         },
         "password": {
             "type": "str",
-            "required": True,
+            "required": False,
+            "no_log": True,
             "default": None,
         },
         "password_encryption": {
             "type": "str",
             "required": False,
-            "default": 'Cleartext-Password',
-            "choices": ['Cleartext-Password', 'MD5-Password', 'MD5-Password-hashed', 'NT-Password-hashed'],
+            "no_log": False,
+            "default": "Cleartext-Password",
+            "choices": [
+                "Cleartext-Password",
+                "MD5-Password",
+                "MD5-Password-hashed",
+                "NT-Password-hashed",
+            ],
         },
         "motp_enable": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "motp_authmethod": {
             "type": "str",
             "required": False,
-            "default": 'googleauth',
-            "choices": ['motp', 'googleauth'],
+            "no_log": False,
+            "default": "googleauth",
+            "choices": ["motp", "googleauth"],
         },
         "motp_secret": {
             "type": "str",
-            "required": True,
+            "required": False,
+            "no_log": True,
             "default": None,
         },
         "motp_pin": {
             "type": "str",
-            "required": True,
+            "required": False,
+            "no_log": True,
             "default": None,
         },
         "motp_offset": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 0,
         },
         "description": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "framed_ip_address": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "framed_ip_netmask": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
     }
 
-    module = AnsibleModule(
-        argument_spec=module_args,
-        supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
 
     client = rest.RestClient(
-        host=module.params['api_host'],
-        port=module.params['api_port'],
-        username=module.params['api_username'],
-        password=module.params['api_password'],
-        api_key=module.params['api_key'],
-        validate_certs=module.params['validate_certs']
+        host=module.params["api_host"],
+        port=module.params["api_port"],
+        username=module.params["api_username"],
+        password=module.params["api_password"],
+        api_key=module.params["api_key"],
+        validate_certs=module.params["validate_certs"],
     )
 
-    base_module = base.BaseModule('/api/v2/services/freeradius/user', client)
+    base_module = base.BaseModule("/api/v2/services/freeradius/user", client)
     changed, resp = base_module.set_object_state(
-        state=module.params['state'],
+        state=module.params["state"],
         data=module.params,
-        lookup_fields=module.params['lookup_fields']
+        lookup_fields=module.params["lookup_fields"],
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)
-    message = resp.get('message', '')
-    if 'message' in resp:
-        del resp['message']
+    message = resp.get("message", "")
+    if "message" in resp:
+        del resp["message"]
 
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if 'code' not in resp or resp['code'] != 200:
+    if "code" not in resp or resp["code"] != 200:
         module.fail_json(msg=message, **resp)
 
-    result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
+    result = {"changed": changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_module()

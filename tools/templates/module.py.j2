@@ -7,11 +7,13 @@
 # GENERATED MODULE BY ADDING THIS MODULES NAME TO THE
 # tools/generator.yml FILE.
 ###############################################################
+"""An Ansible module for interacting with {{ endpoint_schema['url'] }}."""
+# pylint: disable=too-many-lines,duplicate-code
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 
-DOCUMENTATION = '''
+DOCUMENTATION = r'''
 {{ documentation }}
 '''
 
@@ -19,12 +21,12 @@ EXAMPLES = '''
 {{ examples }}
 '''
 
-RETURNS = '''
+RETURN = '''
 {{ returns }}
 '''
 
-
 def run_module():
+    """Runs this {{ module_type }} module against {{ endpoint_schema['url'] }}."""
 {% include "module_args.j2" %}
 
     module = AnsibleModule(
@@ -49,9 +51,10 @@ def run_module():
         data=module.params,
         lookup_fields=module.params['lookup_fields']
     )
+{%- elif module_type == 'singleton' %}
+    changed, resp = base_module.update_singleton(module.params)
 {%- elif module_type == 'collection' %}
-    changed = True # TODO: determine if changes are needed by comparing existing objects to the provided list
-    resp = base_module.replace_objects(
+    changed, resp = base_module.replace_objects(
         data=module.params['objects'],
     )
 {%- elif module_type == 'info' and not endpoint_schema['many'] %}

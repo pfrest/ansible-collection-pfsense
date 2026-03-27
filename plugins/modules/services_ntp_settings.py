@@ -7,11 +7,14 @@
 # GENERATED MODULE BY ADDING THIS MODULES NAME TO THE
 # tools/generator.yml FILE.
 ###############################################################
+"""An Ansible module for interacting with /api/v2/services/ntp/settings."""
+
+# pylint: disable=too-many-lines,duplicate-code
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 
-DOCUMENTATION = '''
+DOCUMENTATION = r"""
 module: services_ntp_settings
 description:
 - Manage NTP Settings.
@@ -32,12 +35,10 @@ options:
   api_password:
     type: str
     default: pfsense
-    no_log: true
     description: The password to authenticate with the pfSense API.
   api_key:
     type: str
-    no_log: true
-    description: An optional API key for authentication instead of username/password.
+    description: An API key to use for authentication.
   validate_certs:
     type: bool
     default: true
@@ -178,7 +179,7 @@ options:
     choices: []
     description: Enable or disable NTPv3 server authentication. (RFC 1305)
   serverauthkey:
-    required: true
+    required: false
     type: str
     default: null
     choices: []
@@ -195,19 +196,19 @@ options:
 author:
 - Jared Hendrickson (@jaredhendrickson13)
 
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Manage NTP Settings
   pfrest.pfsense.services_ntp_settings:
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
-    serverauthkey: example
+    serverauthkey: string
 
-'''
+"""
 
-RETURNS = '''
+RETURN = """
 changed:
   description: Whether any changes were made.
   type: bool
@@ -306,159 +307,218 @@ data:
       type: str
       returned: always
 
-'''
+"""
 
 
 def run_module():
+    """Runs this singleton module against /api/v2/services/ntp/settings."""
+
     module_args = {
         "api_host": {
             "type": "str",
             "required": True,
+            "no_log": False,
         },
         "api_port": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 443,
         },
         "api_username": {
             "type": "str",
             "required": False,
-            "default": 'admin',
+            "no_log": False,
+            "default": "admin",
         },
         "api_password": {
             "type": "str",
             "required": False,
-            "default": 'pfsense',
+            "no_log": True,
+            "default": "pfsense",
         },
         "api_key": {
             "type": "str",
             "required": False,
+            "no_log": True,
         },
         "validate_certs": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": True,
         },
         "enable": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": True,
         },
         "interface": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
             "elements": "str",
         },
         "ntpmaxpeers": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 5,
         },
         "orphan": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 12,
         },
         "ntpminpoll": {
             "type": "str",
             "required": False,
-            "default": '',
-            "choices": ['', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', 'omit'],
+            "no_log": False,
+            "default": "",
+            "choices": [
+                "",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12",
+                "13",
+                "14",
+                "15",
+                "16",
+                "17",
+                "omit",
+            ],
         },
         "ntpmaxpoll": {
             "type": "str",
             "required": False,
-            "default": '',
-            "choices": ['', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', 'omit'],
+            "no_log": False,
+            "default": "",
+            "choices": [
+                "",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12",
+                "13",
+                "14",
+                "15",
+                "16",
+                "17",
+                "omit",
+            ],
         },
         "dnsresolv": {
             "type": "str",
             "required": False,
-            "default": 'auto',
-            "choices": ['auto', 'inet', 'inet6'],
+            "no_log": False,
+            "default": "auto",
+            "choices": ["auto", "inet", "inet6"],
         },
         "logpeer": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "logsys": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "clockstats": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "loopstats": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "peerstats": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "statsgraph": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "leapsec": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "serverauth": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "serverauthkey": {
             "type": "str",
-            "required": True,
+            "required": False,
+            "no_log": True,
             "default": None,
         },
         "serverauthalgo": {
             "type": "str",
             "required": False,
-            "default": 'md5',
-            "choices": ['md5', 'sha1', 'sha256'],
+            "no_log": False,
+            "default": "md5",
+            "choices": ["md5", "sha1", "sha256"],
         },
     }
 
-    module = AnsibleModule(
-        argument_spec=module_args,
-        supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
 
     client = rest.RestClient(
-        host=module.params['api_host'],
-        port=module.params['api_port'],
-        username=module.params['api_username'],
-        password=module.params['api_password'],
-        api_key=module.params['api_key'],
-        validate_certs=module.params['validate_certs']
+        host=module.params["api_host"],
+        port=module.params["api_port"],
+        username=module.params["api_username"],
+        password=module.params["api_password"],
+        api_key=module.params["api_key"],
+        validate_certs=module.params["validate_certs"],
     )
 
-    base_module = base.BaseModule('/api/v2/services/ntp/settings', client)
+    base_module = base.BaseModule("/api/v2/services/ntp/settings", client)
+    changed, resp = base_module.update_singleton(module.params)
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)
-    message = resp.get('message', '')
-    if 'message' in resp:
-        del resp['message']
+    message = resp.get("message", "")
+    if "message" in resp:
+        del resp["message"]
 
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if 'code' not in resp or resp['code'] != 200:
+    if "code" not in resp or resp["code"] != 200:
         module.fail_json(msg=message, **resp)
 
-    result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
+    result = {"changed": changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_module()

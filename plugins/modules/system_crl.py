@@ -7,11 +7,14 @@
 # GENERATED MODULE BY ADDING THIS MODULES NAME TO THE
 # tools/generator.yml FILE.
 ###############################################################
+"""An Ansible module for interacting with /api/v2/system/crl."""
+
+# pylint: disable=too-many-lines,duplicate-code
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 
-DOCUMENTATION = '''
+DOCUMENTATION = r"""
 module: system_crl
 description:
 - Manage individual Certificate Revocation Lists.
@@ -32,12 +35,10 @@ options:
   api_password:
     type: str
     default: pfsense
-    no_log: true
     description: The password to authenticate with the pfSense API.
   api_key:
     type: str
-    no_log: true
-    description: An optional API key for authentication instead of username/password.
+    description: An API key to use for authentication.
   validate_certs:
     type: bool
     default: true
@@ -88,7 +89,7 @@ options:
     choices: []
     description: The serial number of the CRL.
   text:
-    required: true
+    required: false
     type: str
     default: null
     choices: []
@@ -99,36 +100,101 @@ options:
     default: []
     choices: []
     description: The list of revoked certificates in this CRL.
+    elements: dict
+    suboptions:
+      certref:
+        required: false
+        type: str
+        default: null
+        choices: []
+        description: The reference ID of the certificate to be revoked
+      serial:
+        required: false
+        type: str
+        default: null
+        choices: []
+        description: The serial number of the certificate to be revoked.
+      reason:
+        required: false
+        type: int
+        default: 0
+        choices:
+        - -1
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+        - 9
+        description: The CRL reason for revocation code.
+      revoke_time:
+        required: true
+        type: int
+        default: null
+        choices: []
+        description: The unix timestamp of when the certificate was revoked.
+      caref:
+        required: false
+        type: str
+        default: null
+        choices: []
+        description: The unique ID of the CA that signed the revoked certificate.
+      descr:
+        required: false
+        type: str
+        default: null
+        choices: []
+        description: The unique name/description for this CRL.
+      type:
+        required: false
+        type: str
+        default: null
+        choices: []
+        description: The type of the certificate to be revoked.
+      crt:
+        required: false
+        type: str
+        default: null
+        choices: []
+        description: The X509 certificate string.
+      prv:
+        required: false
+        type: str
+        default: null
+        choices: []
+        description: The X509 private key string.
 author:
 - Jared Hendrickson (@jaredhendrickson13)
 
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Create Certificate Revocation List
   pfrest.pfsense.system_crl:
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
     state: present
-    caref: example
-    descr: example
+    caref: string
+    descr: string
     method: existing
-    text: example
+    text: string
 - name: Delete Certificate Revocation List
   pfrest.pfsense.system_crl:
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
     state: absent
-    caref: example
-    descr: example
+    caref: string
+    descr: string
     method: existing
-    text: example
+    text: string
 
-'''
+"""
 
-RETURNS = '''
+RETURN = """
 changed:
   description: Whether any changes were made.
   type: bool
@@ -202,121 +268,193 @@ data:
           type: int
           returned: always
 
-'''
+"""
 
 
 def run_module():
+    """Runs this resource module against /api/v2/system/crl."""
+
     module_args = {
         "api_host": {
             "type": "str",
             "required": True,
+            "no_log": False,
         },
         "api_port": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 443,
         },
         "api_username": {
             "type": "str",
             "required": False,
-            "default": 'admin',
+            "no_log": False,
+            "default": "admin",
         },
         "api_password": {
             "type": "str",
             "required": False,
-            "default": 'pfsense',
+            "no_log": True,
+            "default": "pfsense",
         },
         "api_key": {
             "type": "str",
             "required": False,
+            "no_log": True,
         },
         "validate_certs": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": True,
         },
         "state": {
             "type": "str",
             "required": False,
-            "default": 'present',
-            "choices": ['present', 'absent'],
+            "no_log": False,
+            "default": "present",
+            "choices": ["present", "absent"],
         },
         "lookup_fields": {
             "type": "list",
             "required": True,
+            "no_log": False,
             "elements": "str",
         },
         "caref": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
         },
         "descr": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
         },
         "method": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
-            "choices": ['existing', 'internal'],
+            "choices": ["existing", "internal"],
         },
         "lifetime": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 730,
         },
         "serial": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 0,
         },
         "text": {
             "type": "str",
-            "required": True,
+            "required": False,
+            "no_log": False,
             "default": None,
         },
         "cert": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
+            "elements": "dict",
+            "options": {
+                "certref": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "serial": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "reason": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 0,
+                    "choices": [-1, 0, 1, 2, 3, 4, 5, 6, 9],
+                },
+                "revoke_time": {
+                    "type": "int",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "caref": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "descr": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "type": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "crt": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "prv": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+            },
         },
     }
 
-    module = AnsibleModule(
-        argument_spec=module_args,
-        supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
 
     client = rest.RestClient(
-        host=module.params['api_host'],
-        port=module.params['api_port'],
-        username=module.params['api_username'],
-        password=module.params['api_password'],
-        api_key=module.params['api_key'],
-        validate_certs=module.params['validate_certs']
+        host=module.params["api_host"],
+        port=module.params["api_port"],
+        username=module.params["api_username"],
+        password=module.params["api_password"],
+        api_key=module.params["api_key"],
+        validate_certs=module.params["validate_certs"],
     )
 
-    base_module = base.BaseModule('/api/v2/system/crl', client)
+    base_module = base.BaseModule("/api/v2/system/crl", client)
     changed, resp = base_module.set_object_state(
-        state=module.params['state'],
+        state=module.params["state"],
         data=module.params,
-        lookup_fields=module.params['lookup_fields']
+        lookup_fields=module.params["lookup_fields"],
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)
-    message = resp.get('message', '')
-    if 'message' in resp:
-        del resp['message']
+    message = resp.get("message", "")
+    if "message" in resp:
+        del resp["message"]
 
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if 'code' not in resp or resp['code'] != 200:
+    if "code" not in resp or resp["code"] != 200:
         module.fail_json(msg=message, **resp)
 
-    result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
+    result = {"changed": changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_module()

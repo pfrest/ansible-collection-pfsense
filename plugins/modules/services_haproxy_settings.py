@@ -7,11 +7,14 @@
 # GENERATED MODULE BY ADDING THIS MODULES NAME TO THE
 # tools/generator.yml FILE.
 ###############################################################
+"""An Ansible module for interacting with /api/v2/services/haproxy/settings."""
+
+# pylint: disable=too-many-lines,duplicate-code
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 
-DOCUMENTATION = '''
+DOCUMENTATION = r"""
 module: services_haproxy_settings
 description:
 - Manage HA Proxy Settings.
@@ -32,12 +35,10 @@ options:
   api_password:
     type: str
     default: pfsense
-    no_log: true
     description: The password to authenticate with the pfSense API.
   api_key:
     type: str
-    no_log: true
-    description: An optional API key for authentication instead of username/password.
+    description: An API key to use for authentication.
   validate_certs:
     type: bool
     default: true
@@ -164,6 +165,27 @@ options:
     default: []
     choices: []
     description: The DNS resolvers HAProxy will use for DNS queries.
+    elements: dict
+    suboptions:
+      name:
+        required: true
+        type: str
+        default: null
+        choices: []
+        description: The descriptive name for this DNS server.
+      server:
+        required: true
+        type: str
+        default: null
+        choices: []
+        description: The IP or hostname of the DNS server.
+      port:
+        required: false
+        type: str
+        default: '53'
+        choices: []
+        description: 'The port used by this DNS server. Valid options are: a TCP/UDP
+          port number'
   resolver_retries:
     required: false
     type: int
@@ -190,6 +212,27 @@ options:
     default: []
     choices: []
     description: The email servers HAProxy will use to send SMTP alerts.
+    elements: dict
+    suboptions:
+      name:
+        required: true
+        type: str
+        default: null
+        choices: []
+        description: The descriptive name for this mail server.
+      mailserver:
+        required: true
+        type: str
+        default: null
+        choices: []
+        description: The IP or hostname of the mail server.
+      mailserverport:
+        required: false
+        type: str
+        default: '53'
+        choices: []
+        description: 'The port used by this mail server. Valid options are: a TCP/UDP
+          port number'
   email_level:
     required: false
     type: str
@@ -258,9 +301,9 @@ options:
 author:
 - Jared Hendrickson (@jaredhendrickson13)
 
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Manage HA Proxy Settings
   pfrest.pfsense.services_haproxy_settings:
     api_host: pfsense.example.com
@@ -270,9 +313,9 @@ EXAMPLES = '''
     maxconn: 1
     nbthread: 1
 
-'''
+"""
 
-RETURNS = '''
+RETURN = """
 changed:
   description: Whether any changes were made.
   type: bool
@@ -443,203 +486,320 @@ data:
       type: bool
       returned: always
 
-'''
+"""
 
 
 def run_module():
+    """Runs this singleton module against /api/v2/services/haproxy/settings."""
+
     module_args = {
         "api_host": {
             "type": "str",
             "required": True,
+            "no_log": False,
         },
         "api_port": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 443,
         },
         "api_username": {
             "type": "str",
             "required": False,
-            "default": 'admin',
+            "no_log": False,
+            "default": "admin",
         },
         "api_password": {
             "type": "str",
             "required": False,
-            "default": 'pfsense',
+            "no_log": True,
+            "default": "pfsense",
         },
         "api_key": {
             "type": "str",
             "required": False,
+            "no_log": True,
         },
         "validate_certs": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": True,
         },
         "enable": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "maxconn": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "nbthread": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 1,
         },
         "terminate_on_reload": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "hard_stop_after": {
             "type": "str",
             "required": False,
-            "default": '15m',
+            "no_log": False,
+            "default": "15m",
         },
         "carpdev": {
             "type": "str",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "localstatsport": {
             "type": "str",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "localstats_refreshtime": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "localstats_sticktable_refreshtime": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "remotesyslog": {
             "type": "str",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "logfacility": {
             "type": "str",
             "required": False,
-            "default": 'syslog',
-            "choices": ['kern', 'user', 'mail', 'daemon', 'auth', 'syslog', 'lpr', 'news', 'uucp', 'cron', 'auth2', 'ftp', 'ntp', 'audit', 'cron2', 'local0', 'local1', 'local2', 'local3', 'local4', 'local5', 'local6', 'local7'],
+            "no_log": False,
+            "default": "syslog",
+            "choices": [
+                "kern",
+                "user",
+                "mail",
+                "daemon",
+                "auth",
+                "syslog",
+                "lpr",
+                "news",
+                "uucp",
+                "cron",
+                "auth2",
+                "ftp",
+                "ntp",
+                "audit",
+                "cron2",
+                "local0",
+                "local1",
+                "local2",
+                "local3",
+                "local4",
+                "local5",
+                "local6",
+                "local7",
+            ],
         },
         "loglevel": {
             "type": "str",
             "required": False,
-            "default": 'warning',
-            "choices": ['emerg', 'alert', 'crit', 'err', 'warning', 'notice', 'info', 'debug'],
+            "no_log": False,
+            "default": "warning",
+            "choices": [
+                "emerg",
+                "alert",
+                "crit",
+                "err",
+                "warning",
+                "notice",
+                "info",
+                "debug",
+            ],
         },
         "log_send_hostname": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "dns_resolvers": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
+            "elements": "dict",
+            "options": {
+                "name": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "server": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "port": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "53",
+                },
+            },
         },
         "resolver_retries": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 3,
         },
         "resolver_timeoutretry": {
             "type": "str",
             "required": False,
-            "default": '1s',
+            "no_log": False,
+            "default": "1s",
         },
         "resolver_holdvalid": {
             "type": "str",
             "required": False,
-            "default": '1s',
+            "no_log": False,
+            "default": "1s",
         },
         "email_mailers": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
+            "elements": "dict",
+            "options": {
+                "name": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "mailserver": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "mailserverport": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "53",
+                },
+            },
         },
         "email_level": {
             "type": "str",
             "required": False,
-            "default": '',
-            "choices": ['', 'emerg', 'alert', 'crit', 'err', 'warning', 'notice', 'info', 'debug'],
+            "no_log": False,
+            "default": "",
+            "choices": [
+                "",
+                "emerg",
+                "alert",
+                "crit",
+                "err",
+                "warning",
+                "notice",
+                "info",
+                "debug",
+            ],
         },
         "email_myhostname": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "email_from": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "email_to": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "sslcompatibilitymode": {
             "type": "str",
             "required": False,
-            "default": 'auto',
-            "choices": ['auto', 'modern', 'intermediate', 'old'],
+            "no_log": False,
+            "default": "auto",
+            "choices": ["auto", "modern", "intermediate", "old"],
         },
         "ssldefaultdhparam": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 1024,
         },
         "advanced": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "enablesync": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
     }
 
-    module = AnsibleModule(
-        argument_spec=module_args,
-        supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
 
     client = rest.RestClient(
-        host=module.params['api_host'],
-        port=module.params['api_port'],
-        username=module.params['api_username'],
-        password=module.params['api_password'],
-        api_key=module.params['api_key'],
-        validate_certs=module.params['validate_certs']
+        host=module.params["api_host"],
+        port=module.params["api_port"],
+        username=module.params["api_username"],
+        password=module.params["api_password"],
+        api_key=module.params["api_key"],
+        validate_certs=module.params["validate_certs"],
     )
 
-    base_module = base.BaseModule('/api/v2/services/haproxy/settings', client)
+    base_module = base.BaseModule("/api/v2/services/haproxy/settings", client)
+    changed, resp = base_module.update_singleton(module.params)
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)
-    message = resp.get('message', '')
-    if 'message' in resp:
-        del resp['message']
+    message = resp.get("message", "")
+    if "message" in resp:
+        del resp["message"]
 
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if 'code' not in resp or resp['code'] != 200:
+    if "code" not in resp or resp["code"] != 200:
         module.fail_json(msg=message, **resp)
 
-    result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
+    result = {"changed": changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_module()

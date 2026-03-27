@@ -7,11 +7,14 @@
 # GENERATED MODULE BY ADDING THIS MODULES NAME TO THE
 # tools/generator.yml FILE.
 ###############################################################
+"""An Ansible module for interacting with /api/v2/firewall/rules."""
+
+# pylint: disable=too-many-lines,duplicate-code
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 
-DOCUMENTATION = '''
+DOCUMENTATION = r"""
 module: firewall_rules
 description:
 - Manage all Firewall Rules.
@@ -32,12 +35,10 @@ options:
   api_password:
     type: str
     default: pfsense
-    no_log: true
     description: The password to authenticate with the pfSense API.
   api_key:
     type: str
-    no_log: true
-    description: An optional API key for authentication instead of username/password.
+    description: An API key to use for authentication.
   validate_certs:
     type: bool
     default: true
@@ -307,9 +308,9 @@ options:
 author:
 - Jared Hendrickson (@jaredhendrickson13)
 
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Manage all Firewall Rules
   pfrest.pfsense.firewall_rules:
     api_host: pfsense.example.com
@@ -318,17 +319,17 @@ EXAMPLES = '''
     objects:
     - type: pass
       interface:
-      - example
+      - string
       ipprotocol: inet
-      source: example
-      destination: example
+      source: string
+      destination: string
       protocol: tcp
       icmptype:
       - any
 
-'''
+"""
 
-RETURNS = '''
+RETURN = """
 changed:
   description: Whether any changes were made.
   type: bool
@@ -511,79 +512,294 @@ data:
       type: str
       returned: always
 
-'''
+"""
 
 
 def run_module():
+    """Runs this collection module against /api/v2/firewall/rules."""
+
     module_args = {
         "api_host": {
             "type": "str",
             "required": True,
+            "no_log": False,
         },
         "api_port": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 443,
         },
         "api_username": {
             "type": "str",
             "required": False,
-            "default": 'admin',
+            "no_log": False,
+            "default": "admin",
         },
         "api_password": {
             "type": "str",
             "required": False,
-            "default": 'pfsense',
+            "no_log": True,
+            "default": "pfsense",
         },
         "api_key": {
             "type": "str",
             "required": False,
+            "no_log": True,
         },
         "validate_certs": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": True,
         },
         "objects": {
             "type": "list",
             "required": True,
+            "no_log": False,
             "elements": "dict",
-            "suboptions": {'type': {'required': True, 'type': 'str', 'default': None, 'choices': ['pass', 'block', 'reject'], 'description': 'The action to take against traffic that matches this rule.'}, 'interface': {'required': True, 'type': 'list', 'default': None, 'choices': [], 'description': 'The interface where packets must originate to match this rule.', 'elements': 'str'}, 'ipprotocol': {'required': True, 'type': 'str', 'default': None, 'choices': ['inet', 'inet6', 'inet46'], 'description': 'The IP version(s) this rule applies to.'}, 'protocol': {'required': False, 'type': 'str', 'default': None, 'choices': ['tcp', 'udp', 'tcp/udp', 'icmp', 'esp', 'ah', 'gre', 'ipv6', 'igmp', 'pim', 'ospf', 'carp', 'pfsync'], 'description': 'The IP/transport protocol this rule should match.'}, 'icmptype': {'required': False, 'type': 'list', 'default': ['any'], 'choices': ['any', 'althost', 'dataconv', 'echorep', 'echoreq', 'inforep', 'inforeq', 'ipv6-here', 'ipv6-where', 'maskrep', 'maskreq', 'mobredir', 'mobregrep', 'mobregreq', 'paramprob', 'photuris', 'redir', 'routeradv', 'routersol', 'skip', 'squench', 'timerep', 'timereq', 'timex', 'trace', 'unreach'], 'description': 'Th ICMP subtypes this rule applies to. This field is only applicable when `ipprotocol` is `inet` and `protocol` is `icmp`.', 'elements': 'str'}, 'source': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': "The source address this rule applies to. Valid value options are: an existing interface, an IP address, a subnet CIDR, an existing alias, `any`, `(self)`, `l2tp`, `pppoe`. The context of this address can be inverted by prefixing the value with `!`. For interface values, the `:ip` modifier can be appended to the value to use the interface's IP address instead of its entire subnet."}, 'source_port': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The source port this rule applies to. Set to `null` to allow any source port. Valid options are: a TCP/UDP port number, a TCP/UDP port range separated by `:`, an existing port type firewall alias'}, 'destination': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': "The destination address this rule applies to. Valid value options are: an existing interface, an IP address, a subnet CIDR, an existing alias, `any`, `(self)`, `l2tp`, `pppoe`. The context of this address can be inverted by prefixing the value with `!`. For interface values, the `:ip` modifier can be appended to the value to use the interface's IP address instead of its entire subnet."}, 'destination_port': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The destination port this rule applies to. Set to `null` to allow any destination port. Valid options are: a TCP/UDP port number, a TCP/UDP port range separated by `:`, an existing port type firewall alias'}, 'descr': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'A description detailing the purpose or justification of this firewall rule.'}, 'disabled': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enable or disable this firewall rule.'}, 'log': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enable or disable logging of traffic that matches this rule.'}, 'tag': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'A packet matching this rule can be marked and this mark used to match on other NAT/filter rules. It is called'}, 'statetype': {'required': False, 'type': 'str', 'default': 'keep state', 'choices': ['keep state', 'sloppy state', 'synproxy state', 'none'], 'description': 'The state mechanism to use for this firewall rule.'}, 'tcp_flags_any': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Allow any TCP flags.'}, 'tcp_flags_out_of': {'required': False, 'type': 'list', 'default': None, 'choices': ['fin', 'syn', 'rst', 'psh', 'ack', 'urg', 'ece', 'cwr'], 'description': 'The TCP flags that can be set for this rule to match.', 'elements': 'str'}, 'tcp_flags_set': {'required': False, 'type': 'list', 'default': None, 'choices': ['fin', 'syn', 'rst', 'psh', 'ack', 'urg', 'ece', 'cwr'], 'description': 'The TCP flags that must be set for this rule to match.', 'elements': 'str'}, 'gateway': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The gateway traffic matching this rule will be routed to. Set to `null` to use default.'}, 'sched': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The name of an existing firewall schedule to assign to this firewall rule.'}, 'dnpipe': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The name of the traffic shaper limiter pipe or queue to use for incoming traffic.'}, 'pdnpipe': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The name of the traffic shaper limiter pipe or queue to use for outgoing traffic.'}, 'defaultqueue': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The name of the traffic shaper queue to assume as the default queue for traffic matching this rule.'}, 'ackqueue': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The name of the traffic shaper queue to assume as the ACK queue for ACK traffic matching this rule.'}, 'floating': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Mark this rule as a floating firewall rule.'}, 'quick': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Apply this action to traffic that matches this rule immediately. This field only applies to floating firewall rules.'}, 'direction': {'required': False, 'type': 'str', 'default': 'any', 'choices': ['any', 'in', 'out'], 'description': 'The direction of traffic this firewall rule applies to. This field only applies to floating firewall rules.'}},
+            "options": {
+                "type": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                    "choices": ["pass", "block", "reject"],
+                },
+                "interface": {
+                    "type": "list",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                    "elements": "str",
+                },
+                "ipprotocol": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                    "choices": ["inet", "inet6", "inet46"],
+                },
+                "protocol": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                    "choices": [
+                        "tcp",
+                        "udp",
+                        "tcp/udp",
+                        "icmp",
+                        "esp",
+                        "ah",
+                        "gre",
+                        "ipv6",
+                        "igmp",
+                        "pim",
+                        "ospf",
+                        "carp",
+                        "pfsync",
+                    ],
+                },
+                "icmptype": {
+                    "type": "list",
+                    "required": False,
+                    "no_log": False,
+                    "default": ["any"],
+                    "choices": [
+                        "any",
+                        "althost",
+                        "dataconv",
+                        "echorep",
+                        "echoreq",
+                        "inforep",
+                        "inforeq",
+                        "ipv6-here",
+                        "ipv6-where",
+                        "maskrep",
+                        "maskreq",
+                        "mobredir",
+                        "mobregrep",
+                        "mobregreq",
+                        "paramprob",
+                        "photuris",
+                        "redir",
+                        "routeradv",
+                        "routersol",
+                        "skip",
+                        "squench",
+                        "timerep",
+                        "timereq",
+                        "timex",
+                        "trace",
+                        "unreach",
+                    ],
+                    "elements": "str",
+                },
+                "source": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "source_port": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "destination": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "destination_port": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "descr": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "",
+                },
+                "disabled": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "log": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "tag": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "",
+                },
+                "statetype": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "keep state",
+                    "choices": ["keep state", "sloppy state", "synproxy state", "none"],
+                },
+                "tcp_flags_any": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "tcp_flags_out_of": {
+                    "type": "list",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                    "choices": ["fin", "syn", "rst", "psh", "ack", "urg", "ece", "cwr"],
+                    "elements": "str",
+                },
+                "tcp_flags_set": {
+                    "type": "list",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                    "choices": ["fin", "syn", "rst", "psh", "ack", "urg", "ece", "cwr"],
+                    "elements": "str",
+                },
+                "gateway": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "sched": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "dnpipe": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "pdnpipe": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "defaultqueue": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "ackqueue": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "floating": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "quick": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "direction": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "any",
+                    "choices": ["any", "in", "out"],
+                },
+            },
         },
     }
 
-    module = AnsibleModule(
-        argument_spec=module_args,
-        supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
 
     client = rest.RestClient(
-        host=module.params['api_host'],
-        port=module.params['api_port'],
-        username=module.params['api_username'],
-        password=module.params['api_password'],
-        api_key=module.params['api_key'],
-        validate_certs=module.params['validate_certs']
+        host=module.params["api_host"],
+        port=module.params["api_port"],
+        username=module.params["api_username"],
+        password=module.params["api_password"],
+        api_key=module.params["api_key"],
+        validate_certs=module.params["validate_certs"],
     )
 
-    base_module = base.BaseModule('/api/v2/firewall/rules', client)
-    changed = True # TODO: determine if changes are needed by comparing existing objects to the provided list
-    resp = base_module.replace_objects(
-        data=module.params['objects'],
+    base_module = base.BaseModule("/api/v2/firewall/rules", client)
+    changed, resp = base_module.replace_objects(
+        data=module.params["objects"],
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)
-    message = resp.get('message', '')
-    if 'message' in resp:
-        del resp['message']
+    message = resp.get("message", "")
+    if "message" in resp:
+        del resp["message"]
 
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if 'code' not in resp or resp['code'] != 200:
+    if "code" not in resp or resp["code"] != 200:
         module.fail_json(msg=message, **resp)
 
-    result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
+    result = {"changed": changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_module()

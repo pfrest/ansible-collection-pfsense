@@ -1,0 +1,30 @@
+- name: "test"
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: "test"
+      register: result
+      pfrest.pfsense.services_dns_resolver_host_overrides:
+        api_host: "192.168.55.81"
+        api_port: 443
+        api_username: "admin"
+        api_password: "pfsense"
+        validate_certs: false
+        objects:
+          - host: "test"
+            domain: "example.com"
+            ip: ["1.2.3.4"]
+            descr: "Test host override"
+            aliases:
+              - host: "alias1"
+                domain: "example.com"
+                descr: "Test alias 1"
+          - host: "test2"
+            domain: "example.com"
+            descr: "Test host 2"
+            ip: ["4.3.2.1"]
+            aliases: []
+    - name: "debug"
+      debug:
+        var: result

@@ -7,11 +7,14 @@
 # GENERATED MODULE BY ADDING THIS MODULES NAME TO THE
 # tools/generator.yml FILE.
 ###############################################################
+"""An Ansible module for interacting with /api/v2/vpn/ipsec/phase1s."""
+
+# pylint: disable=too-many-lines,duplicate-code
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 
-DOCUMENTATION = '''
+DOCUMENTATION = r"""
 module: vpn_ipsec_phase1s
 description:
 - Manage all IPsec Phase 1s.
@@ -32,12 +35,10 @@ options:
   api_password:
     type: str
     default: pfsense
-    no_log: true
     description: The password to authenticate with the pfSense API.
   api_key:
     type: str
-    no_log: true
-    description: An optional API key for authentication instead of username/password.
+    description: An API key to use for authentication.
   validate_certs:
     type: bool
     default: true
@@ -69,7 +70,7 @@ options:
         - auto
         description: The IKE protocol version this phase 1 entry will use.
       mode:
-        required: true
+        required: false
         type: str
         default: null
         choices:
@@ -121,7 +122,7 @@ options:
         - auto
         description: The identifier type used by the local end of the tunnel.
       myid_data:
-        required: true
+        required: false
         type: str
         default: null
         choices: []
@@ -143,14 +144,14 @@ options:
         - auto
         description: The identifier type used by the remote end of the tunnel.
       peerid_data:
-        required: true
+        required: false
         type: str
         default: null
         choices: []
         description: The identifier value used by the remote end of the tunnel. This
           must be a value that corresponds with the current `peerid_type` value.
       pre_shared_key:
-        required: true
+        required: false
         type: str
         default: null
         choices: []
@@ -158,14 +159,14 @@ options:
           and should be long and random to protect the tunnel and its contents. A
           weak Pre-Shared Key can lead to a tunnel compromise.
       certref:
-        required: true
+        required: false
         type: str
         default: null
         choices: []
         description: The certificate which identifies this system. The certificate
           must have at least one non-wildcard SAN.
       caref:
-        required: true
+        required: false
         type: str
         default: null
         choices: []
@@ -289,15 +290,87 @@ options:
         default: null
         choices: []
         description: The encryption algorithms supported by this P1 encryption.
+        elements: dict
+        suboptions:
+          encryption_algorithm_name:
+            required: true
+            type: str
+            default: null
+            choices:
+            - aes
+            - aes128gcm
+            - aes192gcm
+            - aes256gcm
+            - chacha20poly1305
+            description: The name of the encryption algorithm to use for this P1 encryption
+              item.
+          encryption_algorithm_keylen:
+            required: false
+            type: int
+            default: null
+            choices: []
+            description: The key length for the encryption algorithm.
+          hash_algorithm:
+            required: true
+            type: str
+            default: null
+            choices:
+            - sha1
+            - sha256
+            - sha384
+            - sha512
+            - aesxcbc
+            description: The hash algorithm to use for this P1 encryption item.
+          dhgroup:
+            required: true
+            type: int
+            default: null
+            choices:
+            - 1
+            - 2
+            - 5
+            - 14
+            - 15
+            - 16
+            - 17
+            - 18
+            - 19
+            - 20
+            - 21
+            - 22
+            - 23
+            - 24
+            - 25
+            - 26
+            - 27
+            - 28
+            - 29
+            - 30
+            - 31
+            - 32
+            description: The Diffie-Hellman (DH) group to use for this P1 encryption
+              item.
+          prf_algorithm:
+            required: false
+            type: str
+            default: sha256
+            choices:
+            - sha1
+            - sha256
+            - sha384
+            - sha512
+            - aesxcbc
+            description: The PRF algorithm to use for this P1 encryption item. This
+              value has no affect unless the P1 entry has PRF enabled.
     description: The list of items to manage in the collection. Each item should be
       a dictionary representing the desired state of a single resource within the
       collection.
 author:
 - Jared Hendrickson (@jaredhendrickson13)
 
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Manage all IPsec Phase 1s
   pfrest.pfsense.vpn_ipsec_phase1s:
     api_host: pfsense.example.com
@@ -307,23 +380,27 @@ EXAMPLES = '''
     - iketype: ikev1
       mode: main
       protocol: inet
-      interface: example
-      remote_gateway: example
+      interface: string
+      remote_gateway: string
       authentication_method: pre_shared_key
       myid_type: myaddress
-      myid_data: example
+      myid_data: string
       peerid_type: any
-      peerid_data: example
-      pre_shared_key: example
-      certref: example
-      caref: example
-      encryption: []
-      descr: example
+      peerid_data: string
+      pre_shared_key: string
+      certref: string
+      caref: string
+      encryption:
+      - encryption_algorithm_name: aes
+        encryption_algorithm_keylen: 1
+        hash_algorithm: sha1
+        dhgroup: 1
+      descr: string
       disabled: false
 
-'''
+"""
 
-RETURNS = '''
+RETURN = """
 changed:
   description: Whether any changes were made.
   type: bool
@@ -520,79 +597,377 @@ data:
           type: str
           returned: always
 
-'''
+"""
 
 
 def run_module():
+    """Runs this collection module against /api/v2/vpn/ipsec/phase1s."""
+
     module_args = {
         "api_host": {
             "type": "str",
             "required": True,
+            "no_log": False,
         },
         "api_port": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 443,
         },
         "api_username": {
             "type": "str",
             "required": False,
-            "default": 'admin',
+            "no_log": False,
+            "default": "admin",
         },
         "api_password": {
             "type": "str",
             "required": False,
-            "default": 'pfsense',
+            "no_log": True,
+            "default": "pfsense",
         },
         "api_key": {
             "type": "str",
             "required": False,
+            "no_log": True,
         },
         "validate_certs": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": True,
         },
         "objects": {
             "type": "list",
             "required": True,
+            "no_log": False,
             "elements": "dict",
-            "suboptions": {'descr': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'A description for this IPsec phase 1 entry.'}, 'disabled': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Disables this IPsec phase 1 entry.'}, 'iketype': {'required': True, 'type': 'str', 'default': None, 'choices': ['ikev1', 'ikev2', 'auto'], 'description': 'The IKE protocol version this phase 1 entry will use.'}, 'mode': {'required': True, 'type': 'str', 'default': None, 'choices': ['main', 'aggressive'], 'description': 'The IKEv1 negotiation mode this phase 1 entry will use.'}, 'protocol': {'required': True, 'type': 'str', 'default': None, 'choices': ['inet', 'inet6', 'both'], 'description': 'The IP version this phase 1 entry will use.'}, 'interface': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The interface for the local endpoint of this phase 1 entry. This should be an interface that is reachable by the remote peer.'}, 'remote_gateway': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The IP address or hostname of the remote gateway.'}, 'authentication_method': {'required': True, 'type': 'str', 'default': None, 'choices': ['pre_shared_key', 'cert'], 'description': 'The IPsec authentication method this tunnel will use.'}, 'myid_type': {'required': True, 'type': 'str', 'default': None, 'choices': ['myaddress', 'address', 'fqdn', 'user_fqdn', 'asn1dn', 'keyid tag', 'dyn_dns', 'auto'], 'description': 'The identifier type used by the local end of the tunnel.'}, 'myid_data': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The identifier value used by the local end of the tunnel. This must be a value that corresponds with the current `myid_type` value.'}, 'peerid_type': {'required': True, 'type': 'str', 'default': None, 'choices': ['any', 'peeraddress', 'address', 'fqdn', 'user_fqdn', 'asn1dn', 'keyid tag', 'dyn_dns', 'auto'], 'description': 'The identifier type used by the remote end of the tunnel.'}, 'peerid_data': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The identifier value used by the remote end of the tunnel. This must be a value that corresponds with the current `peerid_type` value.'}, 'pre_shared_key': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The Pre-Shared Key (PSK) value. This key must match on both peers and should be long and random to protect the tunnel and its contents. A weak Pre-Shared Key can lead to a tunnel compromise.'}, 'certref': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The certificate which identifies this system. The certificate must have at least one non-wildcard SAN.'}, 'caref': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The certificate authority to use when validating the peer certificate.'}, 'rekey_time': {'required': False, 'type': 'int', 'default': 25920, 'choices': [], 'description': 'The amount of time (in seconds) before an child SA establishes new keys.'}, 'reauth_time': {'required': False, 'type': 'int', 'default': 0, 'choices': [], 'description': 'The amount of time (in seconds) before an child SA is torn down and recreated from scratch, including authentication.'}, 'rand_time': {'required': False, 'type': 'int', 'default': 2880, 'choices': [], 'description': 'A random value up to this amount will be subtracted from the `rekey_time` to avoid simultaneous renegotiation.'}, 'lifetime': {'required': False, 'type': 'int', 'default': 28800, 'choices': [], 'description': 'The hard child SA lifetime (in seconds) after which the child SA will be expired.'}, 'startaction': {'required': False, 'type': 'str', 'default': '', 'choices': ['', 'none', 'start', 'trap'], 'description': 'The option used to force specific initiation/responder behavior for child SA (P2) entries.'}, 'closeaction': {'required': False, 'type': 'str', 'default': '', 'choices': ['', 'none', 'start', 'trap'], 'description': 'The option used to control the behavior when the remote peer unexpectedly closes a child SA (P2)'}, 'nat_traversal': {'required': False, 'type': 'str', 'default': 'on', 'choices': ['on', 'force'], 'description': 'The option used to enable the use of NAT-T (i.e. the encapsulation of ESP in UDP packets) if needed, which can help with clients that are behind restrictive firewalls.'}, 'gw_duplicates': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables the allowance of multiple phase 1 configurations with the same remote gateway endpoint.'}, 'mobike': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables the use of MOBIKE for this tunnel.'}, 'splitconn': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables the use split connection entries with multiple phase 2 configurations. Required for remote endpoints that support only a single traffic selector per child SA.'}, 'prfselect_enable': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables manual Pseudo-Random Function (PRF) selection.'}, 'ikeport': {'required': False, 'type': 'str', 'default': '500', 'choices': [], 'description': 'The UDP port for IKE on the remote gateway. Valid options are: a TCP/UDP port number'}, 'nattport': {'required': False, 'type': 'str', 'default': '4500', 'choices': [], 'description': 'The UDP port for NAT-T on the remote gateway. Valid options are: a TCP/UDP port number'}, 'dpd_delay': {'required': False, 'type': 'int', 'default': 10, 'choices': [], 'description': 'The delay (in seconds) between sending peer acknowledgement messages.'}, 'dpd_maxfail': {'required': False, 'type': 'int', 'default': 5, 'choices': [], 'description': 'The number of consecutive failures allowed before disconnecting.'}, 'encryption': {'required': True, 'type': 'list', 'default': None, 'choices': [], 'description': 'The encryption algorithms supported by this P1 encryption.'}},
+            "options": {
+                "descr": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "",
+                },
+                "disabled": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "iketype": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                    "choices": ["ikev1", "ikev2", "auto"],
+                },
+                "mode": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                    "choices": ["main", "aggressive"],
+                },
+                "protocol": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                    "choices": ["inet", "inet6", "both"],
+                },
+                "interface": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "remote_gateway": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "authentication_method": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                    "choices": ["pre_shared_key", "cert"],
+                },
+                "myid_type": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                    "choices": [
+                        "myaddress",
+                        "address",
+                        "fqdn",
+                        "user_fqdn",
+                        "asn1dn",
+                        "keyid tag",
+                        "dyn_dns",
+                        "auto",
+                    ],
+                },
+                "myid_data": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "peerid_type": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                    "choices": [
+                        "any",
+                        "peeraddress",
+                        "address",
+                        "fqdn",
+                        "user_fqdn",
+                        "asn1dn",
+                        "keyid tag",
+                        "dyn_dns",
+                        "auto",
+                    ],
+                },
+                "peerid_data": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "pre_shared_key": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": True,
+                    "default": None,
+                },
+                "certref": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "caref": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "rekey_time": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 25920,
+                },
+                "reauth_time": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 0,
+                },
+                "rand_time": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 2880,
+                },
+                "lifetime": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 28800,
+                },
+                "startaction": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "",
+                    "choices": ["", "none", "start", "trap"],
+                },
+                "closeaction": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "",
+                    "choices": ["", "none", "start", "trap"],
+                },
+                "nat_traversal": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "on",
+                    "choices": ["on", "force"],
+                },
+                "gw_duplicates": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "mobike": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "splitconn": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "prfselect_enable": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "ikeport": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "500",
+                },
+                "nattport": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "4500",
+                },
+                "dpd_delay": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 10,
+                },
+                "dpd_maxfail": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 5,
+                },
+                "encryption": {
+                    "type": "list",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                    "elements": "dict",
+                    "options": {
+                        "encryption_algorithm_name": {
+                            "type": "str",
+                            "required": True,
+                            "no_log": False,
+                            "default": None,
+                            "choices": [
+                                "aes",
+                                "aes128gcm",
+                                "aes192gcm",
+                                "aes256gcm",
+                                "chacha20poly1305",
+                            ],
+                        },
+                        "encryption_algorithm_keylen": {
+                            "type": "int",
+                            "required": False,
+                            "no_log": False,
+                            "default": None,
+                        },
+                        "hash_algorithm": {
+                            "type": "str",
+                            "required": True,
+                            "no_log": False,
+                            "default": None,
+                            "choices": [
+                                "sha1",
+                                "sha256",
+                                "sha384",
+                                "sha512",
+                                "aesxcbc",
+                            ],
+                        },
+                        "dhgroup": {
+                            "type": "int",
+                            "required": True,
+                            "no_log": False,
+                            "default": None,
+                            "choices": [
+                                1,
+                                2,
+                                5,
+                                14,
+                                15,
+                                16,
+                                17,
+                                18,
+                                19,
+                                20,
+                                21,
+                                22,
+                                23,
+                                24,
+                                25,
+                                26,
+                                27,
+                                28,
+                                29,
+                                30,
+                                31,
+                                32,
+                            ],
+                        },
+                        "prf_algorithm": {
+                            "type": "str",
+                            "required": False,
+                            "no_log": False,
+                            "default": "sha256",
+                            "choices": [
+                                "sha1",
+                                "sha256",
+                                "sha384",
+                                "sha512",
+                                "aesxcbc",
+                            ],
+                        },
+                    },
+                },
+            },
         },
     }
 
-    module = AnsibleModule(
-        argument_spec=module_args,
-        supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
 
     client = rest.RestClient(
-        host=module.params['api_host'],
-        port=module.params['api_port'],
-        username=module.params['api_username'],
-        password=module.params['api_password'],
-        api_key=module.params['api_key'],
-        validate_certs=module.params['validate_certs']
+        host=module.params["api_host"],
+        port=module.params["api_port"],
+        username=module.params["api_username"],
+        password=module.params["api_password"],
+        api_key=module.params["api_key"],
+        validate_certs=module.params["validate_certs"],
     )
 
-    base_module = base.BaseModule('/api/v2/vpn/ipsec/phase1s', client)
-    changed = True # TODO: determine if changes are needed by comparing existing objects to the provided list
-    resp = base_module.replace_objects(
-        data=module.params['objects'],
+    base_module = base.BaseModule("/api/v2/vpn/ipsec/phase1s", client)
+    changed, resp = base_module.replace_objects(
+        data=module.params["objects"],
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)
-    message = resp.get('message', '')
-    if 'message' in resp:
-        del resp['message']
+    message = resp.get("message", "")
+    if "message" in resp:
+        del resp["message"]
 
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if 'code' not in resp or resp['code'] != 200:
+    if "code" not in resp or resp["code"] != 200:
         module.fail_json(msg=message, **resp)
 
-    result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
+    result = {"changed": changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_module()

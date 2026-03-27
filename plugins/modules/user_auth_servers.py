@@ -7,11 +7,14 @@
 # GENERATED MODULE BY ADDING THIS MODULES NAME TO THE
 # tools/generator.yml FILE.
 ###############################################################
+"""An Ansible module for interacting with /api/v2/user/auth_servers."""
+
+# pylint: disable=too-many-lines,duplicate-code
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 
-DOCUMENTATION = '''
+DOCUMENTATION = r"""
 module: user_auth_servers
 description:
 - Manage all authentication servers.
@@ -32,12 +35,10 @@ options:
   api_password:
     type: str
     default: pfsense
-    no_log: true
     description: The password to authenticate with the pfSense API.
   api_key:
     type: str
-    no_log: true
-    description: An optional API key for authentication instead of username/password.
+    description: An API key to use for authentication.
   validate_certs:
     type: bool
     default: true
@@ -68,14 +69,14 @@ options:
         choices: []
         description: The remote IP address or hostname of the authentication server.
       ldap_port:
-        required: true
+        required: false
         type: str
         default: null
         choices: []
         description: 'The LDAP port to connect to on this LDAP authentication server.
           Valid options are: a TCP/UDP port number'
       ldap_urltype:
-        required: true
+        required: false
         type: str
         default: null
         choices:
@@ -109,7 +110,7 @@ options:
         choices: []
         description: The certificate authority used to validate the LDAP server certificate.
       ldap_scope:
-        required: true
+        required: false
         type: str
         default: null
         choices:
@@ -149,7 +150,7 @@ options:
         description: The DN to use when binding to this authentication server. Set
           to `null` to bind anonymously.
       ldap_bindpw:
-        required: true
+        required: false
         type: str
         default: null
         choices: []
@@ -220,7 +221,7 @@ options:
           servers (Microsoft AD) allow this type of bind without any possibility to
           disable it.
       radius_secret:
-        required: true
+        required: false
         type: str
         default: null
         choices: []
@@ -258,7 +259,7 @@ options:
         description: The timeout (in seconds) for connections to this RADIUS authentication
           server.
       radius_nasip_attribute:
-        required: true
+        required: false
         type: str
         default: null
         choices: []
@@ -271,9 +272,9 @@ options:
 author:
 - Jared Hendrickson (@jaredhendrickson13)
 
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Manage all authentication servers
   pfrest.pfsense.user_auth_servers:
     api_host: pfsense.example.com
@@ -281,20 +282,20 @@ EXAMPLES = '''
     api_password: pfsense
     objects:
     - type: ldap
-      name: example
-      host: example
-      ldap_port: example
+      name: string
+      host: string
+      ldap_port: string
       ldap_urltype: Standard TCP
       ldap_scope: one
-      ldap_bindpw: example
-      radius_secret: example
-      radius_nasip_attribute: example
+      ldap_bindpw: string
+      radius_secret: string
+      radius_nasip_attribute: string
       ldap_protver: 2
       ldap_timeout: 25
 
-'''
+"""
 
-RETURNS = '''
+RETURN = """
 changed:
   description: Whether any changes were made.
   type: bool
@@ -465,79 +466,280 @@ data:
       type: str
       returned: always
 
-'''
+"""
 
 
 def run_module():
+    """Runs this collection module against /api/v2/user/auth_servers."""
+
     module_args = {
         "api_host": {
             "type": "str",
             "required": True,
+            "no_log": False,
         },
         "api_port": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 443,
         },
         "api_username": {
             "type": "str",
             "required": False,
-            "default": 'admin',
+            "no_log": False,
+            "default": "admin",
         },
         "api_password": {
             "type": "str",
             "required": False,
-            "default": 'pfsense',
+            "no_log": True,
+            "default": "pfsense",
         },
         "api_key": {
             "type": "str",
             "required": False,
+            "no_log": True,
         },
         "validate_certs": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": True,
         },
         "objects": {
             "type": "list",
             "required": True,
+            "no_log": False,
             "elements": "dict",
-            "suboptions": {'type': {'required': True, 'type': 'str', 'default': None, 'choices': ['ldap', 'radius'], 'description': 'The type of this authentication server.'}, 'name': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The descriptive name for this authentication server.'}, 'host': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The remote IP address or hostname of the authentication server.'}, 'ldap_port': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The LDAP port to connect to on this LDAP authentication server. Valid options are: a TCP/UDP port number'}, 'ldap_urltype': {'required': True, 'type': 'str', 'default': None, 'choices': ['Standard TCP', 'STARTTLS Encrypt', 'SSL/TLS Encrypted'], 'description': "The encryption mode to use when connecting to this authentication server. Use `Standard TCP` for unencrypted LDAP connections, use `STARTTLS Encrypt` to start an encrypted connection via STARTTLS if it's available, or `SSL/TLS Encrypted` to only use LDAPS encrypted connections."}, 'ldap_protver': {'required': False, 'type': 'int', 'default': 3, 'choices': [2, 3], 'description': 'The LDAP protocol version to use for connections to this LDAP authentication server.'}, 'ldap_timeout': {'required': False, 'type': 'int', 'default': 25, 'choices': [], 'description': 'The timeout (in seconds) for connections to the LDAP authentication server.'}, 'ldap_caref': {'required': False, 'type': 'str', 'default': 'global', 'choices': [], 'description': 'The certificate authority used to validate the LDAP server certificate.'}, 'ldap_scope': {'required': True, 'type': 'str', 'default': None, 'choices': ['one', 'subtree'], 'description': 'The LDAP search scope. Use `one` to limit the scope to a single level, or `subtree` to allow the entire subtree to be searched.'}, 'ldap_basedn': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The root for LDAP searches on this authentication server.'}, 'ldap_authcn': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The LDAP authentication container.'}, 'ldap_extended_enabled': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enable LDAP extended queries.'}, 'ldap_extended_query': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The extended LDAP query to make during LDAP searches.'}, 'ldap_binddn': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The DN to use when binding to this authentication server. Set to `null` to bind anonymously.'}, 'ldap_bindpw': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The password to use when binding to this authentication server.'}, 'ldap_attr_user': {'required': False, 'type': 'str', 'default': 'cn', 'choices': [], 'description': 'The LDAP user attribute.'}, 'ldap_attr_group': {'required': False, 'type': 'str', 'default': 'cn', 'choices': [], 'description': 'The LDAP group attribute.'}, 'ldap_attr_member': {'required': False, 'type': 'str', 'default': 'member', 'choices': [], 'description': 'The LDAP member attribute.'}, 'ldap_rfc2307': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disable RFC2307 LDAP options.'}, 'ldap_rfc2307_userdn': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disable the use of DNs for username searches.'}, 'ldap_attr_groupobj': {'required': False, 'type': 'str', 'default': 'posixGroup', 'choices': [], 'description': 'The group object class for groups in RFC2307 mode.'}, 'ldap_pam_groupdn': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The group DN to use for shell authentication. Users must be a member of this group and have valid posixAccount attributes to sign in.'}, 'ldap_utf8': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Enables or disables UTF-8 encoding LDAP parameters before sending them to this authentication server'}, 'ldap_nostrip_at': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Do not strip away parts of the username after the @ symbol.'}, 'ldap_allow_unauthenticated': {'required': False, 'type': 'bool', 'default': True, 'choices': [], 'description': 'Enables or disables unauthenticated binding. Unauthenticated binds are bind with an existing login but with an empty password. Some LDAP servers (Microsoft AD) allow this type of bind without any possibility to disable it.'}, 'radius_secret': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The shared secret to use when authenticating to this RADIUS server.'}, 'radius_auth_port': {'required': False, 'type': 'str', 'default': '1812', 'choices': [], 'description': 'The port used by RADIUS for authentication. Set to `null` to disable use of authentication services. Valid options are: a TCP/UDP port number'}, 'radius_acct_port': {'required': False, 'type': 'str', 'default': '1813', 'choices': [], 'description': 'The port used by RADIUS for accounting. Set to `null` to disable use of accounting services. Valid options are: a TCP/UDP port number'}, 'radius_protocol': {'required': False, 'type': 'str', 'default': 'MSCHAPv2', 'choices': ['MSCHAPv2', 'MSCHAPv1', 'CHAP_MD5', 'PAP'], 'description': 'The RADIUS protocol to use when authenticating.'}, 'radius_timeout': {'required': False, 'type': 'int', 'default': 5, 'choices': [], 'description': 'The timeout (in seconds) for connections to this RADIUS authentication server.'}, 'radius_nasip_attribute': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': "The interface whose IP will be used as the 'NAS-IP-Address' attribute during RADIUS Access-Requests. This choice will not change the interface used for contacting the RADIUS server."}},
+            "options": {
+                "type": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                    "choices": ["ldap", "radius"],
+                },
+                "name": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "host": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "ldap_port": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "ldap_urltype": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                    "choices": [
+                        "Standard TCP",
+                        "STARTTLS Encrypt",
+                        "SSL/TLS Encrypted",
+                    ],
+                },
+                "ldap_protver": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 3,
+                    "choices": [2, 3],
+                },
+                "ldap_timeout": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 25,
+                },
+                "ldap_caref": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "global",
+                },
+                "ldap_scope": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                    "choices": ["one", "subtree"],
+                },
+                "ldap_basedn": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "",
+                },
+                "ldap_authcn": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "",
+                },
+                "ldap_extended_enabled": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "ldap_extended_query": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "",
+                },
+                "ldap_binddn": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "ldap_bindpw": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": True,
+                    "default": None,
+                },
+                "ldap_attr_user": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "cn",
+                },
+                "ldap_attr_group": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "cn",
+                },
+                "ldap_attr_member": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "member",
+                },
+                "ldap_rfc2307": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "ldap_rfc2307_userdn": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "ldap_attr_groupobj": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "posixGroup",
+                },
+                "ldap_pam_groupdn": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "",
+                },
+                "ldap_utf8": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "ldap_nostrip_at": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "ldap_allow_unauthenticated": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": True,
+                },
+                "radius_secret": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": True,
+                    "default": None,
+                },
+                "radius_auth_port": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "1812",
+                },
+                "radius_acct_port": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "1813",
+                },
+                "radius_protocol": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "MSCHAPv2",
+                    "choices": ["MSCHAPv2", "MSCHAPv1", "CHAP_MD5", "PAP"],
+                },
+                "radius_timeout": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 5,
+                },
+                "radius_nasip_attribute": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+            },
         },
     }
 
-    module = AnsibleModule(
-        argument_spec=module_args,
-        supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
 
     client = rest.RestClient(
-        host=module.params['api_host'],
-        port=module.params['api_port'],
-        username=module.params['api_username'],
-        password=module.params['api_password'],
-        api_key=module.params['api_key'],
-        validate_certs=module.params['validate_certs']
+        host=module.params["api_host"],
+        port=module.params["api_port"],
+        username=module.params["api_username"],
+        password=module.params["api_password"],
+        api_key=module.params["api_key"],
+        validate_certs=module.params["validate_certs"],
     )
 
-    base_module = base.BaseModule('/api/v2/user/auth_servers', client)
-    changed = True # TODO: determine if changes are needed by comparing existing objects to the provided list
-    resp = base_module.replace_objects(
-        data=module.params['objects'],
+    base_module = base.BaseModule("/api/v2/user/auth_servers", client)
+    changed, resp = base_module.replace_objects(
+        data=module.params["objects"],
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)
-    message = resp.get('message', '')
-    if 'message' in resp:
-        del resp['message']
+    message = resp.get("message", "")
+    if "message" in resp:
+        del resp["message"]
 
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if 'code' not in resp or resp['code'] != 200:
+    if "code" not in resp or resp["code"] != 200:
         module.fail_json(msg=message, **resp)
 
-    result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
+    result = {"changed": changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_module()

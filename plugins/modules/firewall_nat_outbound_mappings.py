@@ -7,11 +7,14 @@
 # GENERATED MODULE BY ADDING THIS MODULES NAME TO THE
 # tools/generator.yml FILE.
 ###############################################################
+"""An Ansible module for interacting with /api/v2/firewall/nat/outbound/mappings."""
+
+# pylint: disable=too-many-lines,duplicate-code
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 
-DOCUMENTATION = '''
+DOCUMENTATION = r"""
 module: firewall_nat_outbound_mappings
 description:
 - Manage all Outbound NAT Mappings.
@@ -32,12 +35,10 @@ options:
   api_password:
     type: str
     default: pfsense
-    no_log: true
     description: The password to authenticate with the pfSense API.
   api_key:
     type: str
-    no_log: true
-    description: An optional API key for authentication instead of username/password.
+    description: An API key to use for authentication.
   validate_certs:
     type: bool
     default: true
@@ -126,7 +127,7 @@ options:
           a TCP/UDP port number, a TCP/UDP port range separated by `:`, an existing
           port type firewall alias'
       target:
-        required: true
+        required: false
         type: str
         default: null
         choices: []
@@ -190,25 +191,25 @@ options:
 author:
 - Jared Hendrickson (@jaredhendrickson13)
 
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Manage all Outbound NAT Mappings
   pfrest.pfsense.firewall_nat_outbound_mappings:
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
     objects:
-    - interface: example
-      source: example
-      destination: example
-      target: example
+    - interface: string
+      source: string
+      destination: string
+      target: string
       protocol: tcp
       disabled: false
 
-'''
+"""
 
-RETURNS = '''
+RETURN = """
 changed:
   description: Whether any changes were made.
   type: bool
@@ -320,79 +321,202 @@ data:
       type: str
       returned: always
 
-'''
+"""
 
 
 def run_module():
+    """Runs this collection module against /api/v2/firewall/nat/outbound/mappings."""
+
     module_args = {
         "api_host": {
             "type": "str",
             "required": True,
+            "no_log": False,
         },
         "api_port": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 443,
         },
         "api_username": {
             "type": "str",
             "required": False,
-            "default": 'admin',
+            "no_log": False,
+            "default": "admin",
         },
         "api_password": {
             "type": "str",
             "required": False,
-            "default": 'pfsense',
+            "no_log": True,
+            "default": "pfsense",
         },
         "api_key": {
             "type": "str",
             "required": False,
+            "no_log": True,
         },
         "validate_certs": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": True,
         },
         "objects": {
             "type": "list",
             "required": True,
+            "no_log": False,
             "elements": "dict",
-            "suboptions": {'interface': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The interface on which traffic is matched as it exits the firewall. In most cases this is a WAN-type or another externally-connected interface.'}, 'protocol': {'required': False, 'type': 'str', 'default': None, 'choices': ['tcp', 'udp', 'tcp/udp', 'icmp', 'esp', 'ah', 'gre', 'ipv6', 'igmp', 'pim', 'ospf'], 'description': 'The protocol this rule should match. Use `null` for any protocol.'}, 'disabled': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Disable this outbound NAT rule.'}, 'nonat': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Do not NAT traffic matching this rule.'}, 'nosync': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Do not sync this rule to HA peers.'}, 'source': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': "The source network this rule should match. Valid value options are: an existing interface, a subnet CIDR, an existing alias, `any`, `(self)`, `pppoe`. The context of this address can be inverted by prefixing the value with `!`. For interface values, the `:ip` modifier can be appended to the value to use the interface's IP address instead of its entire subnet."}, 'source_port': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The source port this rule should match. Valid options are: a TCP/UDP port number, a TCP/UDP port range separated by `:`, an existing port type firewall alias'}, 'destination': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': "The destination network this rule should match. Valid value options are: an existing interface, a subnet CIDR, an existing alias, `any`, `pppoe`. The context of this address can be inverted by prefixing the value with `!`. For interface values, the `:ip` modifier can be appended to the value to use the interface's IP address instead of its entire subnet."}, 'destination_port': {'required': False, 'type': 'str', 'default': None, 'choices': [], 'description': 'The destination port this rule should match. Valid options are: a TCP/UDP port number, a TCP/UDP port range separated by `:`, an existing port type firewall alias'}, 'target': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': "The target network traffic matching this rule should be translated to. Valid value options are: an IP address, an existing alias. For interface values, the `:ip` modifier can be appended to the value to use the interface's IP address instead of its entire subnet."}, 'target_subnet': {'required': False, 'type': 'int', 'default': 128, 'choices': [], 'description': 'The subnet bits for the assigned `target`. This field is only applicable if `target` is set to an IP address. This has no affect for alias or interface `targets`.'}, 'nat_port': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The external source port or port range used for rewriting the original source port on connections matching the rule. Valid options are: a TCP/UDP port number, a TCP/UDP port range separated by `:`'}, 'static_nat_port': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Do not rewrite source port for traffic matching this rule.'}, 'poolopts': {'required': False, 'type': 'str', 'default': None, 'choices': ['round-robin', 'round-robin sticky-address', 'random', 'random sticky-address', 'source-hash', 'bitmask'], 'description': 'The pool option used to load balance external IP mapping when `target` is set to a subnet or alias of many addresses. Set to `null` to revert to the system default.'}, 'source_hash_key': {'required': False, 'type': 'str', 'default': '0x6f3f38a910783005876778e37577e881', 'choices': [], 'description': 'The key that is fed to the hashing algorithm in hex format. This must be a 16 byte (32 character) hex string prefixed with `0x`. If a value is not provided, one will automatically be generated'}, 'descr': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'A description for the outbound NAT mapping.'}},
+            "options": {
+                "interface": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "protocol": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                    "choices": [
+                        "tcp",
+                        "udp",
+                        "tcp/udp",
+                        "icmp",
+                        "esp",
+                        "ah",
+                        "gre",
+                        "ipv6",
+                        "igmp",
+                        "pim",
+                        "ospf",
+                    ],
+                },
+                "disabled": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "nonat": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "nosync": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "source": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "source_port": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "destination": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "destination_port": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "target": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "target_subnet": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 128,
+                },
+                "nat_port": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "",
+                },
+                "static_nat_port": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "poolopts": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                    "choices": [
+                        "round-robin",
+                        "round-robin sticky-address",
+                        "random",
+                        "random sticky-address",
+                        "source-hash",
+                        "bitmask",
+                    ],
+                },
+                "source_hash_key": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "0x6f3f38a910783005876778e37577e881",
+                },
+                "descr": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "",
+                },
+            },
         },
     }
 
-    module = AnsibleModule(
-        argument_spec=module_args,
-        supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
 
     client = rest.RestClient(
-        host=module.params['api_host'],
-        port=module.params['api_port'],
-        username=module.params['api_username'],
-        password=module.params['api_password'],
-        api_key=module.params['api_key'],
-        validate_certs=module.params['validate_certs']
+        host=module.params["api_host"],
+        port=module.params["api_port"],
+        username=module.params["api_username"],
+        password=module.params["api_password"],
+        api_key=module.params["api_key"],
+        validate_certs=module.params["validate_certs"],
     )
 
-    base_module = base.BaseModule('/api/v2/firewall/nat/outbound/mappings', client)
-    changed = True # TODO: determine if changes are needed by comparing existing objects to the provided list
-    resp = base_module.replace_objects(
-        data=module.params['objects'],
+    base_module = base.BaseModule("/api/v2/firewall/nat/outbound/mappings", client)
+    changed, resp = base_module.replace_objects(
+        data=module.params["objects"],
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)
-    message = resp.get('message', '')
-    if 'message' in resp:
-        del resp['message']
+    message = resp.get("message", "")
+    if "message" in resp:
+        del resp["message"]
 
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if 'code' not in resp or resp['code'] != 200:
+    if "code" not in resp or resp["code"] != 200:
         module.fail_json(msg=message, **resp)
 
-    result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
+    result = {"changed": changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_module()

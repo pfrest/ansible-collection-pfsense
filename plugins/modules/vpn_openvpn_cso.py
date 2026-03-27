@@ -7,11 +7,14 @@
 # GENERATED MODULE BY ADDING THIS MODULES NAME TO THE
 # tools/generator.yml FILE.
 ###############################################################
+"""An Ansible module for interacting with /api/v2/vpn/openvpn/cso."""
+
+# pylint: disable=too-many-lines,duplicate-code
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 
-DOCUMENTATION = '''
+DOCUMENTATION = r"""
 module: vpn_openvpn_cso
 description:
 - Manage individual Open VPN Client Specific Overrides.
@@ -32,12 +35,10 @@ options:
   api_password:
     type: str
     default: pfsense
-    no_log: true
     description: The password to authenticate with the pfSense API.
   api_key:
     type: str
-    no_log: true
-    description: An optional API key for authentication instead of username/password.
+    description: An API key to use for authentication.
   validate_certs:
     type: bool
     default: true
@@ -258,27 +259,27 @@ options:
 author:
 - Jared Hendrickson (@jaredhendrickson13)
 
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Create Open VPN Client Specific Override
   pfrest.pfsense.vpn_openvpn_cso:
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
     state: present
-    common_name: example
+    common_name: string
 - name: Delete Open VPN Client Specific Override
   pfrest.pfsense.vpn_openvpn_cso:
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
     state: absent
-    common_name: example
+    common_name: string
 
-'''
+"""
 
-RETURNS = '''
+RETURN = """
 changed:
   description: Whether any changes were made.
   type: bool
@@ -429,229 +430,277 @@ data:
       returned: always
       elements: str
 
-'''
+"""
 
 
 def run_module():
+    """Runs this resource module against /api/v2/vpn/openvpn/cso."""
+
     module_args = {
         "api_host": {
             "type": "str",
             "required": True,
+            "no_log": False,
         },
         "api_port": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 443,
         },
         "api_username": {
             "type": "str",
             "required": False,
-            "default": 'admin',
+            "no_log": False,
+            "default": "admin",
         },
         "api_password": {
             "type": "str",
             "required": False,
-            "default": 'pfsense',
+            "no_log": True,
+            "default": "pfsense",
         },
         "api_key": {
             "type": "str",
             "required": False,
+            "no_log": True,
         },
         "validate_certs": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": True,
         },
         "state": {
             "type": "str",
             "required": False,
-            "default": 'present',
-            "choices": ['present', 'absent'],
+            "no_log": False,
+            "default": "present",
+            "choices": ["present", "absent"],
         },
         "lookup_fields": {
             "type": "list",
             "required": True,
+            "no_log": False,
             "elements": "str",
         },
         "common_name": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
         },
         "disable": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "block": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "description": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "server_list": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
             "elements": "str",
         },
         "tunnel_network": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "tunnel_networkv6": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "local_network": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
             "elements": "str",
         },
         "local_networkv6": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
             "elements": "str",
         },
         "remote_network": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
             "elements": "str",
         },
         "remote_networkv6": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
             "elements": "str",
         },
         "gwredir": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "push_reset": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "remove_options": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
-            "choices": ['remove_route', 'remove_iroute', 'remove_redirect_gateway', 'remove_inactive', 'remove_ping', 'remove_ping_action', 'remove_dnsdomain', 'remove_dnsservers', 'remove_blockoutsidedns', 'remove_ntpservers', 'remove_netbios_ntype', 'remove_netbios_scope', 'remove_wins'],
+            "choices": [
+                "remove_route",
+                "remove_iroute",
+                "remove_redirect_gateway",
+                "remove_inactive",
+                "remove_ping",
+                "remove_ping_action",
+                "remove_dnsdomain",
+                "remove_dnsservers",
+                "remove_blockoutsidedns",
+                "remove_ntpservers",
+                "remove_netbios_ntype",
+                "remove_netbios_scope",
+                "remove_wins",
+            ],
             "elements": "str",
         },
         "dns_domain": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "dns_server1": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "dns_server2": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "dns_server3": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "dns_server4": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "ntp_server1": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "ntp_server2": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "netbios_enable": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "netbios_ntype": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 0,
             "choices": [0, 1, 2, 4, 8],
         },
         "netbios_scope": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "wins_server1": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "wins_server2": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "custom_options": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
             "elements": "str",
         },
     }
 
-    module = AnsibleModule(
-        argument_spec=module_args,
-        supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
 
     client = rest.RestClient(
-        host=module.params['api_host'],
-        port=module.params['api_port'],
-        username=module.params['api_username'],
-        password=module.params['api_password'],
-        api_key=module.params['api_key'],
-        validate_certs=module.params['validate_certs']
+        host=module.params["api_host"],
+        port=module.params["api_port"],
+        username=module.params["api_username"],
+        password=module.params["api_password"],
+        api_key=module.params["api_key"],
+        validate_certs=module.params["validate_certs"],
     )
 
-    base_module = base.BaseModule('/api/v2/vpn/openvpn/cso', client)
+    base_module = base.BaseModule("/api/v2/vpn/openvpn/cso", client)
     changed, resp = base_module.set_object_state(
-        state=module.params['state'],
+        state=module.params["state"],
         data=module.params,
-        lookup_fields=module.params['lookup_fields']
+        lookup_fields=module.params["lookup_fields"],
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)
-    message = resp.get('message', '')
-    if 'message' in resp:
-        del resp['message']
+    message = resp.get("message", "")
+    if "message" in resp:
+        del resp["message"]
 
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if 'code' not in resp or resp['code'] != 200:
+    if "code" not in resp or resp["code"] != 200:
         module.fail_json(msg=message, **resp)
 
-    result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
+    result = {"changed": changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_module()

@@ -7,11 +7,14 @@
 # GENERATED MODULE BY ADDING THIS MODULES NAME TO THE
 # tools/generator.yml FILE.
 ###############################################################
+"""An Ansible module for interacting with /api/v2/system/restapi/access_list."""
+
+# pylint: disable=too-many-lines,duplicate-code
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 
-DOCUMENTATION = '''
+DOCUMENTATION = r"""
 module: system_restapi_access_list
 description:
 - Manage all REST API Access List Entries.
@@ -32,12 +35,10 @@ options:
   api_password:
     type: str
     default: pfsense
-    no_log: true
     description: The password to authenticate with the pfSense API.
   api_key:
     type: str
-    no_log: true
-    description: An optional API key for authentication instead of username/password.
+    description: An API key to use for authentication.
   validate_certs:
     type: bool
     default: true
@@ -102,22 +103,22 @@ options:
 author:
 - Jared Hendrickson (@jaredhendrickson13)
 
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Manage all REST API Access List Entries
   pfrest.pfsense.system_restapi_access_list:
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
     objects:
-    - network: example
+    - network: string
       type: allow
       weight: 1
 
-'''
+"""
 
-RETURNS = '''
+RETURN = """
 changed:
   description: Whether any changes were made.
   type: bool
@@ -174,79 +175,123 @@ data:
       type: str
       returned: always
 
-'''
+"""
 
 
 def run_module():
+    """Runs this collection module against /api/v2/system/restapi/access_list."""
+
     module_args = {
         "api_host": {
             "type": "str",
             "required": True,
+            "no_log": False,
         },
         "api_port": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 443,
         },
         "api_username": {
             "type": "str",
             "required": False,
-            "default": 'admin',
+            "no_log": False,
+            "default": "admin",
         },
         "api_password": {
             "type": "str",
             "required": False,
-            "default": 'pfsense',
+            "no_log": True,
+            "default": "pfsense",
         },
         "api_key": {
             "type": "str",
             "required": False,
+            "no_log": True,
         },
         "validate_certs": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": True,
         },
         "objects": {
             "type": "list",
             "required": True,
+            "no_log": False,
             "elements": "dict",
-            "suboptions": {'type': {'required': False, 'type': 'str', 'default': 'allow', 'choices': ['allow', 'deny'], 'description': 'The type of access this entry provides. "allow" entries permit access to the REST API from the specified networks. "deny" entries block access to the REST API from the specified networks.'}, 'weight': {'required': False, 'type': 'int', 'default': 1, 'choices': [], 'description': 'The weight of this entry. Entries with lower weights are evaluated first. If multiple entries match a request, the entry with the lowest weight will be applied.'}, 'network': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The network (in CIDR notation) that this entry applies to. Clients interacting with the REST API from this network will be affected by this entry.'}, 'users': {'required': False, 'type': 'list', 'default': [], 'choices': [], 'description': 'The users that this entry applies to. Only users in this list will be affected by this entry. Leave empty if this entry should apply to all users.', 'elements': 'str'}, 'sched': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'The firewall schedule that this entry will use. This entry will only be active during the times specified in the schedule. Leave empty to apply this entry at all times.'}, 'descr': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'A description of this access list entry. This field is optional.'}},
+            "options": {
+                "type": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "allow",
+                    "choices": ["allow", "deny"],
+                },
+                "weight": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 1,
+                },
+                "network": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "users": {
+                    "type": "list",
+                    "required": False,
+                    "no_log": False,
+                    "default": [],
+                    "elements": "str",
+                },
+                "sched": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "",
+                },
+                "descr": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "",
+                },
+            },
         },
     }
 
-    module = AnsibleModule(
-        argument_spec=module_args,
-        supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
 
     client = rest.RestClient(
-        host=module.params['api_host'],
-        port=module.params['api_port'],
-        username=module.params['api_username'],
-        password=module.params['api_password'],
-        api_key=module.params['api_key'],
-        validate_certs=module.params['validate_certs']
+        host=module.params["api_host"],
+        port=module.params["api_port"],
+        username=module.params["api_username"],
+        password=module.params["api_password"],
+        api_key=module.params["api_key"],
+        validate_certs=module.params["validate_certs"],
     )
 
-    base_module = base.BaseModule('/api/v2/system/restapi/access_list', client)
-    changed = True # TODO: determine if changes are needed by comparing existing objects to the provided list
-    resp = base_module.replace_objects(
-        data=module.params['objects'],
+    base_module = base.BaseModule("/api/v2/system/restapi/access_list", client)
+    changed, resp = base_module.replace_objects(
+        data=module.params["objects"],
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)
-    message = resp.get('message', '')
-    if 'message' in resp:
-        del resp['message']
+    message = resp.get("message", "")
+    if "message" in resp:
+        del resp["message"]
 
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if 'code' not in resp or resp['code'] != 200:
+    if "code" not in resp or resp["code"] != 200:
         module.fail_json(msg=message, **resp)
 
-    result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
+    result = {"changed": changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_module()

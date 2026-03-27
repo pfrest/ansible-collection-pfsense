@@ -7,11 +7,14 @@
 # GENERATED MODULE BY ADDING THIS MODULES NAME TO THE
 # tools/generator.yml FILE.
 ###############################################################
+"""An Ansible module for interacting with /api/v2/firewall/nat/one_to_one/mappings."""
+
+# pylint: disable=too-many-lines,duplicate-code
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 
-DOCUMENTATION = '''
+DOCUMENTATION = r"""
 module: firewall_nat_one_to_one_mappings
 description:
 - Manage all 1:1 NAT mappings.
@@ -32,12 +35,10 @@ options:
   api_password:
     type: str
     default: pfsense
-    no_log: true
     description: The password to authenticate with the pfSense API.
   api_key:
     type: str
-    no_log: true
-    description: An optional API key for authentication instead of username/password.
+    description: An API key to use for authentication.
   validate_certs:
     type: bool
     default: true
@@ -126,25 +127,25 @@ options:
 author:
 - Jared Hendrickson (@jaredhendrickson13)
 
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Manage all 1:1 NAT mappings
   pfrest.pfsense.firewall_nat_one_to_one_mappings:
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
     objects:
-    - interface: example
-      external: example
-      source: example
-      destination: example
+    - interface: string
+      external: string
+      source: string
+      destination: string
       disabled: false
       nobinat: false
 
-'''
+"""
 
-RETURNS = '''
+RETURN = """
 changed:
   description: Whether any changes were made.
   type: bool
@@ -219,79 +220,141 @@ data:
       type: str
       returned: always
 
-'''
+"""
 
 
 def run_module():
+    """Runs this collection module against /api/v2/firewall/nat/one_to_one/mappings."""
+
     module_args = {
         "api_host": {
             "type": "str",
             "required": True,
+            "no_log": False,
         },
         "api_port": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 443,
         },
         "api_username": {
             "type": "str",
             "required": False,
-            "default": 'admin',
+            "no_log": False,
+            "default": "admin",
         },
         "api_password": {
             "type": "str",
             "required": False,
-            "default": 'pfsense',
+            "no_log": True,
+            "default": "pfsense",
         },
         "api_key": {
             "type": "str",
             "required": False,
+            "no_log": True,
         },
         "validate_certs": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": True,
         },
         "objects": {
             "type": "list",
             "required": True,
+            "no_log": False,
             "elements": "dict",
-            "suboptions": {'interface': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': 'The interface this 1:1 NAT mapping applies to.'}, 'disabled': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Disables this 1:1 NAT mapping.'}, 'nobinat': {'required': False, 'type': 'bool', 'default': False, 'choices': [], 'description': 'Exclude traffic matching this mapping from a later, more general, mapping.'}, 'natreflection': {'required': False, 'type': 'str', 'default': None, 'choices': ['enable', 'disable'], 'description': 'Enables or disables NAT reflection for traffic matching this mapping. Set to `null` to use the system default.'}, 'ipprotocol': {'required': False, 'type': 'str', 'default': 'inet', 'choices': ['inet', 'inet6'], 'description': 'The IP version this mapping applies to.'}, 'external': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': "The external IP address or interface for the 1:1 mapping. Valid value options are: an IP address. For interface values, the `:ip` modifier can be appended to the value to use the interface's IP address instead of its entire subnet."}, 'source': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': "The source IP address or subnet that traffic must match to apply this mapping. Valid value options are: an existing interface, an IP address, a subnet CIDR, `any`, `l2tp`, `pppoe`. The context of this address can be inverted by prefixing the value with `!`. For interface values, the `:ip` modifier can be appended to the value to use the interface's IP address instead of its entire subnet."}, 'destination': {'required': True, 'type': 'str', 'default': None, 'choices': [], 'description': "The destination IP address or subnet that traffic must match to apply this mapping. Valid value options are: an existing interface, an IP address, a subnet CIDR, an existing alias, `any`, `l2tp`, `pppoe`. The context of this address can be inverted by prefixing the value with `!`. For interface values, the `:ip` modifier can be appended to the value to use the interface's IP address instead of its entire subnet."}, 'descr': {'required': False, 'type': 'str', 'default': '', 'choices': [], 'description': 'A description for this 1:1 NAT mapping'}},
+            "options": {
+                "interface": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "disabled": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "nobinat": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "natreflection": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                    "choices": ["enable", "disable"],
+                },
+                "ipprotocol": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "inet",
+                    "choices": ["inet", "inet6"],
+                },
+                "external": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "source": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "destination": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "descr": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "",
+                },
+            },
         },
     }
 
-    module = AnsibleModule(
-        argument_spec=module_args,
-        supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
 
     client = rest.RestClient(
-        host=module.params['api_host'],
-        port=module.params['api_port'],
-        username=module.params['api_username'],
-        password=module.params['api_password'],
-        api_key=module.params['api_key'],
-        validate_certs=module.params['validate_certs']
+        host=module.params["api_host"],
+        port=module.params["api_port"],
+        username=module.params["api_username"],
+        password=module.params["api_password"],
+        api_key=module.params["api_key"],
+        validate_certs=module.params["validate_certs"],
     )
 
-    base_module = base.BaseModule('/api/v2/firewall/nat/one_to_one/mappings', client)
-    changed = True # TODO: determine if changes are needed by comparing existing objects to the provided list
-    resp = base_module.replace_objects(
-        data=module.params['objects'],
+    base_module = base.BaseModule("/api/v2/firewall/nat/one_to_one/mappings", client)
+    changed, resp = base_module.replace_objects(
+        data=module.params["objects"],
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)
-    message = resp.get('message', '')
-    if 'message' in resp:
-        del resp['message']
+    message = resp.get("message", "")
+    if "message" in resp:
+        del resp["message"]
 
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if 'code' not in resp or resp['code'] != 200:
+    if "code" not in resp or resp["code"] != 200:
         module.fail_json(msg=message, **resp)
 
-    result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
+    result = {"changed": changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_module()

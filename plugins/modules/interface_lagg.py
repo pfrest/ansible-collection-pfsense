@@ -7,11 +7,14 @@
 # GENERATED MODULE BY ADDING THIS MODULES NAME TO THE
 # tools/generator.yml FILE.
 ###############################################################
+"""An Ansible module for interacting with /api/v2/interface/lagg."""
+
+# pylint: disable=too-many-lines,duplicate-code
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 
-DOCUMENTATION = '''
+DOCUMENTATION = r"""
 module: interface_lagg
 description:
 - Manage individual Interface LAGGs.
@@ -32,12 +35,10 @@ options:
   api_password:
     type: str
     default: pfsense
-    no_log: true
     description: The password to authenticate with the pfSense API.
   api_key:
     type: str
-    no_log: true
-    description: An optional API key for authentication instead of username/password.
+    description: An API key to use for authentication.
   validate_certs:
     type: bool
     default: true
@@ -109,9 +110,9 @@ options:
 author:
 - Jared Hendrickson (@jaredhendrickson13)
 
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Create Interface LAGG
   pfrest.pfsense.interface_lagg:
     api_host: pfsense.example.com
@@ -119,7 +120,7 @@ EXAMPLES = '''
     api_password: pfsense
     state: present
     members: &id001
-    - example
+    - string
     proto: lacp
 - name: Delete Interface LAGG
   pfrest.pfsense.interface_lagg:
@@ -130,9 +131,9 @@ EXAMPLES = '''
     members: *id001
     proto: lacp
 
-'''
+"""
 
-RETURNS = '''
+RETURN = """
 changed:
   description: Whether any changes were made.
   type: bool
@@ -184,119 +185,132 @@ data:
       type: str
       returned: always
 
-'''
+"""
 
 
 def run_module():
+    """Runs this resource module against /api/v2/interface/lagg."""
+
     module_args = {
         "api_host": {
             "type": "str",
             "required": True,
+            "no_log": False,
         },
         "api_port": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 443,
         },
         "api_username": {
             "type": "str",
             "required": False,
-            "default": 'admin',
+            "no_log": False,
+            "default": "admin",
         },
         "api_password": {
             "type": "str",
             "required": False,
-            "default": 'pfsense',
+            "no_log": True,
+            "default": "pfsense",
         },
         "api_key": {
             "type": "str",
             "required": False,
+            "no_log": True,
         },
         "validate_certs": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": True,
         },
         "state": {
             "type": "str",
             "required": False,
-            "default": 'present',
-            "choices": ['present', 'absent'],
+            "no_log": False,
+            "default": "present",
+            "choices": ["present", "absent"],
         },
         "lookup_fields": {
             "type": "list",
             "required": True,
+            "no_log": False,
             "elements": "str",
         },
         "descr": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "members": {
             "type": "list",
             "required": True,
+            "no_log": False,
             "default": None,
             "elements": "str",
         },
         "proto": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
-            "choices": ['lacp', 'failover', 'loadbalance', 'roundrobin', 'none'],
+            "choices": ["lacp", "failover", "loadbalance", "roundrobin", "none"],
         },
         "lacptimeout": {
             "type": "str",
             "required": False,
-            "default": 'slow',
-            "choices": ['slow', 'fast'],
+            "no_log": False,
+            "default": "slow",
+            "choices": ["slow", "fast"],
         },
         "lagghash": {
             "type": "str",
             "required": False,
-            "default": 'l2,l3,l4',
-            "choices": ['l2', 'l3', 'l4', 'l2,l3', 'l2,l4', 'l3,l4', 'l2,l3,l4'],
+            "no_log": False,
+            "default": "l2,l3,l4",
+            "choices": ["l2", "l3", "l4", "l2,l3", "l2,l4", "l3,l4", "l2,l3,l4"],
         },
         "failovermaster": {
             "type": "str",
             "required": False,
-            "default": 'auto',
+            "no_log": False,
+            "default": "auto",
         },
     }
 
-    module = AnsibleModule(
-        argument_spec=module_args,
-        supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
 
     client = rest.RestClient(
-        host=module.params['api_host'],
-        port=module.params['api_port'],
-        username=module.params['api_username'],
-        password=module.params['api_password'],
-        api_key=module.params['api_key'],
-        validate_certs=module.params['validate_certs']
+        host=module.params["api_host"],
+        port=module.params["api_port"],
+        username=module.params["api_username"],
+        password=module.params["api_password"],
+        api_key=module.params["api_key"],
+        validate_certs=module.params["validate_certs"],
     )
 
-    base_module = base.BaseModule('/api/v2/interface/lagg', client)
+    base_module = base.BaseModule("/api/v2/interface/lagg", client)
     changed, resp = base_module.set_object_state(
-        state=module.params['state'],
+        state=module.params["state"],
         data=module.params,
-        lookup_fields=module.params['lookup_fields']
+        lookup_fields=module.params["lookup_fields"],
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)
-    message = resp.get('message', '')
-    if 'message' in resp:
-        del resp['message']
+    message = resp.get("message", "")
+    if "message" in resp:
+        del resp["message"]
 
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if 'code' not in resp or resp['code'] != 200:
+    if "code" not in resp or resp["code"] != 200:
         module.fail_json(msg=message, **resp)
 
-    result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
+    result = {"changed": changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_module()

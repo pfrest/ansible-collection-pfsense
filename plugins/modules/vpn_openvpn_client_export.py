@@ -7,11 +7,14 @@
 # GENERATED MODULE BY ADDING THIS MODULES NAME TO THE
 # tools/generator.yml FILE.
 ###############################################################
+"""An Ansible module for interacting with /api/v2/vpn/openvpn/client_export."""
+
+# pylint: disable=too-many-lines,duplicate-code
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 
-DOCUMENTATION = '''
+DOCUMENTATION = r"""
 module: vpn_openvpn_client_export
 description:
 - Perform the Open VPN Client Export action.
@@ -32,12 +35,10 @@ options:
   api_password:
     type: str
     default: pfsense
-    no_log: true
     description: The password to authenticate with the pfSense API.
   api_key:
     type: str
-    no_log: true
-    description: An optional API key for authentication instead of username/password.
+    description: An API key to use for authentication.
   validate_certs:
     type: bool
     default: true
@@ -149,14 +150,14 @@ options:
     description: Use PKCS#11 storage device (cryptographic token, HSM, smart card)
       instead of local files.
   pkcs11providers:
-    required: true
+    required: false
     type: list
     default: null
     choices: []
     description: The client local path to the PKCS#11 provider(s) (DLL, module)
     elements: str
   pkcs11id:
-    required: true
+    required: false
     type: str
     default: null
     choices: []
@@ -175,7 +176,7 @@ options:
     description: Use a password to protect the PKCS#12 file contents or key in Viscosity
       bundles.
   pass:
-    required: true
+    required: false
     type: str
     default: null
     choices: []
@@ -205,20 +206,20 @@ options:
     - socks
     description: The proxy type to use.
   proxyaddr:
-    required: true
+    required: false
     type: str
     default: null
     choices: []
     description: The IP address or hostname of the proxy server to use.
   proxyport:
-    required: true
+    required: false
     type: str
     default: null
     choices: []
     description: 'The port where the proxy server is listening. Valid options are:
       a TCP/UDP port number'
   useproxypass:
-    required: true
+    required: false
     type: str
     default: null
     choices:
@@ -227,13 +228,13 @@ options:
     - ntlm
     description: The type of authentication to use for the proxy server.
   proxyuser:
-    required: true
+    required: false
     type: str
     default: null
     choices: []
     description: The username to use to authenticate with the proxy server.
   proxypass:
-    required: true
+    required: false
     type: str
     default: null
     choices: []
@@ -247,9 +248,9 @@ options:
 author:
 - Jared Hendrickson (@jaredhendrickson13)
 
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Perform Open VPN Client Export action
   pfrest.pfsense.vpn_openvpn_client_export:
     api_host: pfsense.example.com
@@ -258,18 +259,18 @@ EXAMPLES = '''
     type: confzip
     server: 1
     pkcs11providers:
-    - example
-    pkcs11id: example
-    pass: example
-    proxyaddr: example
-    proxyport: example
+    - string
+    pkcs11id: string
+    pass: string
+    proxyaddr: string
+    proxyport: string
     useproxypass: none
-    proxyuser: example
-    proxypass: example
+    proxyuser: string
+    proxypass: string
 
-'''
+"""
 
-RETURNS = '''
+RETURN = """
 changed:
   description: Whether any changes were made.
   type: bool
@@ -422,208 +423,262 @@ data:
       type: str
       returned: always
 
-'''
+"""
 
 
 def run_module():
+    """Runs this action module against /api/v2/vpn/openvpn/client_export."""
+
     module_args = {
         "api_host": {
             "type": "str",
             "required": True,
+            "no_log": False,
         },
         "api_port": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 443,
         },
         "api_username": {
             "type": "str",
             "required": False,
-            "default": 'admin',
+            "no_log": False,
+            "default": "admin",
         },
         "api_password": {
             "type": "str",
             "required": False,
-            "default": 'pfsense',
+            "no_log": True,
+            "default": "pfsense",
         },
         "api_key": {
             "type": "str",
             "required": False,
+            "no_log": True,
         },
         "validate_certs": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": True,
         },
         "type": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
-            "choices": ['confzip', 'conf_yealink_t28', 'conf_yealink_t38g', 'conf_yealink_t38g2', 'conf_snom', 'confinline', 'confinlinedroid', 'confinlineconnect', 'confinlinevisc', 'inst-Win7', 'inst-Win10', 'inst-x86-previous', 'inst-x64-previous', 'inst-x86-current', 'inst-x64-current', 'visc'],
+            "choices": [
+                "confzip",
+                "conf_yealink_t28",
+                "conf_yealink_t38g",
+                "conf_yealink_t38g2",
+                "conf_snom",
+                "confinline",
+                "confinlinedroid",
+                "confinlineconnect",
+                "confinlinevisc",
+                "inst-Win7",
+                "inst-Win10",
+                "inst-x86-previous",
+                "inst-x64-previous",
+                "inst-x86-current",
+                "inst-x64-current",
+                "visc",
+            ],
         },
         "certref": {
             "type": "str",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "username": {
             "type": "str",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "server": {
             "type": "int",
             "required": True,
+            "no_log": False,
             "default": None,
         },
         "useaddr": {
             "type": "str",
             "required": False,
-            "default": 'serveraddr',
-            "choices": ['serveraddr', 'servermagic', 'servermagichost', 'serverhostname', 'other'],
+            "no_log": False,
+            "default": "serveraddr",
+            "choices": [
+                "serveraddr",
+                "servermagic",
+                "servermagichost",
+                "serverhostname",
+                "other",
+            ],
         },
         "useaddr_hostname": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "verifyservercn": {
             "type": "str",
             "required": False,
-            "default": 'auto',
-            "choices": ['auto', 'none'],
+            "no_log": False,
+            "default": "auto",
+            "choices": ["auto", "none"],
         },
         "blockoutsidedns": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "legacy": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "silent": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "bindmode": {
             "type": "str",
             "required": False,
-            "default": 'nobind',
-            "choices": ['nobind', 'lport0', 'bind'],
+            "no_log": False,
+            "default": "nobind",
+            "choices": ["nobind", "lport0", "bind"],
         },
         "usepkcs11": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "pkcs11providers": {
             "type": "list",
-            "required": True,
+            "required": False,
+            "no_log": False,
             "default": None,
             "elements": "str",
         },
         "pkcs11id": {
             "type": "str",
-            "required": True,
+            "required": False,
+            "no_log": False,
             "default": None,
         },
         "usetoken": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "usepass": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "pass": {
             "type": "str",
-            "required": True,
+            "required": False,
+            "no_log": True,
             "default": None,
         },
         "p12encryption": {
             "type": "str",
             "required": False,
-            "default": 'high',
-            "choices": ['high', 'low', 'legacy'],
+            "no_log": False,
+            "default": "high",
+            "choices": ["high", "low", "legacy"],
         },
         "useproxy": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "useproxytype": {
             "type": "str",
             "required": False,
-            "default": 'http',
-            "choices": ['http', 'socks'],
+            "no_log": False,
+            "default": "http",
+            "choices": ["http", "socks"],
         },
         "proxyaddr": {
             "type": "str",
-            "required": True,
+            "required": False,
+            "no_log": False,
             "default": None,
         },
         "proxyport": {
             "type": "str",
-            "required": True,
+            "required": False,
+            "no_log": False,
             "default": None,
         },
         "useproxypass": {
             "type": "str",
-            "required": True,
+            "required": False,
+            "no_log": False,
             "default": None,
-            "choices": ['none', 'basic', 'ntlm'],
+            "choices": ["none", "basic", "ntlm"],
         },
         "proxyuser": {
             "type": "str",
-            "required": True,
+            "required": False,
+            "no_log": False,
             "default": None,
         },
         "proxypass": {
             "type": "str",
-            "required": True,
+            "required": False,
+            "no_log": True,
             "default": None,
         },
         "advancedoptions": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
     }
 
-    module = AnsibleModule(
-        argument_spec=module_args,
-        supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
 
     client = rest.RestClient(
-        host=module.params['api_host'],
-        port=module.params['api_port'],
-        username=module.params['api_username'],
-        password=module.params['api_password'],
-        api_key=module.params['api_key'],
-        validate_certs=module.params['validate_certs']
+        host=module.params["api_host"],
+        port=module.params["api_port"],
+        username=module.params["api_username"],
+        password=module.params["api_password"],
+        api_key=module.params["api_key"],
+        validate_certs=module.params["validate_certs"],
     )
 
-    base_module = base.BaseModule('/api/v2/vpn/openvpn/client_export', client)
+    base_module = base.BaseModule("/api/v2/vpn/openvpn/client_export", client)
     changed, resp = base_module.execute_action(data=module.params)
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)
-    message = resp.get('message', '')
-    if 'message' in resp:
-        del resp['message']
+    message = resp.get("message", "")
+    if "message" in resp:
+        del resp["message"]
 
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if 'code' not in resp or resp['code'] != 200:
+    if "code" not in resp or resp["code"] != 200:
         module.fail_json(msg=message, **resp)
 
-    result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
+    result = {"changed": changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_module()

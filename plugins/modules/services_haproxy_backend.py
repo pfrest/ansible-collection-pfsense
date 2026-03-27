@@ -7,11 +7,14 @@
 # GENERATED MODULE BY ADDING THIS MODULES NAME TO THE
 # tools/generator.yml FILE.
 ###############################################################
+"""An Ansible module for interacting with /api/v2/services/haproxy/backend."""
+
+# pylint: disable=too-many-lines,duplicate-code
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 
-DOCUMENTATION = '''
+DOCUMENTATION = r"""
 module: services_haproxy_backend
 description:
 - Manage individual HA Proxy Backends.
@@ -32,12 +35,10 @@ options:
   api_password:
     type: str
     default: pfsense
-    no_log: true
     description: The password to authenticate with the pfSense API.
   api_key:
     type: str
-    no_log: true
-    description: An optional API key for authentication instead of username/password.
+    description: An API key to use for authentication.
   validate_certs:
     type: bool
     default: true
@@ -67,6 +68,64 @@ options:
     default: []
     choices: []
     description: The pool of servers this backend will use.
+    elements: dict
+    suboptions:
+      name:
+        required: true
+        type: str
+        default: null
+        choices: []
+        description: The unique name for this backend server.
+      status:
+        required: false
+        type: str
+        default: active
+        choices:
+        - active
+        - backup
+        - disabled
+        - inactive
+        description: The eligibility status for this backend server.
+      address:
+        required: true
+        type: str
+        default: null
+        choices: []
+        description: The hostname or IP address of this backend server. Hostname values
+          are only resolved at service startup.
+      port:
+        required: true
+        type: str
+        default: null
+        choices: []
+        description: 'The port to forward to for this backend server. Valid options
+          are: a TCP/UDP port number'
+      weight:
+        required: false
+        type: int
+        default: 1
+        choices: []
+        description: The weight of this backend server when load balancing.
+      ssl:
+        required: false
+        type: bool
+        default: false
+        choices: []
+        description: Enables or disables using SSL/TLS when forwarding to this backend
+          server.
+      sslserververify:
+        required: false
+        type: bool
+        default: false
+        choices: []
+        description: Enables or disables verifying the SSL/TLS certificate when forwarding
+          to this backend server.
+      advanced:
+        required: false
+        type: str
+        default: ''
+        choices: []
+        description: Allows adding custom HAProxy server settings to the server.
   balance:
     required: false
     type: str
@@ -105,12 +164,205 @@ options:
     default: []
     choices: []
     description: The ACLs to apply to this backend.
+    elements: dict
+    suboptions:
+      name:
+        required: true
+        type: str
+        default: null
+        choices: []
+        description: The unique name for this backend ACL.
+      expression:
+        required: true
+        type: str
+        default: null
+        choices:
+        - host_starts_with
+        - host_ends_with
+        - host_matches
+        - host_regex
+        - host_contains
+        - path_starts_with
+        - path_ends_with
+        - path_matches
+        - path_regex
+        - path_contains
+        - path_dir
+        - url_parameter
+        - ssl_c_verify_code
+        - ssl_c_verify
+        - ssl_c_ca_commonname
+        - source_ip
+        - backendservercount
+        - traffic_is_http
+        - traffic_is_ssl
+        - ssl_sni_matches
+        - ssl_sni_contains
+        - ssl_sni_starts_with
+        - ssl_sni_ends_with
+        - ssl_sni_regex
+        - custom
+        description: The expression to use to determine the match for this ACL.
+      value:
+        required: true
+        type: str
+        default: null
+        choices: []
+        description: The value which indicates a match for this ACL.
+      casesensitive:
+        required: false
+        type: bool
+        default: false
+        choices: []
+        description: Enables or disables case-sensitive matching for this ACL.
+      not:
+        required: false
+        type: bool
+        default: false
+        choices: []
+        description: Enables or disables inverting the context of this ACL.
   actions:
     required: false
     type: list
     default: []
     choices: []
     description: The actions to apply to this backend.
+    elements: dict
+    suboptions:
+      action:
+        required: true
+        type: str
+        default: null
+        choices:
+        - use_server
+        - custom
+        - http-request_allow
+        - http-request_deny
+        - http-request_tarpit
+        - http-request_auth
+        - http-request_redirect
+        - http-request_lua
+        - http-request_use-service
+        - http-request_add-header
+        - http-request_set-header
+        - http-request_del-header
+        - http-request_replace-header
+        - http-request_replace-path
+        - http-request_replace-value
+        - http-request_set-method
+        - http-request_set-path
+        - http-request_set-query
+        - http-request_set-uri
+        - http-response_allow
+        - http-response_deny
+        - http-response_lua
+        - http-response_add-header
+        - http-response_set-header
+        - http-response_del-header
+        - http-response_replace-header
+        - http-response_replace-value
+        - http-response_set-status
+        - http-after-response_add-header
+        - http-after-response_set-header
+        - http-after-response_del-header
+        - http-after-response_replace-header
+        - http-after-response_replace-value
+        - http-after-response_set-status
+        - tcp-request_connection_accept
+        - tcp-request_connection_reject
+        - tcp-request_content_accept
+        - tcp-request_content_reject
+        - tcp-request_content_lua
+        - tcp-request_content_use-service
+        - tcp-response_content_accept
+        - tcp-response_content_close
+        - tcp-response_content_reject
+        - tcp-response_content_lua
+        description: The action to take when an ACL match is found.
+      acl:
+        required: true
+        type: str
+        default: null
+        choices: []
+        description: The name of the backend ACL this action is associated with.
+      server:
+        required: false
+        type: str
+        default: null
+        choices: []
+        description: The backend server to use when an ACL match is found.
+      customaction:
+        required: false
+        type: str
+        default: null
+        choices: []
+        description: The custom action to take when an ACL match is found.
+      deny_status:
+        required: false
+        type: str
+        default: null
+        choices: []
+        description: The deny status to use when an ACL match is found.
+      realm:
+        required: false
+        type: str
+        default: null
+        choices: []
+        description: The authentication realm to use when an ACL match is found.
+      rule:
+        required: false
+        type: str
+        default: null
+        choices: []
+        description: The redirect rule to use when an ACL match is found.
+      lua_function:
+        required: false
+        type: str
+        default: null
+        choices: []
+        description: The Lua function to use when an ACL match is found.
+      name:
+        required: false
+        type: str
+        default: null
+        choices: []
+        description: The name to use when an ACL match is found.
+      fmt:
+        required: false
+        type: str
+        default: null
+        choices: []
+        description: The fmt value to use when an ACL match is found.
+      find:
+        required: false
+        type: str
+        default: null
+        choices: []
+        description: The value to find when an ACL match is found.
+      replace:
+        required: false
+        type: str
+        default: null
+        choices: []
+        description: The value to replace with when an ACL match is found.
+      path:
+        required: false
+        type: str
+        default: null
+        choices: []
+        description: The path to use when an ACL match is found.
+      status:
+        required: false
+        type: str
+        default: null
+        choices: []
+        description: The status to use when an ACL match is found.
+      reason:
+        required: false
+        type: str
+        default: null
+        choices: []
+        description: The status reason to use when an ACL match is found.
   connection_timeout:
     required: false
     type: int
@@ -206,7 +458,7 @@ options:
     description: Enables or disables using a TCP connection to read an ASCII string
       of the form.
   agent_port:
-    required: true
+    required: false
     type: str
     default: null
     choices: []
@@ -224,7 +476,7 @@ options:
     choices: []
     description: Enables or disables cookie based persistence.
   persist_cookie_name:
-    required: true
+    required: false
     type: str
     default: null
     choices: []
@@ -438,6 +690,22 @@ options:
     default: []
     choices: []
     description: The HAProxy error file mappings to use for this backend.
+    elements: dict
+    suboptions:
+      errorcode:
+        required: true
+        type: int
+        default: null
+        choices: []
+        description: The HTTP status code that will trigger this error file to be
+          used.
+      errorfile:
+        required: true
+        type: str
+        default: null
+        choices: []
+        description: The HAProxy error file object that should be used for the assigned
+          HTTP status code.
   cookie_attribute_secure:
     required: false
     type: bool
@@ -472,31 +740,31 @@ options:
 author:
 - Jared Hendrickson (@jaredhendrickson13)
 
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Create HA Proxy Backend
   pfrest.pfsense.services_haproxy_backend:
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
     state: present
-    name: example
-    agent_port: example
-    persist_cookie_name: example
+    name: string
+    agent_port: string
+    persist_cookie_name: string
 - name: Delete HA Proxy Backend
   pfrest.pfsense.services_haproxy_backend:
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
     state: absent
-    name: example
-    agent_port: example
-    persist_cookie_name: example
+    name: string
+    agent_port: string
+    persist_cookie_name: string
 
-'''
+"""
 
-RETURNS = '''
+RETURN = """
 changed:
   description: Whether any changes were made.
   type: bool
@@ -916,378 +1184,747 @@ data:
       type: str
       returned: always
 
-'''
+"""
 
 
 def run_module():
+    """Runs this resource module against /api/v2/services/haproxy/backend."""
+
     module_args = {
         "api_host": {
             "type": "str",
             "required": True,
+            "no_log": False,
         },
         "api_port": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 443,
         },
         "api_username": {
             "type": "str",
             "required": False,
-            "default": 'admin',
+            "no_log": False,
+            "default": "admin",
         },
         "api_password": {
             "type": "str",
             "required": False,
-            "default": 'pfsense',
+            "no_log": True,
+            "default": "pfsense",
         },
         "api_key": {
             "type": "str",
             "required": False,
+            "no_log": True,
         },
         "validate_certs": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": True,
         },
         "state": {
             "type": "str",
             "required": False,
-            "default": 'present',
-            "choices": ['present', 'absent'],
+            "no_log": False,
+            "default": "present",
+            "choices": ["present", "absent"],
         },
         "lookup_fields": {
             "type": "list",
             "required": True,
+            "no_log": False,
             "elements": "str",
         },
         "name": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
         },
         "servers": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
+            "elements": "dict",
+            "options": {
+                "name": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "status": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "active",
+                    "choices": ["active", "backup", "disabled", "inactive"],
+                },
+                "address": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "port": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "weight": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 1,
+                },
+                "ssl": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "sslserververify": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "advanced": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "",
+                },
+            },
         },
         "balance": {
             "type": "str",
             "required": False,
-            "default": '',
-            "choices": ['', 'roundrobin', 'static-rr', 'leastconn', 'source', 'uri'],
+            "no_log": False,
+            "default": "",
+            "choices": ["", "roundrobin", "static-rr", "leastconn", "source", "uri"],
         },
         "balance_urilen": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "balance_uridepth": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "balance_uriwhole": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "acls": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
+            "elements": "dict",
+            "options": {
+                "name": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "expression": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                    "choices": [
+                        "host_starts_with",
+                        "host_ends_with",
+                        "host_matches",
+                        "host_regex",
+                        "host_contains",
+                        "path_starts_with",
+                        "path_ends_with",
+                        "path_matches",
+                        "path_regex",
+                        "path_contains",
+                        "path_dir",
+                        "url_parameter",
+                        "ssl_c_verify_code",
+                        "ssl_c_verify",
+                        "ssl_c_ca_commonname",
+                        "source_ip",
+                        "backendservercount",
+                        "traffic_is_http",
+                        "traffic_is_ssl",
+                        "ssl_sni_matches",
+                        "ssl_sni_contains",
+                        "ssl_sni_starts_with",
+                        "ssl_sni_ends_with",
+                        "ssl_sni_regex",
+                        "custom",
+                    ],
+                },
+                "value": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "casesensitive": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "not": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+            },
         },
         "actions": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
+            "elements": "dict",
+            "options": {
+                "action": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                    "choices": [
+                        "use_server",
+                        "custom",
+                        "http-request_allow",
+                        "http-request_deny",
+                        "http-request_tarpit",
+                        "http-request_auth",
+                        "http-request_redirect",
+                        "http-request_lua",
+                        "http-request_use-service",
+                        "http-request_add-header",
+                        "http-request_set-header",
+                        "http-request_del-header",
+                        "http-request_replace-header",
+                        "http-request_replace-path",
+                        "http-request_replace-value",
+                        "http-request_set-method",
+                        "http-request_set-path",
+                        "http-request_set-query",
+                        "http-request_set-uri",
+                        "http-response_allow",
+                        "http-response_deny",
+                        "http-response_lua",
+                        "http-response_add-header",
+                        "http-response_set-header",
+                        "http-response_del-header",
+                        "http-response_replace-header",
+                        "http-response_replace-value",
+                        "http-response_set-status",
+                        "http-after-response_add-header",
+                        "http-after-response_set-header",
+                        "http-after-response_del-header",
+                        "http-after-response_replace-header",
+                        "http-after-response_replace-value",
+                        "http-after-response_set-status",
+                        "tcp-request_connection_accept",
+                        "tcp-request_connection_reject",
+                        "tcp-request_content_accept",
+                        "tcp-request_content_reject",
+                        "tcp-request_content_lua",
+                        "tcp-request_content_use-service",
+                        "tcp-response_content_accept",
+                        "tcp-response_content_close",
+                        "tcp-response_content_reject",
+                        "tcp-response_content_lua",
+                    ],
+                },
+                "acl": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "server": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "customaction": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "deny_status": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "realm": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "rule": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "lua_function": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "name": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "fmt": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "find": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "replace": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "path": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "status": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "reason": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+            },
         },
         "connection_timeout": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 30000,
         },
         "server_timeout": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 30000,
         },
         "retries": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "check_type": {
             "type": "str",
             "required": False,
-            "default": 'none',
-            "choices": ['none', 'Basic', 'HTTP', 'LDAP', 'MySQL', 'PostgreSQL', 'Redis', 'SMTP', 'ESMTP', 'SSL'],
+            "no_log": False,
+            "default": "none",
+            "choices": [
+                "none",
+                "Basic",
+                "HTTP",
+                "LDAP",
+                "MySQL",
+                "PostgreSQL",
+                "Redis",
+                "SMTP",
+                "ESMTP",
+                "SSL",
+            ],
         },
         "checkinter": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "log_health_checks": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "httpcheck_method": {
             "type": "str",
             "required": False,
-            "default": 'OPTIONS',
-            "choices": ['OPTIONS', 'HEAD', 'GET', 'POST', 'PUT', 'DELETE', 'TRACE'],
+            "no_log": False,
+            "default": "OPTIONS",
+            "choices": ["OPTIONS", "HEAD", "GET", "POST", "PUT", "DELETE", "TRACE"],
         },
         "monitor_uri": {
             "type": "str",
             "required": False,
-            "default": '/',
+            "no_log": False,
+            "default": "/",
         },
         "monitor_httpversion": {
             "type": "str",
             "required": False,
-            "default": 'HTTP/1.0',
+            "no_log": False,
+            "default": "HTTP/1.0",
         },
         "monitor_username": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "monitor_domain": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "agent_checks": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "agent_port": {
             "type": "str",
-            "required": True,
+            "required": False,
+            "no_log": False,
             "default": None,
         },
         "agent_inter": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 2000,
         },
         "persist_cookie_enabled": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "persist_cookie_name": {
             "type": "str",
-            "required": True,
+            "required": False,
+            "no_log": False,
             "default": None,
         },
         "persist_cookie_mode": {
             "type": "str",
             "required": False,
-            "default": 'passive',
-            "choices": ['passive', 'passive-silent', 'reset', 'set', 'set-silent', 'insert-only', 'insert-only-silent', 'session-prefix', 'passive-session-prefix'],
+            "no_log": False,
+            "default": "passive",
+            "choices": [
+                "passive",
+                "passive-silent",
+                "reset",
+                "set",
+                "set-silent",
+                "insert-only",
+                "insert-only-silent",
+                "session-prefix",
+                "passive-session-prefix",
+            ],
         },
         "persist_cookie_cachable": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "persist_cookie_postonly": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "persist_cookie_httponly": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "persist_cookie_secure": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "haproxy_cookie_maxidle": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "haproxy_cookie_maxlife": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "haproxy_cookie_domains": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
             "elements": "str",
         },
         "haproxy_cookie_dynamic_cookie_key": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "persist_sticky_type": {
             "type": "str",
             "required": False,
-            "default": 'none',
-            "choices": ['none', 'stick_sslsessionid', 'stick_sourceipv4', 'stick_sourceipv6', 'stick_cookie_value', 'stick_rdp_cookie'],
+            "no_log": False,
+            "default": "none",
+            "choices": [
+                "none",
+                "stick_sslsessionid",
+                "stick_sourceipv4",
+                "stick_sourceipv6",
+                "stick_cookie_value",
+                "stick_rdp_cookie",
+            ],
         },
         "persist_stick_expire": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "persist_stick_tablesize": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "persist_stick_cookiename": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "persist_stick_length": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "email_level": {
             "type": "str",
             "required": False,
-            "default": '',
-            "choices": ['', 'dontlog', 'emerg', 'alert', 'crit', 'err', 'warning', 'notice', 'info', 'debug'],
+            "no_log": False,
+            "default": "",
+            "choices": [
+                "",
+                "dontlog",
+                "emerg",
+                "alert",
+                "crit",
+                "err",
+                "warning",
+                "notice",
+                "info",
+                "debug",
+            ],
         },
         "email_to": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "stats_enabled": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "stats_uri": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "stats_scope": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
             "elements": "str",
         },
         "stats_realm": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "stats_username": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "stats_password": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": True,
+            "default": "",
         },
         "stats_admin": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "stats_node": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "stats_desc": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "stats_refresh": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 10,
         },
         "strict_transport_security": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "errorfiles": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
+            "elements": "dict",
+            "options": {
+                "errorcode": {
+                    "type": "int",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "errorfile": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+            },
         },
         "cookie_attribute_secure": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "advanced": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "advanced_backend": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "transparent_clientip": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "transparent_interface": {
             "type": "str",
             "required": False,
+            "no_log": False,
             "default": None,
         },
     }
 
-    module = AnsibleModule(
-        argument_spec=module_args,
-        supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
 
     client = rest.RestClient(
-        host=module.params['api_host'],
-        port=module.params['api_port'],
-        username=module.params['api_username'],
-        password=module.params['api_password'],
-        api_key=module.params['api_key'],
-        validate_certs=module.params['validate_certs']
+        host=module.params["api_host"],
+        port=module.params["api_port"],
+        username=module.params["api_username"],
+        password=module.params["api_password"],
+        api_key=module.params["api_key"],
+        validate_certs=module.params["validate_certs"],
     )
 
-    base_module = base.BaseModule('/api/v2/services/haproxy/backend', client)
+    base_module = base.BaseModule("/api/v2/services/haproxy/backend", client)
     changed, resp = base_module.set_object_state(
-        state=module.params['state'],
+        state=module.params["state"],
         data=module.params,
-        lookup_fields=module.params['lookup_fields']
+        lookup_fields=module.params["lookup_fields"],
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)
-    message = resp.get('message', '')
-    if 'message' in resp:
-        del resp['message']
+    message = resp.get("message", "")
+    if "message" in resp:
+        del resp["message"]
 
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if 'code' not in resp or resp['code'] != 200:
+    if "code" not in resp or resp["code"] != 200:
         module.fail_json(msg=message, **resp)
 
-    result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
+    result = {"changed": changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_module()

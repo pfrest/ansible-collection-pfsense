@@ -7,11 +7,14 @@
 # GENERATED MODULE BY ADDING THIS MODULES NAME TO THE
 # tools/generator.yml FILE.
 ###############################################################
+"""An Ansible module for interacting with /api/v2/services/dhcp_server."""
+
+# pylint: disable=too-many-lines,duplicate-code
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 
-DOCUMENTATION = '''
+DOCUMENTATION = r"""
 module: services_dhcp_server
 description:
 - Manage individual DHCP Servers.
@@ -32,12 +35,10 @@ options:
   api_password:
     type: str
     default: pfsense
-    no_log: true
     description: The password to authenticate with the pfSense API.
   api_key:
     type: str
-    no_log: true
-    description: An optional API key for authentication instead of username/password.
+    description: An API key to use for authentication.
   validate_certs:
     type: bool
     default: true
@@ -231,42 +232,284 @@ options:
     default: []
     choices: []
     description: Additional address pools applied to this DHCP server.
+    elements: dict
+    suboptions:
+      range_from:
+        required: true
+        type: str
+        default: null
+        choices: []
+        description: The starting IP address for this address pool. This address must
+          be less than or equal to the `range_to` field.
+      range_to:
+        required: true
+        type: str
+        default: null
+        choices: []
+        description: The ending IP address for the this address pool. This address
+          must be greater than or equal to the `range_to` field.
+      domain:
+        required: false
+        type: str
+        default: ''
+        choices: []
+        description: The domain to be assigned via DHCP.
+      mac_allow:
+        required: false
+        type: list
+        default: []
+        choices: []
+        description: MAC addresses this DHCP server is allowed to provide leases for.
+        elements: str
+      mac_deny:
+        required: false
+        type: list
+        default: []
+        choices: []
+        description: MAC addresses this DHCP server is not allowed to provide leases
+          for.
+        elements: str
+      domainsearchlist:
+        required: false
+        type: list
+        default: []
+        choices: []
+        description: The domain search list to provide via DHCP.
+        elements: str
+      defaultleasetime:
+        required: false
+        type: int
+        default: 7200
+        choices: []
+        description: The default DHCP lease validity period (in seconds). This is
+          used for clients that do not ask for a specific expiration time.
+      maxleasetime:
+        required: false
+        type: int
+        default: 86400
+        choices: []
+        description: The maximum DHCP lease validity period (in seconds) a client
+          can request.
+      gateway:
+        required: false
+        type: str
+        default: ''
+        choices: []
+        description: The gateway IPv4 address to provide via DHCP. This is only necessary
+          if you are not using the interface's IP as the gateway. Specify `none` for
+          no gateway assignment.
+      dnsserver:
+        required: false
+        type: list
+        default: []
+        choices: []
+        description: The DNS servers to provide via DHCP. Leave empty to default to
+          system nameservers.
+        elements: str
+      winsserver:
+        required: false
+        type: list
+        default: []
+        choices: []
+        description: The WINS servers to provide via DHCP.
+        elements: str
+      ntpserver:
+        required: false
+        type: list
+        default: []
+        choices: []
+        description: The NTP servers to provide via DHCP.
+        elements: str
+      ignorebootp:
+        required: false
+        type: bool
+        default: false
+        choices: []
+        description: Force this DHCP server to ignore BOOTP queries.
+      ignoreclientuids:
+        required: false
+        type: bool
+        default: false
+        choices: []
+        description: Prevent recording a unique identifier (UID) in client lease data
+          if present in the client DHCP request. This option may be useful when a
+          client can dual boot using different client identifiers but the same hardware
+          (MAC) address. Note that the resulting server behavior violates the official
+          DHCP specification.
+      denyunknown:
+        required: false
+        type: str
+        default: null
+        choices:
+        - enabled
+        - class
+        description: Define how to handle unknown clients requesting DHCP leases.
+          When set to `null`, any DHCP client will get an IP address within this scope/range
+          on this interface. If set to `enabled`, any DHCP client with a MAC address
+          listed in a static mapping on any scope(s)/interface(s) will get an IP address.
+          If set to `class`, only MAC addresses listed in static mappings on this
+          interface will get an IP address within this scope/range.
   numberoptions:
     required: false
     type: list
     default: []
     choices: []
     description: The custom DHCP options to apply to this DHCP server.
+    elements: dict
+    suboptions:
+      number:
+        required: true
+        type: int
+        default: null
+        choices: []
+        description: The DHCP option number to configure.
+      type:
+        required: true
+        type: str
+        default: null
+        choices:
+        - text
+        - string
+        - boolean
+        - unsigned integer 8
+        - unsigned integer 16
+        - unsigned integer 32
+        - signed integer 8
+        - signed integer 16
+        - signed integer 32
+        - ip-address
+        description: The type of value to configure for the option.
+      value:
+        required: true
+        type: str
+        default: null
+        choices: []
+        description: The value to configure for the option.
   staticmap:
     required: false
     type: list
     default: []
     choices: []
     description: Static mappings applied to this DHCP server.
+    elements: dict
+    suboptions:
+      mac:
+        required: true
+        type: str
+        default: null
+        choices: []
+        description: The MAC address of the client this mapping is for.
+      ipaddr:
+        required: false
+        type: str
+        default: null
+        choices: []
+        description: The IP address to assign this client via DHCP.
+      cid:
+        required: false
+        type: str
+        default: null
+        choices: []
+        description: The client identifier of the client this mapping is for.
+      hostname:
+        required: false
+        type: str
+        default: null
+        choices: []
+        description: The hostname to assign this client via DHCP.
+      domain:
+        required: false
+        type: str
+        default: ''
+        choices: []
+        description: The domain to be assigned via DHCP.
+      domainsearchlist:
+        required: false
+        type: list
+        default: []
+        choices: []
+        description: The domain search list to provide via DHCP.
+        elements: str
+      defaultleasetime:
+        required: false
+        type: int
+        default: 7200
+        choices: []
+        description: The default DHCP lease validity period (in seconds). This is
+          used for clients that do not ask for a specific expiration time.
+      maxleasetime:
+        required: false
+        type: int
+        default: 86400
+        choices: []
+        description: The maximum DHCP lease validity period (in seconds) this client
+          can request.
+      gateway:
+        required: false
+        type: str
+        default: ''
+        choices: []
+        description: The gateway IPv4 address to provide via DHCP. This is only necessary
+          if you are not using the interface's IP as the gateway. Specify `none` for
+          no gateway assignment.
+      dnsserver:
+        required: false
+        type: list
+        default: []
+        choices: []
+        description: The DNS servers to provide via DHCP. Leave empty to default to
+          system nameservers.
+        elements: str
+      winsserver:
+        required: false
+        type: list
+        default: []
+        choices: []
+        description: The WINS servers to provide via DHCP.
+        elements: str
+      ntpserver:
+        required: false
+        type: list
+        default: []
+        choices: []
+        description: The NTP servers to provide via DHCP.
+        elements: str
+      arp_table_static_entry:
+        required: false
+        type: bool
+        default: false
+        choices: []
+        description: Assign a static ARP entry for this static mapping.
+      descr:
+        required: false
+        type: str
+        default: ''
+        choices: []
+        description: The description of this static mapping.
 author:
 - Jared Hendrickson (@jaredhendrickson13)
 
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Create DHCP Server
   pfrest.pfsense.services_dhcp_server:
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
     state: present
-    interface: example
+    interface: string
 - name: Delete DHCP Server
   pfrest.pfsense.services_dhcp_server:
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
     state: absent
-    interface: example
+    interface: string
 
-'''
+"""
 
-RETURNS = '''
+RETURN = """
 changed:
   description: Whether any changes were made.
   type: bool
@@ -591,222 +834,479 @@ data:
           type: str
           returned: always
 
-'''
+"""
 
 
 def run_module():
+    """Runs this resource module against /api/v2/services/dhcp_server."""
+
     module_args = {
         "api_host": {
             "type": "str",
             "required": True,
+            "no_log": False,
         },
         "api_port": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 443,
         },
         "api_username": {
             "type": "str",
             "required": False,
-            "default": 'admin',
+            "no_log": False,
+            "default": "admin",
         },
         "api_password": {
             "type": "str",
             "required": False,
-            "default": 'pfsense',
+            "no_log": True,
+            "default": "pfsense",
         },
         "api_key": {
             "type": "str",
             "required": False,
+            "no_log": True,
         },
         "validate_certs": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": True,
         },
         "state": {
             "type": "str",
             "required": False,
-            "default": 'present',
-            "choices": ['present', 'absent'],
+            "no_log": False,
+            "default": "present",
+            "choices": ["present", "absent"],
         },
         "lookup_fields": {
             "type": "list",
             "required": True,
+            "no_log": False,
             "elements": "str",
         },
         "interface": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
         },
         "enable": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "range_from": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "range_to": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "domain": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "failover_peerip": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "mac_allow": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
             "elements": "str",
         },
         "mac_deny": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
             "elements": "str",
         },
         "domainsearchlist": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
             "elements": "str",
         },
         "defaultleasetime": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 7200,
         },
         "maxleasetime": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 86400,
         },
         "gateway": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "dnsserver": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
             "elements": "str",
         },
         "winsserver": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
             "elements": "str",
         },
         "ntpserver": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
             "elements": "str",
         },
         "staticarp": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "ignorebootp": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "ignoreclientuids": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "nonak": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "disablepingcheck": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "dhcpleaseinlocaltime": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "statsgraph": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "denyunknown": {
             "type": "str",
             "required": False,
+            "no_log": False,
             "default": None,
-            "choices": ['enabled', 'class'],
+            "choices": ["enabled", "class"],
         },
         "pool": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
+            "elements": "dict",
+            "options": {
+                "range_from": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "range_to": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "domain": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "",
+                },
+                "mac_allow": {
+                    "type": "list",
+                    "required": False,
+                    "no_log": False,
+                    "default": [],
+                    "elements": "str",
+                },
+                "mac_deny": {
+                    "type": "list",
+                    "required": False,
+                    "no_log": False,
+                    "default": [],
+                    "elements": "str",
+                },
+                "domainsearchlist": {
+                    "type": "list",
+                    "required": False,
+                    "no_log": False,
+                    "default": [],
+                    "elements": "str",
+                },
+                "defaultleasetime": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 7200,
+                },
+                "maxleasetime": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 86400,
+                },
+                "gateway": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "",
+                },
+                "dnsserver": {
+                    "type": "list",
+                    "required": False,
+                    "no_log": False,
+                    "default": [],
+                    "elements": "str",
+                },
+                "winsserver": {
+                    "type": "list",
+                    "required": False,
+                    "no_log": False,
+                    "default": [],
+                    "elements": "str",
+                },
+                "ntpserver": {
+                    "type": "list",
+                    "required": False,
+                    "no_log": False,
+                    "default": [],
+                    "elements": "str",
+                },
+                "ignorebootp": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "ignoreclientuids": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "denyunknown": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                    "choices": ["enabled", "class"],
+                },
+            },
         },
         "numberoptions": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
+            "elements": "dict",
+            "options": {
+                "number": {
+                    "type": "int",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "type": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                    "choices": [
+                        "text",
+                        "string",
+                        "boolean",
+                        "unsigned integer 8",
+                        "unsigned integer 16",
+                        "unsigned integer 32",
+                        "signed integer 8",
+                        "signed integer 16",
+                        "signed integer 32",
+                        "ip-address",
+                    ],
+                },
+                "value": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+            },
         },
         "staticmap": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
+            "elements": "dict",
+            "options": {
+                "mac": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "ipaddr": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "cid": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "hostname": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "domain": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "",
+                },
+                "domainsearchlist": {
+                    "type": "list",
+                    "required": False,
+                    "no_log": False,
+                    "default": [],
+                    "elements": "str",
+                },
+                "defaultleasetime": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 7200,
+                },
+                "maxleasetime": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 86400,
+                },
+                "gateway": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "",
+                },
+                "dnsserver": {
+                    "type": "list",
+                    "required": False,
+                    "no_log": False,
+                    "default": [],
+                    "elements": "str",
+                },
+                "winsserver": {
+                    "type": "list",
+                    "required": False,
+                    "no_log": False,
+                    "default": [],
+                    "elements": "str",
+                },
+                "ntpserver": {
+                    "type": "list",
+                    "required": False,
+                    "no_log": False,
+                    "default": [],
+                    "elements": "str",
+                },
+                "arp_table_static_entry": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "descr": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "",
+                },
+            },
         },
     }
 
-    module = AnsibleModule(
-        argument_spec=module_args,
-        supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
 
     client = rest.RestClient(
-        host=module.params['api_host'],
-        port=module.params['api_port'],
-        username=module.params['api_username'],
-        password=module.params['api_password'],
-        api_key=module.params['api_key'],
-        validate_certs=module.params['validate_certs']
+        host=module.params["api_host"],
+        port=module.params["api_port"],
+        username=module.params["api_username"],
+        password=module.params["api_password"],
+        api_key=module.params["api_key"],
+        validate_certs=module.params["validate_certs"],
     )
 
-    base_module = base.BaseModule('/api/v2/services/dhcp_server', client)
+    base_module = base.BaseModule("/api/v2/services/dhcp_server", client)
     changed, resp = base_module.set_object_state(
-        state=module.params['state'],
+        state=module.params["state"],
         data=module.params,
-        lookup_fields=module.params['lookup_fields']
+        lookup_fields=module.params["lookup_fields"],
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)
-    message = resp.get('message', '')
-    if 'message' in resp:
-        del resp['message']
+    message = resp.get("message", "")
+    if "message" in resp:
+        del resp["message"]
 
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if 'code' not in resp or resp['code'] != 200:
+    if "code" not in resp or resp["code"] != 200:
         module.fail_json(msg=message, **resp)
 
-    result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
+    result = {"changed": changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_module()

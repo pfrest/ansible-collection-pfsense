@@ -7,11 +7,14 @@
 # GENERATED MODULE BY ADDING THIS MODULES NAME TO THE
 # tools/generator.yml FILE.
 ###############################################################
+"""An Ansible module for interacting with /api/v2/interface."""
+
+# pylint: disable=too-many-lines,duplicate-code
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 
-DOCUMENTATION = '''
+DOCUMENTATION = r"""
 module: interface
 description:
 - Manage individual Network Interfaces.
@@ -32,12 +35,10 @@ options:
   api_password:
     type: str
     default: pfsense
-    no_log: true
     description: The password to authenticate with the pfSense API.
   api_key:
     type: str
-    no_log: true
-    description: An optional API key for authentication instead of username/password.
+    description: An API key to use for authentication.
   validate_certs:
     type: bool
     default: true
@@ -131,13 +132,13 @@ options:
     - none
     description: Selects the IPv4 address type to assign this interface.
   ipaddr:
-    required: true
+    required: false
     type: str
     default: null
     choices: []
     description: Sets the IPv4 address to assign to this interface.
   subnet:
-    required: true
+    required: false
     type: int
     default: null
     choices: []
@@ -285,13 +286,13 @@ options:
     - none
     description: Selects the IPv6 address type to assign this interface.
   ipaddrv6:
-    required: true
+    required: false
     type: str
     default: null
     choices: []
     description: Sets the IPv6 address to assign to this interface.
   subnetv6:
-    required: true
+    required: false
     type: int
     default: null
     choices: []
@@ -316,26 +317,26 @@ options:
     choices: []
     description: Enable or disable IPv6 using the IPv4 connectivity link (PPPoE).
   prefix_6rd:
-    required: true
+    required: false
     type: str
     default: null
     choices: []
     description: Sets the 6RD IPv6 prefix assigned by the ISP for this interface.
   gateway_6rd:
-    required: true
+    required: false
     type: str
     default: null
     choices: []
     description: Sets the 6RD IPv4 gateway address assigned by the ISP for this interface.
   prefix_6rd_v4plen:
-    required: true
+    required: false
     type: int
     default: null
     choices: []
     description: Sets the 6RD IPv4 prefix length. Normally specified by the ISP. A
       value of 0 means embed theentire IPv4 address in the 6RD prefix.
   track6_interface:
-    required: true
+    required: false
     type: str
     default: null
     choices: []
@@ -350,47 +351,47 @@ options:
 author:
 - Jared Hendrickson (@jaredhendrickson13)
 
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Create Network Interface
   pfrest.pfsense.interface:
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
     state: present
-    if: example
-    descr: example
+    if: string
+    descr: string
     typev4: static
-    ipaddr: example
+    ipaddr: string
     subnet: 1
-    ipaddrv6: example
+    ipaddrv6: string
     subnetv6: 1
-    prefix_6rd: example
-    gateway_6rd: example
+    prefix_6rd: string
+    gateway_6rd: string
     prefix_6rd_v4plen: 1
-    track6_interface: example
+    track6_interface: string
 - name: Delete Network Interface
   pfrest.pfsense.interface:
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
     state: absent
-    if: example
-    descr: example
+    if: string
+    descr: string
     typev4: static
-    ipaddr: example
+    ipaddr: string
     subnet: 1
-    ipaddrv6: example
+    ipaddrv6: string
     subnetv6: 1
-    prefix_6rd: example
-    gateway_6rd: example
+    prefix_6rd: string
+    gateway_6rd: string
     prefix_6rd_v4plen: 1
-    track6_interface: example
+    track6_interface: string
 
-'''
+"""
 
-RETURNS = '''
+RETURN = """
 changed:
   description: Whether any changes were made.
   type: bool
@@ -610,304 +611,354 @@ data:
       type: str
       returned: always
 
-'''
+"""
 
 
 def run_module():
+    """Runs this resource module against /api/v2/interface."""
+
     module_args = {
         "api_host": {
             "type": "str",
             "required": True,
+            "no_log": False,
         },
         "api_port": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 443,
         },
         "api_username": {
             "type": "str",
             "required": False,
-            "default": 'admin',
+            "no_log": False,
+            "default": "admin",
         },
         "api_password": {
             "type": "str",
             "required": False,
-            "default": 'pfsense',
+            "no_log": True,
+            "default": "pfsense",
         },
         "api_key": {
             "type": "str",
             "required": False,
+            "no_log": True,
         },
         "validate_certs": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": True,
         },
         "state": {
             "type": "str",
             "required": False,
-            "default": 'present',
-            "choices": ['present', 'absent'],
+            "no_log": False,
+            "default": "present",
+            "choices": ["present", "absent"],
         },
         "lookup_fields": {
             "type": "list",
             "required": True,
+            "no_log": False,
             "elements": "str",
         },
         "if": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
         },
         "enable": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "descr": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
         },
         "spoofmac": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "mtu": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "mss": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "media": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "mediaopt": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "blockpriv": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "blockbogons": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "typev4": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
-            "choices": ['static', 'dhcp', 'none'],
+            "choices": ["static", "dhcp", "none"],
         },
         "ipaddr": {
             "type": "str",
-            "required": True,
+            "required": False,
+            "no_log": False,
             "default": None,
         },
         "subnet": {
             "type": "int",
-            "required": True,
+            "required": False,
+            "no_log": False,
             "default": None,
         },
         "gateway": {
             "type": "str",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "dhcphostname": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "alias_address": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "alias_subnet": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 32,
         },
         "dhcprejectfrom": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
             "elements": "str",
         },
         "adv_dhcp_config_advanced": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "adv_dhcp_pt_values": {
             "type": "str",
             "required": False,
-            "default": 'SavedCfg',
-            "choices": ['SavedCfg'],
+            "no_log": False,
+            "default": "SavedCfg",
+            "choices": ["SavedCfg"],
         },
         "adv_dhcp_pt_timeout": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "adv_dhcp_pt_retry": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "adv_dhcp_pt_select_timeout": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "adv_dhcp_pt_reboot": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "adv_dhcp_pt_backoff_cutoff": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "adv_dhcp_pt_initial_interval": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "adv_dhcp_send_options": {
             "type": "str",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "adv_dhcp_request_options": {
             "type": "str",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "adv_dhcp_required_options": {
             "type": "str",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "adv_dhcp_option_modifiers": {
             "type": "str",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "adv_dhcp_config_file_override": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "adv_dhcp_config_file_override_path": {
             "type": "str",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "typev6": {
             "type": "str",
             "required": False,
+            "no_log": False,
             "default": None,
-            "choices": ['staticv6', 'dhcp6', 'slaac', '6rd', 'track6', '6to4', 'none'],
+            "choices": ["staticv6", "dhcp6", "slaac", "6rd", "track6", "6to4", "none"],
         },
         "ipaddrv6": {
             "type": "str",
-            "required": True,
+            "required": False,
+            "no_log": False,
             "default": None,
         },
         "subnetv6": {
             "type": "int",
-            "required": True,
+            "required": False,
+            "no_log": False,
             "default": None,
         },
         "gatewayv6": {
             "type": "str",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "ipv6usev4iface": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "slaacusev4iface": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "prefix_6rd": {
             "type": "str",
-            "required": True,
+            "required": False,
+            "no_log": False,
             "default": None,
         },
         "gateway_6rd": {
             "type": "str",
-            "required": True,
+            "required": False,
+            "no_log": False,
             "default": None,
         },
         "prefix_6rd_v4plen": {
             "type": "int",
-            "required": True,
+            "required": False,
+            "no_log": False,
             "default": None,
         },
         "track6_interface": {
             "type": "str",
-            "required": True,
+            "required": False,
+            "no_log": False,
             "default": None,
         },
         "track6_prefix_id_hex": {
             "type": "str",
             "required": False,
-            "default": '0',
+            "no_log": False,
+            "default": "0",
         },
     }
 
-    module = AnsibleModule(
-        argument_spec=module_args,
-        supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
 
     client = rest.RestClient(
-        host=module.params['api_host'],
-        port=module.params['api_port'],
-        username=module.params['api_username'],
-        password=module.params['api_password'],
-        api_key=module.params['api_key'],
-        validate_certs=module.params['validate_certs']
+        host=module.params["api_host"],
+        port=module.params["api_port"],
+        username=module.params["api_username"],
+        password=module.params["api_password"],
+        api_key=module.params["api_key"],
+        validate_certs=module.params["validate_certs"],
     )
 
-    base_module = base.BaseModule('/api/v2/interface', client)
+    base_module = base.BaseModule("/api/v2/interface", client)
     changed, resp = base_module.set_object_state(
-        state=module.params['state'],
+        state=module.params["state"],
         data=module.params,
-        lookup_fields=module.params['lookup_fields']
+        lookup_fields=module.params["lookup_fields"],
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)
-    message = resp.get('message', '')
-    if 'message' in resp:
-        del resp['message']
+    message = resp.get("message", "")
+    if "message" in resp:
+        del resp["message"]
 
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if 'code' not in resp or resp['code'] != 200:
+    if "code" not in resp or resp["code"] != 200:
         module.fail_json(msg=message, **resp)
 
-    result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
+    result = {"changed": changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_module()

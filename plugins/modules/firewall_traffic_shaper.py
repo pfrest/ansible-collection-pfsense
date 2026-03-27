@@ -7,11 +7,14 @@
 # GENERATED MODULE BY ADDING THIS MODULES NAME TO THE
 # tools/generator.yml FILE.
 ###############################################################
+"""An Ansible module for interacting with /api/v2/firewall/traffic_shaper."""
+
+# pylint: disable=too-many-lines,duplicate-code
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 
-DOCUMENTATION = '''
+DOCUMENTATION = r"""
 module: firewall_traffic_shaper
 description:
 - Manage individual Traffic Shapers.
@@ -32,12 +35,10 @@ options:
   api_password:
     type: str
     default: pfsense
-    no_log: true
     description: The password to authenticate with the pfSense API.
   api_key:
     type: str
-    no_log: true
-    description: An optional API key for authentication instead of username/password.
+    description: An API key to use for authentication.
   validate_certs:
     type: bool
     default: true
@@ -116,19 +117,208 @@ options:
     default: []
     choices: []
     description: The child queues assigned to this traffic shaper.
+    elements: dict
+    suboptions:
+      enabled:
+        required: false
+        type: bool
+        default: false
+        choices: []
+        description: Enables or disables the traffic shaper queue.
+      name:
+        required: true
+        type: str
+        default: null
+        choices: []
+        description: The name to assign this traffic shaper queue.
+      priority:
+        required: false
+        type: int
+        default: 1
+        choices: []
+        description: The priority level for this traffic shaper queue.
+      qlimit:
+        required: true
+        type: int
+        default: null
+        choices: []
+        description: The number of packets that can be held in a queue waiting to
+          be transmitted by the shaper.
+      description:
+        required: false
+        type: str
+        default: ''
+        choices: []
+        description: A description for this traffic shaper queue.
+      default:
+        required: false
+        type: bool
+        default: false
+        choices: []
+        description: Mark this traffic shaper queue as the default queue.
+      red:
+        required: false
+        type: bool
+        default: false
+        choices: []
+        description: Use the 'Random Early Detection' scheduler option for this traffic
+          shaper queue.
+      rio:
+        required: false
+        type: bool
+        default: false
+        choices: []
+        description: Use the 'Random Early Detection In and Out' scheduler option
+          for this traffic shaper queue.
+      ecn:
+        required: false
+        type: bool
+        default: false
+        choices: []
+        description: Use the 'Explicit Congestion Notification' scheduler option for
+          this traffic shaper queue.
+      codel:
+        required: false
+        type: bool
+        default: false
+        choices: []
+        description: Use the 'Codel Active Queue' scheduler option for this traffic
+          shaper queue.
+      bandwidthtype:
+        required: false
+        type: str
+        default: Mb
+        choices:
+        - '%'
+        - b
+        - Kb
+        - Mb
+        - Gb
+        description: The scale type of the `bandwidth` field's value.
+      bandwidth:
+        required: false
+        type: int
+        default: null
+        choices: []
+        description: The total bandwidth amount allowed by this traffic shaper.
+      buckets:
+        required: false
+        type: int
+        default: null
+        choices: []
+        description: ''
+      hogs:
+        required: false
+        type: int
+        default: null
+        choices: []
+        description: The bandwidth limit per host.
+      borrow:
+        required: false
+        type: bool
+        default: false
+        choices: []
+        description: Allow this queue to borrow from other queues when available.
+      upperlimit:
+        required: false
+        type: bool
+        default: false
+        choices: []
+        description: Allow setting the maximum bandwidth allowed for the queue. Will
+          force hard bandwidth limiting.
+      upperlimit_m1:
+        required: false
+        type: str
+        default: null
+        choices: []
+        description: The burst-able bandwidth limit for this traffic shaper queue.
+      upperlimit_d:
+        required: false
+        type: int
+        default: null
+        choices: []
+        description: The duration (in milliseconds) that the burst-able bandwidth
+          limit (`upperlimit_m1` is in effect.
+      upperlimit_m2:
+        required: false
+        type: str
+        default: null
+        choices: []
+        description: The normal bandwidth limit for this traffic shaper queue. If
+          `upperlimit_m1` is not defined, this limit will always be in effect. If
+          `upperlimit_m1` is defined, this limit will take effect after the `upperlimit_d`
+          duration has expired.
+      realtime:
+        required: false
+        type: bool
+        default: false
+        choices: []
+        description: Allow setting the guaranteed bandwidth minimum allotted to the
+          queue.
+      realtime_m1:
+        required: false
+        type: str
+        default: null
+        choices: []
+        description: The guaranteed minimum bandwidth limit for this traffic shaper
+          queue during real time.
+      realtime_d:
+        required: false
+        type: int
+        default: null
+        choices: []
+        description: The duration (in milliseconds) that the guaranteed bandwidth
+          limit (`realtime_m1`) is in effect.
+      realtime_m2:
+        required: false
+        type: str
+        default: null
+        choices: []
+        description: 'The maximum bandwidth this traffic shaper queue is allowed to
+          use. Note: This value should not exceed 30% of parent queue''s maximum bandwidth.'
+      linkshare:
+        required: false
+        type: bool
+        default: false
+        choices: []
+        description: Allow sharing bandwidth from this queue for other queues as long
+          as the real time values have been satisfied.
+      linkshare_m1:
+        required: false
+        type: str
+        default: null
+        choices: []
+        description: The initial bandwidth limit for this traffic shaper queue when
+          link sharing.
+      linkshare_d:
+        required: false
+        type: int
+        default: null
+        choices: []
+        description: The duration (in milliseconds) that the initial bandwidth limit
+          (`linkshare_m1`) is in effect.
+      linkshare_m2:
+        required: false
+        type: str
+        default: null
+        choices: []
+        description: 'The maximum bandwidth this traffic shaper queue is allowed to
+          use. Note: This behaves exactly the same as the `bandwidth` field. If this
+          field is set, it will override whatever value is current assigned to the
+          `bandwidth` field.'
 author:
 - Jared Hendrickson (@jaredhendrickson13)
 
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Create Traffic Shaper
   pfrest.pfsense.firewall_traffic_shaper:
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
     state: present
-    interface: example
+    interface: string
     scheduler: HFSC
     bandwidthtype: '%'
     bandwidth: 1
@@ -138,14 +328,14 @@ EXAMPLES = '''
     api_username: admin
     api_password: pfsense
     state: absent
-    interface: example
+    interface: string
     scheduler: HFSC
     bandwidthtype: '%'
     bandwidth: 1
 
-'''
+"""
 
-RETURNS = '''
+RETURN = """
 changed:
   description: Whether any changes were made.
   type: bool
@@ -346,127 +536,308 @@ data:
           type: str
           returned: always
 
-'''
+"""
 
 
 def run_module():
+    """Runs this resource module against /api/v2/firewall/traffic_shaper."""
+
     module_args = {
         "api_host": {
             "type": "str",
             "required": True,
+            "no_log": False,
         },
         "api_port": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 443,
         },
         "api_username": {
             "type": "str",
             "required": False,
-            "default": 'admin',
+            "no_log": False,
+            "default": "admin",
         },
         "api_password": {
             "type": "str",
             "required": False,
-            "default": 'pfsense',
+            "no_log": True,
+            "default": "pfsense",
         },
         "api_key": {
             "type": "str",
             "required": False,
+            "no_log": True,
         },
         "validate_certs": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": True,
         },
         "state": {
             "type": "str",
             "required": False,
-            "default": 'present',
-            "choices": ['present', 'absent'],
+            "no_log": False,
+            "default": "present",
+            "choices": ["present", "absent"],
         },
         "lookup_fields": {
             "type": "list",
             "required": True,
+            "no_log": False,
             "elements": "str",
         },
         "enabled": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": True,
         },
         "interface": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
         },
         "scheduler": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
-            "choices": ['HFSC', 'CBQ', 'FAIRQ', 'CODELQ', 'PRIQ'],
+            "choices": ["HFSC", "CBQ", "FAIRQ", "CODELQ", "PRIQ"],
         },
         "bandwidthtype": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
-            "choices": ['%', 'b', 'Kb', 'Mb', 'Gb'],
+            "choices": ["%", "b", "Kb", "Mb", "Gb"],
         },
         "bandwidth": {
             "type": "int",
             "required": True,
+            "no_log": False,
             "default": None,
         },
         "qlimit": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 50,
         },
         "tbrconfig": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "queue": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
+            "elements": "dict",
+            "options": {
+                "enabled": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "name": {
+                    "type": "str",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "priority": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": 1,
+                },
+                "qlimit": {
+                    "type": "int",
+                    "required": True,
+                    "no_log": False,
+                    "default": None,
+                },
+                "description": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "",
+                },
+                "default": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "red": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "rio": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "ecn": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "codel": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "bandwidthtype": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": "Mb",
+                    "choices": ["%", "b", "Kb", "Mb", "Gb"],
+                },
+                "bandwidth": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "buckets": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "hogs": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "borrow": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "upperlimit": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "upperlimit_m1": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "upperlimit_d": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "upperlimit_m2": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "realtime": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "realtime_m1": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "realtime_d": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "realtime_m2": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "linkshare": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                },
+                "linkshare_m1": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "linkshare_d": {
+                    "type": "int",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+                "linkshare_m2": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                },
+            },
         },
     }
 
-    module = AnsibleModule(
-        argument_spec=module_args,
-        supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
 
     client = rest.RestClient(
-        host=module.params['api_host'],
-        port=module.params['api_port'],
-        username=module.params['api_username'],
-        password=module.params['api_password'],
-        api_key=module.params['api_key'],
-        validate_certs=module.params['validate_certs']
+        host=module.params["api_host"],
+        port=module.params["api_port"],
+        username=module.params["api_username"],
+        password=module.params["api_password"],
+        api_key=module.params["api_key"],
+        validate_certs=module.params["validate_certs"],
     )
 
-    base_module = base.BaseModule('/api/v2/firewall/traffic_shaper', client)
+    base_module = base.BaseModule("/api/v2/firewall/traffic_shaper", client)
     changed, resp = base_module.set_object_state(
-        state=module.params['state'],
+        state=module.params["state"],
         data=module.params,
-        lookup_fields=module.params['lookup_fields']
+        lookup_fields=module.params["lookup_fields"],
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)
-    message = resp.get('message', '')
-    if 'message' in resp:
-        del resp['message']
+    message = resp.get("message", "")
+    if "message" in resp:
+        del resp["message"]
 
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if 'code' not in resp or resp['code'] != 200:
+    if "code" not in resp or resp["code"] != 200:
         module.fail_json(msg=message, **resp)
 
-    result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
+    result = {"changed": changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_module()

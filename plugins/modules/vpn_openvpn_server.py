@@ -7,11 +7,14 @@
 # GENERATED MODULE BY ADDING THIS MODULES NAME TO THE
 # tools/generator.yml FILE.
 ###############################################################
+"""An Ansible module for interacting with /api/v2/vpn/openvpn/server."""
+
+# pylint: disable=too-many-lines,duplicate-code
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 
-DOCUMENTATION = '''
+DOCUMENTATION = r"""
 module: vpn_openvpn_server
 description:
 - Manage individual Open VPN Servers.
@@ -32,12 +35,10 @@ options:
   api_password:
     type: str
     default: pfsense
-    no_log: true
     description: The password to authenticate with the pfSense API.
   api_key:
     type: str
-    no_log: true
-    description: An optional API key for authentication instead of username/password.
+    description: An API key to use for authentication.
   validate_certs:
     type: bool
     default: true
@@ -109,7 +110,7 @@ options:
     - TCP
     description: The protocol used by this OpenVPN server.
   interface:
-    required: true
+    required: false
     type: str
     default: null
     choices: []
@@ -136,7 +137,7 @@ options:
     description: The TLS key this OpenVPN server will use to sign control channel
       packets with an HMAC signature for authentication when establishing the tunnel.
   tls_type:
-    required: true
+    required: false
     type: str
     default: null
     choices:
@@ -258,7 +259,7 @@ options:
     choices: []
     description: Enables or disables clients on the bridge to obtain DHCP.
   serverbridge_interface:
-    required: true
+    required: false
     type: str
     default: null
     choices: []
@@ -274,13 +275,13 @@ options:
     description: Enables or disables pushing the bridge interface's IPv4 address to
       connecting clients as a route gateway.
   serverbridge_dhcp_start:
-    required: true
+    required: false
     type: str
     default: null
     choices: []
     description: The bridge DHCP range's start address.
   serverbridge_dhcp_end:
-    required: true
+    required: false
     type: str
     default: null
     choices: []
@@ -613,9 +614,9 @@ options:
 author:
 - Jared Hendrickson (@jaredhendrickson13)
 
-'''
+"""
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: Create Open VPN Server
   pfrest.pfsense.vpn_openvpn_server:
     api_host: pfsense.example.com
@@ -625,19 +626,19 @@ EXAMPLES = '''
     mode: p2p_tls
     dev_mode: tun
     protocol: UDP4
-    interface: example
+    interface: string
     tls_type: auth
-    caref: example
-    certref: example
-    dh_length: example
-    ecdh_curve: example
+    caref: string
+    certref: string
+    dh_length: string
+    ecdh_curve: string
     data_ciphers: &id001
-    - example
-    data_ciphers_fallback: example
-    digest: example
-    serverbridge_interface: example
-    serverbridge_dhcp_start: example
-    serverbridge_dhcp_end: example
+    - string
+    data_ciphers_fallback: string
+    digest: string
+    serverbridge_interface: string
+    serverbridge_dhcp_start: string
+    serverbridge_dhcp_end: string
 - name: Delete Open VPN Server
   pfrest.pfsense.vpn_openvpn_server:
     api_host: pfsense.example.com
@@ -647,22 +648,22 @@ EXAMPLES = '''
     mode: p2p_tls
     dev_mode: tun
     protocol: UDP4
-    interface: example
+    interface: string
     tls_type: auth
-    caref: example
-    certref: example
-    dh_length: example
-    ecdh_curve: example
+    caref: string
+    certref: string
+    dh_length: string
+    ecdh_curve: string
     data_ciphers: *id001
-    data_ciphers_fallback: example
-    digest: example
-    serverbridge_interface: example
-    serverbridge_dhcp_start: example
-    serverbridge_dhcp_end: example
+    data_ciphers_fallback: string
+    digest: string
+    serverbridge_interface: string
+    serverbridge_dhcp_start: string
+    serverbridge_dhcp_end: string
 
-'''
+"""
 
-RETURNS = '''
+RETURN = """
 changed:
   description: Whether any changes were made.
   type: bool
@@ -1050,461 +1051,539 @@ data:
       type: int
       returned: always
 
-'''
+"""
 
 
 def run_module():
+    """Runs this resource module against /api/v2/vpn/openvpn/server."""
+
     module_args = {
         "api_host": {
             "type": "str",
             "required": True,
+            "no_log": False,
         },
         "api_port": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 443,
         },
         "api_username": {
             "type": "str",
             "required": False,
-            "default": 'admin',
+            "no_log": False,
+            "default": "admin",
         },
         "api_password": {
             "type": "str",
             "required": False,
-            "default": 'pfsense',
+            "no_log": True,
+            "default": "pfsense",
         },
         "api_key": {
             "type": "str",
             "required": False,
+            "no_log": True,
         },
         "validate_certs": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": True,
         },
         "state": {
             "type": "str",
             "required": False,
-            "default": 'present',
-            "choices": ['present', 'absent'],
+            "no_log": False,
+            "default": "present",
+            "choices": ["present", "absent"],
         },
         "lookup_fields": {
             "type": "list",
             "required": True,
+            "no_log": False,
             "elements": "str",
         },
         "description": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "disable": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "mode": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
-            "choices": ['p2p_tls', 'server_tls', 'server_user', 'server_tls_user'],
+            "choices": ["p2p_tls", "server_tls", "server_user", "server_tls_user"],
         },
         "authmode": {
             "type": "list",
             "required": False,
-            "default": ['Local Database'],
+            "no_log": False,
+            "default": ["Local Database"],
             "elements": "str",
         },
         "dev_mode": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
-            "choices": ['tun', 'tap'],
+            "choices": ["tun", "tap"],
         },
         "protocol": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
-            "choices": ['UDP4', 'UDP6', 'UDP', 'TCP4', 'TCP6', 'TCP'],
+            "choices": ["UDP4", "UDP6", "UDP", "TCP4", "TCP6", "TCP"],
         },
         "interface": {
             "type": "str",
-            "required": True,
+            "required": False,
+            "no_log": False,
             "default": None,
         },
         "local_port": {
             "type": "str",
             "required": False,
-            "default": '1194',
+            "no_log": False,
+            "default": "1194",
         },
         "use_tls": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "tls": {
             "type": "str",
             "required": False,
+            "no_log": True,
             "default": None,
         },
         "tls_type": {
             "type": "str",
-            "required": True,
+            "required": False,
+            "no_log": False,
             "default": None,
-            "choices": ['auth', 'crypt'],
+            "choices": ["auth", "crypt"],
         },
         "tlsauth_keydir": {
             "type": "str",
             "required": False,
-            "default": 'default',
-            "choices": ['default', '0', '1', '2'],
+            "no_log": False,
+            "default": "default",
+            "choices": ["default", "0", "1", "2"],
         },
         "caref": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
         },
         "certref": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
         },
         "cert_depth": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 1,
             "choices": [1, 2, 3, 4, 5],
         },
         "dh_length": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
         },
         "ecdh_curve": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
         },
         "data_ciphers": {
             "type": "list",
             "required": True,
+            "no_log": False,
             "default": None,
             "elements": "str",
         },
         "data_ciphers_fallback": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
         },
         "digest": {
             "type": "str",
             "required": True,
+            "no_log": False,
             "default": None,
         },
         "strictusercn": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "remote_cert_tls": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": True,
         },
         "tunnel_network": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "tunnel_networkv6": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "serverbridge_dhcp": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "serverbridge_interface": {
             "type": "str",
-            "required": True,
+            "required": False,
+            "no_log": False,
             "default": None,
         },
         "serverbridge_routegateway": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "serverbridge_dhcp_start": {
             "type": "str",
-            "required": True,
+            "required": False,
+            "no_log": False,
             "default": None,
         },
         "serverbridge_dhcp_end": {
             "type": "str",
-            "required": True,
+            "required": False,
+            "no_log": False,
             "default": None,
         },
         "gwredir": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "gwredir6": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "local_network": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
             "elements": "str",
         },
         "local_networkv6": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
             "elements": "str",
         },
         "remote_network": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
             "elements": "str",
         },
         "remote_networkv6": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
             "elements": "str",
         },
         "maxclients": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "allow_compression": {
             "type": "str",
             "required": False,
-            "default": 'no',
-            "choices": ['no', 'yes', 'asym'],
+            "no_log": False,
+            "default": "no",
+            "choices": ["no", "yes", "asym"],
         },
         "passtos": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "client2client": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "duplicate_cn": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "connlimit": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
         },
         "dynamic_ip": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "topology": {
             "type": "str",
             "required": False,
-            "default": 'subnet',
-            "choices": ['subnet', 'net30'],
+            "no_log": False,
+            "default": "subnet",
+            "choices": ["subnet", "net30"],
         },
         "inactive_seconds": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 300,
         },
         "ping_method": {
             "type": "str",
             "required": False,
-            "default": 'keepalive',
-            "choices": ['keepalive', 'ping'],
+            "no_log": False,
+            "default": "keepalive",
+            "choices": ["keepalive", "ping"],
         },
         "keepalive_interval": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 10,
         },
         "keepalive_timeout": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 60,
         },
         "ping_seconds": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 10,
         },
         "ping_push": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "ping_action": {
             "type": "str",
             "required": False,
-            "default": 'ping_restart',
-            "choices": ['ping_restart', 'ping_exit'],
+            "no_log": False,
+            "default": "ping_restart",
+            "choices": ["ping_restart", "ping_exit"],
         },
         "ping_action_seconds": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 60,
         },
         "ping_action_push": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "dns_domain": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "dns_server1": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "dns_server2": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "dns_server3": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "dns_server4": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "push_blockoutsidedns": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "push_register_dns": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "ntp_server1": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "ntp_server2": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "netbios_enable": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "netbios_ntype": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 0,
             "choices": [0, 1, 2, 4, 8],
         },
         "netbios_scope": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "wins_server1": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "wins_server2": {
             "type": "str",
             "required": False,
-            "default": '',
+            "no_log": False,
+            "default": "",
         },
         "custom_options": {
             "type": "list",
             "required": False,
+            "no_log": False,
             "default": [],
             "elements": "str",
         },
         "username_as_common_name": {
             "type": "bool",
             "required": False,
+            "no_log": False,
             "default": False,
         },
         "sndrcvbuf": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": None,
             "choices": [65536, 131072, 262144, 524288, 1048576, 2097152],
         },
         "create_gw": {
             "type": "str",
             "required": False,
-            "default": 'both',
-            "choices": ['both', 'v4only', 'v6only'],
+            "no_log": False,
+            "default": "both",
+            "choices": ["both", "v4only", "v6only"],
         },
         "verbosity_level": {
             "type": "int",
             "required": False,
+            "no_log": False,
             "default": 1,
             "choices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
         },
     }
 
-    module = AnsibleModule(
-        argument_spec=module_args,
-        supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
 
     client = rest.RestClient(
-        host=module.params['api_host'],
-        port=module.params['api_port'],
-        username=module.params['api_username'],
-        password=module.params['api_password'],
-        api_key=module.params['api_key'],
-        validate_certs=module.params['validate_certs']
+        host=module.params["api_host"],
+        port=module.params["api_port"],
+        username=module.params["api_username"],
+        password=module.params["api_password"],
+        api_key=module.params["api_key"],
+        validate_certs=module.params["validate_certs"],
     )
 
-    base_module = base.BaseModule('/api/v2/vpn/openvpn/server', client)
+    base_module = base.BaseModule("/api/v2/vpn/openvpn/server", client)
     changed, resp = base_module.set_object_state(
-        state=module.params['state'],
+        state=module.params["state"],
         data=module.params,
-        lookup_fields=module.params['lookup_fields']
+        lookup_fields=module.params["lookup_fields"],
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)
-    message = resp.get('message', '')
-    if 'message' in resp:
-        del resp['message']
+    message = resp.get("message", "")
+    if "message" in resp:
+        del resp["message"]
 
     # If the result was unsuccessful, fail the tasks with the error message returned from the API
-    if 'code' not in resp or resp['code'] != 200:
+    if "code" not in resp or resp["code"] != 200:
         module.fail_json(msg=message, **resp)
 
-    result = {'changed': changed, "msg": "Successfully completed API request.", **resp}
+    result = {"changed": changed, "msg": "Successfully completed API request.", **resp}
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_module()
