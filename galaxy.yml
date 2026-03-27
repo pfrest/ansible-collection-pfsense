@@ -1,0 +1,33 @@
+---
+namespace: pfrest
+name: pfsense
+version: 0.0.1
+readme: README.md
+authors:
+  - Jared Hendrickson (@jaredhendrickson13)
+description: Ansible modules for managing pfSense devices using the pfSense REST API package.
+license:
+  - MIT
+license_file: LICENSE
+repository: https://github.com/pfrest/ansible-collection-pfsense
+issues: https://github.com/pfrest/ansible-collection-pfsense/issues
+tags:
+  - pfsense
+  - firewall
+  - networking
+  - restapi
+dependencies: {}
+build_ignore:
+  - .git
+  - .github
+  - .gitignore
+  - .idea
+  - .pylintrc
+  - _build
+  - docs
+  - schema.json
+  - generator.yml
+  - playbook.yml
+  - requirements-dev.txt
+  - tools
+  - venv
