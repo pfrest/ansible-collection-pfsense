@@ -213,3 +213,4 @@ docs/index.rst
 
 # pfSense-pkg-RESTAPI
 schema.json
+playbook.yml
