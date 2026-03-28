@@ -37,8 +37,9 @@ jobs:
         ansible-galaxy collection install .
 
     - name: Analysing the code with pylint
-      run: |
-        pylint $(git ls-files '*.py')
+      run: pylint $(git ls-files '*.py')
+      env:
+        PYTHONPATH: $PYTHONPATH:/home/runner/.ansible/collections/
 
   check_tests:
     runs-on: ubuntu-latest
@@ -60,13 +61,14 @@ jobs:
         ansible-galaxy collection install .
 
     - name: Run tests with pytest
-      run: |
-        python3 -m pytest tests/unit/ --cov --cov-report=term-missing
+      run: python3 -m pytest tests/unit/ --cov --cov-report=term-missing
+      env:
+        PYTHONPATH: $PYTHONPATH:/home/runner/.ansible/collections/
 
   check_docs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd #v6.0.2
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Install dependencies
         run: |
