@@ -1,4 +1,5 @@
 """Sphinx configuration for pfREST Ansible documentation."""
+
 # pylint: skip-file
 project = "pfREST Ansible Documentation"
 copyright = "2026, Jared Hendrickson"

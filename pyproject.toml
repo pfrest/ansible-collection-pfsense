@@ -1,0 +1,30 @@
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.coverage.run]
+# Track the installed namespace path that the tests actually import.
+source = ["ansible_collections.pfrest.pfsense.plugins.module_utils"]
+omit = [
+    "*/assets/*",
+    "*/schema_dict.py",
+]
+
+[tool.coverage.paths]
+# Map the installed site-packages path back to the local source tree so
+# reports show your working-copy file names instead of site-packages paths.
+source = [
+    "plugins/module_utils",
+    "**/ansible_collections/pfrest/pfsense/plugins/module_utils",
+]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 0
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.",
+]
+
+[tool.coverage.html]
+directory = "htmlcov"
+
