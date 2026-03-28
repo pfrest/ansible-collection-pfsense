@@ -34,6 +34,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         python3 -m pip install -r requirements-dev.txt
+        ansible-galaxy collection install .
 
     - name: Analysing the code with pylint
       run: |
@@ -56,6 +57,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         python3 -m pip install -r requirements-dev.txt
+        ansible-galaxy collection install .
 
     - name: Run tests with pytest
       run: |
@@ -70,6 +72,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python3 -m pip install -r requirements-dev.txt
+          ansible-galaxy collection install .
 
       - name: Check documentation lint
         run: antsibull-docs lint-collection-docs --plugin-docs .

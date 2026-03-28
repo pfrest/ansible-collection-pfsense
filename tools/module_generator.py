@@ -9,6 +9,7 @@ Usage::
 
     python tools/module_generator.py plugins/module_utils/assets/schema.json
 """
+# pylint: disable=too-many-lines
 
 import argparse
 import json
