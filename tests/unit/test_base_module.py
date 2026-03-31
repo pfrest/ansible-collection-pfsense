@@ -324,9 +324,7 @@ class TestResolveParentId:
 
     def test_raises_when_model_has_no_parent(self, base_module, mock_rest_client):
         with pytest.raises(LookupError, match="does not have a parent model class"):
-            base_module.resolve_parent_id(
-                ["name"], {"name": "obj1"}
-            )
+            base_module.resolve_parent_id(["name"], {"name": "obj1"})
 
 
 class TestSetObjectStateWithParent:
@@ -356,9 +354,7 @@ class TestSetObjectStateWithParent:
         # First call: resolve parent → returns parent with id=10
         # Second call: lookup child → not found
         mock_rest_client.get.side_effect = [
-            _make_json_response(
-                {"code": 200, "data": [{"name": "parent1", "id": 10}]}
-            ),
+            _make_json_response({"code": 200, "data": [{"name": "parent1", "id": 10}]}),
             _make_json_response({"code": 200, "data": []}),
         ]
         mock_rest_client.post.return_value = _make_json_response(
@@ -374,14 +370,10 @@ class TestSetObjectStateWithParent:
         assert data["parent_id"] == 10
         mock_rest_client.post.assert_called_once()
 
-    def test_no_change_when_child_identical(
-        self, child_base_module, mock_rest_client
-    ):
+    def test_no_change_when_child_identical(self, child_base_module, mock_rest_client):
         existing = {"label": "child1", "value": "v1", "parent_id": 10, "id": 5}
         mock_rest_client.get.side_effect = [
-            _make_json_response(
-                {"code": 200, "data": [{"name": "parent1", "id": 10}]}
-            ),
+            _make_json_response({"code": 200, "data": [{"name": "parent1", "id": 10}]}),
             _make_json_response({"code": 200, "data": [existing]}),
         ]
 
@@ -392,14 +384,10 @@ class TestSetObjectStateWithParent:
 
         assert changed is False
 
-    def test_deletes_child_with_parent_id(
-        self, child_base_module, mock_rest_client
-    ):
+    def test_deletes_child_with_parent_id(self, child_base_module, mock_rest_client):
         existing = {"label": "child1", "parent_id": 10, "id": 5}
         mock_rest_client.get.side_effect = [
-            _make_json_response(
-                {"code": 200, "data": [{"name": "parent1", "id": 10}]}
-            ),
+            _make_json_response({"code": 200, "data": [{"name": "parent1", "id": 10}]}),
             _make_json_response({"code": 200, "data": [existing]}),
         ]
         mock_rest_client.delete.return_value = _make_json_response(
@@ -413,4 +401,3 @@ class TestSetObjectStateWithParent:
 
         assert changed is True
         mock_rest_client.delete.assert_called_once()
-
