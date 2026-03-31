@@ -17,6 +17,10 @@ FAKE_MODEL_CLASS = "FakeModel"
 FAKE_SINGULAR_ENDPOINT = "/api/v2/fake/object"
 FAKE_PLURAL_ENDPOINT = "/api/v2/fake/objects"
 
+FAKE_CHILD_MODEL_CLASS = "FakeChildModel"
+FAKE_CHILD_SINGULAR_ENDPOINT = "/api/v2/fake/object/child"
+FAKE_CHILD_PLURAL_ENDPOINT = "/api/v2/fake/object/children"
+
 FAKE_SCHEMA = {
     "endpoints": {
         FAKE_SINGULAR_ENDPOINT: {
@@ -31,6 +35,18 @@ FAKE_SCHEMA = {
             "many": True,
             "request_method_options": ["GET", "PUT"],
         },
+        FAKE_CHILD_SINGULAR_ENDPOINT: {
+            "url": FAKE_CHILD_SINGULAR_ENDPOINT,
+            "model_class": FAKE_CHILD_MODEL_CLASS,
+            "many": False,
+            "request_method_options": ["GET", "POST", "PATCH", "DELETE"],
+        },
+        FAKE_CHILD_PLURAL_ENDPOINT: {
+            "url": FAKE_CHILD_PLURAL_ENDPOINT,
+            "model_class": FAKE_CHILD_MODEL_CLASS,
+            "many": True,
+            "request_method_options": ["GET"],
+        },
     },
     "models": {
         FAKE_MODEL_CLASS: {
@@ -38,6 +54,8 @@ FAKE_SCHEMA = {
             "verbose_name": "Fake Object",
             "verbose_name_plural": "Fake Objects",
             "many": True,
+            "parent_model_class": "",
+            "parent_id_type": None,
             "fields": {
                 "name": {
                     "name": "name",
@@ -101,6 +119,8 @@ FAKE_SCHEMA = {
             "verbose_name": "Fake Alias",
             "verbose_name_plural": "Fake Aliases",
             "many": True,
+            "parent_model_class": "",
+            "parent_id_type": None,
             "fields": {
                 "host": {
                     "name": "host",
@@ -115,6 +135,38 @@ FAKE_SCHEMA = {
                 },
                 "descr": {
                     "name": "descr",
+                    "type": "string",
+                    "required": False,
+                    "read_only": False,
+                    "default": "",
+                    "choices": [],
+                    "many": False,
+                    "sensitive": False,
+                    "nested_model_class": None,
+                },
+            },
+        },
+        FAKE_CHILD_MODEL_CLASS: {
+            "class": FAKE_CHILD_MODEL_CLASS,
+            "verbose_name": "Fake Child Object",
+            "verbose_name_plural": "Fake Child Objects",
+            "many": True,
+            "parent_model_class": FAKE_MODEL_CLASS,
+            "parent_id_type": "integer",
+            "fields": {
+                "label": {
+                    "name": "label",
+                    "type": "string",
+                    "required": True,
+                    "read_only": False,
+                    "default": None,
+                    "choices": [],
+                    "many": False,
+                    "sensitive": False,
+                    "nested_model_class": None,
+                },
+                "value": {
+                    "name": "value",
                     "type": "string",
                     "required": False,
                     "read_only": False,
@@ -163,3 +215,18 @@ def base_module(mock_rest_client, monkeypatch):
         FAKE_SCHEMA,
     )
     return BaseModule(FAKE_SINGULAR_ENDPOINT, mock_rest_client)
+
+
+@pytest.fixture()
+def child_base_module(mock_rest_client, monkeypatch):
+    """Return a `BaseModule` for the fake child model (has parent_model_class).
+
+    The real `NativeSchema` is monkey-patched so it reads from
+    `FAKE_SCHEMA` instead of the embedded schema dict.
+    """
+    monkeypatch.setattr(
+        "ansible_collections.pfrest.pfsense.plugins.module_utils.schema.SCHEMA_DICT",
+        FAKE_SCHEMA,
+    )
+    return BaseModule(FAKE_CHILD_SINGULAR_ENDPOINT, mock_rest_client)
+

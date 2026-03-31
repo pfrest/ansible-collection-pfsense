@@ -56,6 +56,13 @@ options:
     required: true
     description: The list of fields to use when looking up existing resources. This
       should be a list of field names that uniquely identify a resource.
+  parent_lookup_fields:
+    type: list
+    elements: str
+    required: true
+    description: The list of fields to use when looking up the parent DHCP Server.
+      This should be a list of field names that uniquely identify the parent object
+      this resource is nested under.
   range_from:
     required: true
     type: str
@@ -181,6 +188,8 @@ EXAMPLES = """
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
+    parent_lookup_fields: &id001
+    - id
     state: present
     range_from: string
     range_to: string
@@ -189,6 +198,7 @@ EXAMPLES = """
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
+    parent_lookup_fields: *id001
     state: absent
     range_from: string
     range_to: string
@@ -300,6 +310,10 @@ data:
         will get an IP address within this scope/range.
       type: str
       returned: always
+    parent_id:
+      description: The ID of the parent DHCP Server this resource is nested under.
+      type: int
+      returned: always
 
 """
 
@@ -350,6 +364,12 @@ def run_module():
             "choices": ["present", "absent"],
         },
         "lookup_fields": {
+            "type": "list",
+            "required": True,
+            "no_log": False,
+            "elements": "str",
+        },
+        "parent_lookup_fields": {
             "type": "list",
             "required": True,
             "no_log": False,
@@ -470,6 +490,7 @@ def run_module():
         state=module.params["state"],
         data=module.params,
         lookup_fields=module.params["lookup_fields"],
+        parent_lookup_fields=module.params.get("parent_lookup_fields", []),
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)

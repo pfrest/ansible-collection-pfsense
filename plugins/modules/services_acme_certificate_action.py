@@ -56,6 +56,13 @@ options:
     required: true
     description: The list of fields to use when looking up existing resources. This
       should be a list of field names that uniquely identify a resource.
+  parent_lookup_fields:
+    type: list
+    elements: str
+    required: true
+    description: The list of fields to use when looking up the parent ACME Certificate.
+      This should be a list of field names that uniquely identify the parent object
+      this resource is nested under.
   status:
     required: false
     type: str
@@ -91,6 +98,8 @@ EXAMPLES = """
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
+    parent_lookup_fields: &id001
+    - name
     state: present
     command: string
     method: shellcommand
@@ -99,6 +108,7 @@ EXAMPLES = """
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
+    parent_lookup_fields: *id001
     state: absent
     command: string
     method: shellcommand
@@ -138,6 +148,10 @@ data:
     method:
       description: The action method that should be used to run the command.
       type: str
+      returned: always
+    parent_id:
+      description: The ID of the parent ACME Certificate this resource is nested under.
+      type: int
       returned: always
 
 """
@@ -194,6 +208,12 @@ def run_module():
             "no_log": False,
             "elements": "str",
         },
+        "parent_lookup_fields": {
+            "type": "list",
+            "required": True,
+            "no_log": False,
+            "elements": "str",
+        },
         "status": {
             "type": "str",
             "required": False,
@@ -237,6 +257,7 @@ def run_module():
         state=module.params["state"],
         data=module.params,
         lookup_fields=module.params["lookup_fields"],
+        parent_lookup_fields=module.params.get("parent_lookup_fields", []),
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)

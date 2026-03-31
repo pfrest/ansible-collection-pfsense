@@ -49,7 +49,8 @@ def run_module():
     changed, resp = base_module.set_object_state(
         state=module.params['state'],
         data=module.params,
-        lookup_fields=module.params['lookup_fields']
+        lookup_fields=module.params['lookup_fields'],
+        parent_lookup_fields=module.params.get('parent_lookup_fields', [])
     )
 {%- elif module_type == 'singleton' %}
     changed, resp = base_module.update_singleton(module.params)

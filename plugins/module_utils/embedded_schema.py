@@ -6,7 +6,7 @@
 ###############################################################
 """The REST API's native schema in an Ansible-friendly format"""
 
-# pylint: disable=line-too-long,too-many-lines
+# pylint: disable=line-too-long
 SCHEMA_DICT = {
     "version": "v2.7.3",
     "endpoints": {

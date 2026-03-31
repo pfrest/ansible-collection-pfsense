@@ -315,6 +315,7 @@ def run_module():
         state=module.params["state"],
         data=module.params,
         lookup_fields=module.params["lookup_fields"],
+        parent_lookup_fields=module.params.get("parent_lookup_fields", []),
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)

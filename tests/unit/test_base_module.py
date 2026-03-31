@@ -10,7 +10,10 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils.base import (
     BaseModule,
     INTERNAL_ARGS,
 )
-from tests.conftest import _make_json_response
+from tests.conftest import (
+    _make_json_response,
+    FAKE_PLURAL_ENDPOINT,
+)
 
 
 class TestSetObjectState:
@@ -268,3 +271,146 @@ class TestValidateLookupFields:
         base_module.module = MagicMock()
         base_module.module.params = {"lookup_fields": ["id", "name"]}
         base_module.validate_lookup_fields()  # should not raise
+
+
+class TestResolveParentId:
+    """resolve_parent_id: resolves the parent object's ID from lookup fields."""
+
+    def test_resolves_single_parent(self, child_base_module, mock_rest_client):
+        mock_rest_client.get.return_value = _make_json_response(
+            {"code": 200, "data": [{"name": "parent1", "id": 42}]}
+        )
+
+        parent_id = child_base_module.resolve_parent_id(
+            ["name"], {"name": "parent1", "label": "child1"}
+        )
+
+        assert parent_id == 42
+        mock_rest_client.get.assert_called_once_with(
+            FAKE_PLURAL_ENDPOINT, params={"name": "parent1"}
+        )
+
+    def test_raises_when_no_parent_found(self, child_base_module, mock_rest_client):
+        mock_rest_client.get.return_value = _make_json_response(
+            {"code": 200, "data": []}
+        )
+
+        with pytest.raises(LookupError, match="matched no existing objects"):
+            child_base_module.resolve_parent_id(
+                ["name"], {"name": "missing", "label": "child1"}
+            )
+
+    def test_raises_when_multiple_parents_found(
+        self, child_base_module, mock_rest_client
+    ):
+        mock_rest_client.get.return_value = _make_json_response(
+            {"code": 200, "data": [{"name": "dup", "id": 1}, {"name": "dup", "id": 2}]}
+        )
+
+        with pytest.raises(LookupError, match="matched multiple existing objects"):
+            child_base_module.resolve_parent_id(
+                ["name"], {"name": "dup", "label": "child1"}
+            )
+
+    def test_raises_when_parent_has_no_id(self, child_base_module, mock_rest_client):
+        mock_rest_client.get.return_value = _make_json_response(
+            {"code": 200, "data": [{"name": "no_id_parent"}]}
+        )
+
+        with pytest.raises(LookupError, match="has no 'id' field"):
+            child_base_module.resolve_parent_id(
+                ["name"], {"name": "no_id_parent", "label": "child1"}
+            )
+
+    def test_raises_when_model_has_no_parent(self, base_module, mock_rest_client):
+        with pytest.raises(LookupError, match="does not have a parent model class"):
+            base_module.resolve_parent_id(
+                ["name"], {"name": "obj1"}
+            )
+
+
+class TestSetObjectStateWithParent:
+    """set_object_state with parent_lookup_fields: resolves parent ID before CRUD."""
+
+    def _data_with_internals(self, **overrides):
+        base = {
+            "api_host": "fw",
+            "api_port": 443,
+            "api_username": "admin",
+            "api_password": "pw",
+            "api_key": "",
+            "validate_certs": True,
+            "lookup_fields": ["label"],
+            "parent_lookup_fields": ["name"],
+            "state": "present",
+            "name": "parent1",
+            "label": "child1",
+            "value": "v1",
+        }
+        base.update(overrides)
+        return base
+
+    def test_creates_child_with_resolved_parent_id(
+        self, child_base_module, mock_rest_client
+    ):
+        # First call: resolve parent → returns parent with id=10
+        # Second call: lookup child → not found
+        mock_rest_client.get.side_effect = [
+            _make_json_response(
+                {"code": 200, "data": [{"name": "parent1", "id": 10}]}
+            ),
+            _make_json_response({"code": 200, "data": []}),
+        ]
+        mock_rest_client.post.return_value = _make_json_response(
+            {"code": 200, "data": {"label": "child1", "parent_id": 10, "id": 0}}
+        )
+
+        data = self._data_with_internals()
+        changed, resp = child_base_module.set_object_state(
+            "present", data, ["label"], parent_lookup_fields=["name"]
+        )
+
+        assert changed is True
+        assert data["parent_id"] == 10
+        mock_rest_client.post.assert_called_once()
+
+    def test_no_change_when_child_identical(
+        self, child_base_module, mock_rest_client
+    ):
+        existing = {"label": "child1", "value": "v1", "parent_id": 10, "id": 5}
+        mock_rest_client.get.side_effect = [
+            _make_json_response(
+                {"code": 200, "data": [{"name": "parent1", "id": 10}]}
+            ),
+            _make_json_response({"code": 200, "data": [existing]}),
+        ]
+
+        data = self._data_with_internals()
+        changed, _resp = child_base_module.set_object_state(
+            "present", data, ["label"], parent_lookup_fields=["name"]
+        )
+
+        assert changed is False
+
+    def test_deletes_child_with_parent_id(
+        self, child_base_module, mock_rest_client
+    ):
+        existing = {"label": "child1", "parent_id": 10, "id": 5}
+        mock_rest_client.get.side_effect = [
+            _make_json_response(
+                {"code": 200, "data": [{"name": "parent1", "id": 10}]}
+            ),
+            _make_json_response({"code": 200, "data": [existing]}),
+        ]
+        mock_rest_client.delete.return_value = _make_json_response(
+            {"code": 200, "data": {}}
+        )
+
+        data = self._data_with_internals(state="absent")
+        changed, _resp = child_base_module.set_object_state(
+            "absent", data, ["label"], parent_lookup_fields=["name"]
+        )
+
+        assert changed is True
+        mock_rest_client.delete.assert_called_once()
+

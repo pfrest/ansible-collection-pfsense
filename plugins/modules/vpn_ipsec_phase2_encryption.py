@@ -56,6 +56,13 @@ options:
     required: true
     description: The list of fields to use when looking up existing resources. This
       should be a list of field names that uniquely identify a resource.
+  parent_lookup_fields:
+    type: list
+    elements: str
+    required: true
+    description: The list of fields to use when looking up the parent IPsec Phase
+      2. This should be a list of field names that uniquely identify the parent object
+      this resource is nested under.
   name:
     required: true
     type: str
@@ -85,6 +92,8 @@ EXAMPLES = """
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
+    parent_lookup_fields: &id001
+    - id
     state: present
     name: aes
     keylen: 1
@@ -93,6 +102,7 @@ EXAMPLES = """
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
+    parent_lookup_fields: *id001
     state: absent
     name: aes
     keylen: 1
@@ -128,6 +138,10 @@ data:
       returned: always
     keylen:
       description: The key length for the encryption algorithm.
+      type: int
+      returned: always
+    parent_id:
+      description: The ID of the parent IPsec Phase 2 this resource is nested under.
       type: int
       returned: always
 
@@ -185,6 +199,12 @@ def run_module():
             "no_log": False,
             "elements": "str",
         },
+        "parent_lookup_fields": {
+            "type": "list",
+            "required": True,
+            "no_log": False,
+            "elements": "str",
+        },
         "name": {
             "type": "str",
             "required": True,
@@ -222,6 +242,7 @@ def run_module():
         state=module.params["state"],
         data=module.params,
         lookup_fields=module.params["lookup_fields"],
+        parent_lookup_fields=module.params.get("parent_lookup_fields", []),
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)

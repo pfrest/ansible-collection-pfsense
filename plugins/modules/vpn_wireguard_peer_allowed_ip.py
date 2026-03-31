@@ -56,6 +56,13 @@ options:
     required: true
     description: The list of fields to use when looking up existing resources. This
       should be a list of field names that uniquely identify a resource.
+  parent_lookup_fields:
+    type: list
+    elements: str
+    required: true
+    description: The list of fields to use when looking up the parent WireGuard Peer.
+      This should be a list of field names that uniquely identify the parent object
+      this resource is nested under.
   address:
     required: true
     type: str
@@ -85,6 +92,8 @@ EXAMPLES = """
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
+    parent_lookup_fields: &id001
+    - publickey
     state: present
     address: string
     mask: 1
@@ -93,6 +102,7 @@ EXAMPLES = """
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
+    parent_lookup_fields: *id001
     state: absent
     address: string
     mask: 1
@@ -132,6 +142,10 @@ data:
     descr:
       description: A description for this allowed peer IP.
       type: str
+      returned: always
+    parent_id:
+      description: The ID of the parent WireGuard Peer this resource is nested under.
+      type: int
       returned: always
 
 """
@@ -188,6 +202,12 @@ def run_module():
             "no_log": False,
             "elements": "str",
         },
+        "parent_lookup_fields": {
+            "type": "list",
+            "required": True,
+            "no_log": False,
+            "elements": "str",
+        },
         "address": {
             "type": "str",
             "required": True,
@@ -224,6 +244,7 @@ def run_module():
         state=module.params["state"],
         data=module.params,
         lookup_fields=module.params["lookup_fields"],
+        parent_lookup_fields=module.params.get("parent_lookup_fields", []),
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)

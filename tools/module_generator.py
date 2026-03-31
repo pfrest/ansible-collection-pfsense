@@ -329,6 +329,20 @@ def get_module_options_for_collection_module(endpoint_url: str) -> dict:
     }
 
 
+def has_parent_model(endpoint_url: str) -> bool:
+    """
+    Determine if the model associated with an endpoint has a parent model class.
+
+    Args:
+        endpoint_url (str): The endpoint URL.
+
+    Returns:
+        bool: True if the model has a non-empty parent_model_class, False otherwise.
+    """
+    model_schema = native_schema.get_model_schema_by_endpoint(endpoint_url)
+    return bool(model_schema.get("parent_model_class", ""))
+
+
 def get_module_options_for_resource_module(endpoint_url: str) -> dict:
     """
     Generates the module options documentation for a resource module based on the endpoint.
@@ -339,7 +353,7 @@ def get_module_options_for_resource_module(endpoint_url: str) -> dict:
     Returns:
         dict: The module options for the resource module.
     """
-    return {
+    opts = {
         "state": {
             "type": "str",
             "choices": ["present", "absent"],
@@ -354,8 +368,27 @@ def get_module_options_for_resource_module(endpoint_url: str) -> dict:
             "This should be a list of field names that uniquely identify a "
             "resource.",
         },
-        **get_module_options_from_fields(endpoint_url),
     }
+
+    # Add parent_lookup_fields for models with a parent model class
+    if has_parent_model(endpoint_url):
+        model_schema = native_schema.get_model_schema_by_endpoint(endpoint_url)
+        parent_model_class = model_schema.get("parent_model_class", "")
+        parent_model_schema = native_schema.get_model_schema(parent_model_class)
+        parent_verbose_name = parent_model_schema.get(
+            "verbose_name", parent_model_class
+        )
+        opts["parent_lookup_fields"] = {
+            "type": "list",
+            "elements": "str",
+            "required": True,
+            "description": f"The list of fields to use when looking up the parent "
+            f"{parent_verbose_name}. This should be a list of field names that "
+            f"uniquely identify the parent object this resource is nested under.",
+        }
+
+    opts.update(get_module_options_from_fields(endpoint_url))
+    return opts
 
 
 def get_module_options_from_fields(endpoint_url: str) -> dict:
@@ -682,6 +715,25 @@ def generate_module_returns(endpoint_url: str, module_type: str) -> dict:
     if contains:
         data_entry["contains"] = contains
 
+    # Add parent_id to the contains for models with a parent model class
+    if has_parent_model(endpoint_url) and module_type == "resource":
+        parent_model_class = model_schema.get("parent_model_class", "")
+        parent_model_schema = native_schema.get_model_schema(parent_model_class)
+        parent_verbose_name = parent_model_schema.get(
+            "verbose_name", parent_model_class
+        )
+        parent_id_entry = {
+            "description": f"The ID of the parent {parent_verbose_name} this "
+            f"resource is nested under.",
+            "type": schema_type_to_returns_type(
+                model_schema.get("parent_id_type", "integer")
+            ),
+            "returned": "always",
+        }
+        if "contains" not in data_entry:
+            data_entry["contains"] = {}
+        data_entry["contains"]["parent_id"] = parent_id_entry
+
     return {
         "changed": {
             "description": "Whether any changes were made.",
@@ -751,18 +803,33 @@ def generate_module_examples(endpoint_url: str, module_type: str) -> list:
     examples = []
 
     if module_type == "resource":
+        # Build base resource params, including parent_lookup_fields if applicable
+        resource_base_params = dict(connection_params)
+        if has_parent_model(endpoint_url):
+            parent_model_class = model_schema.get("parent_model_class", "")
+            parent_model_schema = native_schema.get_model_schema(parent_model_class)
+            # Get the unique fields of the parent model for the parent_lookup_fields example
+            parent_unique_fields = [
+                fname
+                for fname, fschema in parent_model_schema.get("fields", {}).items()
+                if fschema.get("unique", False) and not fschema.get("read_only", False)
+            ]
+            if not parent_unique_fields:
+                parent_unique_fields = ["id"]
+            resource_base_params["parent_lookup_fields"] = parent_unique_fields
+
         # Present example with all required fields
         examples.append(
             {
                 "name": f"Create {model_name}",
-                fqcn: {**connection_params, "state": "present", **required_fields},
+                fqcn: {**resource_base_params, "state": "present", **required_fields},
             }
         )
         # Absent example showing how to delete the resource
         examples.append(
             {
                 "name": f"Delete {model_name}",
-                fqcn: {**connection_params, "state": "absent", **required_fields},
+                fqcn: {**resource_base_params, "state": "absent", **required_fields},
             }
         )
 
