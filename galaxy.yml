@@ -25,9 +25,12 @@ build_ignore:
   - .pylintrc
   - _build
   - docs
+  - molecule
   - schema.json
   - generator.yml
   - playbook.yml
+  - pyproject.toml
   - requirements-dev.txt
+  - tests
   - tools
   - venv

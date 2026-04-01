@@ -490,6 +490,12 @@ def get_module_options(endpoint_url: str, module_type: str) -> dict:
             "default": 443,
             "description": "The port number of the pfSense API.",
         },
+        "api_protocol": {
+            "type": "str",
+            "default": "https",
+            "choices": ["http", "https"],
+            "description": "The protocol to use when connecting to the pfSense API.",
+        },
         "api_username": {
             "type": "str",
             "default": "admin",

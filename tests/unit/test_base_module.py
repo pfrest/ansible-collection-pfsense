@@ -24,6 +24,7 @@ class TestSetObjectState:
         base = {
             "api_host": "fw",
             "api_port": 443,
+            "api_protocol": "https",
             "api_username": "admin",
             "api_password": "pw",
             "api_key": "",
@@ -200,6 +201,9 @@ class TestStaticHelpers:
         for arg in INTERNAL_ARGS:
             assert arg not in result
 
+    def test_api_protocol_is_internal_arg(self):
+        assert "api_protocol" in INTERNAL_ARGS
+
 
 class TestExecuteAction:
     """execute_action: delegates to create_object and always returns changed=True."""
@@ -334,6 +338,7 @@ class TestSetObjectStateWithParent:
         base = {
             "api_host": "fw",
             "api_port": 443,
+            "api_protocol": "https",
             "api_username": "admin",
             "api_password": "pw",
             "api_key": "",

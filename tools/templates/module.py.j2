@@ -37,9 +37,11 @@ def run_module():
     client = rest.RestClient(
         host=module.params['api_host'],
         port=module.params['api_port'],
+        scheme=module.params['api_protocol'],
+        auth_mode='key' if module.params.get('api_key') else 'basic',
         username=module.params['api_username'],
         password=module.params['api_password'],
-        api_key=module.params['api_key'],
+        api_key=module.params['api_key'] or '',
         validate_certs=module.params['validate_certs']
     )
 

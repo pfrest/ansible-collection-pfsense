@@ -106,7 +106,7 @@ class TestValidateDataFields:
     """validate_data_fields checks fields against the model schema."""
 
     def test_skips_internal_args(self, base_module):
-        data = {"api_host": "1.2.3.4", "name": "test"}
+        data = {"api_host": "1.2.3.4", "api_protocol": "http", "name": "test"}
         base_module.validate_data_fields(data)  # should not raise
 
     def test_skips_id(self, base_module):

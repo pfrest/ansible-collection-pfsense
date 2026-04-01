@@ -1,0 +1,16 @@
+---
+driver:
+  name: docker
+platforms:
+  - name: pfrest-mock
+    image: ghcr.io/pfrest/mock-api
+    pre_build_image: true
+    override_command: false
+    published_ports:
+      - "0.0.0.0:5000:5000"
+    volumes:
+      - "${MOLECULE_SCENARIO_DIRECTORY}/mocks:/mocks:ro"
+provisioner:
+  name: ansible
+  playbooks:
+    converge: converge.yml

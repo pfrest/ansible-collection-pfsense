@@ -1,8 +1,10 @@
-ansible==11.4.0
+ansible==13.5.0
 pfsense-vshell==2.2.3
 black==26.3.1
 pylint==4.0.5
 pytest==8.3.5
 pytest-cov==6.1.1
+molecule==26.3.0
+molecule-plugins[docker]==25.8.12
 Sphinx==9.0.4
 antsibull-docs==2.24.0

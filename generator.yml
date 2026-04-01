@@ -6,5 +6,11 @@
 # overwritten by the generator.
 exclude_modules: []
 
+# Modules listed under 'exclude_molecule_modules' will be skipped when
+# generating molecule test task files via tools/molecule_test_generator.py.
+# Use the full module name. This is useful for destructive or unsupported
+# modules that should not be exercised automatically against the mock API.
+exclude_molecule_modules: []
+
 
 

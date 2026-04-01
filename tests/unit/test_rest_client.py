@@ -27,6 +27,11 @@ class TestRestClientInit:
         assert client.validate_certs is True
         assert client.timeout == 30
         assert client.auth_mode == "basic"
+        assert client.scheme == "https"
+
+    def test_scheme_stored(self):
+        client = RestClient(host="fw.local", port=5000, scheme="http")
+        assert client.scheme == "http"
 
 
 class TestAuthHeaders:
@@ -82,6 +87,21 @@ class TestHttpMethods:
         assert kwargs["params"] == {"id": 1}
         assert kwargs["verify"] is True
         assert kwargs["timeout"] == 30
+
+    @patch("ansible_collections.pfrest.pfsense.plugins.module_utils.rest.requests.get")
+    def test_get_http_scheme(self, mock_get):
+        """Requests use http:// when scheme is set to http (api_protocol)."""
+        client = RestClient(
+            host="fw.local",
+            port=5000,
+            scheme="http",
+            username="admin",
+            password="pw",
+        )
+        mock_get.return_value = MagicMock(status_code=200)
+        client.get("/api/v2/test")
+        _, kwargs = mock_get.call_args
+        assert kwargs["url"] == "http://fw.local:5000/api/v2/test"
 
     @patch("ansible_collections.pfrest.pfsense.plugins.module_utils.rest.requests.post")
     def test_post(self, mock_post):

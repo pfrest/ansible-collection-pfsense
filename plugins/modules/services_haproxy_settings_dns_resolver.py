@@ -28,6 +28,13 @@ options:
     type: int
     default: 443
     description: The port number of the pfSense API.
+  api_protocol:
+    type: str
+    default: https
+    choices:
+    - http
+    - https
+    description: The protocol to use when connecting to the pfSense API.
   api_username:
     type: str
     default: admin
@@ -169,6 +176,13 @@ def run_module():
             "no_log": False,
             "default": 443,
         },
+        "api_protocol": {
+            "type": "str",
+            "required": False,
+            "no_log": False,
+            "default": "https",
+            "choices": ["http", "https"],
+        },
         "api_username": {
             "type": "str",
             "required": False,
@@ -236,6 +250,7 @@ def run_module():
     client = rest.RestClient(
         host=module.params["api_host"],
         port=module.params["api_port"],
+        scheme=module.params["api_protocol"],
         username=module.params["api_username"],
         password=module.params["api_password"],
         api_key=module.params["api_key"],
