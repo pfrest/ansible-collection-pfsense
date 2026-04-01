@@ -11,6 +11,7 @@
         api_port: 5000
         api_protocol: http
         validate_certs: false
+        action: restart
 
     - name: Assert results
       ansible.builtin.assert:
