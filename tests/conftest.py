@@ -229,3 +229,4 @@ def child_base_module(mock_rest_client, monkeypatch):
         FAKE_SCHEMA,
     )
     return BaseModule(FAKE_CHILD_SINGULAR_ENDPOINT, mock_rest_client)
+
