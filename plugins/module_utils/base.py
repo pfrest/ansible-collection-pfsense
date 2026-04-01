@@ -279,10 +279,6 @@ class BaseModule:
         parent_plural_endpoint = self.full_schema.get_plural_endpoint_by_model(
             parent_model_class
         )
-        if not parent_plural_endpoint:
-            raise LookupError(
-                f"Could not find a plural endpoint for parent model '{parent_model_class}'."
-            )
 
         # Query the parent endpoint
         resp = self.rest_client.get(parent_plural_endpoint, params=parent_query).json()
