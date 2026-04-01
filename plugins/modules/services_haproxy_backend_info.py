@@ -551,7 +551,7 @@ def run_module():
         scheme=module.params["api_protocol"],
         username=module.params["api_username"],
         password=module.params["api_password"],
-        api_key=module.params["api_key"],
+        api_key=module.params.get("api_key", ""),
         validate_certs=module.params["validate_certs"],
     )
 
