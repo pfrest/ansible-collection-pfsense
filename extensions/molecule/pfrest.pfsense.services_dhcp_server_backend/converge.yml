@@ -1,0 +1,29 @@
+---
+- name: Test pfrest.pfsense.services_dhcp_server_backend module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage DHCP Server Backend
+      register: result
+      pfrest.pfsense.services_dhcp_server_backend:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        dhcpbackend: isc
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.dhcpbackend is defined
+

@@ -1,0 +1,131 @@
+---
+- name: Test pfrest.pfsense.services_dhcp_server module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage DHCP Server
+      register: result
+      pfrest.pfsense.services_dhcp_server:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        state: present
+        lookup_fields:
+          - id
+        interface: string
+        enable: true
+        range_from: string
+        range_to: string
+        domain: string
+        failover_peerip: string
+        mac_allow:
+          - string
+        mac_deny:
+          - string
+        domainsearchlist:
+          - string
+        defaultleasetime: 9223372036854776000
+        maxleasetime: 9223372036854776000
+        gateway: string
+        dnsserver:
+          - string
+        winsserver:
+          - string
+        ntpserver:
+          - string
+        staticarp: true
+        ignorebootp: true
+        ignoreclientuids: true
+        nonak: true
+        disablepingcheck: true
+        dhcpleaseinlocaltime: true
+        statsgraph: true
+        denyunknown: enabled
+        pool:
+          - range_from: string
+            range_to: string
+            domain: string
+            mac_allow:
+              - string
+            mac_deny:
+              - string
+            domainsearchlist:
+              - string
+            defaultleasetime: 9223372036854776000
+            maxleasetime: 9223372036854776000
+            gateway: string
+            dnsserver:
+              - string
+            winsserver:
+              - string
+            ntpserver:
+              - string
+            ignorebootp: true
+            ignoreclientuids: true
+            denyunknown: enabled
+        numberoptions:
+          - number: 9223372036854776000
+            type: text
+            value: string
+        staticmap:
+          - mac: string
+            ipaddr: string
+            cid: string
+            hostname: string
+            domain: string
+            domainsearchlist:
+              - string
+            defaultleasetime: 9223372036854776000
+            maxleasetime: 9223372036854776000
+            gateway: string
+            dnsserver:
+              - string
+            winsserver:
+              - string
+            ntpserver:
+              - string
+            arp_table_static_entry: true
+            descr: string
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.interface is defined
+          - result.data.enable is defined
+          - result.data.range_from is defined
+          - result.data.range_to is defined
+          - result.data.domain is defined
+          - result.data.failover_peerip is defined
+          - result.data.mac_allow is defined
+          - result.data.mac_deny is defined
+          - result.data.domainsearchlist is defined
+          - result.data.defaultleasetime is defined
+          - result.data.maxleasetime is defined
+          - result.data.gateway is defined
+          - result.data.dnsserver is defined
+          - result.data.winsserver is defined
+          - result.data.ntpserver is defined
+          - result.data.staticarp is defined
+          - result.data.ignorebootp is defined
+          - result.data.ignoreclientuids is defined
+          - result.data.nonak is defined
+          - result.data.disablepingcheck is defined
+          - result.data.dhcpleaseinlocaltime is defined
+          - result.data.statsgraph is defined
+          - result.data.denyunknown is defined
+          - result.data.pool is defined
+          - result.data.numberoptions is defined
+          - result.data.staticmap is defined
+          - result.data.id is defined
+

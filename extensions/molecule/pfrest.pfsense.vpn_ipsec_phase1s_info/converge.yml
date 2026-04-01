@@ -1,0 +1,61 @@
+---
+- name: Test pfrest.pfsense.vpn_ipsec_phase1s_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Retrieve IPsec Phase 1s
+      register: result
+      pfrest.pfsense.vpn_ipsec_phase1s_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is sequence
+          - 'result.data | length > 0'
+          - result.data[0].ikeid is defined
+          - result.data[0].descr is defined
+          - result.data[0].disabled is defined
+          - result.data[0].iketype is defined
+          - result.data[0].mode is defined
+          - result.data[0].protocol is defined
+          - result.data[0].interface is defined
+          - result.data[0].remote_gateway is defined
+          - result.data[0].authentication_method is defined
+          - result.data[0].myid_type is defined
+          - result.data[0].myid_data is defined
+          - result.data[0].peerid_type is defined
+          - result.data[0].peerid_data is defined
+          - result.data[0].pre_shared_key is defined
+          - result.data[0].certref is defined
+          - result.data[0].caref is defined
+          - result.data[0].rekey_time is defined
+          - result.data[0].reauth_time is defined
+          - result.data[0].rand_time is defined
+          - result.data[0].lifetime is defined
+          - result.data[0].startaction is defined
+          - result.data[0].closeaction is defined
+          - result.data[0].nat_traversal is defined
+          - result.data[0].gw_duplicates is defined
+          - result.data[0].mobike is defined
+          - result.data[0].splitconn is defined
+          - result.data[0].prfselect_enable is defined
+          - result.data[0].ikeport is defined
+          - result.data[0].nattport is defined
+          - result.data[0].dpd_delay is defined
+          - result.data[0].dpd_maxfail is defined
+          - result.data[0].encryption is defined
+          - result.data[0].id is defined
+

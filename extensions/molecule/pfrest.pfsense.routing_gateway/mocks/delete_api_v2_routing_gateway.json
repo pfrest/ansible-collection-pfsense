@@ -1,0 +1,34 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": {
+      "name": "string",
+      "descr": "string",
+      "disabled": true,
+      "ipprotocol": "inet",
+      "interface": "string",
+      "gateway": "string",
+      "monitor_disable": true,
+      "monitor": "string",
+      "action_disable": true,
+      "force_down": true,
+      "dpinger_dont_add_static_route": true,
+      "gw_down_kill_states": "",
+      "nonlocalgateway": true,
+      "weight": 9223372036854776000,
+      "data_payload": 9223372036854776000,
+      "latencylow": 9223372036854776000,
+      "latencyhigh": 9223372036854776000,
+      "losslow": 9223372036854776000,
+      "losshigh": 9223372036854776000,
+      "interval": 9223372036854776000,
+      "loss_interval": 9223372036854776000,
+      "time_period": 9223372036854776000,
+      "alert_interval": 9223372036854776000,
+      "id": 0
+    }
+  }
+}

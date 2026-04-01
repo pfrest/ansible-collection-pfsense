@@ -1,0 +1,33 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": {
+      "mac": "string",
+      "ipaddr": "string",
+      "cid": "string",
+      "hostname": "string",
+      "domain": "string",
+      "domainsearchlist": [
+        "string"
+      ],
+      "defaultleasetime": 9223372036854776000,
+      "maxleasetime": 9223372036854776000,
+      "gateway": "string",
+      "dnsserver": [
+        "string"
+      ],
+      "winsserver": [
+        "string"
+      ],
+      "ntpserver": [
+        "string"
+      ],
+      "arp_table_static_entry": true,
+      "descr": "string",
+      "id": 0
+    }
+  }
+}

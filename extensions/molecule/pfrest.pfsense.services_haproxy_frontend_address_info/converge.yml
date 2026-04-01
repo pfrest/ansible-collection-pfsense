@@ -1,0 +1,40 @@
+---
+- name: Test pfrest.pfsense.services_haproxy_frontend_address_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read HA Proxy Frontend Address
+      register: result
+      pfrest.pfsense.services_haproxy_frontend_address_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.extaddr is defined
+          - result.data.extaddr == "custom"
+          - result.data.extaddr_custom is defined
+          - result.data.extaddr_custom == "string"
+          - result.data.extaddr_port is defined
+          - result.data.extaddr_port == "string"
+          - result.data.extaddr_ssl is defined
+          - result.data.extaddr_ssl == true
+          - result.data.exaddr_advanced is defined
+          - result.data.exaddr_advanced == "string"
+          - result.data.id is defined
+          - result.data.id == 0
+

@@ -1,0 +1,101 @@
+---
+- name: Test pfrest.pfsense.services_bind_zone module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage BIND Zone
+      register: result
+      pfrest.pfsense.services_bind_zone:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        state: present
+        lookup_fields:
+          - name
+          - serial
+        disabled: true
+        name: string
+        description: string
+        type: master
+        view:
+          - string
+        reversev4: true
+        reversev6: true
+        rpz: true
+        custom: string
+        dnssec: true
+        backupkeys: true
+        slaveip: string
+        forwarders:
+          - string
+        ttl: 9223372036854776000
+        baseip: string
+        nameserver: string
+        mail: string
+        serial: 9223372036854776000
+        refresh: string
+        retry: string
+        expire: string
+        minimum: string
+        enable_updatepolicy: true
+        updatepolicy: string
+        allowupdate:
+          - string
+        allowtransfer:
+          - string
+        allowquery:
+          - string
+        regdhcpstatic: true
+        customzonerecords: string
+        records:
+          - name: string
+            type: A
+            rdata: string
+            priority: 9223372036854776000
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.disabled is defined
+          - result.data.name is defined
+          - result.data.description is defined
+          - result.data.type is defined
+          - result.data.view is defined
+          - result.data.reversev4 is defined
+          - result.data.reversev6 is defined
+          - result.data.rpz is defined
+          - result.data.custom is defined
+          - result.data.dnssec is defined
+          - result.data.backupkeys is defined
+          - result.data.slaveip is defined
+          - result.data.forwarders is defined
+          - result.data.ttl is defined
+          - result.data.baseip is defined
+          - result.data.nameserver is defined
+          - result.data.mail is defined
+          - result.data.serial is defined
+          - result.data.refresh is defined
+          - result.data.retry is defined
+          - result.data.expire is defined
+          - result.data.minimum is defined
+          - result.data.enable_updatepolicy is defined
+          - result.data.updatepolicy is defined
+          - result.data.allowupdate is defined
+          - result.data.allowtransfer is defined
+          - result.data.allowquery is defined
+          - result.data.regdhcpstatic is defined
+          - result.data.customzonerecords is defined
+          - result.data.records is defined
+          - result.data.id is defined
+

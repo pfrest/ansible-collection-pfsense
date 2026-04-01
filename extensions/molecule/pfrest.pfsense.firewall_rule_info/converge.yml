@@ -1,0 +1,94 @@
+---
+- name: Test pfrest.pfsense.firewall_rule_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read Firewall Rule
+      register: result
+      pfrest.pfsense.firewall_rule_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.type is defined
+          - result.data.type == "pass"
+          - result.data.interface is defined
+          - result.data.interface is sequence
+          - result.data.ipprotocol is defined
+          - result.data.ipprotocol == "inet"
+          - result.data.protocol is defined
+          - result.data.protocol == "tcp"
+          - result.data.icmptype is defined
+          - result.data.icmptype is sequence
+          - result.data.source is defined
+          - result.data.source == "string"
+          - result.data.source_port is defined
+          - result.data.source_port == "string"
+          - result.data.destination is defined
+          - result.data.destination == "string"
+          - result.data.destination_port is defined
+          - result.data.destination_port == "string"
+          - result.data.descr is defined
+          - result.data.descr == "string"
+          - result.data.disabled is defined
+          - result.data.disabled == true
+          - result.data.log is defined
+          - result.data.log == true
+          - result.data.tag is defined
+          - result.data.tag == "string"
+          - result.data.statetype is defined
+          - result.data.statetype == "keep state"
+          - result.data.tcp_flags_any is defined
+          - result.data.tcp_flags_any == true
+          - result.data.tcp_flags_out_of is defined
+          - result.data.tcp_flags_out_of is sequence
+          - result.data.tcp_flags_set is defined
+          - result.data.tcp_flags_set is sequence
+          - result.data.gateway is defined
+          - result.data.gateway == "string"
+          - result.data.sched is defined
+          - result.data.sched == "string"
+          - result.data.dnpipe is defined
+          - result.data.dnpipe == "string"
+          - result.data.pdnpipe is defined
+          - result.data.pdnpipe == "string"
+          - result.data.defaultqueue is defined
+          - result.data.defaultqueue == "string"
+          - result.data.ackqueue is defined
+          - result.data.ackqueue == "string"
+          - result.data.floating is defined
+          - result.data.floating == true
+          - result.data.quick is defined
+          - result.data.quick == true
+          - result.data.direction is defined
+          - result.data.direction == "any"
+          - result.data.tracker is defined
+          - result.data.tracker == 9223372036854776000
+          - result.data.associated_rule_id is defined
+          - result.data.associated_rule_id == "string"
+          - result.data.created_time is defined
+          - result.data.created_time == 9223372036854776000
+          - result.data.created_by is defined
+          - result.data.created_by == "string"
+          - result.data.updated_time is defined
+          - result.data.updated_time == 9223372036854776000
+          - result.data.updated_by is defined
+          - result.data.updated_by == "string"
+          - result.data.id is defined
+          - result.data.id == 0
+

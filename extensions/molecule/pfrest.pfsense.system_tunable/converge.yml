@@ -1,0 +1,37 @@
+---
+- name: Test pfrest.pfsense.system_tunable module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage System Tunable
+      register: result
+      pfrest.pfsense.system_tunable:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        state: present
+        lookup_fields:
+          - tunable
+        tunable: string
+        value: string
+        descr: string
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.tunable is defined
+          - result.data.value is defined
+          - result.data.descr is defined
+          - result.data.id is defined
+

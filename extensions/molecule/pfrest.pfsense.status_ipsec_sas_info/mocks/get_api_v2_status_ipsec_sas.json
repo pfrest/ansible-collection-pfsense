@@ -1,0 +1,66 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": [
+      {
+        "con_id": "string",
+        "uniqueid": 9223372036854776000,
+        "version": 9223372036854776000,
+        "state": "string",
+        "local_host": "string",
+        "local_port": "string",
+        "local_id": "string",
+        "remote_host": "string",
+        "remote_port": "string",
+        "remote_id": "string",
+        "initiator_spi": "string",
+        "responder_spi": "string",
+        "nat_remote": true,
+        "nat_any": true,
+        "encr_alg": "string",
+        "encr_keysize": 9223372036854776000,
+        "integ_alg": "string",
+        "prf_alg": "string",
+        "dh_group": "string",
+        "established": 9223372036854776000,
+        "rekey_time": 9223372036854776000,
+        "child_sas": [
+          {
+            "name": "string",
+            "uniqueid": 9223372036854776000,
+            "reqid": 9223372036854776000,
+            "state": "string",
+            "mode": "string",
+            "protocol": "string",
+            "encap": true,
+            "spi_in": "string",
+            "spi_out": "string",
+            "encr_alg": "string",
+            "encr_keysize": 9223372036854776000,
+            "integ_alg": "string",
+            "dh_group": "string",
+            "bytes_in": 9223372036854776000,
+            "bytes_out": 9223372036854776000,
+            "packets_in": 9223372036854776000,
+            "packets_out": 9223372036854776000,
+            "use_in": 9223372036854776000,
+            "use_out": 9223372036854776000,
+            "rekey_time": 9223372036854776000,
+            "life_time": 9223372036854776000,
+            "install_time": 9223372036854776000,
+            "local_ts": [
+              "string"
+            ],
+            "remote_ts": [
+              "string"
+            ]
+          }
+        ],
+        "id": 0
+      }
+    ]
+  }
+}

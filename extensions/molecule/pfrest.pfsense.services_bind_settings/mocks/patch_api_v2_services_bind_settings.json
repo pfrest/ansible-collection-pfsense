@@ -1,0 +1,35 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": {
+      "enable_bind": true,
+      "bind_ip_version": "",
+      "listenon": [
+        "string"
+      ],
+      "bind_notify": true,
+      "bind_hide_version": true,
+      "bind_ram_limit": "string",
+      "bind_logging": true,
+      "log_severity": "critical",
+      "log_options": [
+        "default"
+      ],
+      "rate_enabled": true,
+      "rate_limit": 9223372036854776000,
+      "log_only": true,
+      "bind_forwarder": true,
+      "bind_forwarder_ips": [
+        "string"
+      ],
+      "bind_dnssec_validation": "auto",
+      "listenport": "string",
+      "controlport": "string",
+      "bind_custom_options": "string",
+      "bind_global_settings": "string"
+    }
+  }
+}

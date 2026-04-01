@@ -1,0 +1,40 @@
+---
+- name: Test pfrest.pfsense.interface_vlan module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage Interface VLAN
+      register: result
+      pfrest.pfsense.interface_vlan:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        state: present
+        lookup_fields:
+          - id
+        if: string
+        tag: 9223372036854776000
+        pcp: 9223372036854776000
+        descr: string
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.if is defined
+          - result.data.tag is defined
+          - result.data.vlanif is defined
+          - result.data.pcp is defined
+          - result.data.descr is defined
+          - result.data.id is defined
+

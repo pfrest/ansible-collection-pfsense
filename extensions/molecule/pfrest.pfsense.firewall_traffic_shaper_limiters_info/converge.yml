@@ -1,0 +1,79 @@
+---
+- name: Test pfrest.pfsense.firewall_traffic_shaper_limiters_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Retrieve Traffic Shaper Limiters
+      register: result
+      pfrest.pfsense.firewall_traffic_shaper_limiters_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is sequence
+          - 'result.data | length > 0'
+          - result.data[0].name is defined
+          - result.data[0].number is defined
+          - result.data[0].enabled is defined
+          - result.data[0].mask is defined
+          - result.data[0].maskbits is defined
+          - result.data[0].maskbitsv6 is defined
+          - result.data[0].qlimit is defined
+          - result.data[0].ecn is defined
+          - result.data[0].description is defined
+          - result.data[0].aqm is defined
+          - result.data[0].sched is defined
+          - result.data[0].param_codel_target is defined
+          - result.data[0].param_codel_interval is defined
+          - result.data[0].param_pie_target is defined
+          - result.data[0].param_pie_tupdate is defined
+          - result.data[0].param_pie_alpha is defined
+          - result.data[0].param_pie_beta is defined
+          - result.data[0].param_pie_max_burst is defined
+          - result.data[0].param_pie_max_ecnth is defined
+          - result.data[0].pie_onoff is defined
+          - result.data[0].pie_capdrop is defined
+          - result.data[0].pie_qdelay is defined
+          - result.data[0].pie_pderand is defined
+          - result.data[0].param_red_w_q is defined
+          - result.data[0].param_red_min_th is defined
+          - result.data[0].param_red_max_th is defined
+          - result.data[0].param_red_max_p is defined
+          - result.data[0].param_gred_w_q is defined
+          - result.data[0].param_gred_min_th is defined
+          - result.data[0].param_gred_max_th is defined
+          - result.data[0].param_gred_max_p is defined
+          - result.data[0].param_fq_codel_target is defined
+          - result.data[0].param_fq_codel_interval is defined
+          - result.data[0].param_fq_codel_quantum is defined
+          - result.data[0].param_fq_codel_limit is defined
+          - result.data[0].param_fq_codel_flows is defined
+          - result.data[0].param_fq_pie_target is defined
+          - result.data[0].param_fq_pie_tupdate is defined
+          - result.data[0].param_fq_pie_alpha is defined
+          - result.data[0].param_fq_pie_beta is defined
+          - result.data[0].param_fq_pie_max_burst is defined
+          - result.data[0].param_fq_pie_max_ecnth is defined
+          - result.data[0].param_fq_pie_quantum is defined
+          - result.data[0].param_fq_pie_limit is defined
+          - result.data[0].param_fq_pie_flows is defined
+          - result.data[0].delay is defined
+          - result.data[0].plr is defined
+          - result.data[0].buckets is defined
+          - result.data[0].bandwidth is defined
+          - result.data[0].queue is defined
+          - result.data[0].id is defined
+

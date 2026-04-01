@@ -1,0 +1,27 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": [
+      {
+        "name": "string",
+        "port": "string",
+        "vpnid": 9223372036854776000,
+        "mgmt": "string",
+        "status": "string",
+        "state": "string",
+        "state_detail": "string",
+        "connect_time": "string",
+        "virtual_addr": "string",
+        "virtual_addr6": "string",
+        "remote_host": "string",
+        "remote_port": "string",
+        "local_host": "string",
+        "local_port": "string",
+        "id": 0
+      }
+    ]
+  }
+}

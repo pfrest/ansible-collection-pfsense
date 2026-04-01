@@ -1,0 +1,44 @@
+---
+- name: Test pfrest.pfsense.services_cron_job_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read Cron Job
+      register: result
+      pfrest.pfsense.services_cron_job_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.minute is defined
+          - result.data.minute == "string"
+          - result.data.hour is defined
+          - result.data.hour == "string"
+          - result.data.mday is defined
+          - result.data.mday == "string"
+          - result.data.month is defined
+          - result.data.month == "string"
+          - result.data.wday is defined
+          - result.data.wday == "string"
+          - result.data.who is defined
+          - result.data.who == "string"
+          - result.data.command is defined
+          - result.data.command == "string"
+          - result.data.id is defined
+          - result.data.id == 0
+

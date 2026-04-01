@@ -1,0 +1,13 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": {
+      "maximumstates": 9223372036854776000,
+      "defaultmaximumstates": 9223372036854776000,
+      "currentstates": 9223372036854776000
+    }
+  }
+}

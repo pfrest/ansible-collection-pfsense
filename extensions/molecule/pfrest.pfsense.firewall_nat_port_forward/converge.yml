@@ -1,0 +1,65 @@
+---
+- name: Test pfrest.pfsense.firewall_nat_port_forward module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage Port Forward
+      register: result
+      pfrest.pfsense.firewall_nat_port_forward:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        state: present
+        lookup_fields:
+          - id
+        interface: string
+        ipprotocol: inet
+        protocol: any
+        source: string
+        source_port: string
+        destination: string
+        destination_port: string
+        target: string
+        local_port: string
+        disabled: true
+        nordr: true
+        nosync: true
+        descr: string
+        natreflection: enable
+        associated_rule_id: string
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.interface is defined
+          - result.data.ipprotocol is defined
+          - result.data.protocol is defined
+          - result.data.source is defined
+          - result.data.source_port is defined
+          - result.data.destination is defined
+          - result.data.destination_port is defined
+          - result.data.target is defined
+          - result.data.local_port is defined
+          - result.data.disabled is defined
+          - result.data.nordr is defined
+          - result.data.nosync is defined
+          - result.data.descr is defined
+          - result.data.natreflection is defined
+          - result.data.associated_rule_id is defined
+          - result.data.created_time is defined
+          - result.data.created_by is defined
+          - result.data.updated_time is defined
+          - result.data.updated_by is defined
+          - result.data.id is defined
+

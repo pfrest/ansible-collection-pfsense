@@ -1,0 +1,40 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": [
+      {
+        "name": "string",
+        "descr": "string",
+        "hwif": "string",
+        "macaddr": "string",
+        "mtu": "string",
+        "enable": true,
+        "status": "string",
+        "ipaddr": "string",
+        "subnet": "string",
+        "linklocal": "string",
+        "ipaddrv6": "string",
+        "subnetv6": "string",
+        "inerrs": 9223372036854776000,
+        "outerrs": 9223372036854776000,
+        "collisions": 9223372036854776000,
+        "inbytes": 9223372036854776000,
+        "inbytespass": 9223372036854776000,
+        "outbytes": 9223372036854776000,
+        "outbytespass": 9223372036854776000,
+        "inpkts": 9223372036854776000,
+        "inpktspass": 9223372036854776000,
+        "outpkts": 9223372036854776000,
+        "outpktspass": 9223372036854776000,
+        "dhcplink": "string",
+        "media": "string",
+        "gateway": "string",
+        "gatewayv6": "string",
+        "id": 0
+      }
+    ]
+  }
+}

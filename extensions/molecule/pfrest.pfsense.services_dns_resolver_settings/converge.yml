@@ -1,0 +1,65 @@
+---
+- name: Test pfrest.pfsense.services_dns_resolver_settings module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage DNS Resolver Settings
+      register: result
+      pfrest.pfsense.services_dns_resolver_settings:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        enable: true
+        port: string
+        enablessl: true
+        sslcertref: string
+        tlsport: string
+        active_interface:
+          - string
+        outgoing_interface:
+          - string
+        strictout: true
+        system_domain_local_zone_type: deny
+        dnssec: true
+        python: true
+        python_order: pre_validator
+        python_script: string
+        forwarding: true
+        regdhcp: true
+        regdhcpstatic: true
+        regovpnclients: true
+        custom_options: string
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.enable is defined
+          - result.data.port is defined
+          - result.data.enablessl is defined
+          - result.data.sslcertref is defined
+          - result.data.tlsport is defined
+          - result.data.active_interface is defined
+          - result.data.outgoing_interface is defined
+          - result.data.strictout is defined
+          - result.data.system_domain_local_zone_type is defined
+          - result.data.dnssec is defined
+          - result.data.python is defined
+          - result.data.python_order is defined
+          - result.data.python_script is defined
+          - result.data.forwarding is defined
+          - result.data.regdhcp is defined
+          - result.data.regdhcpstatic is defined
+          - result.data.regovpnclients is defined
+          - result.data.custom_options is defined
+

@@ -1,0 +1,69 @@
+---
+- name: Test pfrest.pfsense.system_restapi_settings module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage REST API Settings
+      register: result
+      pfrest.pfsense.system_restapi_settings:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        enabled: true
+        read_only: true
+        keep_backup: true
+        login_protection: true
+        log_successful_auth: true
+        log_level: LOG_DEBUG
+        allow_pre_releases: true
+        hateoas: true
+        expose_sensitive_fields: true
+        override_sensitive_fields:
+          - string
+        allowed_interfaces:
+          - string
+        represent_interfaces_as: descr
+        auth_methods:
+          - string
+        jwt_exp: 9223372036854776000
+        ha_sync: true
+        ha_sync_validate_certs: true
+        ha_sync_hosts:
+          - string
+        ha_sync_username: string
+        ha_sync_password: string
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.enabled is defined
+          - result.data.read_only is defined
+          - result.data.keep_backup is defined
+          - result.data.login_protection is defined
+          - result.data.log_successful_auth is defined
+          - result.data.log_level is defined
+          - result.data.allow_pre_releases is defined
+          - result.data.hateoas is defined
+          - result.data.expose_sensitive_fields is defined
+          - result.data.override_sensitive_fields is defined
+          - result.data.allowed_interfaces is defined
+          - result.data.represent_interfaces_as is defined
+          - result.data.auth_methods is defined
+          - result.data.jwt_exp is defined
+          - result.data.ha_sync is defined
+          - result.data.ha_sync_validate_certs is defined
+          - result.data.ha_sync_hosts is defined
+          - result.data.ha_sync_username is defined
+          - result.data.ha_sync_password is defined
+

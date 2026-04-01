@@ -1,0 +1,96 @@
+---
+- name: Test pfrest.pfsense.firewall_traffic_shaper_limiter_queue_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read Traffic Shaper Limiter Queue
+      register: result
+      pfrest.pfsense.firewall_traffic_shaper_limiter_queue_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.name is defined
+          - result.data.name == "string"
+          - result.data.number is defined
+          - result.data.number == 9223372036854776000
+          - result.data.enabled is defined
+          - result.data.enabled == true
+          - result.data.mask is defined
+          - result.data.mask == "none"
+          - result.data.maskbits is defined
+          - result.data.maskbits == 9223372036854776000
+          - result.data.maskbitsv6 is defined
+          - result.data.maskbitsv6 == 9223372036854776000
+          - result.data.qlimit is defined
+          - result.data.qlimit == 9223372036854776000
+          - result.data.ecn is defined
+          - result.data.ecn == true
+          - result.data.description is defined
+          - result.data.description == "string"
+          - result.data.aqm is defined
+          - result.data.aqm == "droptail"
+          - result.data.param_codel_target is defined
+          - result.data.param_codel_target == 9223372036854776000
+          - result.data.param_codel_interval is defined
+          - result.data.param_codel_interval == 9223372036854776000
+          - result.data.param_pie_target is defined
+          - result.data.param_pie_target == 9223372036854776000
+          - result.data.param_pie_tupdate is defined
+          - result.data.param_pie_tupdate == 9223372036854776000
+          - result.data.param_pie_alpha is defined
+          - result.data.param_pie_alpha == 9223372036854776000
+          - result.data.param_pie_beta is defined
+          - result.data.param_pie_beta == 9223372036854776000
+          - result.data.param_pie_max_burst is defined
+          - result.data.param_pie_max_burst == 9223372036854776000
+          - result.data.param_pie_max_ecnth is defined
+          - result.data.param_pie_max_ecnth == 9223372036854776000
+          - result.data.pie_onoff is defined
+          - result.data.pie_onoff == true
+          - result.data.pie_capdrop is defined
+          - result.data.pie_capdrop == true
+          - result.data.pie_qdelay is defined
+          - result.data.pie_qdelay == true
+          - result.data.pie_pderand is defined
+          - result.data.pie_pderand == true
+          - result.data.param_red_w_q is defined
+          - result.data.param_red_w_q == 9223372036854776000
+          - result.data.param_red_min_th is defined
+          - result.data.param_red_min_th == 9223372036854776000
+          - result.data.param_red_max_th is defined
+          - result.data.param_red_max_th == 9223372036854776000
+          - result.data.param_red_max_p is defined
+          - result.data.param_red_max_p == 9223372036854776000
+          - result.data.param_gred_w_q is defined
+          - result.data.param_gred_w_q == 9223372036854776000
+          - result.data.param_gred_min_th is defined
+          - result.data.param_gred_min_th == 9223372036854776000
+          - result.data.param_gred_max_th is defined
+          - result.data.param_gred_max_th == 9223372036854776000
+          - result.data.param_gred_max_p is defined
+          - result.data.param_gred_max_p == 9223372036854776000
+          - result.data.weight is defined
+          - result.data.weight == 9223372036854776000
+          - result.data.plr is defined
+          - result.data.plr == 1.0
+          - result.data.buckets is defined
+          - result.data.buckets == 9223372036854776000
+          - result.data.id is defined
+          - result.data.id == 0
+

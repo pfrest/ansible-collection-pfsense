@@ -1,0 +1,94 @@
+---
+- name: Test pfrest.pfsense.vpn_ipsec_phase1_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read IPsec Phase 1
+      register: result
+      pfrest.pfsense.vpn_ipsec_phase1_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.ikeid is defined
+          - result.data.ikeid == 9223372036854776000
+          - result.data.descr is defined
+          - result.data.descr == "string"
+          - result.data.disabled is defined
+          - result.data.disabled == true
+          - result.data.iketype is defined
+          - result.data.iketype == "ikev1"
+          - result.data.mode is defined
+          - result.data.mode == "main"
+          - result.data.protocol is defined
+          - result.data.protocol == "inet"
+          - result.data.interface is defined
+          - result.data.interface == "string"
+          - result.data.remote_gateway is defined
+          - result.data.remote_gateway == "string"
+          - result.data.authentication_method is defined
+          - result.data.authentication_method == "pre_shared_key"
+          - result.data.myid_type is defined
+          - result.data.myid_type == "myaddress"
+          - result.data.myid_data is defined
+          - result.data.myid_data == "string"
+          - result.data.peerid_type is defined
+          - result.data.peerid_type == "any"
+          - result.data.peerid_data is defined
+          - result.data.peerid_data == "string"
+          - result.data.pre_shared_key is defined
+          - result.data.pre_shared_key == "string"
+          - result.data.certref is defined
+          - result.data.certref == "string"
+          - result.data.caref is defined
+          - result.data.caref == "string"
+          - result.data.rekey_time is defined
+          - result.data.rekey_time == 9223372036854776000
+          - result.data.reauth_time is defined
+          - result.data.reauth_time == 9223372036854776000
+          - result.data.rand_time is defined
+          - result.data.rand_time == 9223372036854776000
+          - result.data.lifetime is defined
+          - result.data.lifetime == 9223372036854776000
+          - result.data.startaction is defined
+          - result.data.startaction == ""
+          - result.data.closeaction is defined
+          - result.data.closeaction == ""
+          - result.data.nat_traversal is defined
+          - result.data.nat_traversal == "on"
+          - result.data.gw_duplicates is defined
+          - result.data.gw_duplicates == true
+          - result.data.mobike is defined
+          - result.data.mobike == true
+          - result.data.splitconn is defined
+          - result.data.splitconn == true
+          - result.data.prfselect_enable is defined
+          - result.data.prfselect_enable == true
+          - result.data.ikeport is defined
+          - result.data.ikeport == "string"
+          - result.data.nattport is defined
+          - result.data.nattport == "string"
+          - result.data.dpd_delay is defined
+          - result.data.dpd_delay == 9223372036854776000
+          - result.data.dpd_maxfail is defined
+          - result.data.dpd_maxfail == 9223372036854776000
+          - result.data.encryption is defined
+          - result.data.encryption is sequence
+          - result.data.id is defined
+          - result.data.id == 0
+

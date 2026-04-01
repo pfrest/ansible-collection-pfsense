@@ -1,0 +1,63 @@
+---
+- name: Test pfrest.pfsense.firewall_nat_outbound_mapping module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage Outbound NAT Mapping
+      register: result
+      pfrest.pfsense.firewall_nat_outbound_mapping:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        state: present
+        lookup_fields:
+          - id
+        interface: string
+        protocol: tcp
+        disabled: true
+        nonat: true
+        nosync: true
+        source: string
+        source_port: string
+        destination: string
+        destination_port: string
+        target: string
+        target_subnet: 9223372036854776000
+        nat_port: string
+        static_nat_port: true
+        poolopts: round-robin
+        source_hash_key: string
+        descr: string
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.interface is defined
+          - result.data.protocol is defined
+          - result.data.disabled is defined
+          - result.data.nonat is defined
+          - result.data.nosync is defined
+          - result.data.source is defined
+          - result.data.source_port is defined
+          - result.data.destination is defined
+          - result.data.destination_port is defined
+          - result.data.target is defined
+          - result.data.target_subnet is defined
+          - result.data.nat_port is defined
+          - result.data.static_nat_port is defined
+          - result.data.poolopts is defined
+          - result.data.source_hash_key is defined
+          - result.data.descr is defined
+          - result.data.id is defined
+

@@ -1,0 +1,28 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": [
+      {
+        "action": "use_server",
+        "acl": "string",
+        "server": "string",
+        "customaction": "string",
+        "deny_status": "string",
+        "realm": "string",
+        "rule": "string",
+        "lua_function": "string",
+        "name": "string",
+        "fmt": "string",
+        "find": "string",
+        "replace": "string",
+        "path": "string",
+        "status": "string",
+        "reason": "string",
+        "id": 0
+      }
+    ]
+  }
+}

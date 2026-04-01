@@ -1,0 +1,17 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": {
+      "current_version": "string",
+      "latest_version": "string",
+      "latest_version_release_date": "string",
+      "update_available": true,
+      "available_versions": [
+        "string"
+      ]
+    }
+  }
+}

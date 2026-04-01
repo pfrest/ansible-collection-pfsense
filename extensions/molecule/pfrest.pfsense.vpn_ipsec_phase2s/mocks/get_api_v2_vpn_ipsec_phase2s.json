@@ -1,0 +1,44 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": [
+      {
+        "uniqid": "string",
+        "reqid": 9223372036854776000,
+        "ikeid": 9223372036854776000,
+        "descr": "string",
+        "disabled": true,
+        "mode": "tunnel",
+        "localid_type": "string",
+        "localid_address": "string",
+        "localid_netbits": 9223372036854776000,
+        "natlocalid_type": "string",
+        "natlocalid_address": "string",
+        "natlocalid_netbits": 9223372036854776000,
+        "remoteid_type": "string",
+        "remoteid_address": "string",
+        "remoteid_netbits": 9223372036854776000,
+        "protocol": "esp",
+        "encryption_algorithm_option": [
+          {
+            "name": "aes",
+            "keylen": 9223372036854776000
+          }
+        ],
+        "hash_algorithm_option": [
+          "hmac_sha1"
+        ],
+        "pfsgroup": 0,
+        "rekey_time": 9223372036854776000,
+        "rand_time": 9223372036854776000,
+        "lifetime": 9223372036854776000,
+        "pinghost": "string",
+        "keepalive": true,
+        "id": 0
+      }
+    ]
+  }
+}

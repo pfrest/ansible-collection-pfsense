@@ -1,0 +1,43 @@
+---
+- name: Test basic authentication
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Check successful basic authentication
+      pfrest.pfsense.status_system_info:
+        api_host: 'localhost'
+        api_port: 5000
+        api_protocol: 'http'
+        api_username: 'test_username'
+        api_password: 'test_password'
+        validate_certs: false
+
+    - name: Check failed basic authentication
+      register: result
+      failed_when: result.error != "Unauthorized"
+      pfrest.pfsense.status_system_info:
+        api_host: 'localhost'
+        api_port: 5000
+        api_protocol: 'http'
+        api_username: 'invalid_username'
+        api_password: 'invalid_password'
+        validate_certs: false
+
+    - name: Test API key authentication
+      pfrest.pfsense.status_system_info:
+        api_host: 'localhost'
+        api_port: 5001
+        api_protocol: 'http'
+        api_key: 'sometestapikey'
+        validate_certs: false
+
+    - name: Check failed API key authentication
+      register: result
+      failed_when: result.error != "Unauthorized"
+      pfrest.pfsense.status_system_info:
+        api_host: 'localhost'
+        api_port: 5001
+        api_protocol: 'http'
+        api_key: 'invalidapikey'
+        validate_certs: false

@@ -1,0 +1,36 @@
+---
+- name: Test pfrest.pfsense.interface_laggs_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Retrieve Interface LAGGs
+      register: result
+      pfrest.pfsense.interface_laggs_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is sequence
+          - 'result.data | length > 0'
+          - result.data[0].laggif is defined
+          - result.data[0].descr is defined
+          - result.data[0].members is defined
+          - result.data[0].proto is defined
+          - result.data[0].lacptimeout is defined
+          - result.data[0].lagghash is defined
+          - result.data[0].failovermaster is defined
+          - result.data[0].id is defined
+

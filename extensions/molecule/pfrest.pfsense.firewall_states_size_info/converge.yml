@@ -1,0 +1,34 @@
+---
+- name: Test pfrest.pfsense.firewall_states_size_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read Firewall States Size
+      register: result
+      pfrest.pfsense.firewall_states_size_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.maximumstates is defined
+          - result.data.maximumstates == 9223372036854776000
+          - result.data.defaultmaximumstates is defined
+          - result.data.defaultmaximumstates == 9223372036854776000
+          - result.data.currentstates is defined
+          - result.data.currentstates == 9223372036854776000
+

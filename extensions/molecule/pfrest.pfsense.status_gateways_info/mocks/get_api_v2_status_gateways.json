@@ -1,0 +1,21 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": [
+      {
+        "name": "string",
+        "srcip": "string",
+        "monitorip": "string",
+        "delay": 1.0,
+        "stddev": 1.0,
+        "loss": 1.0,
+        "status": "string",
+        "substatus": "string",
+        "id": 0
+      }
+    ]
+  }
+}

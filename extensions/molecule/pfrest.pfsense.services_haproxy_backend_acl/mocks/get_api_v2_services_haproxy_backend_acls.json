@@ -1,0 +1,18 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": [
+      {
+        "name": "string",
+        "expression": "host_starts_with",
+        "value": "string",
+        "casesensitive": true,
+        "not": true,
+        "id": 0
+      }
+    ]
+  }
+}

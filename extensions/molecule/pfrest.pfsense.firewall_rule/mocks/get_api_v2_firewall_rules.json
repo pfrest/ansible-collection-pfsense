@@ -1,0 +1,53 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": [
+      {
+        "type": "pass",
+        "interface": [
+          "string"
+        ],
+        "ipprotocol": "inet",
+        "protocol": "tcp",
+        "icmptype": [
+          "any"
+        ],
+        "source": "string",
+        "source_port": "string",
+        "destination": "string",
+        "destination_port": "string",
+        "descr": "string",
+        "disabled": true,
+        "log": true,
+        "tag": "string",
+        "statetype": "keep state",
+        "tcp_flags_any": true,
+        "tcp_flags_out_of": [
+          "fin"
+        ],
+        "tcp_flags_set": [
+          "fin"
+        ],
+        "gateway": "string",
+        "sched": "string",
+        "dnpipe": "string",
+        "pdnpipe": "string",
+        "defaultqueue": "string",
+        "ackqueue": "string",
+        "floating": true,
+        "quick": true,
+        "direction": "any",
+        "tracker": 9223372036854776000,
+        "associated_rule_id": "string",
+        "created_time": 9223372036854776000,
+        "created_by": "string",
+        "updated_time": 9223372036854776000,
+        "updated_by": "string",
+        "id": 0
+      }
+    ]
+  }
+}

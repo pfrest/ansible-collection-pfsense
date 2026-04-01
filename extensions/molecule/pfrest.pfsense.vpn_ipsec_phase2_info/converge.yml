@@ -1,0 +1,78 @@
+---
+- name: Test pfrest.pfsense.vpn_ipsec_phase2_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read IPsec Phase 2
+      register: result
+      pfrest.pfsense.vpn_ipsec_phase2_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.uniqid is defined
+          - result.data.uniqid == "string"
+          - result.data.reqid is defined
+          - result.data.reqid == 9223372036854776000
+          - result.data.ikeid is defined
+          - result.data.ikeid == 9223372036854776000
+          - result.data.descr is defined
+          - result.data.descr == "string"
+          - result.data.disabled is defined
+          - result.data.disabled == true
+          - result.data.mode is defined
+          - result.data.mode == "tunnel"
+          - result.data.localid_type is defined
+          - result.data.localid_type == "string"
+          - result.data.localid_address is defined
+          - result.data.localid_address == "string"
+          - result.data.localid_netbits is defined
+          - result.data.localid_netbits == 9223372036854776000
+          - result.data.natlocalid_type is defined
+          - result.data.natlocalid_type == "string"
+          - result.data.natlocalid_address is defined
+          - result.data.natlocalid_address == "string"
+          - result.data.natlocalid_netbits is defined
+          - result.data.natlocalid_netbits == 9223372036854776000
+          - result.data.remoteid_type is defined
+          - result.data.remoteid_type == "string"
+          - result.data.remoteid_address is defined
+          - result.data.remoteid_address == "string"
+          - result.data.remoteid_netbits is defined
+          - result.data.remoteid_netbits == 9223372036854776000
+          - result.data.protocol is defined
+          - result.data.protocol == "esp"
+          - result.data.encryption_algorithm_option is defined
+          - result.data.encryption_algorithm_option is sequence
+          - result.data.hash_algorithm_option is defined
+          - result.data.hash_algorithm_option is sequence
+          - result.data.pfsgroup is defined
+          - result.data.pfsgroup == 0
+          - result.data.rekey_time is defined
+          - result.data.rekey_time == 9223372036854776000
+          - result.data.rand_time is defined
+          - result.data.rand_time == 9223372036854776000
+          - result.data.lifetime is defined
+          - result.data.lifetime == 9223372036854776000
+          - result.data.pinghost is defined
+          - result.data.pinghost == "string"
+          - result.data.keepalive is defined
+          - result.data.keepalive == true
+          - result.data.id is defined
+          - result.data.id == 0
+

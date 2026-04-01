@@ -1,0 +1,38 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": [
+      {
+        "server": 9223372036854776000,
+        "useaddr": "serveraddr",
+        "useaddr_hostname": "string",
+        "verifyservercn": "auto",
+        "blockoutsidedns": true,
+        "legacy": true,
+        "silent": true,
+        "bindmode": "nobind",
+        "usepkcs11": true,
+        "pkcs11providers": [
+          "string"
+        ],
+        "pkcs11id": "string",
+        "usetoken": true,
+        "usepass": true,
+        "pass": "string",
+        "p12encryption": "high",
+        "useproxy": true,
+        "useproxytype": "http",
+        "proxyaddr": "string",
+        "proxyport": "string",
+        "useproxypass": "none",
+        "proxyuser": "string",
+        "proxypass": "string",
+        "advancedoptions": "string",
+        "id": 0
+      }
+    ]
+  }
+}

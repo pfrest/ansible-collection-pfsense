@@ -1,0 +1,25 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": [
+      {
+        "common_name": "string",
+        "remote_host": "string",
+        "virtual_addr": "string",
+        "virtual_addr6": "string",
+        "bytes_recv": 9223372036854776000,
+        "bytes_sent": 9223372036854776000,
+        "connect_time": "string",
+        "connect_time_unix": 9223372036854776000,
+        "user_name": "string",
+        "client_id": 9223372036854776000,
+        "peer_id": 9223372036854776000,
+        "cipher": "string",
+        "id": 0
+      }
+    ]
+  }
+}

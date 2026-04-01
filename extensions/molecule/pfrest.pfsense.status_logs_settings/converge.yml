@@ -1,0 +1,95 @@
+---
+- name: Test pfrest.pfsense.status_logs_settings module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage Log Settings
+      register: result
+      pfrest.pfsense.status_logs_settings:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        format: rfc3164
+        reverseorder: true
+        nentries: 9223372036854776000
+        nologdefaultblock: true
+        nologdefaultpass: true
+        nologbogons: true
+        nologprivatenets: true
+        nolognginx: true
+        rawfilter: true
+        disablelocallogging: true
+        logconfigchanges: true
+        filterdescriptions: 0
+        logfilesize: 9223372036854776000
+        rotatecount: 9223372036854776000
+        logcompressiontype: bzip2
+        enableremotelogging: true
+        ipprotocol: ipv4
+        sourceip: string
+        remoteserver: string
+        remoteserver2: string
+        remoteserver3: string
+        logall: true
+        filter: true
+        dhcp: true
+        auth: true
+        portalauth: true
+        vpn: true
+        dpinger: true
+        hostapd: true
+        system: true
+        resolver: true
+        ppp: true
+        routing: true
+        ntpd: true
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.format is defined
+          - result.data.reverseorder is defined
+          - result.data.nentries is defined
+          - result.data.nologdefaultblock is defined
+          - result.data.nologdefaultpass is defined
+          - result.data.nologbogons is defined
+          - result.data.nologprivatenets is defined
+          - result.data.nolognginx is defined
+          - result.data.rawfilter is defined
+          - result.data.disablelocallogging is defined
+          - result.data.logconfigchanges is defined
+          - result.data.filterdescriptions is defined
+          - result.data.logfilesize is defined
+          - result.data.rotatecount is defined
+          - result.data.logcompressiontype is defined
+          - result.data.enableremotelogging is defined
+          - result.data.ipprotocol is defined
+          - result.data.sourceip is defined
+          - result.data.remoteserver is defined
+          - result.data.remoteserver2 is defined
+          - result.data.remoteserver3 is defined
+          - result.data.logall is defined
+          - result.data.filter is defined
+          - result.data.dhcp is defined
+          - result.data.auth is defined
+          - result.data.portalauth is defined
+          - result.data.vpn is defined
+          - result.data.dpinger is defined
+          - result.data.hostapd is defined
+          - result.data.system is defined
+          - result.data.resolver is defined
+          - result.data.ppp is defined
+          - result.data.routing is defined
+          - result.data.ntpd is defined
+

@@ -1,0 +1,40 @@
+---
+- name: Test pfrest.pfsense.firewall_traffic_shaper_limiter_bandwidth module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage Traffic Shaper Limiter Bandwidth
+      register: result
+      pfrest.pfsense.firewall_traffic_shaper_limiter_bandwidth:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        state: present
+        lookup_fields:
+          - id
+        bw: 9223372036854776000
+        bwscale: b
+        bwsched: string
+        parent_lookup_fields:
+          - name
+        name: string
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.bw is defined
+          - result.data.bwscale is defined
+          - result.data.bwsched is defined
+          - result.data.id is defined
+

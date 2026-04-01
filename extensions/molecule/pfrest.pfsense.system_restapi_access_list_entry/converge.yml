@@ -1,0 +1,44 @@
+---
+- name: Test pfrest.pfsense.system_restapi_access_list_entry module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage RESTAPI Access List Entry
+      register: result
+      pfrest.pfsense.system_restapi_access_list_entry:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        state: present
+        lookup_fields:
+          - id
+        type: allow
+        weight: 9223372036854776000
+        network: string
+        users:
+          - string
+        sched: string
+        descr: string
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.type is defined
+          - result.data.weight is defined
+          - result.data.network is defined
+          - result.data.users is defined
+          - result.data.sched is defined
+          - result.data.descr is defined
+          - result.data.id is defined
+

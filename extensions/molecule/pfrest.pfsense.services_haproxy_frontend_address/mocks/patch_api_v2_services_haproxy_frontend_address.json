@@ -1,0 +1,16 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": {
+      "extaddr": "custom",
+      "extaddr_custom": "string",
+      "extaddr_port": "string",
+      "extaddr_ssl": true,
+      "exaddr_advanced": "string",
+      "id": 0
+    }
+  }
+}

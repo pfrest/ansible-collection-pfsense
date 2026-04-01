@@ -1,0 +1,102 @@
+---
+- name: Test pfrest.pfsense.services_dhcp_servers module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage all DHCP Servers
+      register: result
+      pfrest.pfsense.services_dhcp_servers:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        objects:
+          - interface: string
+            enable: true
+            range_from: string
+            range_to: string
+            domain: string
+            failover_peerip: string
+            mac_allow:
+              - string
+            mac_deny:
+              - string
+            domainsearchlist:
+              - string
+            defaultleasetime: 9223372036854776000
+            maxleasetime: 9223372036854776000
+            gateway: string
+            dnsserver:
+              - string
+            winsserver:
+              - string
+            ntpserver:
+              - string
+            staticarp: true
+            ignorebootp: true
+            ignoreclientuids: true
+            nonak: true
+            disablepingcheck: true
+            dhcpleaseinlocaltime: true
+            statsgraph: true
+            denyunknown: enabled
+            pool:
+              - range_from: string
+                range_to: string
+                domain: string
+                mac_allow:
+                  - string
+                mac_deny:
+                  - string
+                domainsearchlist:
+                  - string
+                defaultleasetime: 9223372036854776000
+                maxleasetime: 9223372036854776000
+                gateway: string
+                dnsserver:
+                  - string
+                winsserver:
+                  - string
+                ntpserver:
+                  - string
+                ignorebootp: true
+                ignoreclientuids: true
+                denyunknown: enabled
+            numberoptions:
+              - number: 9223372036854776000
+                type: text
+                value: string
+            staticmap:
+              - mac: string
+                ipaddr: string
+                cid: string
+                hostname: string
+                domain: string
+                domainsearchlist:
+                  - string
+                defaultleasetime: 9223372036854776000
+                maxleasetime: 9223372036854776000
+                gateway: string
+                dnsserver:
+                  - string
+                winsserver:
+                  - string
+                ntpserver:
+                  - string
+                arp_table_static_entry: true
+                descr: string
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is sequence
+

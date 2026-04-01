@@ -1,0 +1,66 @@
+---
+- name: Test pfrest.pfsense.system_restapi_settings_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read REST API Settings
+      register: result
+      pfrest.pfsense.system_restapi_settings_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.enabled is defined
+          - result.data.enabled == true
+          - result.data.read_only is defined
+          - result.data.read_only == true
+          - result.data.keep_backup is defined
+          - result.data.keep_backup == true
+          - result.data.login_protection is defined
+          - result.data.login_protection == true
+          - result.data.log_successful_auth is defined
+          - result.data.log_successful_auth == true
+          - result.data.log_level is defined
+          - result.data.log_level == "LOG_DEBUG"
+          - result.data.allow_pre_releases is defined
+          - result.data.allow_pre_releases == true
+          - result.data.hateoas is defined
+          - result.data.hateoas == true
+          - result.data.expose_sensitive_fields is defined
+          - result.data.expose_sensitive_fields == true
+          - result.data.override_sensitive_fields is defined
+          - result.data.override_sensitive_fields is sequence
+          - result.data.allowed_interfaces is defined
+          - result.data.allowed_interfaces is sequence
+          - result.data.represent_interfaces_as is defined
+          - result.data.represent_interfaces_as == "descr"
+          - result.data.auth_methods is defined
+          - result.data.auth_methods is sequence
+          - result.data.jwt_exp is defined
+          - result.data.jwt_exp == 9223372036854776000
+          - result.data.ha_sync is defined
+          - result.data.ha_sync == true
+          - result.data.ha_sync_validate_certs is defined
+          - result.data.ha_sync_validate_certs == true
+          - result.data.ha_sync_hosts is defined
+          - result.data.ha_sync_hosts is sequence
+          - result.data.ha_sync_username is defined
+          - result.data.ha_sync_username == "string"
+          - result.data.ha_sync_password is defined
+          - result.data.ha_sync_password == "string"
+

@@ -1,0 +1,17 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": {
+      "enable": true,
+      "keep_conf": true,
+      "resolve_interval_track": true,
+      "resolve_interval": 9223372036854776000,
+      "interface_group": "all",
+      "hide_secrets": true,
+      "hide_peers": true
+    }
+  }
+}

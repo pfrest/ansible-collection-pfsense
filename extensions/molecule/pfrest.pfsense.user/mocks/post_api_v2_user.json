@@ -1,0 +1,26 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": {
+      "name": "string",
+      "password": "string",
+      "uid": 9223372036854776000,
+      "scope": "string",
+      "priv": [
+        "string"
+      ],
+      "disabled": true,
+      "descr": "string",
+      "expires": "string",
+      "cert": [
+        "string"
+      ],
+      "authorizedkeys": "string",
+      "ipsecpsk": "string",
+      "id": 0
+    }
+  }
+}

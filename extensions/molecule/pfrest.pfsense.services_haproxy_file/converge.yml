@@ -1,0 +1,37 @@
+---
+- name: Test pfrest.pfsense.services_haproxy_file module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage HA Proxy File
+      register: result
+      pfrest.pfsense.services_haproxy_file:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        state: present
+        lookup_fields:
+          - name
+        name: string
+        type: luascript
+        content: string
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.name is defined
+          - result.data.type is defined
+          - result.data.content is defined
+          - result.data.id is defined
+

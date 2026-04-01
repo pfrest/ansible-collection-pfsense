@@ -1,0 +1,73 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": [
+      {
+        "vpnid": 9223372036854776000,
+        "vpnif": "string",
+        "description": "string",
+        "disable": true,
+        "mode": "p2p_tls",
+        "dev_mode": "tun",
+        "protocol": "UDP4",
+        "interface": "string",
+        "server_addr": "string",
+        "server_port": "string",
+        "local_port": "string",
+        "proxy_addr": "string",
+        "proxy_port": "string",
+        "proxy_authtype": "none",
+        "proxy_user": "string",
+        "proxy_passwd": "string",
+        "auth_user": "string",
+        "auth_pass": "string",
+        "auth_retry_none": true,
+        "tls": "string",
+        "tls_type": "auth",
+        "tlsauth_keydir": "default",
+        "caref": "string",
+        "certref": "string",
+        "data_ciphers": [
+          "string"
+        ],
+        "data_ciphers_fallback": "string",
+        "digest": "string",
+        "remote_cert_tls": true,
+        "tunnel_network": "string",
+        "tunnel_networkv6": "string",
+        "remote_network": [
+          "string"
+        ],
+        "remote_networkv6": [
+          "string"
+        ],
+        "use_shaper": 9223372036854776000,
+        "allow_compression": "no",
+        "passtos": true,
+        "route_no_pull": true,
+        "route_no_exec": true,
+        "dns_add": true,
+        "topology": "subnet",
+        "inactive_seconds": 9223372036854776000,
+        "ping_method": "keepalive",
+        "keepalive_interval": 9223372036854776000,
+        "keepalive_timeout": 9223372036854776000,
+        "ping_seconds": 9223372036854776000,
+        "ping_action": "ping_restart",
+        "ping_action_seconds": 9223372036854776000,
+        "custom_options": [
+          "string"
+        ],
+        "udp_fast_io": true,
+        "exit_notify": "1",
+        "sndrcvbuf": 65536,
+        "create_gw": "both",
+        "verbosity_level": 0,
+        "id": 0
+      }
+    ]
+  }
+}

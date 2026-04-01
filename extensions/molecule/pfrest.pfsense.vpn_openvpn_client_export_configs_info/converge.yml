@@ -1,0 +1,52 @@
+---
+- name: Test pfrest.pfsense.vpn_openvpn_client_export_configs_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Retrieve Open VPN Client Export Configs
+      register: result
+      pfrest.pfsense.vpn_openvpn_client_export_configs_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is sequence
+          - 'result.data | length > 0'
+          - result.data[0].server is defined
+          - result.data[0].useaddr is defined
+          - result.data[0].useaddr_hostname is defined
+          - result.data[0].verifyservercn is defined
+          - result.data[0].blockoutsidedns is defined
+          - result.data[0].legacy is defined
+          - result.data[0].silent is defined
+          - result.data[0].bindmode is defined
+          - result.data[0].usepkcs11 is defined
+          - result.data[0].pkcs11providers is defined
+          - result.data[0].pkcs11id is defined
+          - result.data[0].usetoken is defined
+          - result.data[0].usepass is defined
+          - result.data[0].pass is defined
+          - result.data[0].p12encryption is defined
+          - result.data[0].useproxy is defined
+          - result.data[0].useproxytype is defined
+          - result.data[0].proxyaddr is defined
+          - result.data[0].proxyport is defined
+          - result.data[0].useproxypass is defined
+          - result.data[0].proxyuser is defined
+          - result.data[0].proxypass is defined
+          - result.data[0].advancedoptions is defined
+          - result.data[0].id is defined
+

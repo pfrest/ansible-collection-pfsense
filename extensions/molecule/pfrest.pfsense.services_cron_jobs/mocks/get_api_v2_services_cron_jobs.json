@@ -1,0 +1,20 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": [
+      {
+        "minute": "string",
+        "hour": "string",
+        "mday": "string",
+        "month": "string",
+        "wday": "string",
+        "who": "string",
+        "command": "string",
+        "id": 0
+      }
+    ]
+  }
+}

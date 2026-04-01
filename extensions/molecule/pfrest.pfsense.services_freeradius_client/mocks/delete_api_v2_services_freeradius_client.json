@@ -1,0 +1,22 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": {
+      "addr": "string",
+      "ip_version": "ipaddr",
+      "description": "string",
+      "shortname": "string",
+      "secret": "string",
+      "proto": "udp",
+      "nastype": "cisco",
+      "msgauth": true,
+      "maxconn": 9223372036854776000,
+      "naslogin": "string",
+      "naspassword": "string",
+      "id": 0
+    }
+  }
+}

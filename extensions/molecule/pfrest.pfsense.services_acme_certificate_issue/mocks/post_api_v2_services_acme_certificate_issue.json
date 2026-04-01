@@ -1,0 +1,15 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": {
+      "certificate": "string",
+      "status": "string",
+      "last_updated": 9223372036854776000,
+      "result_log": "string",
+      "id": 0
+    }
+  }
+}

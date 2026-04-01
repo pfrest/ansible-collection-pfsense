@@ -1,0 +1,21 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": {
+      "disable": true,
+      "ipaddress": "string",
+      "port": "string",
+      "timeout": 9223372036854776000,
+      "ssl": true,
+      "sslvalidate": true,
+      "fromaddress": "string",
+      "notifyemailaddress": "string",
+      "authentication_mechanism": "PLAIN",
+      "username": "string",
+      "password": "string"
+    }
+  }
+}

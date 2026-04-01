@@ -1,0 +1,30 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": {
+      "interface": "string",
+      "ipprotocol": "inet",
+      "protocol": "any",
+      "source": "string",
+      "source_port": "string",
+      "destination": "string",
+      "destination_port": "string",
+      "target": "string",
+      "local_port": "string",
+      "disabled": true,
+      "nordr": true,
+      "nosync": true,
+      "descr": "string",
+      "natreflection": "enable",
+      "associated_rule_id": "string",
+      "created_time": 9223372036854776000,
+      "created_by": "string",
+      "updated_time": 9223372036854776000,
+      "updated_by": "string",
+      "id": 0
+    }
+  }
+}

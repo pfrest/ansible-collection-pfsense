@@ -1,0 +1,19 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": [
+      {
+        "descr": "string",
+        "username": "string",
+        "hash_algo": "sha256",
+        "length_bytes": 16,
+        "hash": "string",
+        "key": "string",
+        "id": 0
+      }
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+---
+- name: Test pfrest.pfsense.services_dns_resolver_access_list_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read DNS Resolver Access List
+      register: result
+      pfrest.pfsense.services_dns_resolver_access_list_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.name is defined
+          - result.data.name == "string"
+          - result.data.action is defined
+          - result.data.action == "allow"
+          - result.data.description is defined
+          - result.data.description == "string"
+          - result.data.networks is defined
+          - result.data.networks is sequence
+          - result.data.id is defined
+          - result.data.id == 0
+

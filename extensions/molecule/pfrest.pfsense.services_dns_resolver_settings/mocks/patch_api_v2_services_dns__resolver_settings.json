@@ -1,0 +1,32 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": {
+      "enable": true,
+      "port": "string",
+      "enablessl": true,
+      "sslcertref": "string",
+      "tlsport": "string",
+      "active_interface": [
+        "string"
+      ],
+      "outgoing_interface": [
+        "string"
+      ],
+      "strictout": true,
+      "system_domain_local_zone_type": "deny",
+      "dnssec": true,
+      "python": true,
+      "python_order": "pre_validator",
+      "python_script": "string",
+      "forwarding": true,
+      "regdhcp": true,
+      "regdhcpstatic": true,
+      "regovpnclients": true,
+      "custom_options": "string"
+    }
+  }
+}

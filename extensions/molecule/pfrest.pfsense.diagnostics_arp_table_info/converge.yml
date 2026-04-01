@@ -1,0 +1,37 @@
+---
+- name: Test pfrest.pfsense.diagnostics_arp_table_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Retrieve ARP Table Entries
+      register: result
+      pfrest.pfsense.diagnostics_arp_table_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is sequence
+          - 'result.data | length > 0'
+          - result.data[0].hostname is defined
+          - result.data[0].ip_address is defined
+          - result.data[0].mac_address is defined
+          - result.data[0].interface is defined
+          - result.data[0].type is defined
+          - result.data[0].permanent is defined
+          - result.data[0].dnsresolve is defined
+          - result.data[0].expires is defined
+          - result.data[0].id is defined
+

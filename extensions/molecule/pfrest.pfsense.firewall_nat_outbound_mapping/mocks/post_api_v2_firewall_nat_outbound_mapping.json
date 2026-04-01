@@ -1,0 +1,27 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": {
+      "interface": "string",
+      "protocol": "tcp",
+      "disabled": true,
+      "nonat": true,
+      "nosync": true,
+      "source": "string",
+      "source_port": "string",
+      "destination": "string",
+      "destination_port": "string",
+      "target": "string",
+      "target_subnet": 9223372036854776000,
+      "nat_port": "string",
+      "static_nat_port": true,
+      "poolopts": "round-robin",
+      "source_hash_key": "string",
+      "descr": "string",
+      "id": 0
+    }
+  }
+}

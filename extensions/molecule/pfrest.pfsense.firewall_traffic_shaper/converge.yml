@@ -1,0 +1,76 @@
+---
+- name: Test pfrest.pfsense.firewall_traffic_shaper module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage Traffic Shaper
+      register: result
+      pfrest.pfsense.firewall_traffic_shaper:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        state: present
+        lookup_fields:
+          - interface
+        enabled: true
+        interface: string
+        scheduler: HFSC
+        bandwidthtype: '%'
+        bandwidth: 9223372036854776000
+        qlimit: 9223372036854776000
+        tbrconfig: 9223372036854776000
+        queue:
+          - interface: string
+            enabled: true
+            name: string
+            priority: 9223372036854776000
+            qlimit: 9223372036854776000
+            description: string
+            default: true
+            red: true
+            rio: true
+            ecn: true
+            codel: true
+            bandwidthtype: '%'
+            bandwidth: 9223372036854776000
+            buckets: 9223372036854776000
+            hogs: 9223372036854776000
+            borrow: true
+            upperlimit: true
+            upperlimit_m1: string
+            upperlimit_d: 9223372036854776000
+            upperlimit_m2: string
+            realtime: true
+            realtime_m1: string
+            realtime_d: 9223372036854776000
+            realtime_m2: string
+            linkshare: true
+            linkshare_m1: string
+            linkshare_d: 9223372036854776000
+            linkshare_m2: string
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.enabled is defined
+          - result.data.interface is defined
+          - result.data.name is defined
+          - result.data.scheduler is defined
+          - result.data.bandwidthtype is defined
+          - result.data.bandwidth is defined
+          - result.data.qlimit is defined
+          - result.data.tbrconfig is defined
+          - result.data.queue is defined
+          - result.data.id is defined
+

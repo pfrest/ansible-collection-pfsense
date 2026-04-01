@@ -1,0 +1,58 @@
+---
+- name: Test pfrest.pfsense.firewall_rules module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage all Firewall Rules
+      register: result
+      pfrest.pfsense.firewall_rules:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        objects:
+          - type: pass
+            interface:
+              - string
+            ipprotocol: inet
+            protocol: tcp
+            icmptype:
+              - any
+            source: string
+            source_port: string
+            destination: string
+            destination_port: string
+            descr: string
+            disabled: true
+            log: true
+            tag: string
+            statetype: keep state
+            tcp_flags_any: true
+            tcp_flags_out_of:
+              - fin
+            tcp_flags_set:
+              - fin
+            gateway: string
+            sched: string
+            dnpipe: string
+            pdnpipe: string
+            defaultqueue: string
+            ackqueue: string
+            floating: true
+            quick: true
+            direction: any
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is sequence
+

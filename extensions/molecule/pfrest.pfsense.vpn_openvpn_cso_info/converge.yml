@@ -1,0 +1,84 @@
+---
+- name: Test pfrest.pfsense.vpn_openvpn_cso_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read Open VPN Client Specific Override
+      register: result
+      pfrest.pfsense.vpn_openvpn_cso_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.common_name is defined
+          - result.data.common_name == "string"
+          - result.data.disable is defined
+          - result.data.disable == true
+          - result.data.block is defined
+          - result.data.block == true
+          - result.data.description is defined
+          - result.data.description == "string"
+          - result.data.server_list is defined
+          - result.data.server_list is sequence
+          - result.data.tunnel_network is defined
+          - result.data.tunnel_network == "string"
+          - result.data.tunnel_networkv6 is defined
+          - result.data.tunnel_networkv6 == "string"
+          - result.data.local_network is defined
+          - result.data.local_network is sequence
+          - result.data.local_networkv6 is defined
+          - result.data.local_networkv6 is sequence
+          - result.data.remote_network is defined
+          - result.data.remote_network is sequence
+          - result.data.remote_networkv6 is defined
+          - result.data.remote_networkv6 is sequence
+          - result.data.gwredir is defined
+          - result.data.gwredir == true
+          - result.data.push_reset is defined
+          - result.data.push_reset == true
+          - result.data.remove_options is defined
+          - result.data.remove_options is sequence
+          - result.data.dns_domain is defined
+          - result.data.dns_domain == "string"
+          - result.data.dns_server1 is defined
+          - result.data.dns_server1 == "string"
+          - result.data.dns_server2 is defined
+          - result.data.dns_server2 == "string"
+          - result.data.dns_server3 is defined
+          - result.data.dns_server3 == "string"
+          - result.data.dns_server4 is defined
+          - result.data.dns_server4 == "string"
+          - result.data.ntp_server1 is defined
+          - result.data.ntp_server1 == "string"
+          - result.data.ntp_server2 is defined
+          - result.data.ntp_server2 == "string"
+          - result.data.netbios_enable is defined
+          - result.data.netbios_enable == true
+          - result.data.netbios_ntype is defined
+          - result.data.netbios_ntype == 0
+          - result.data.netbios_scope is defined
+          - result.data.netbios_scope == "string"
+          - result.data.wins_server1 is defined
+          - result.data.wins_server1 == "string"
+          - result.data.wins_server2 is defined
+          - result.data.wins_server2 == "string"
+          - result.data.custom_options is defined
+          - result.data.custom_options is sequence
+          - result.data.id is defined
+          - result.data.id == 0
+

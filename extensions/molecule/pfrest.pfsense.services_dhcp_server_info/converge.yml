@@ -1,0 +1,82 @@
+---
+- name: Test pfrest.pfsense.services_dhcp_server_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read DHCP Server
+      register: result
+      pfrest.pfsense.services_dhcp_server_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.interface is defined
+          - result.data.interface == "string"
+          - result.data.enable is defined
+          - result.data.enable == true
+          - result.data.range_from is defined
+          - result.data.range_from == "string"
+          - result.data.range_to is defined
+          - result.data.range_to == "string"
+          - result.data.domain is defined
+          - result.data.domain == "string"
+          - result.data.failover_peerip is defined
+          - result.data.failover_peerip == "string"
+          - result.data.mac_allow is defined
+          - result.data.mac_allow is sequence
+          - result.data.mac_deny is defined
+          - result.data.mac_deny is sequence
+          - result.data.domainsearchlist is defined
+          - result.data.domainsearchlist is sequence
+          - result.data.defaultleasetime is defined
+          - result.data.defaultleasetime == 9223372036854776000
+          - result.data.maxleasetime is defined
+          - result.data.maxleasetime == 9223372036854776000
+          - result.data.gateway is defined
+          - result.data.gateway == "string"
+          - result.data.dnsserver is defined
+          - result.data.dnsserver is sequence
+          - result.data.winsserver is defined
+          - result.data.winsserver is sequence
+          - result.data.ntpserver is defined
+          - result.data.ntpserver is sequence
+          - result.data.staticarp is defined
+          - result.data.staticarp == true
+          - result.data.ignorebootp is defined
+          - result.data.ignorebootp == true
+          - result.data.ignoreclientuids is defined
+          - result.data.ignoreclientuids == true
+          - result.data.nonak is defined
+          - result.data.nonak == true
+          - result.data.disablepingcheck is defined
+          - result.data.disablepingcheck == true
+          - result.data.dhcpleaseinlocaltime is defined
+          - result.data.dhcpleaseinlocaltime == true
+          - result.data.statsgraph is defined
+          - result.data.statsgraph == true
+          - result.data.denyunknown is defined
+          - result.data.denyunknown == "enabled"
+          - result.data.pool is defined
+          - result.data.pool is sequence
+          - result.data.numberoptions is defined
+          - result.data.numberoptions is sequence
+          - result.data.staticmap is defined
+          - result.data.staticmap is sequence
+          - result.data.id is defined
+          - result.data.id == 0
+

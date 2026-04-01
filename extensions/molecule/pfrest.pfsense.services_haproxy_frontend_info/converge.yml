@@ -1,0 +1,74 @@
+---
+- name: Test pfrest.pfsense.services_haproxy_frontend_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read HA Proxy Frontend
+      register: result
+      pfrest.pfsense.services_haproxy_frontend_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.name is defined
+          - result.data.name == "string"
+          - result.data.descr is defined
+          - result.data.descr == "string"
+          - result.data.status is defined
+          - result.data.status == "active"
+          - result.data.a_extaddr is defined
+          - result.data.a_extaddr is sequence
+          - result.data.max_connections is defined
+          - result.data.max_connections == 9223372036854776000
+          - result.data.type is defined
+          - result.data.type == "http"
+          - result.data.ha_acls is defined
+          - result.data.ha_acls is sequence
+          - result.data.a_actionitems is defined
+          - result.data.a_actionitems is sequence
+          - result.data.backend_serverpool is defined
+          - result.data.backend_serverpool == "string"
+          - result.data.socket_stats is defined
+          - result.data.socket_stats == true
+          - result.data.dontlognull is defined
+          - result.data.dontlognull == true
+          - result.data.dontlog_normal is defined
+          - result.data.dontlog_normal == true
+          - result.data.log_separate_errors is defined
+          - result.data.log_separate_errors == true
+          - result.data.log_detailed is defined
+          - result.data.log_detailed == true
+          - result.data.a_errorfiles is defined
+          - result.data.a_errorfiles is sequence
+          - result.data.client_timeout is defined
+          - result.data.client_timeout == 9223372036854776000
+          - result.data.forwardfor is defined
+          - result.data.forwardfor == true
+          - result.data.httpclose is defined
+          - result.data.httpclose == "http-keep-alive"
+          - result.data.advanced_bind is defined
+          - result.data.advanced_bind == "string"
+          - result.data.advanced is defined
+          - result.data.advanced == "string"
+          - result.data.ssloffloadcert is defined
+          - result.data.ssloffloadcert == "string"
+          - result.data.ha_certificates is defined
+          - result.data.ha_certificates is sequence
+          - result.data.id is defined
+          - result.data.id == 0
+

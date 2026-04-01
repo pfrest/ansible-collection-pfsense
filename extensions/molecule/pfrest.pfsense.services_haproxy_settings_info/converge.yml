@@ -1,0 +1,80 @@
+---
+- name: Test pfrest.pfsense.services_haproxy_settings_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read HA Proxy Settings
+      register: result
+      pfrest.pfsense.services_haproxy_settings_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.enable is defined
+          - result.data.enable == true
+          - result.data.maxconn is defined
+          - result.data.maxconn == 9223372036854776000
+          - result.data.nbthread is defined
+          - result.data.nbthread == 9223372036854776000
+          - result.data.terminate_on_reload is defined
+          - result.data.terminate_on_reload == true
+          - result.data.hard_stop_after is defined
+          - result.data.hard_stop_after == "string"
+          - result.data.carpdev is defined
+          - result.data.carpdev == "string"
+          - result.data.localstatsport is defined
+          - result.data.localstatsport == "string"
+          - result.data.localstats_refreshtime is defined
+          - result.data.localstats_refreshtime == 9223372036854776000
+          - result.data.localstats_sticktable_refreshtime is defined
+          - result.data.localstats_sticktable_refreshtime == 9223372036854776000
+          - result.data.remotesyslog is defined
+          - result.data.remotesyslog == "string"
+          - result.data.logfacility is defined
+          - result.data.logfacility == "kern"
+          - result.data.loglevel is defined
+          - result.data.loglevel == "emerg"
+          - result.data.log_send_hostname is defined
+          - result.data.log_send_hostname == "string"
+          - result.data.dns_resolvers is defined
+          - result.data.dns_resolvers is sequence
+          - result.data.resolver_retries is defined
+          - result.data.resolver_retries == 9223372036854776000
+          - result.data.resolver_timeoutretry is defined
+          - result.data.resolver_timeoutretry == "string"
+          - result.data.resolver_holdvalid is defined
+          - result.data.resolver_holdvalid == "string"
+          - result.data.email_mailers is defined
+          - result.data.email_mailers is sequence
+          - result.data.email_level is defined
+          - result.data.email_level == ""
+          - result.data.email_myhostname is defined
+          - result.data.email_myhostname == "string"
+          - result.data.email_from is defined
+          - result.data.email_from == "string"
+          - result.data.email_to is defined
+          - result.data.email_to == "string"
+          - result.data.sslcompatibilitymode is defined
+          - result.data.sslcompatibilitymode == "auto"
+          - result.data.ssldefaultdhparam is defined
+          - result.data.ssldefaultdhparam == 9223372036854776000
+          - result.data.advanced is defined
+          - result.data.advanced == "string"
+          - result.data.enablesync is defined
+          - result.data.enablesync == true
+

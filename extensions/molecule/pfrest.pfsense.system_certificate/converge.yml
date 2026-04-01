@@ -1,0 +1,42 @@
+---
+- name: Test pfrest.pfsense.system_certificate module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage Certificate
+      register: result
+      pfrest.pfsense.system_certificate:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        state: present
+        lookup_fields:
+          - id
+        descr: string
+        type: server
+        crt: string
+        prv: string
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.descr is defined
+          - result.data.refid is defined
+          - result.data.caref is defined
+          - result.data.type is defined
+          - result.data.csr is defined
+          - result.data.crt is defined
+          - result.data.prv is defined
+          - result.data.id is defined
+

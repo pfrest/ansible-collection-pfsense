@@ -1,0 +1,134 @@
+---
+- name: Test pfrest.pfsense.vpn_openvpn_client_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read Open VPN Client
+      register: result
+      pfrest.pfsense.vpn_openvpn_client_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.vpnid is defined
+          - result.data.vpnid == 9223372036854776000
+          - result.data.vpnif is defined
+          - result.data.vpnif == "string"
+          - result.data.description is defined
+          - result.data.description == "string"
+          - result.data.disable is defined
+          - result.data.disable == true
+          - result.data.mode is defined
+          - result.data.mode == "p2p_tls"
+          - result.data.dev_mode is defined
+          - result.data.dev_mode == "tun"
+          - result.data.protocol is defined
+          - result.data.protocol == "UDP4"
+          - result.data.interface is defined
+          - result.data.interface == "string"
+          - result.data.server_addr is defined
+          - result.data.server_addr == "string"
+          - result.data.server_port is defined
+          - result.data.server_port == "string"
+          - result.data.local_port is defined
+          - result.data.local_port == "string"
+          - result.data.proxy_addr is defined
+          - result.data.proxy_addr == "string"
+          - result.data.proxy_port is defined
+          - result.data.proxy_port == "string"
+          - result.data.proxy_authtype is defined
+          - result.data.proxy_authtype == "none"
+          - result.data.proxy_user is defined
+          - result.data.proxy_user == "string"
+          - result.data.proxy_passwd is defined
+          - result.data.proxy_passwd == "string"
+          - result.data.auth_user is defined
+          - result.data.auth_user == "string"
+          - result.data.auth_pass is defined
+          - result.data.auth_pass == "string"
+          - result.data.auth_retry_none is defined
+          - result.data.auth_retry_none == true
+          - result.data.tls is defined
+          - result.data.tls == "string"
+          - result.data.tls_type is defined
+          - result.data.tls_type == "auth"
+          - result.data.tlsauth_keydir is defined
+          - result.data.tlsauth_keydir == "default"
+          - result.data.caref is defined
+          - result.data.caref == "string"
+          - result.data.certref is defined
+          - result.data.certref == "string"
+          - result.data.data_ciphers is defined
+          - result.data.data_ciphers is sequence
+          - result.data.data_ciphers_fallback is defined
+          - result.data.data_ciphers_fallback == "string"
+          - result.data.digest is defined
+          - result.data.digest == "string"
+          - result.data.remote_cert_tls is defined
+          - result.data.remote_cert_tls == true
+          - result.data.tunnel_network is defined
+          - result.data.tunnel_network == "string"
+          - result.data.tunnel_networkv6 is defined
+          - result.data.tunnel_networkv6 == "string"
+          - result.data.remote_network is defined
+          - result.data.remote_network is sequence
+          - result.data.remote_networkv6 is defined
+          - result.data.remote_networkv6 is sequence
+          - result.data.use_shaper is defined
+          - result.data.use_shaper == 9223372036854776000
+          - result.data.allow_compression is defined
+          - result.data.allow_compression == "no"
+          - result.data.passtos is defined
+          - result.data.passtos == true
+          - result.data.route_no_pull is defined
+          - result.data.route_no_pull == true
+          - result.data.route_no_exec is defined
+          - result.data.route_no_exec == true
+          - result.data.dns_add is defined
+          - result.data.dns_add == true
+          - result.data.topology is defined
+          - result.data.topology == "subnet"
+          - result.data.inactive_seconds is defined
+          - result.data.inactive_seconds == 9223372036854776000
+          - result.data.ping_method is defined
+          - result.data.ping_method == "keepalive"
+          - result.data.keepalive_interval is defined
+          - result.data.keepalive_interval == 9223372036854776000
+          - result.data.keepalive_timeout is defined
+          - result.data.keepalive_timeout == 9223372036854776000
+          - result.data.ping_seconds is defined
+          - result.data.ping_seconds == 9223372036854776000
+          - result.data.ping_action is defined
+          - result.data.ping_action == "ping_restart"
+          - result.data.ping_action_seconds is defined
+          - result.data.ping_action_seconds == 9223372036854776000
+          - result.data.custom_options is defined
+          - result.data.custom_options is sequence
+          - result.data.udp_fast_io is defined
+          - result.data.udp_fast_io == true
+          - result.data.exit_notify is defined
+          - result.data.exit_notify == "1"
+          - result.data.sndrcvbuf is defined
+          - result.data.sndrcvbuf == 65536
+          - result.data.create_gw is defined
+          - result.data.create_gw == "both"
+          - result.data.verbosity_level is defined
+          - result.data.verbosity_level == 0
+          - result.data.id is defined
+          - result.data.id == 0
+

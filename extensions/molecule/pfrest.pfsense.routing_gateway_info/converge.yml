@@ -1,0 +1,76 @@
+---
+- name: Test pfrest.pfsense.routing_gateway_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read Routing Gateway
+      register: result
+      pfrest.pfsense.routing_gateway_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.name is defined
+          - result.data.name == "string"
+          - result.data.descr is defined
+          - result.data.descr == "string"
+          - result.data.disabled is defined
+          - result.data.disabled == true
+          - result.data.ipprotocol is defined
+          - result.data.ipprotocol == "inet"
+          - result.data.interface is defined
+          - result.data.interface == "string"
+          - result.data.gateway is defined
+          - result.data.gateway == "string"
+          - result.data.monitor_disable is defined
+          - result.data.monitor_disable == true
+          - result.data.monitor is defined
+          - result.data.monitor == "string"
+          - result.data.action_disable is defined
+          - result.data.action_disable == true
+          - result.data.force_down is defined
+          - result.data.force_down == true
+          - result.data.dpinger_dont_add_static_route is defined
+          - result.data.dpinger_dont_add_static_route == true
+          - result.data.gw_down_kill_states is defined
+          - result.data.gw_down_kill_states == ""
+          - result.data.nonlocalgateway is defined
+          - result.data.nonlocalgateway == true
+          - result.data.weight is defined
+          - result.data.weight == 9223372036854776000
+          - result.data.data_payload is defined
+          - result.data.data_payload == 9223372036854776000
+          - result.data.latencylow is defined
+          - result.data.latencylow == 9223372036854776000
+          - result.data.latencyhigh is defined
+          - result.data.latencyhigh == 9223372036854776000
+          - result.data.losslow is defined
+          - result.data.losslow == 9223372036854776000
+          - result.data.losshigh is defined
+          - result.data.losshigh == 9223372036854776000
+          - result.data.interval is defined
+          - result.data.interval == 9223372036854776000
+          - result.data.loss_interval is defined
+          - result.data.loss_interval == 9223372036854776000
+          - result.data.time_period is defined
+          - result.data.time_period == 9223372036854776000
+          - result.data.alert_interval is defined
+          - result.data.alert_interval == 9223372036854776000
+          - result.data.id is defined
+          - result.data.id == 0
+

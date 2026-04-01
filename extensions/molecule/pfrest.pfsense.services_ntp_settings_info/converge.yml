@@ -1,0 +1,62 @@
+---
+- name: Test pfrest.pfsense.services_ntp_settings_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read NTP Settings
+      register: result
+      pfrest.pfsense.services_ntp_settings_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.enable is defined
+          - result.data.enable == true
+          - result.data.interface is defined
+          - result.data.interface is sequence
+          - result.data.ntpmaxpeers is defined
+          - result.data.ntpmaxpeers == 9223372036854776000
+          - result.data.orphan is defined
+          - result.data.orphan == 9223372036854776000
+          - result.data.ntpminpoll is defined
+          - result.data.ntpminpoll == ""
+          - result.data.ntpmaxpoll is defined
+          - result.data.ntpmaxpoll == ""
+          - result.data.dnsresolv is defined
+          - result.data.dnsresolv == "auto"
+          - result.data.logpeer is defined
+          - result.data.logpeer == true
+          - result.data.logsys is defined
+          - result.data.logsys == true
+          - result.data.clockstats is defined
+          - result.data.clockstats == true
+          - result.data.loopstats is defined
+          - result.data.loopstats == true
+          - result.data.peerstats is defined
+          - result.data.peerstats == true
+          - result.data.statsgraph is defined
+          - result.data.statsgraph == true
+          - result.data.leapsec is defined
+          - result.data.leapsec == "string"
+          - result.data.serverauth is defined
+          - result.data.serverauth == true
+          - result.data.serverauthkey is defined
+          - result.data.serverauthkey == "string"
+          - result.data.serverauthalgo is defined
+          - result.data.serverauthalgo == "md5"
+

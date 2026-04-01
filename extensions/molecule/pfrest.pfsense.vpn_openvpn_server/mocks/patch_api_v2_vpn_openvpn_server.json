@@ -1,0 +1,98 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": {
+      "vpnid": 9223372036854776000,
+      "vpnif": "string",
+      "description": "string",
+      "disable": true,
+      "mode": "p2p_tls",
+      "authmode": [
+        "string"
+      ],
+      "dev_mode": "tun",
+      "protocol": "UDP4",
+      "interface": "string",
+      "local_port": "string",
+      "use_tls": true,
+      "tls": "string",
+      "tls_type": "auth",
+      "tlsauth_keydir": "default",
+      "caref": "string",
+      "certref": "string",
+      "cert_depth": 1,
+      "dh_length": "string",
+      "ecdh_curve": "string",
+      "data_ciphers": [
+        "string"
+      ],
+      "data_ciphers_fallback": "string",
+      "digest": "string",
+      "strictusercn": true,
+      "remote_cert_tls": true,
+      "tunnel_network": "string",
+      "tunnel_networkv6": "string",
+      "serverbridge_dhcp": true,
+      "serverbridge_interface": "string",
+      "serverbridge_routegateway": true,
+      "serverbridge_dhcp_start": "string",
+      "serverbridge_dhcp_end": "string",
+      "gwredir": true,
+      "gwredir6": true,
+      "local_network": [
+        "string"
+      ],
+      "local_networkv6": [
+        "string"
+      ],
+      "remote_network": [
+        "string"
+      ],
+      "remote_networkv6": [
+        "string"
+      ],
+      "maxclients": 9223372036854776000,
+      "allow_compression": "no",
+      "passtos": true,
+      "client2client": true,
+      "duplicate_cn": true,
+      "connlimit": 9223372036854776000,
+      "dynamic_ip": true,
+      "topology": "subnet",
+      "inactive_seconds": 9223372036854776000,
+      "ping_method": "keepalive",
+      "keepalive_interval": 9223372036854776000,
+      "keepalive_timeout": 9223372036854776000,
+      "ping_seconds": 9223372036854776000,
+      "ping_push": true,
+      "ping_action": "ping_restart",
+      "ping_action_seconds": 9223372036854776000,
+      "ping_action_push": true,
+      "dns_domain": "string",
+      "dns_server1": "string",
+      "dns_server2": "string",
+      "dns_server3": "string",
+      "dns_server4": "string",
+      "push_blockoutsidedns": true,
+      "push_register_dns": true,
+      "ntp_server1": "string",
+      "ntp_server2": "string",
+      "netbios_enable": true,
+      "netbios_ntype": 0,
+      "netbios_scope": "string",
+      "wins_server1": "string",
+      "wins_server2": "string",
+      "custom_options": [
+        "string"
+      ],
+      "username_as_common_name": true,
+      "sndrcvbuf": 65536,
+      "create_gw": "both",
+      "verbosity_level": 0,
+      "id": 0
+    }
+  }
+}

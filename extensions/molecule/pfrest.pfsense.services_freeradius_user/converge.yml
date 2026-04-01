@@ -1,0 +1,53 @@
+---
+- name: Test pfrest.pfsense.services_freeradius_user module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage Free RADIUS User
+      register: result
+      pfrest.pfsense.services_freeradius_user:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        state: present
+        lookup_fields:
+          - username
+        username: string
+        password: string
+        password_encryption: Cleartext-Password
+        motp_enable: true
+        motp_authmethod: motp
+        motp_secret: string
+        motp_pin: string
+        motp_offset: 9223372036854776000
+        description: string
+        framed_ip_address: string
+        framed_ip_netmask: string
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.username is defined
+          - result.data.password is defined
+          - result.data.password_encryption is defined
+          - result.data.motp_enable is defined
+          - result.data.motp_authmethod is defined
+          - result.data.motp_secret is defined
+          - result.data.motp_pin is defined
+          - result.data.motp_offset is defined
+          - result.data.description is defined
+          - result.data.framed_ip_address is defined
+          - result.data.framed_ip_netmask is defined
+          - result.data.id is defined
+

@@ -1,0 +1,50 @@
+---
+- name: Test pfrest.pfsense.services_haproxy_backend_server module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage HA Proxy Backend Server
+      register: result
+      pfrest.pfsense.services_haproxy_backend_server:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        state: present
+        lookup_fields:
+          - name
+        name: string
+        status: active
+        address: string
+        port: string
+        weight: 9223372036854776000
+        ssl: true
+        sslserververify: true
+        advanced: string
+        parent_lookup_fields:
+          - name
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.name is defined
+          - result.data.status is defined
+          - result.data.address is defined
+          - result.data.port is defined
+          - result.data.weight is defined
+          - result.data.ssl is defined
+          - result.data.sslserververify is defined
+          - result.data.serverid is defined
+          - result.data.advanced is defined
+          - result.data.id is defined
+

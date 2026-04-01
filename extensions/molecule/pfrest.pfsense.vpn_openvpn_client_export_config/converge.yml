@@ -1,0 +1,78 @@
+---
+- name: Test pfrest.pfsense.vpn_openvpn_client_export_config module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage Open VPN Client Export Config
+      register: result
+      pfrest.pfsense.vpn_openvpn_client_export_config:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        state: present
+        lookup_fields:
+          - id
+        server: 9223372036854776000
+        useaddr: serveraddr
+        useaddr_hostname: string
+        verifyservercn: auto
+        blockoutsidedns: true
+        legacy: true
+        silent: true
+        bindmode: nobind
+        usepkcs11: true
+        pkcs11providers:
+          - string
+        pkcs11id: string
+        usetoken: true
+        usepass: true
+        pass: string
+        p12encryption: high
+        useproxy: true
+        useproxytype: http
+        proxyaddr: string
+        proxyport: string
+        useproxypass: none
+        proxyuser: string
+        proxypass: string
+        advancedoptions: string
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.server is defined
+          - result.data.useaddr is defined
+          - result.data.useaddr_hostname is defined
+          - result.data.verifyservercn is defined
+          - result.data.blockoutsidedns is defined
+          - result.data.legacy is defined
+          - result.data.silent is defined
+          - result.data.bindmode is defined
+          - result.data.usepkcs11 is defined
+          - result.data.pkcs11providers is defined
+          - result.data.pkcs11id is defined
+          - result.data.usetoken is defined
+          - result.data.usepass is defined
+          - result.data.pass is defined
+          - result.data.p12encryption is defined
+          - result.data.useproxy is defined
+          - result.data.useproxytype is defined
+          - result.data.proxyaddr is defined
+          - result.data.proxyport is defined
+          - result.data.useproxypass is defined
+          - result.data.proxyuser is defined
+          - result.data.proxypass is defined
+          - result.data.advancedoptions is defined
+          - result.data.id is defined
+

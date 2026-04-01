@@ -1,0 +1,15 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": [
+      {
+        "name": "string",
+        "status": "string",
+        "id": 0
+      }
+    ]
+  }
+}

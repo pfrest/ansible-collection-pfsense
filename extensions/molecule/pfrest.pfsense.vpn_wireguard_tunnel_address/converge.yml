@@ -1,0 +1,40 @@
+---
+- name: Test pfrest.pfsense.vpn_wireguard_tunnel_address module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage WireGuard Tunnel Address
+      register: result
+      pfrest.pfsense.vpn_wireguard_tunnel_address:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        state: present
+        lookup_fields:
+          - id
+        address: string
+        mask: 9223372036854776000
+        descr: string
+        parent_lookup_fields:
+          - listenport
+        listenport: string
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.address is defined
+          - result.data.mask is defined
+          - result.data.descr is defined
+          - result.data.id is defined
+

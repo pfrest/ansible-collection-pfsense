@@ -1,0 +1,24 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": [
+      {
+        "username": "string",
+        "password": "string",
+        "password_encryption": "Cleartext-Password",
+        "motp_enable": true,
+        "motp_authmethod": "motp",
+        "motp_secret": "string",
+        "motp_pin": "string",
+        "motp_offset": 9223372036854776000,
+        "description": "string",
+        "framed_ip_address": "string",
+        "framed_ip_netmask": "string",
+        "id": 0
+      }
+    ]
+  }
+}

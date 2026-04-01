@@ -1,0 +1,29 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": {
+      "enable": true,
+      "interface": [
+        "string"
+      ],
+      "ntpmaxpeers": 9223372036854776000,
+      "orphan": 9223372036854776000,
+      "ntpminpoll": "",
+      "ntpmaxpoll": "",
+      "dnsresolv": "auto",
+      "logpeer": true,
+      "logsys": true,
+      "clockstats": true,
+      "loopstats": true,
+      "peerstats": true,
+      "statsgraph": true,
+      "leapsec": "string",
+      "serverauth": true,
+      "serverauthkey": "string",
+      "serverauthalgo": "md5"
+    }
+  }
+}

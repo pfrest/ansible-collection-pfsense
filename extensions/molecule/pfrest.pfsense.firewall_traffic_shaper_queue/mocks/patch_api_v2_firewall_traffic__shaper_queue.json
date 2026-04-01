@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": {
+      "interface": "string",
+      "enabled": true,
+      "name": "string",
+      "priority": 9223372036854776000,
+      "qlimit": 9223372036854776000,
+      "description": "string",
+      "default": true,
+      "red": true,
+      "rio": true,
+      "ecn": true,
+      "codel": true,
+      "bandwidthtype": "%",
+      "bandwidth": 9223372036854776000,
+      "buckets": 9223372036854776000,
+      "hogs": 9223372036854776000,
+      "borrow": true,
+      "upperlimit": true,
+      "upperlimit_m1": "string",
+      "upperlimit_d": 9223372036854776000,
+      "upperlimit_m2": "string",
+      "realtime": true,
+      "realtime_m1": "string",
+      "realtime_d": 9223372036854776000,
+      "realtime_m2": "string",
+      "linkshare": true,
+      "linkshare_m1": "string",
+      "linkshare_d": 9223372036854776000,
+      "linkshare_m2": "string",
+      "id": 0
+    }
+  }
+}

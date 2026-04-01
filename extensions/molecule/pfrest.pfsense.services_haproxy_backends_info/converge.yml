@@ -1,0 +1,86 @@
+---
+- name: Test pfrest.pfsense.services_haproxy_backends_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Retrieve HA Proxy Backends
+      register: result
+      pfrest.pfsense.services_haproxy_backends_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is sequence
+          - 'result.data | length > 0'
+          - result.data[0].name is defined
+          - result.data[0].servers is defined
+          - result.data[0].balance is defined
+          - result.data[0].balance_urilen is defined
+          - result.data[0].balance_uridepth is defined
+          - result.data[0].balance_uriwhole is defined
+          - result.data[0].acls is defined
+          - result.data[0].actions is defined
+          - result.data[0].connection_timeout is defined
+          - result.data[0].server_timeout is defined
+          - result.data[0].retries is defined
+          - result.data[0].check_type is defined
+          - result.data[0].checkinter is defined
+          - result.data[0].log_health_checks is defined
+          - result.data[0].httpcheck_method is defined
+          - result.data[0].monitor_uri is defined
+          - result.data[0].monitor_httpversion is defined
+          - result.data[0].monitor_username is defined
+          - result.data[0].monitor_domain is defined
+          - result.data[0].agent_checks is defined
+          - result.data[0].agent_port is defined
+          - result.data[0].agent_inter is defined
+          - result.data[0].persist_cookie_enabled is defined
+          - result.data[0].persist_cookie_name is defined
+          - result.data[0].persist_cookie_mode is defined
+          - result.data[0].persist_cookie_cachable is defined
+          - result.data[0].persist_cookie_postonly is defined
+          - result.data[0].persist_cookie_httponly is defined
+          - result.data[0].persist_cookie_secure is defined
+          - result.data[0].haproxy_cookie_maxidle is defined
+          - result.data[0].haproxy_cookie_maxlife is defined
+          - result.data[0].haproxy_cookie_domains is defined
+          - result.data[0].haproxy_cookie_dynamic_cookie_key is defined
+          - result.data[0].persist_sticky_type is defined
+          - result.data[0].persist_stick_expire is defined
+          - result.data[0].persist_stick_tablesize is defined
+          - result.data[0].persist_stick_cookiename is defined
+          - result.data[0].persist_stick_length is defined
+          - result.data[0].email_level is defined
+          - result.data[0].email_to is defined
+          - result.data[0].stats_enabled is defined
+          - result.data[0].stats_uri is defined
+          - result.data[0].stats_scope is defined
+          - result.data[0].stats_realm is defined
+          - result.data[0].stats_username is defined
+          - result.data[0].stats_password is defined
+          - result.data[0].stats_admin is defined
+          - result.data[0].stats_node is defined
+          - result.data[0].stats_desc is defined
+          - result.data[0].stats_refresh is defined
+          - result.data[0].strict_transport_security is defined
+          - result.data[0].errorfiles is defined
+          - result.data[0].cookie_attribute_secure is defined
+          - result.data[0].advanced is defined
+          - result.data[0].advanced_backend is defined
+          - result.data[0].transparent_clientip is defined
+          - result.data[0].transparent_interface is defined
+          - result.data[0].id is defined
+

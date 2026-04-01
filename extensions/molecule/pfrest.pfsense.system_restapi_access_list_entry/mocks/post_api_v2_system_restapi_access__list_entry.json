@@ -1,0 +1,19 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": {
+      "type": "allow",
+      "weight": 9223372036854776000,
+      "network": "string",
+      "users": [
+        "string"
+      ],
+      "sched": "string",
+      "descr": "string",
+      "id": 0
+    }
+  }
+}

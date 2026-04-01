@@ -1,0 +1,52 @@
+---
+- name: Test pfrest.pfsense.routing_gateways_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Retrieve Routing Gatewaies
+      register: result
+      pfrest.pfsense.routing_gateways_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is sequence
+          - 'result.data | length > 0'
+          - result.data[0].name is defined
+          - result.data[0].descr is defined
+          - result.data[0].disabled is defined
+          - result.data[0].ipprotocol is defined
+          - result.data[0].interface is defined
+          - result.data[0].gateway is defined
+          - result.data[0].monitor_disable is defined
+          - result.data[0].monitor is defined
+          - result.data[0].action_disable is defined
+          - result.data[0].force_down is defined
+          - result.data[0].dpinger_dont_add_static_route is defined
+          - result.data[0].gw_down_kill_states is defined
+          - result.data[0].nonlocalgateway is defined
+          - result.data[0].weight is defined
+          - result.data[0].data_payload is defined
+          - result.data[0].latencylow is defined
+          - result.data[0].latencyhigh is defined
+          - result.data[0].losslow is defined
+          - result.data[0].losshigh is defined
+          - result.data[0].interval is defined
+          - result.data[0].loss_interval is defined
+          - result.data[0].time_period is defined
+          - result.data[0].alert_interval is defined
+          - result.data[0].id is defined
+

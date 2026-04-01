@@ -1,0 +1,58 @@
+---
+- name: Test pfrest.pfsense.firewall_state_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read Firewall State
+      register: result
+      pfrest.pfsense.firewall_state_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.interface is defined
+          - result.data.interface == "string"
+          - result.data.protocol is defined
+          - result.data.protocol == "string"
+          - result.data.direction is defined
+          - result.data.direction == "string"
+          - result.data.source is defined
+          - result.data.source == "string"
+          - result.data.destination is defined
+          - result.data.destination == "string"
+          - result.data.state is defined
+          - result.data.state == "string"
+          - result.data.age is defined
+          - result.data.age == "string"
+          - result.data.expires_in is defined
+          - result.data.expires_in == "string"
+          - result.data.packets_total is defined
+          - result.data.packets_total == 9223372036854776000
+          - result.data.packets_in is defined
+          - result.data.packets_in == 9223372036854776000
+          - result.data.packets_out is defined
+          - result.data.packets_out == 9223372036854776000
+          - result.data.bytes_total is defined
+          - result.data.bytes_total == 9223372036854776000
+          - result.data.bytes_in is defined
+          - result.data.bytes_in == 9223372036854776000
+          - result.data.bytes_out is defined
+          - result.data.bytes_out == 9223372036854776000
+          - result.data.id is defined
+          - result.data.id == 0
+

@@ -1,0 +1,33 @@
+---
+- name: Test pfrest.pfsense.services_bind_sync_settings module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage BIND Sync Settings
+      register: result
+      pfrest.pfsense.services_bind_sync_settings:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        synconchanges: disabled
+        synctimeout: 30
+        masterip: string
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.synconchanges is defined
+          - result.data.synctimeout is defined
+          - result.data.masterip is defined
+

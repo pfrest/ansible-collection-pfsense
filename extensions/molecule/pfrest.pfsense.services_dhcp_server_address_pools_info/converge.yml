@@ -1,0 +1,44 @@
+---
+- name: Test pfrest.pfsense.services_dhcp_server_address_pools_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Retrieve DHCP Server Address Pools
+      register: result
+      pfrest.pfsense.services_dhcp_server_address_pools_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is sequence
+          - 'result.data | length > 0'
+          - result.data[0].range_from is defined
+          - result.data[0].range_to is defined
+          - result.data[0].domain is defined
+          - result.data[0].mac_allow is defined
+          - result.data[0].mac_deny is defined
+          - result.data[0].domainsearchlist is defined
+          - result.data[0].defaultleasetime is defined
+          - result.data[0].maxleasetime is defined
+          - result.data[0].gateway is defined
+          - result.data[0].dnsserver is defined
+          - result.data[0].winsserver is defined
+          - result.data[0].ntpserver is defined
+          - result.data[0].ignorebootp is defined
+          - result.data[0].ignoreclientuids is defined
+          - result.data[0].denyunknown is defined
+          - result.data[0].id is defined
+

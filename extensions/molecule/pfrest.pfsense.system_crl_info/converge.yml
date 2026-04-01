@@ -1,0 +1,46 @@
+---
+- name: Test pfrest.pfsense.system_crl_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read Certificate Revocation List
+      register: result
+      pfrest.pfsense.system_crl_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.refid is defined
+          - result.data.refid == "string"
+          - result.data.caref is defined
+          - result.data.caref == "string"
+          - result.data.descr is defined
+          - result.data.descr == "string"
+          - result.data.method is defined
+          - result.data.method == "existing"
+          - result.data.lifetime is defined
+          - result.data.lifetime == 9223372036854776000
+          - result.data.serial is defined
+          - result.data.serial == 9223372036854776000
+          - result.data.text is defined
+          - result.data.text == "string"
+          - result.data.cert is defined
+          - result.data.cert is sequence
+          - result.data.id is defined
+          - result.data.id == 0
+

@@ -1,0 +1,90 @@
+---
+- name: Test pfrest.pfsense.services_bind_zone_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read BIND Zone
+      register: result
+      pfrest.pfsense.services_bind_zone_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.disabled is defined
+          - result.data.disabled == true
+          - result.data.name is defined
+          - result.data.name == "string"
+          - result.data.description is defined
+          - result.data.description == "string"
+          - result.data.type is defined
+          - result.data.type == "master"
+          - result.data.view is defined
+          - result.data.view is sequence
+          - result.data.reversev4 is defined
+          - result.data.reversev4 == true
+          - result.data.reversev6 is defined
+          - result.data.reversev6 == true
+          - result.data.rpz is defined
+          - result.data.rpz == true
+          - result.data.custom is defined
+          - result.data.custom == "string"
+          - result.data.dnssec is defined
+          - result.data.dnssec == true
+          - result.data.backupkeys is defined
+          - result.data.backupkeys == true
+          - result.data.slaveip is defined
+          - result.data.slaveip == "string"
+          - result.data.forwarders is defined
+          - result.data.forwarders is sequence
+          - result.data.ttl is defined
+          - result.data.ttl == 9223372036854776000
+          - result.data.baseip is defined
+          - result.data.baseip == "string"
+          - result.data.nameserver is defined
+          - result.data.nameserver == "string"
+          - result.data.mail is defined
+          - result.data.mail == "string"
+          - result.data.serial is defined
+          - result.data.serial == 9223372036854776000
+          - result.data.refresh is defined
+          - result.data.refresh == "string"
+          - result.data.retry is defined
+          - result.data.retry == "string"
+          - result.data.expire is defined
+          - result.data.expire == "string"
+          - result.data.minimum is defined
+          - result.data.minimum == "string"
+          - result.data.enable_updatepolicy is defined
+          - result.data.enable_updatepolicy == true
+          - result.data.updatepolicy is defined
+          - result.data.updatepolicy == "string"
+          - result.data.allowupdate is defined
+          - result.data.allowupdate is sequence
+          - result.data.allowtransfer is defined
+          - result.data.allowtransfer is sequence
+          - result.data.allowquery is defined
+          - result.data.allowquery is sequence
+          - result.data.regdhcpstatic is defined
+          - result.data.regdhcpstatic == true
+          - result.data.customzonerecords is defined
+          - result.data.customzonerecords == "string"
+          - result.data.records is defined
+          - result.data.records is sequence
+          - result.data.id is defined
+          - result.data.id == 0
+

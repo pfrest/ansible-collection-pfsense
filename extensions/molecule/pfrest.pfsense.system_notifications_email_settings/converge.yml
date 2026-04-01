@@ -1,0 +1,49 @@
+---
+- name: Test pfrest.pfsense.system_notifications_email_settings module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage Email Notification Settings
+      register: result
+      pfrest.pfsense.system_notifications_email_settings:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        disable: true
+        ipaddress: string
+        port: string
+        timeout: 9223372036854776000
+        ssl: true
+        sslvalidate: true
+        fromaddress: string
+        notifyemailaddress: string
+        authentication_mechanism: PLAIN
+        username: string
+        password: string
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.disable is defined
+          - result.data.ipaddress is defined
+          - result.data.port is defined
+          - result.data.timeout is defined
+          - result.data.ssl is defined
+          - result.data.sslvalidate is defined
+          - result.data.fromaddress is defined
+          - result.data.notifyemailaddress is defined
+          - result.data.authentication_mechanism is defined
+          - result.data.username is defined
+          - result.data.password is defined
+

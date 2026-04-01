@@ -1,0 +1,86 @@
+---
+- name: Test pfrest.pfsense.firewall_traffic_shaper_queue_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read Traffic Shaper Queue
+      register: result
+      pfrest.pfsense.firewall_traffic_shaper_queue_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.interface is defined
+          - result.data.interface == "string"
+          - result.data.enabled is defined
+          - result.data.enabled == true
+          - result.data.name is defined
+          - result.data.name == "string"
+          - result.data.priority is defined
+          - result.data.priority == 9223372036854776000
+          - result.data.qlimit is defined
+          - result.data.qlimit == 9223372036854776000
+          - result.data.description is defined
+          - result.data.description == "string"
+          - result.data.default is defined
+          - result.data.default == true
+          - result.data.red is defined
+          - result.data.red == true
+          - result.data.rio is defined
+          - result.data.rio == true
+          - result.data.ecn is defined
+          - result.data.ecn == true
+          - result.data.codel is defined
+          - result.data.codel == true
+          - result.data.bandwidthtype is defined
+          - result.data.bandwidthtype == "%"
+          - result.data.bandwidth is defined
+          - result.data.bandwidth == 9223372036854776000
+          - result.data.buckets is defined
+          - result.data.buckets == 9223372036854776000
+          - result.data.hogs is defined
+          - result.data.hogs == 9223372036854776000
+          - result.data.borrow is defined
+          - result.data.borrow == true
+          - result.data.upperlimit is defined
+          - result.data.upperlimit == true
+          - result.data.upperlimit_m1 is defined
+          - result.data.upperlimit_m1 == "string"
+          - result.data.upperlimit_d is defined
+          - result.data.upperlimit_d == 9223372036854776000
+          - result.data.upperlimit_m2 is defined
+          - result.data.upperlimit_m2 == "string"
+          - result.data.realtime is defined
+          - result.data.realtime == true
+          - result.data.realtime_m1 is defined
+          - result.data.realtime_m1 == "string"
+          - result.data.realtime_d is defined
+          - result.data.realtime_d == 9223372036854776000
+          - result.data.realtime_m2 is defined
+          - result.data.realtime_m2 == "string"
+          - result.data.linkshare is defined
+          - result.data.linkshare == true
+          - result.data.linkshare_m1 is defined
+          - result.data.linkshare_m1 == "string"
+          - result.data.linkshare_d is defined
+          - result.data.linkshare_d == 9223372036854776000
+          - result.data.linkshare_m2 is defined
+          - result.data.linkshare_m2 == "string"
+          - result.data.id is defined
+          - result.data.id == 0
+

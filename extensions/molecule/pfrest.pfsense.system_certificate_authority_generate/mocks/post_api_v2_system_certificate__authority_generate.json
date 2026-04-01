@@ -1,0 +1,31 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": {
+      "descr": "string",
+      "refid": "string",
+      "trust": true,
+      "randomserial": true,
+      "serial": 9223372036854776000,
+      "is_intermediate": true,
+      "caref": "string",
+      "keytype": "RSA",
+      "keylen": 1024,
+      "ecname": "string",
+      "digest_alg": "string",
+      "lifetime": 9223372036854776000,
+      "dn_commonname": "string",
+      "dn_country": "string",
+      "dn_state": "string",
+      "dn_city": "string",
+      "dn_organization": "string",
+      "dn_organizationalunit": "string",
+      "crt": "string",
+      "prv": "string",
+      "id": 0
+    }
+  }
+}

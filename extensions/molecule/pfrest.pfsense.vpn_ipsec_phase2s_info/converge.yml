@@ -1,0 +1,53 @@
+---
+- name: Test pfrest.pfsense.vpn_ipsec_phase2s_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Retrieve IPsec Phase 2s
+      register: result
+      pfrest.pfsense.vpn_ipsec_phase2s_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is sequence
+          - 'result.data | length > 0'
+          - result.data[0].uniqid is defined
+          - result.data[0].reqid is defined
+          - result.data[0].ikeid is defined
+          - result.data[0].descr is defined
+          - result.data[0].disabled is defined
+          - result.data[0].mode is defined
+          - result.data[0].localid_type is defined
+          - result.data[0].localid_address is defined
+          - result.data[0].localid_netbits is defined
+          - result.data[0].natlocalid_type is defined
+          - result.data[0].natlocalid_address is defined
+          - result.data[0].natlocalid_netbits is defined
+          - result.data[0].remoteid_type is defined
+          - result.data[0].remoteid_address is defined
+          - result.data[0].remoteid_netbits is defined
+          - result.data[0].protocol is defined
+          - result.data[0].encryption_algorithm_option is defined
+          - result.data[0].hash_algorithm_option is defined
+          - result.data[0].pfsgroup is defined
+          - result.data[0].rekey_time is defined
+          - result.data[0].rand_time is defined
+          - result.data[0].lifetime is defined
+          - result.data[0].pinghost is defined
+          - result.data[0].keepalive is defined
+          - result.data[0].id is defined
+

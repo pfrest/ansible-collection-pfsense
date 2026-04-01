@@ -1,0 +1,27 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": [
+      {
+        "enabled": true,
+        "tun": "string",
+        "endpoint": "string",
+        "port": "string",
+        "descr": "string",
+        "persistentkeepalive": 9223372036854776000,
+        "publickey": "string",
+        "allowedips": [
+          {
+            "address": "string",
+            "mask": 9223372036854776000,
+            "descr": "string"
+          }
+        ],
+        "id": 0
+      }
+    ]
+  }
+}

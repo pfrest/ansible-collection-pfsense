@@ -1,0 +1,76 @@
+---
+- name: Test pfrest.pfsense.vpn_openvpn_client_export_config_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read Open VPN Client Export Config
+      register: result
+      pfrest.pfsense.vpn_openvpn_client_export_config_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.server is defined
+          - result.data.server == 9223372036854776000
+          - result.data.useaddr is defined
+          - result.data.useaddr == "serveraddr"
+          - result.data.useaddr_hostname is defined
+          - result.data.useaddr_hostname == "string"
+          - result.data.verifyservercn is defined
+          - result.data.verifyservercn == "auto"
+          - result.data.blockoutsidedns is defined
+          - result.data.blockoutsidedns == true
+          - result.data.legacy is defined
+          - result.data.legacy == true
+          - result.data.silent is defined
+          - result.data.silent == true
+          - result.data.bindmode is defined
+          - result.data.bindmode == "nobind"
+          - result.data.usepkcs11 is defined
+          - result.data.usepkcs11 == true
+          - result.data.pkcs11providers is defined
+          - result.data.pkcs11providers is sequence
+          - result.data.pkcs11id is defined
+          - result.data.pkcs11id == "string"
+          - result.data.usetoken is defined
+          - result.data.usetoken == true
+          - result.data.usepass is defined
+          - result.data.usepass == true
+          - result.data.pass is defined
+          - result.data.pass == "string"
+          - result.data.p12encryption is defined
+          - result.data.p12encryption == "high"
+          - result.data.useproxy is defined
+          - result.data.useproxy == true
+          - result.data.useproxytype is defined
+          - result.data.useproxytype == "http"
+          - result.data.proxyaddr is defined
+          - result.data.proxyaddr == "string"
+          - result.data.proxyport is defined
+          - result.data.proxyport == "string"
+          - result.data.useproxypass is defined
+          - result.data.useproxypass == "none"
+          - result.data.proxyuser is defined
+          - result.data.proxyuser == "string"
+          - result.data.proxypass is defined
+          - result.data.proxypass == "string"
+          - result.data.advancedoptions is defined
+          - result.data.advancedoptions == "string"
+          - result.data.id is defined
+          - result.data.id == 0
+

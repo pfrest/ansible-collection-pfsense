@@ -1,0 +1,54 @@
+---
+- name: Test pfrest.pfsense.services_acme_certificate_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read ACME Certificate
+      register: result
+      pfrest.pfsense.services_acme_certificate_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.name is defined
+          - result.data.name == "string"
+          - result.data.descr is defined
+          - result.data.descr == "string"
+          - result.data.status is defined
+          - result.data.status == "active"
+          - result.data.acmeaccount is defined
+          - result.data.acmeaccount == "string"
+          - result.data.keylength is defined
+          - result.data.keylength == "2048"
+          - result.data.keypaste is defined
+          - result.data.keypaste == "string"
+          - result.data.preferredchain is defined
+          - result.data.preferredchain == "string"
+          - result.data.oscpstaple is defined
+          - result.data.oscpstaple == true
+          - result.data.dnssleep is defined
+          - result.data.dnssleep == 9223372036854776000
+          - result.data.renewafter is defined
+          - result.data.renewafter == 9223372036854776000
+          - result.data.a_domainlist is defined
+          - result.data.a_domainlist is sequence
+          - result.data.a_actionlist is defined
+          - result.data.a_actionlist is sequence
+          - result.data.id is defined
+          - result.data.id == 0
+

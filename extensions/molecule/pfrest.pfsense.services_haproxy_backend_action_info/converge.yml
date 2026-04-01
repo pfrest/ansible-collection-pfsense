@@ -1,0 +1,60 @@
+---
+- name: Test pfrest.pfsense.services_haproxy_backend_action_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read HA Proxy Backend Action
+      register: result
+      pfrest.pfsense.services_haproxy_backend_action_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.action is defined
+          - result.data.action == "use_server"
+          - result.data.acl is defined
+          - result.data.acl == "string"
+          - result.data.server is defined
+          - result.data.server == "string"
+          - result.data.customaction is defined
+          - result.data.customaction == "string"
+          - result.data.deny_status is defined
+          - result.data.deny_status == "string"
+          - result.data.realm is defined
+          - result.data.realm == "string"
+          - result.data.rule is defined
+          - result.data.rule == "string"
+          - result.data.lua_function is defined
+          - result.data.lua_function == "string"
+          - result.data.name is defined
+          - result.data.name == "string"
+          - result.data.fmt is defined
+          - result.data.fmt == "string"
+          - result.data.find is defined
+          - result.data.find == "string"
+          - result.data.replace is defined
+          - result.data.replace == "string"
+          - result.data.path is defined
+          - result.data.path == "string"
+          - result.data.status is defined
+          - result.data.status == "string"
+          - result.data.reason is defined
+          - result.data.reason == "string"
+          - result.data.id is defined
+          - result.data.id == 0
+

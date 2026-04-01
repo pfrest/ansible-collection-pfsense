@@ -1,0 +1,21 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": [
+      {
+        "hostname": "string",
+        "ip_address": "string",
+        "mac_address": "string",
+        "interface": "string",
+        "type": "string",
+        "permanent": true,
+        "dnsresolve": "string",
+        "expires": "string",
+        "id": 0
+      }
+    ]
+  }
+}

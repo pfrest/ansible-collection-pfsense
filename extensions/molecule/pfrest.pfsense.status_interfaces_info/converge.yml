@@ -1,0 +1,56 @@
+---
+- name: Test pfrest.pfsense.status_interfaces_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Retrieve Interface Statses
+      register: result
+      pfrest.pfsense.status_interfaces_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is sequence
+          - 'result.data | length > 0'
+          - result.data[0].name is defined
+          - result.data[0].descr is defined
+          - result.data[0].hwif is defined
+          - result.data[0].macaddr is defined
+          - result.data[0].mtu is defined
+          - result.data[0].enable is defined
+          - result.data[0].status is defined
+          - result.data[0].ipaddr is defined
+          - result.data[0].subnet is defined
+          - result.data[0].linklocal is defined
+          - result.data[0].ipaddrv6 is defined
+          - result.data[0].subnetv6 is defined
+          - result.data[0].inerrs is defined
+          - result.data[0].outerrs is defined
+          - result.data[0].collisions is defined
+          - result.data[0].inbytes is defined
+          - result.data[0].inbytespass is defined
+          - result.data[0].outbytes is defined
+          - result.data[0].outbytespass is defined
+          - result.data[0].inpkts is defined
+          - result.data[0].inpktspass is defined
+          - result.data[0].outpkts is defined
+          - result.data[0].outpktspass is defined
+          - result.data[0].dhcplink is defined
+          - result.data[0].media is defined
+          - result.data[0].gateway is defined
+          - result.data[0].gatewayv6 is defined
+          - result.data[0].id is defined
+

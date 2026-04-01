@@ -1,0 +1,54 @@
+---
+- name: Test pfrest.pfsense.status_openvpn_server_connection_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read OpenVPN Server Connection Status
+      register: result
+      pfrest.pfsense.status_openvpn_server_connection_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.common_name is defined
+          - result.data.common_name == "string"
+          - result.data.remote_host is defined
+          - result.data.remote_host == "string"
+          - result.data.virtual_addr is defined
+          - result.data.virtual_addr == "string"
+          - result.data.virtual_addr6 is defined
+          - result.data.virtual_addr6 == "string"
+          - result.data.bytes_recv is defined
+          - result.data.bytes_recv == 9223372036854776000
+          - result.data.bytes_sent is defined
+          - result.data.bytes_sent == 9223372036854776000
+          - result.data.connect_time is defined
+          - result.data.connect_time == "string"
+          - result.data.connect_time_unix is defined
+          - result.data.connect_time_unix == 9223372036854776000
+          - result.data.user_name is defined
+          - result.data.user_name == "string"
+          - result.data.client_id is defined
+          - result.data.client_id == 9223372036854776000
+          - result.data.peer_id is defined
+          - result.data.peer_id == 9223372036854776000
+          - result.data.cipher is defined
+          - result.data.cipher == "string"
+          - result.data.id is defined
+          - result.data.id == 0
+

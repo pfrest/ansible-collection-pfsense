@@ -1,0 +1,58 @@
+---
+- name: Test pfrest.pfsense.services_dhcp_server_static_mapping_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read DHCP Server Static Mapping
+      register: result
+      pfrest.pfsense.services_dhcp_server_static_mapping_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.mac is defined
+          - result.data.mac == "string"
+          - result.data.ipaddr is defined
+          - result.data.ipaddr == "string"
+          - result.data.cid is defined
+          - result.data.cid == "string"
+          - result.data.hostname is defined
+          - result.data.hostname == "string"
+          - result.data.domain is defined
+          - result.data.domain == "string"
+          - result.data.domainsearchlist is defined
+          - result.data.domainsearchlist is sequence
+          - result.data.defaultleasetime is defined
+          - result.data.defaultleasetime == 9223372036854776000
+          - result.data.maxleasetime is defined
+          - result.data.maxleasetime == 9223372036854776000
+          - result.data.gateway is defined
+          - result.data.gateway == "string"
+          - result.data.dnsserver is defined
+          - result.data.dnsserver is sequence
+          - result.data.winsserver is defined
+          - result.data.winsserver is sequence
+          - result.data.ntpserver is defined
+          - result.data.ntpserver is sequence
+          - result.data.arp_table_static_entry is defined
+          - result.data.arp_table_static_entry == true
+          - result.data.descr is defined
+          - result.data.descr == "string"
+          - result.data.id is defined
+          - result.data.id == 0
+

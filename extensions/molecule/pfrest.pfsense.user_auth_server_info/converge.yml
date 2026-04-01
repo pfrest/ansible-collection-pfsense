@@ -1,0 +1,94 @@
+---
+- name: Test pfrest.pfsense.user_auth_server_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read authentication server
+      register: result
+      pfrest.pfsense.user_auth_server_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.refid is defined
+          - result.data.refid == "string"
+          - result.data.type is defined
+          - result.data.type == "ldap"
+          - result.data.name is defined
+          - result.data.name == "string"
+          - result.data.host is defined
+          - result.data.host == "string"
+          - result.data.ldap_port is defined
+          - result.data.ldap_port == "string"
+          - result.data.ldap_urltype is defined
+          - result.data.ldap_urltype == "Standard TCP"
+          - result.data.ldap_protver is defined
+          - result.data.ldap_protver == 2
+          - result.data.ldap_timeout is defined
+          - result.data.ldap_timeout == 9223372036854776000
+          - result.data.ldap_caref is defined
+          - result.data.ldap_caref == "string"
+          - result.data.ldap_scope is defined
+          - result.data.ldap_scope == "one"
+          - result.data.ldap_basedn is defined
+          - result.data.ldap_basedn == "string"
+          - result.data.ldap_authcn is defined
+          - result.data.ldap_authcn == "string"
+          - result.data.ldap_extended_enabled is defined
+          - result.data.ldap_extended_enabled == true
+          - result.data.ldap_extended_query is defined
+          - result.data.ldap_extended_query == "string"
+          - result.data.ldap_binddn is defined
+          - result.data.ldap_binddn == "string"
+          - result.data.ldap_bindpw is defined
+          - result.data.ldap_bindpw == "string"
+          - result.data.ldap_attr_user is defined
+          - result.data.ldap_attr_user == "string"
+          - result.data.ldap_attr_group is defined
+          - result.data.ldap_attr_group == "string"
+          - result.data.ldap_attr_member is defined
+          - result.data.ldap_attr_member == "string"
+          - result.data.ldap_rfc2307 is defined
+          - result.data.ldap_rfc2307 == true
+          - result.data.ldap_rfc2307_userdn is defined
+          - result.data.ldap_rfc2307_userdn == true
+          - result.data.ldap_attr_groupobj is defined
+          - result.data.ldap_attr_groupobj == "string"
+          - result.data.ldap_pam_groupdn is defined
+          - result.data.ldap_pam_groupdn == "string"
+          - result.data.ldap_utf8 is defined
+          - result.data.ldap_utf8 == true
+          - result.data.ldap_nostrip_at is defined
+          - result.data.ldap_nostrip_at == true
+          - result.data.ldap_allow_unauthenticated is defined
+          - result.data.ldap_allow_unauthenticated == true
+          - result.data.radius_secret is defined
+          - result.data.radius_secret == "string"
+          - result.data.radius_auth_port is defined
+          - result.data.radius_auth_port == "string"
+          - result.data.radius_acct_port is defined
+          - result.data.radius_acct_port == "string"
+          - result.data.radius_protocol is defined
+          - result.data.radius_protocol == "MSCHAPv2"
+          - result.data.radius_timeout is defined
+          - result.data.radius_timeout == 9223372036854776000
+          - result.data.radius_nasip_attribute is defined
+          - result.data.radius_nasip_attribute == "string"
+          - result.data.id is defined
+          - result.data.id == 0
+

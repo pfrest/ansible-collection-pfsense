@@ -1,0 +1,35 @@
+---
+- name: Test pfrest.pfsense.auth_keys_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Retrieve REST API Keys
+      register: result
+      pfrest.pfsense.auth_keys_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is sequence
+          - 'result.data | length > 0'
+          - result.data[0].descr is defined
+          - result.data[0].username is defined
+          - result.data[0].hash_algo is defined
+          - result.data[0].length_bytes is defined
+          - result.data[0].hash is defined
+          - result.data[0].key is defined
+          - result.data[0].id is defined
+

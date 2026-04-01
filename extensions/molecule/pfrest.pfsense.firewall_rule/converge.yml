@@ -1,0 +1,93 @@
+---
+- name: Test pfrest.pfsense.firewall_rule module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage Firewall Rule
+      register: result
+      pfrest.pfsense.firewall_rule:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        state: present
+        lookup_fields:
+          - id
+        type: pass
+        interface:
+          - string
+        ipprotocol: inet
+        protocol: tcp
+        icmptype:
+          - any
+        source: string
+        source_port: string
+        destination: string
+        destination_port: string
+        descr: string
+        disabled: true
+        log: true
+        tag: string
+        statetype: keep state
+        tcp_flags_any: true
+        tcp_flags_out_of:
+          - fin
+        tcp_flags_set:
+          - fin
+        gateway: string
+        sched: string
+        dnpipe: string
+        pdnpipe: string
+        defaultqueue: string
+        ackqueue: string
+        floating: true
+        quick: true
+        direction: any
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.type is defined
+          - result.data.interface is defined
+          - result.data.ipprotocol is defined
+          - result.data.protocol is defined
+          - result.data.icmptype is defined
+          - result.data.source is defined
+          - result.data.source_port is defined
+          - result.data.destination is defined
+          - result.data.destination_port is defined
+          - result.data.descr is defined
+          - result.data.disabled is defined
+          - result.data.log is defined
+          - result.data.tag is defined
+          - result.data.statetype is defined
+          - result.data.tcp_flags_any is defined
+          - result.data.tcp_flags_out_of is defined
+          - result.data.tcp_flags_set is defined
+          - result.data.gateway is defined
+          - result.data.sched is defined
+          - result.data.dnpipe is defined
+          - result.data.pdnpipe is defined
+          - result.data.defaultqueue is defined
+          - result.data.ackqueue is defined
+          - result.data.floating is defined
+          - result.data.quick is defined
+          - result.data.direction is defined
+          - result.data.tracker is defined
+          - result.data.associated_rule_id is defined
+          - result.data.created_time is defined
+          - result.data.created_by is defined
+          - result.data.updated_time is defined
+          - result.data.updated_by is defined
+          - result.data.id is defined
+

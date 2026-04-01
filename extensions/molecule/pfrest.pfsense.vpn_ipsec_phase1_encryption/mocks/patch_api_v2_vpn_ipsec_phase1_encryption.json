@@ -1,0 +1,16 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": {
+      "encryption_algorithm_name": "aes",
+      "encryption_algorithm_keylen": 9223372036854776000,
+      "hash_algorithm": "sha1",
+      "dhgroup": 1,
+      "prf_algorithm": "sha1",
+      "id": 0
+    }
+  }
+}

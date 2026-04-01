@@ -1,0 +1,54 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": [
+      {
+        "common_name": "string",
+        "disable": true,
+        "block": true,
+        "description": "string",
+        "server_list": [
+          "string"
+        ],
+        "tunnel_network": "string",
+        "tunnel_networkv6": "string",
+        "local_network": [
+          "string"
+        ],
+        "local_networkv6": [
+          "string"
+        ],
+        "remote_network": [
+          "string"
+        ],
+        "remote_networkv6": [
+          "string"
+        ],
+        "gwredir": true,
+        "push_reset": true,
+        "remove_options": [
+          "remove_route"
+        ],
+        "dns_domain": "string",
+        "dns_server1": "string",
+        "dns_server2": "string",
+        "dns_server3": "string",
+        "dns_server4": "string",
+        "ntp_server1": "string",
+        "ntp_server2": "string",
+        "netbios_enable": true,
+        "netbios_ntype": 0,
+        "netbios_scope": "string",
+        "wins_server1": "string",
+        "wins_server2": "string",
+        "custom_options": [
+          "string"
+        ],
+        "id": 0
+      }
+    ]
+  }
+}

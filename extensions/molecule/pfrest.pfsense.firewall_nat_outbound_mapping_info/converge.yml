@@ -1,0 +1,62 @@
+---
+- name: Test pfrest.pfsense.firewall_nat_outbound_mapping_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read Outbound NAT Mapping
+      register: result
+      pfrest.pfsense.firewall_nat_outbound_mapping_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.interface is defined
+          - result.data.interface == "string"
+          - result.data.protocol is defined
+          - result.data.protocol == "tcp"
+          - result.data.disabled is defined
+          - result.data.disabled == true
+          - result.data.nonat is defined
+          - result.data.nonat == true
+          - result.data.nosync is defined
+          - result.data.nosync == true
+          - result.data.source is defined
+          - result.data.source == "string"
+          - result.data.source_port is defined
+          - result.data.source_port == "string"
+          - result.data.destination is defined
+          - result.data.destination == "string"
+          - result.data.destination_port is defined
+          - result.data.destination_port == "string"
+          - result.data.target is defined
+          - result.data.target == "string"
+          - result.data.target_subnet is defined
+          - result.data.target_subnet == 9223372036854776000
+          - result.data.nat_port is defined
+          - result.data.nat_port == "string"
+          - result.data.static_nat_port is defined
+          - result.data.static_nat_port == true
+          - result.data.poolopts is defined
+          - result.data.poolopts == "round-robin"
+          - result.data.source_hash_key is defined
+          - result.data.source_hash_key == "string"
+          - result.data.descr is defined
+          - result.data.descr == "string"
+          - result.data.id is defined
+          - result.data.id == 0
+

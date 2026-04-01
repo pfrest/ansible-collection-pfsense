@@ -1,0 +1,37 @@
+---
+- name: Test pfrest.pfsense.firewall_nat_one_to_one_mappings module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage all 1:1 NAT mappings
+      register: result
+      pfrest.pfsense.firewall_nat_one_to_one_mappings:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        objects:
+          - interface: string
+            disabled: true
+            nobinat: true
+            natreflection: enable
+            ipprotocol: inet
+            external: string
+            source: string
+            destination: string
+            descr: string
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is sequence
+

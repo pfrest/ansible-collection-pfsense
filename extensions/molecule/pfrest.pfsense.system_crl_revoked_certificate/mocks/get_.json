@@ -1,0 +1,17 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": [
+      {
+        "certref": "string",
+        "serial": "string",
+        "reason": -1,
+        "revoke_time": 9223372036854776000,
+        "id": 0
+      }
+    ]
+  }
+}

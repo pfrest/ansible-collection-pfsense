@@ -1,0 +1,35 @@
+---
+- name: Test pfrest.pfsense.user_groups_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Retrieve User Groups
+      register: result
+      pfrest.pfsense.user_groups_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is sequence
+          - 'result.data | length > 0'
+          - result.data[0].name is defined
+          - result.data[0].gid is defined
+          - result.data[0].scope is defined
+          - result.data[0].description is defined
+          - result.data[0].member is defined
+          - result.data[0].priv is defined
+          - result.data[0].id is defined
+

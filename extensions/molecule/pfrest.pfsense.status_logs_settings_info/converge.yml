@@ -1,0 +1,96 @@
+---
+- name: Test pfrest.pfsense.status_logs_settings_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read Log Settings
+      register: result
+      pfrest.pfsense.status_logs_settings_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.format is defined
+          - result.data.format == "rfc3164"
+          - result.data.reverseorder is defined
+          - result.data.reverseorder == true
+          - result.data.nentries is defined
+          - result.data.nentries == 9223372036854776000
+          - result.data.nologdefaultblock is defined
+          - result.data.nologdefaultblock == true
+          - result.data.nologdefaultpass is defined
+          - result.data.nologdefaultpass == true
+          - result.data.nologbogons is defined
+          - result.data.nologbogons == true
+          - result.data.nologprivatenets is defined
+          - result.data.nologprivatenets == true
+          - result.data.nolognginx is defined
+          - result.data.nolognginx == true
+          - result.data.rawfilter is defined
+          - result.data.rawfilter == true
+          - result.data.disablelocallogging is defined
+          - result.data.disablelocallogging == true
+          - result.data.logconfigchanges is defined
+          - result.data.logconfigchanges == true
+          - result.data.filterdescriptions is defined
+          - result.data.filterdescriptions == 0
+          - result.data.logfilesize is defined
+          - result.data.logfilesize == 9223372036854776000
+          - result.data.rotatecount is defined
+          - result.data.rotatecount == 9223372036854776000
+          - result.data.logcompressiontype is defined
+          - result.data.logcompressiontype == "bzip2"
+          - result.data.enableremotelogging is defined
+          - result.data.enableremotelogging == true
+          - result.data.ipprotocol is defined
+          - result.data.ipprotocol == "ipv4"
+          - result.data.sourceip is defined
+          - result.data.sourceip == "string"
+          - result.data.remoteserver is defined
+          - result.data.remoteserver == "string"
+          - result.data.remoteserver2 is defined
+          - result.data.remoteserver2 == "string"
+          - result.data.remoteserver3 is defined
+          - result.data.remoteserver3 == "string"
+          - result.data.logall is defined
+          - result.data.logall == true
+          - result.data.filter is defined
+          - result.data.filter == true
+          - result.data.dhcp is defined
+          - result.data.dhcp == true
+          - result.data.auth is defined
+          - result.data.auth == true
+          - result.data.portalauth is defined
+          - result.data.portalauth == true
+          - result.data.vpn is defined
+          - result.data.vpn == true
+          - result.data.dpinger is defined
+          - result.data.dpinger == true
+          - result.data.hostapd is defined
+          - result.data.hostapd == true
+          - result.data.system is defined
+          - result.data.system == true
+          - result.data.resolver is defined
+          - result.data.resolver == true
+          - result.data.ppp is defined
+          - result.data.ppp == true
+          - result.data.routing is defined
+          - result.data.routing == true
+          - result.data.ntpd is defined
+          - result.data.ntpd == true
+

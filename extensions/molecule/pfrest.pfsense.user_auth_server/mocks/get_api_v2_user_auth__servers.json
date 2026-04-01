@@ -1,0 +1,45 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": [
+      {
+        "refid": "string",
+        "type": "ldap",
+        "name": "string",
+        "host": "string",
+        "ldap_port": "string",
+        "ldap_urltype": "Standard TCP",
+        "ldap_protver": 2,
+        "ldap_timeout": 9223372036854776000,
+        "ldap_caref": "string",
+        "ldap_scope": "one",
+        "ldap_basedn": "string",
+        "ldap_authcn": "string",
+        "ldap_extended_enabled": true,
+        "ldap_extended_query": "string",
+        "ldap_binddn": "string",
+        "ldap_bindpw": "string",
+        "ldap_attr_user": "string",
+        "ldap_attr_group": "string",
+        "ldap_attr_member": "string",
+        "ldap_rfc2307": true,
+        "ldap_rfc2307_userdn": true,
+        "ldap_attr_groupobj": "string",
+        "ldap_pam_groupdn": "string",
+        "ldap_utf8": true,
+        "ldap_nostrip_at": true,
+        "ldap_allow_unauthenticated": true,
+        "radius_secret": "string",
+        "radius_auth_port": "string",
+        "radius_acct_port": "string",
+        "radius_protocol": "MSCHAPv2",
+        "radius_timeout": 9223372036854776000,
+        "radius_nasip_attribute": "string",
+        "id": 0
+      }
+    ]
+  }
+}

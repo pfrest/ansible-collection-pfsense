@@ -1,0 +1,103 @@
+---
+- name: Test pfrest.pfsense.services_haproxy_frontend module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage HA Proxy Frontend
+      register: result
+      pfrest.pfsense.services_haproxy_frontend:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        state: present
+        lookup_fields:
+          - name
+        name: string
+        descr: string
+        status: active
+        a_extaddr:
+          - extaddr: custom
+            extaddr_custom: string
+            extaddr_port: string
+            extaddr_ssl: true
+            exaddr_advanced: string
+        max_connections: 9223372036854776000
+        type: http
+        ha_acls:
+          - name: string
+            expression: host_starts_with
+            value: string
+            casesensitive: true
+            not: true
+        a_actionitems:
+          - action: use_backend
+            acl: string
+            backend: string
+            customaction: string
+            deny_status: string
+            realm: string
+            rule: string
+            lua_function: string
+            name: string
+            fmt: string
+            find: string
+            replace: string
+            path: string
+            status: string
+            reason: string
+        backend_serverpool: string
+        socket_stats: true
+        dontlognull: true
+        dontlog_normal: true
+        log_separate_errors: true
+        log_detailed: true
+        a_errorfiles:
+          - errorcode: 9223372036854776000
+            errorfile: string
+        client_timeout: 9223372036854776000
+        forwardfor: true
+        httpclose: http-keep-alive
+        advanced_bind: string
+        advanced: string
+        ssloffloadcert: string
+        ha_certificates:
+          - ssl_certificate: string
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.name is defined
+          - result.data.descr is defined
+          - result.data.status is defined
+          - result.data.a_extaddr is defined
+          - result.data.max_connections is defined
+          - result.data.type is defined
+          - result.data.ha_acls is defined
+          - result.data.a_actionitems is defined
+          - result.data.backend_serverpool is defined
+          - result.data.socket_stats is defined
+          - result.data.dontlognull is defined
+          - result.data.dontlog_normal is defined
+          - result.data.log_separate_errors is defined
+          - result.data.log_detailed is defined
+          - result.data.a_errorfiles is defined
+          - result.data.client_timeout is defined
+          - result.data.forwardfor is defined
+          - result.data.httpclose is defined
+          - result.data.advanced_bind is defined
+          - result.data.advanced is defined
+          - result.data.ssloffloadcert is defined
+          - result.data.ha_certificates is defined
+          - result.data.id is defined
+

@@ -1,0 +1,22 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": {
+      "host": "string",
+      "domain": "string",
+      "ip": "string",
+      "descr": "string",
+      "aliases": [
+        {
+          "host": "string",
+          "domain": "string",
+          "description": "string"
+        }
+      ],
+      "id": 0
+    }
+  }
+}

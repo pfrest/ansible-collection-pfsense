@@ -1,0 +1,40 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": [
+      {
+        "range_from": "string",
+        "range_to": "string",
+        "domain": "string",
+        "mac_allow": [
+          "string"
+        ],
+        "mac_deny": [
+          "string"
+        ],
+        "domainsearchlist": [
+          "string"
+        ],
+        "defaultleasetime": 9223372036854776000,
+        "maxleasetime": 9223372036854776000,
+        "gateway": "string",
+        "dnsserver": [
+          "string"
+        ],
+        "winsserver": [
+          "string"
+        ],
+        "ntpserver": [
+          "string"
+        ],
+        "ignorebootp": true,
+        "ignoreclientuids": true,
+        "denyunknown": "enabled",
+        "id": 0
+      }
+    ]
+  }
+}

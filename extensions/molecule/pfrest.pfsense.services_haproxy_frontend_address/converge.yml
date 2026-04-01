@@ -1,0 +1,44 @@
+---
+- name: Test pfrest.pfsense.services_haproxy_frontend_address module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage HA Proxy Frontend Address
+      register: result
+      pfrest.pfsense.services_haproxy_frontend_address:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        state: present
+        lookup_fields:
+          - id
+        extaddr: custom
+        extaddr_custom: string
+        extaddr_port: string
+        extaddr_ssl: true
+        exaddr_advanced: string
+        parent_lookup_fields:
+          - name
+        name: string
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.extaddr is defined
+          - result.data.extaddr_custom is defined
+          - result.data.extaddr_port is defined
+          - result.data.extaddr_ssl is defined
+          - result.data.exaddr_advanced is defined
+          - result.data.id is defined
+

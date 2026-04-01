@@ -1,0 +1,31 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": {
+      "platform": "string",
+      "serial": "string",
+      "netgate_id": "string",
+      "uptime": "string",
+      "bios_vendor": "string",
+      "bios_version": "string",
+      "bios_date": "string",
+      "kernel_pti": true,
+      "mds_mitigation": "string",
+      "temp_c": 1.0,
+      "temp_f": 1.0,
+      "cpu_model": "string",
+      "cpu_load_avg": [
+        1.0
+      ],
+      "cpu_count": 9223372036854776000,
+      "cpu_usage": 1.0,
+      "mbuf_usage": 1.0,
+      "mem_usage": 1.0,
+      "swap_usage": 1.0,
+      "disk_usage": 1.0
+    }
+  }
+}

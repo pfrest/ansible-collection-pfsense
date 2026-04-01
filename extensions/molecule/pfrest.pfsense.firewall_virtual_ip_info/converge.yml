@@ -1,0 +1,60 @@
+---
+- name: Test pfrest.pfsense.firewall_virtual_ip_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read Virtual IP
+      register: result
+      pfrest.pfsense.firewall_virtual_ip_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.uniqid is defined
+          - result.data.uniqid == "string"
+          - result.data.mode is defined
+          - result.data.mode == "ipalias"
+          - result.data.interface is defined
+          - result.data.interface == "string"
+          - result.data.type is defined
+          - result.data.type == "single"
+          - result.data.subnet is defined
+          - result.data.subnet == "string"
+          - result.data.subnet_bits is defined
+          - result.data.subnet_bits == 9223372036854776000
+          - result.data.descr is defined
+          - result.data.descr == "string"
+          - result.data.noexpand is defined
+          - result.data.noexpand == true
+          - result.data.vhid is defined
+          - result.data.vhid == 9223372036854776000
+          - result.data.advbase is defined
+          - result.data.advbase == 9223372036854776000
+          - result.data.advskew is defined
+          - result.data.advskew == 9223372036854776000
+          - result.data.password is defined
+          - result.data.password == "string"
+          - result.data.carp_status is defined
+          - result.data.carp_status == "string"
+          - result.data.carp_mode is defined
+          - result.data.carp_mode == "mcast"
+          - result.data.carp_peer is defined
+          - result.data.carp_peer == "string"
+          - result.data.id is defined
+          - result.data.id == 0
+

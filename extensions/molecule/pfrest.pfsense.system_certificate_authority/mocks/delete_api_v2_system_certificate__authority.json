@@ -1,0 +1,18 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": {
+      "descr": "string",
+      "refid": "string",
+      "trust": true,
+      "randomserial": true,
+      "serial": 9223372036854776000,
+      "crt": "string",
+      "prv": "string",
+      "id": 0
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": {
+      "disabled": true,
+      "name": "string",
+      "description": "string",
+      "type": "master",
+      "view": [
+        "string"
+      ],
+      "reversev4": true,
+      "reversev6": true,
+      "rpz": true,
+      "custom": "string",
+      "dnssec": true,
+      "backupkeys": true,
+      "slaveip": "string",
+      "forwarders": [
+        "string"
+      ],
+      "ttl": 9223372036854776000,
+      "baseip": "string",
+      "nameserver": "string",
+      "mail": "string",
+      "serial": 9223372036854776000,
+      "refresh": "string",
+      "retry": "string",
+      "expire": "string",
+      "minimum": "string",
+      "enable_updatepolicy": true,
+      "updatepolicy": "string",
+      "allowupdate": [
+        "string"
+      ],
+      "allowtransfer": [
+        "string"
+      ],
+      "allowquery": [
+        "string"
+      ],
+      "regdhcpstatic": true,
+      "customzonerecords": "string",
+      "records": [
+        {
+          "name": "string",
+          "type": "A",
+          "rdata": "string",
+          "priority": 9223372036854776000
+        }
+      ],
+      "id": 0
+    }
+  }
+}

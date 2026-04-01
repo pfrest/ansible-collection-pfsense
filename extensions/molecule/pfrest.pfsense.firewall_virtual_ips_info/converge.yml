@@ -1,0 +1,44 @@
+---
+- name: Test pfrest.pfsense.firewall_virtual_ips_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Retrieve Virtual IPs
+      register: result
+      pfrest.pfsense.firewall_virtual_ips_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is sequence
+          - 'result.data | length > 0'
+          - result.data[0].uniqid is defined
+          - result.data[0].mode is defined
+          - result.data[0].interface is defined
+          - result.data[0].type is defined
+          - result.data[0].subnet is defined
+          - result.data[0].subnet_bits is defined
+          - result.data[0].descr is defined
+          - result.data[0].noexpand is defined
+          - result.data[0].vhid is defined
+          - result.data[0].advbase is defined
+          - result.data[0].advskew is defined
+          - result.data[0].password is defined
+          - result.data[0].carp_status is defined
+          - result.data[0].carp_mode is defined
+          - result.data[0].carp_peer is defined
+          - result.data[0].id is defined
+

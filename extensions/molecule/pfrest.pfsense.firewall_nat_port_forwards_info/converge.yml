@@ -1,0 +1,48 @@
+---
+- name: Test pfrest.pfsense.firewall_nat_port_forwards_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Retrieve Port Forwards
+      register: result
+      pfrest.pfsense.firewall_nat_port_forwards_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is sequence
+          - 'result.data | length > 0'
+          - result.data[0].interface is defined
+          - result.data[0].ipprotocol is defined
+          - result.data[0].protocol is defined
+          - result.data[0].source is defined
+          - result.data[0].source_port is defined
+          - result.data[0].destination is defined
+          - result.data[0].destination_port is defined
+          - result.data[0].target is defined
+          - result.data[0].local_port is defined
+          - result.data[0].disabled is defined
+          - result.data[0].nordr is defined
+          - result.data[0].nosync is defined
+          - result.data[0].descr is defined
+          - result.data[0].natreflection is defined
+          - result.data[0].associated_rule_id is defined
+          - result.data[0].created_time is defined
+          - result.data[0].created_by is defined
+          - result.data[0].updated_time is defined
+          - result.data[0].updated_by is defined
+          - result.data[0].id is defined
+

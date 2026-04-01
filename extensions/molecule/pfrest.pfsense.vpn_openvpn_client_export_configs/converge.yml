@@ -1,0 +1,52 @@
+---
+- name: Test pfrest.pfsense.vpn_openvpn_client_export_configs module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage all Open VPN Client Export Configs
+      register: result
+      pfrest.pfsense.vpn_openvpn_client_export_configs:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        objects:
+          - server: 9223372036854776000
+            useaddr: serveraddr
+            useaddr_hostname: string
+            verifyservercn: auto
+            blockoutsidedns: true
+            legacy: true
+            silent: true
+            bindmode: nobind
+            usepkcs11: true
+            pkcs11providers:
+              - string
+            pkcs11id: string
+            usetoken: true
+            usepass: true
+            pass: string
+            p12encryption: high
+            useproxy: true
+            useproxytype: http
+            proxyaddr: string
+            proxyport: string
+            useproxypass: none
+            proxyuser: string
+            proxypass: string
+            advancedoptions: string
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is sequence
+

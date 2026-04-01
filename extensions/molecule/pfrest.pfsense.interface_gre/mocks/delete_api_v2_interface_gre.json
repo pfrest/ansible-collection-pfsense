@@ -1,0 +1,22 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": {
+      "if": "string",
+      "greif": "string",
+      "descr": "string",
+      "add_static_route": true,
+      "remote_addr": "string",
+      "tunnel_local_addr": "string",
+      "tunnel_remote_addr": "string",
+      "tunnel_remote_net": 9223372036854776000,
+      "tunnel_local_addr6": "string",
+      "tunnel_remote_addr6": "string",
+      "tunnel_remote_net6": 9223372036854776000,
+      "id": 0
+    }
+  }
+}

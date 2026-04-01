@@ -1,0 +1,78 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": [
+      {
+        "name": "string",
+        "descr": "string",
+        "status": "active",
+        "a_extaddr": [
+          {
+            "extaddr": "custom",
+            "extaddr_custom": "string",
+            "extaddr_port": "string",
+            "extaddr_ssl": true,
+            "exaddr_advanced": "string"
+          }
+        ],
+        "max_connections": 9223372036854776000,
+        "type": "http",
+        "ha_acls": [
+          {
+            "name": "string",
+            "expression": "host_starts_with",
+            "value": "string",
+            "casesensitive": true,
+            "not": true
+          }
+        ],
+        "a_actionitems": [
+          {
+            "action": "use_backend",
+            "acl": "string",
+            "backend": "string",
+            "customaction": "string",
+            "deny_status": "string",
+            "realm": "string",
+            "rule": "string",
+            "lua_function": "string",
+            "name": "string",
+            "fmt": "string",
+            "find": "string",
+            "replace": "string",
+            "path": "string",
+            "status": "string",
+            "reason": "string"
+          }
+        ],
+        "backend_serverpool": "string",
+        "socket_stats": true,
+        "dontlognull": true,
+        "dontlog_normal": true,
+        "log_separate_errors": true,
+        "log_detailed": true,
+        "a_errorfiles": [
+          {
+            "errorcode": 9223372036854776000,
+            "errorfile": "string"
+          }
+        ],
+        "client_timeout": 9223372036854776000,
+        "forwardfor": true,
+        "httpclose": "http-keep-alive",
+        "advanced_bind": "string",
+        "advanced": "string",
+        "ssloffloadcert": "string",
+        "ha_certificates": [
+          {
+            "ssl_certificate": "string"
+          }
+        ],
+        "id": 0
+      }
+    ]
+  }
+}

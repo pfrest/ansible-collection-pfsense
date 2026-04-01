@@ -1,0 +1,68 @@
+---
+- name: Test pfrest.pfsense.services_bind_settings module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage BIND Settings
+      register: result
+      pfrest.pfsense.services_bind_settings:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        enable_bind: true
+        bind_ip_version: ''
+        listenon:
+          - string
+        bind_notify: true
+        bind_hide_version: true
+        bind_ram_limit: string
+        bind_logging: true
+        log_severity: critical
+        log_options:
+          - default
+        rate_enabled: true
+        rate_limit: 9223372036854776000
+        log_only: true
+        bind_forwarder: true
+        bind_forwarder_ips:
+          - string
+        bind_dnssec_validation: auto
+        listenport: string
+        controlport: string
+        bind_custom_options: string
+        bind_global_settings: string
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.enable_bind is defined
+          - result.data.bind_ip_version is defined
+          - result.data.listenon is defined
+          - result.data.bind_notify is defined
+          - result.data.bind_hide_version is defined
+          - result.data.bind_ram_limit is defined
+          - result.data.bind_logging is defined
+          - result.data.log_severity is defined
+          - result.data.log_options is defined
+          - result.data.rate_enabled is defined
+          - result.data.rate_limit is defined
+          - result.data.log_only is defined
+          - result.data.bind_forwarder is defined
+          - result.data.bind_forwarder_ips is defined
+          - result.data.bind_dnssec_validation is defined
+          - result.data.listenport is defined
+          - result.data.controlport is defined
+          - result.data.bind_custom_options is defined
+          - result.data.bind_global_settings is defined
+

@@ -1,0 +1,34 @@
+---
+- name: Test pfrest.pfsense.vpn_ipsec_phase2_encryption_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read IPsec Phase 2 Encryption
+      register: result
+      pfrest.pfsense.vpn_ipsec_phase2_encryption_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.name is defined
+          - result.data.name == "aes"
+          - result.data.keylen is defined
+          - result.data.keylen == 9223372036854776000
+          - result.data.id is defined
+          - result.data.id == 0
+

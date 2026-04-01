@@ -1,0 +1,31 @@
+---
+- name: Test pfrest.pfsense.firewall_advanced_settings module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage Firewall Advanced Settings
+      register: result
+      pfrest.pfsense.firewall_advanced_settings:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        aliasesresolveinterval: 9223372036854776000
+        checkaliasesurlcert: true
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.aliasesresolveinterval is defined
+          - result.data.checkaliasesurlcert is defined
+

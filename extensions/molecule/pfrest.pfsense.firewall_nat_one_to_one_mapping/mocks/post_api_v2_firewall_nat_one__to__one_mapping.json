@@ -1,0 +1,20 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": {
+      "interface": "string",
+      "disabled": true,
+      "nobinat": true,
+      "natreflection": "enable",
+      "ipprotocol": "inet",
+      "external": "string",
+      "source": "string",
+      "destination": "string",
+      "descr": "string",
+      "id": 0
+    }
+  }
+}

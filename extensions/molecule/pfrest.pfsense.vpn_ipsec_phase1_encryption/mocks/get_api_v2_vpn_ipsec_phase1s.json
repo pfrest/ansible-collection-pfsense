@@ -1,0 +1,53 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": [
+      {
+        "ikeid": 9223372036854776000,
+        "descr": "string",
+        "disabled": true,
+        "iketype": "ikev1",
+        "mode": "main",
+        "protocol": "inet",
+        "interface": "string",
+        "remote_gateway": "string",
+        "authentication_method": "pre_shared_key",
+        "myid_type": "myaddress",
+        "myid_data": "string",
+        "peerid_type": "any",
+        "peerid_data": "string",
+        "pre_shared_key": "string",
+        "certref": "string",
+        "caref": "string",
+        "rekey_time": 9223372036854776000,
+        "reauth_time": 9223372036854776000,
+        "rand_time": 9223372036854776000,
+        "lifetime": 9223372036854776000,
+        "startaction": "",
+        "closeaction": "",
+        "nat_traversal": "on",
+        "gw_duplicates": true,
+        "mobike": true,
+        "splitconn": true,
+        "prfselect_enable": true,
+        "ikeport": "string",
+        "nattport": "string",
+        "dpd_delay": 9223372036854776000,
+        "dpd_maxfail": 9223372036854776000,
+        "encryption": [
+          {
+            "encryption_algorithm_name": "aes",
+            "encryption_algorithm_keylen": 9223372036854776000,
+            "hash_algorithm": "sha1",
+            "dhgroup": 1,
+            "prf_algorithm": "sha1"
+          }
+        ],
+        "id": 0
+      }
+    ]
+  }
+}

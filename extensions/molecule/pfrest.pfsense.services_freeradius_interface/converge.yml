@@ -1,0 +1,41 @@
+---
+- name: Test pfrest.pfsense.services_freeradius_interface module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage Free RADIUS Interface
+      register: result
+      pfrest.pfsense.services_freeradius_interface:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        state: present
+        lookup_fields:
+          - id
+        addr: string
+        port: string
+        type: auth
+        ip_version: ipaddr
+        description: string
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.addr is defined
+          - result.data.port is defined
+          - result.data.type is defined
+          - result.data.ip_version is defined
+          - result.data.description is defined
+          - result.data.id is defined
+

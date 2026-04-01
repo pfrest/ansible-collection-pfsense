@@ -1,0 +1,40 @@
+---
+- name: Test pfrest.pfsense.services_freeradius_clients_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Retrieve Free RADIUS Clients
+      register: result
+      pfrest.pfsense.services_freeradius_clients_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is sequence
+          - 'result.data | length > 0'
+          - result.data[0].addr is defined
+          - result.data[0].ip_version is defined
+          - result.data[0].description is defined
+          - result.data[0].shortname is defined
+          - result.data[0].secret is defined
+          - result.data[0].proto is defined
+          - result.data[0].nastype is defined
+          - result.data[0].msgauth is defined
+          - result.data[0].maxconn is defined
+          - result.data[0].naslogin is defined
+          - result.data[0].naspassword is defined
+          - result.data[0].id is defined
+

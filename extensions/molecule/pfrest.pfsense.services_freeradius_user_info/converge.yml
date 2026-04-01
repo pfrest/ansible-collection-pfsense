@@ -1,0 +1,52 @@
+---
+- name: Test pfrest.pfsense.services_freeradius_user_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read Free RADIUS User
+      register: result
+      pfrest.pfsense.services_freeradius_user_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.username is defined
+          - result.data.username == "string"
+          - result.data.password is defined
+          - result.data.password == "string"
+          - result.data.password_encryption is defined
+          - result.data.password_encryption == "Cleartext-Password"
+          - result.data.motp_enable is defined
+          - result.data.motp_enable == true
+          - result.data.motp_authmethod is defined
+          - result.data.motp_authmethod == "motp"
+          - result.data.motp_secret is defined
+          - result.data.motp_secret == "string"
+          - result.data.motp_pin is defined
+          - result.data.motp_pin == "string"
+          - result.data.motp_offset is defined
+          - result.data.motp_offset == 9223372036854776000
+          - result.data.description is defined
+          - result.data.description == "string"
+          - result.data.framed_ip_address is defined
+          - result.data.framed_ip_address == "string"
+          - result.data.framed_ip_netmask is defined
+          - result.data.framed_ip_netmask == "string"
+          - result.data.id is defined
+          - result.data.id == 0
+

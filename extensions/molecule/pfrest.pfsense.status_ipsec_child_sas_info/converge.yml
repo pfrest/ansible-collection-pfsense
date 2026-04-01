@@ -1,0 +1,53 @@
+---
+- name: Test pfrest.pfsense.status_ipsec_child_sas_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Retrieve IPsec Child SA Statuses
+      register: result
+      pfrest.pfsense.status_ipsec_child_sas_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is sequence
+          - 'result.data | length > 0'
+          - result.data[0].name is defined
+          - result.data[0].uniqueid is defined
+          - result.data[0].reqid is defined
+          - result.data[0].state is defined
+          - result.data[0].mode is defined
+          - result.data[0].protocol is defined
+          - result.data[0].encap is defined
+          - result.data[0].spi_in is defined
+          - result.data[0].spi_out is defined
+          - result.data[0].encr_alg is defined
+          - result.data[0].encr_keysize is defined
+          - result.data[0].integ_alg is defined
+          - result.data[0].dh_group is defined
+          - result.data[0].bytes_in is defined
+          - result.data[0].bytes_out is defined
+          - result.data[0].packets_in is defined
+          - result.data[0].packets_out is defined
+          - result.data[0].use_in is defined
+          - result.data[0].use_out is defined
+          - result.data[0].rekey_time is defined
+          - result.data[0].life_time is defined
+          - result.data[0].install_time is defined
+          - result.data[0].local_ts is defined
+          - result.data[0].remote_ts is defined
+          - result.data[0].id is defined
+

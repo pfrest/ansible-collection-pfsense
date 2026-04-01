@@ -1,0 +1,166 @@
+---
+- name: Test pfrest.pfsense.firewall_traffic_shaper_limiter module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage Traffic Shaper Limiter
+      register: result
+      pfrest.pfsense.firewall_traffic_shaper_limiter:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        state: present
+        lookup_fields:
+          - name
+        name: string
+        enabled: true
+        mask: none
+        maskbits: 9223372036854776000
+        maskbitsv6: 9223372036854776000
+        qlimit: 9223372036854776000
+        ecn: true
+        description: string
+        aqm: droptail
+        sched: wf2q+
+        param_codel_target: 9223372036854776000
+        param_codel_interval: 9223372036854776000
+        param_pie_target: 9223372036854776000
+        param_pie_tupdate: 9223372036854776000
+        param_pie_alpha: 9223372036854776000
+        param_pie_beta: 9223372036854776000
+        param_pie_max_burst: 9223372036854776000
+        param_pie_max_ecnth: 9223372036854776000
+        pie_onoff: true
+        pie_capdrop: true
+        pie_qdelay: true
+        pie_pderand: true
+        param_red_w_q: 9223372036854776000
+        param_red_min_th: 9223372036854776000
+        param_red_max_th: 9223372036854776000
+        param_red_max_p: 9223372036854776000
+        param_gred_w_q: 9223372036854776000
+        param_gred_min_th: 9223372036854776000
+        param_gred_max_th: 9223372036854776000
+        param_gred_max_p: 9223372036854776000
+        param_fq_codel_target: 9223372036854776000
+        param_fq_codel_interval: 9223372036854776000
+        param_fq_codel_quantum: 9223372036854776000
+        param_fq_codel_limit: 9223372036854776000
+        param_fq_codel_flows: 9223372036854776000
+        param_fq_pie_target: 9223372036854776000
+        param_fq_pie_tupdate: 9223372036854776000
+        param_fq_pie_alpha: 9223372036854776000
+        param_fq_pie_beta: 9223372036854776000
+        param_fq_pie_max_burst: 9223372036854776000
+        param_fq_pie_max_ecnth: 9223372036854776000
+        param_fq_pie_quantum: 9223372036854776000
+        param_fq_pie_limit: 9223372036854776000
+        param_fq_pie_flows: 9223372036854776000
+        delay: 9223372036854776000
+        plr: 1.0
+        buckets: 9223372036854776000
+        bandwidth:
+          - bw: 9223372036854776000
+            bwscale: b
+            bwsched: string
+        queue:
+          - name: string
+            number: 9223372036854776000
+            enabled: true
+            mask: none
+            maskbits: 9223372036854776000
+            maskbitsv6: 9223372036854776000
+            qlimit: 9223372036854776000
+            ecn: true
+            description: string
+            aqm: droptail
+            param_codel_target: 9223372036854776000
+            param_codel_interval: 9223372036854776000
+            param_pie_target: 9223372036854776000
+            param_pie_tupdate: 9223372036854776000
+            param_pie_alpha: 9223372036854776000
+            param_pie_beta: 9223372036854776000
+            param_pie_max_burst: 9223372036854776000
+            param_pie_max_ecnth: 9223372036854776000
+            pie_onoff: true
+            pie_capdrop: true
+            pie_qdelay: true
+            pie_pderand: true
+            param_red_w_q: 9223372036854776000
+            param_red_min_th: 9223372036854776000
+            param_red_max_th: 9223372036854776000
+            param_red_max_p: 9223372036854776000
+            param_gred_w_q: 9223372036854776000
+            param_gred_min_th: 9223372036854776000
+            param_gred_max_th: 9223372036854776000
+            param_gred_max_p: 9223372036854776000
+            weight: 9223372036854776000
+            plr: 1.0
+            buckets: 9223372036854776000
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.name is defined
+          - result.data.number is defined
+          - result.data.enabled is defined
+          - result.data.mask is defined
+          - result.data.maskbits is defined
+          - result.data.maskbitsv6 is defined
+          - result.data.qlimit is defined
+          - result.data.ecn is defined
+          - result.data.description is defined
+          - result.data.aqm is defined
+          - result.data.sched is defined
+          - result.data.param_codel_target is defined
+          - result.data.param_codel_interval is defined
+          - result.data.param_pie_target is defined
+          - result.data.param_pie_tupdate is defined
+          - result.data.param_pie_alpha is defined
+          - result.data.param_pie_beta is defined
+          - result.data.param_pie_max_burst is defined
+          - result.data.param_pie_max_ecnth is defined
+          - result.data.pie_onoff is defined
+          - result.data.pie_capdrop is defined
+          - result.data.pie_qdelay is defined
+          - result.data.pie_pderand is defined
+          - result.data.param_red_w_q is defined
+          - result.data.param_red_min_th is defined
+          - result.data.param_red_max_th is defined
+          - result.data.param_red_max_p is defined
+          - result.data.param_gred_w_q is defined
+          - result.data.param_gred_min_th is defined
+          - result.data.param_gred_max_th is defined
+          - result.data.param_gred_max_p is defined
+          - result.data.param_fq_codel_target is defined
+          - result.data.param_fq_codel_interval is defined
+          - result.data.param_fq_codel_quantum is defined
+          - result.data.param_fq_codel_limit is defined
+          - result.data.param_fq_codel_flows is defined
+          - result.data.param_fq_pie_target is defined
+          - result.data.param_fq_pie_tupdate is defined
+          - result.data.param_fq_pie_alpha is defined
+          - result.data.param_fq_pie_beta is defined
+          - result.data.param_fq_pie_max_burst is defined
+          - result.data.param_fq_pie_max_ecnth is defined
+          - result.data.param_fq_pie_quantum is defined
+          - result.data.param_fq_pie_limit is defined
+          - result.data.param_fq_pie_flows is defined
+          - result.data.delay is defined
+          - result.data.plr is defined
+          - result.data.buckets is defined
+          - result.data.bandwidth is defined
+          - result.data.queue is defined
+          - result.data.id is defined
+

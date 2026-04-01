@@ -1,0 +1,59 @@
+---
+- name: Test pfrest.pfsense.services_bind_zones_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Retrieve BIND Zones
+      register: result
+      pfrest.pfsense.services_bind_zones_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is sequence
+          - 'result.data | length > 0'
+          - result.data[0].disabled is defined
+          - result.data[0].name is defined
+          - result.data[0].description is defined
+          - result.data[0].type is defined
+          - result.data[0].view is defined
+          - result.data[0].reversev4 is defined
+          - result.data[0].reversev6 is defined
+          - result.data[0].rpz is defined
+          - result.data[0].custom is defined
+          - result.data[0].dnssec is defined
+          - result.data[0].backupkeys is defined
+          - result.data[0].slaveip is defined
+          - result.data[0].forwarders is defined
+          - result.data[0].ttl is defined
+          - result.data[0].baseip is defined
+          - result.data[0].nameserver is defined
+          - result.data[0].mail is defined
+          - result.data[0].serial is defined
+          - result.data[0].refresh is defined
+          - result.data[0].retry is defined
+          - result.data[0].expire is defined
+          - result.data[0].minimum is defined
+          - result.data[0].enable_updatepolicy is defined
+          - result.data[0].updatepolicy is defined
+          - result.data[0].allowupdate is defined
+          - result.data[0].allowtransfer is defined
+          - result.data[0].allowquery is defined
+          - result.data[0].regdhcpstatic is defined
+          - result.data[0].customzonerecords is defined
+          - result.data[0].records is defined
+          - result.data[0].id is defined
+

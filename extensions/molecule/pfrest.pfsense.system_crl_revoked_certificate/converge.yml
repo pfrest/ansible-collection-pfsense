@@ -1,0 +1,42 @@
+---
+- name: Test pfrest.pfsense.system_crl_revoked_certificate module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage Certificate Revocation List Revoked Certificate
+      register: result
+      pfrest.pfsense.system_crl_revoked_certificate:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        state: present
+        lookup_fields:
+          - id
+        certref: string
+        serial: string
+        reason: -1
+        revoke_time: 9223372036854776000
+        parent_lookup_fields:
+          - descr
+        descr: string
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.certref is defined
+          - result.data.serial is defined
+          - result.data.reason is defined
+          - result.data.revoke_time is defined
+          - result.data.id is defined
+

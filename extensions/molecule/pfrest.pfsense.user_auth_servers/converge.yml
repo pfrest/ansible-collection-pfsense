@@ -1,0 +1,59 @@
+---
+- name: Test pfrest.pfsense.user_auth_servers module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage all authentication servers
+      register: result
+      pfrest.pfsense.user_auth_servers:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        objects:
+          - type: ldap
+            name: string
+            host: string
+            ldap_port: string
+            ldap_urltype: Standard TCP
+            ldap_protver: 2
+            ldap_timeout: 9223372036854776000
+            ldap_caref: string
+            ldap_scope: one
+            ldap_basedn: string
+            ldap_authcn: string
+            ldap_extended_enabled: true
+            ldap_extended_query: string
+            ldap_binddn: string
+            ldap_bindpw: string
+            ldap_attr_user: string
+            ldap_attr_group: string
+            ldap_attr_member: string
+            ldap_rfc2307: true
+            ldap_rfc2307_userdn: true
+            ldap_attr_groupobj: string
+            ldap_pam_groupdn: string
+            ldap_utf8: true
+            ldap_nostrip_at: true
+            ldap_allow_unauthenticated: true
+            radius_secret: string
+            radius_auth_port: string
+            radius_acct_port: string
+            radius_protocol: MSCHAPv2
+            radius_timeout: 9223372036854776000
+            radius_nasip_attribute: string
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is sequence
+

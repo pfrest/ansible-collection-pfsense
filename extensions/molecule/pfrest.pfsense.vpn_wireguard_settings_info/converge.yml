@@ -1,0 +1,42 @@
+---
+- name: Test pfrest.pfsense.vpn_wireguard_settings_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read WireGuard Settings
+      register: result
+      pfrest.pfsense.vpn_wireguard_settings_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.enable is defined
+          - result.data.enable == true
+          - result.data.keep_conf is defined
+          - result.data.keep_conf == true
+          - result.data.resolve_interval_track is defined
+          - result.data.resolve_interval_track == true
+          - result.data.resolve_interval is defined
+          - result.data.resolve_interval == 9223372036854776000
+          - result.data.interface_group is defined
+          - result.data.interface_group == "all"
+          - result.data.hide_secrets is defined
+          - result.data.hide_secrets == true
+          - result.data.hide_peers is defined
+          - result.data.hide_peers == true
+

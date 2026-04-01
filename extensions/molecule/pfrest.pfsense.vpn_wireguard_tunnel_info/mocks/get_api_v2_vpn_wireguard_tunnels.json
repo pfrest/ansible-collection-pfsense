@@ -1,0 +1,27 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": [
+      {
+        "name": "string",
+        "enabled": true,
+        "descr": "string",
+        "listenport": "string",
+        "publickey": "string",
+        "privatekey": "string",
+        "mtu": 9223372036854776000,
+        "addresses": [
+          {
+            "address": "string",
+            "mask": 9223372036854776000,
+            "descr": "string"
+          }
+        ],
+        "id": 0
+      }
+    ]
+  }
+}

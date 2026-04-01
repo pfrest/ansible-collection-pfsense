@@ -1,0 +1,52 @@
+---
+- name: Test pfrest.pfsense.interface_gre_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read Interface GRE
+      register: result
+      pfrest.pfsense.interface_gre_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.if is defined
+          - result.data.if == "string"
+          - result.data.greif is defined
+          - result.data.greif == "string"
+          - result.data.descr is defined
+          - result.data.descr == "string"
+          - result.data.add_static_route is defined
+          - result.data.add_static_route == true
+          - result.data.remote_addr is defined
+          - result.data.remote_addr == "string"
+          - result.data.tunnel_local_addr is defined
+          - result.data.tunnel_local_addr == "string"
+          - result.data.tunnel_remote_addr is defined
+          - result.data.tunnel_remote_addr == "string"
+          - result.data.tunnel_remote_net is defined
+          - result.data.tunnel_remote_net == 9223372036854776000
+          - result.data.tunnel_local_addr6 is defined
+          - result.data.tunnel_local_addr6 == "string"
+          - result.data.tunnel_remote_addr6 is defined
+          - result.data.tunnel_remote_addr6 == "string"
+          - result.data.tunnel_remote_net6 is defined
+          - result.data.tunnel_remote_net6 == 9223372036854776000
+          - result.data.id is defined
+          - result.data.id == 0
+

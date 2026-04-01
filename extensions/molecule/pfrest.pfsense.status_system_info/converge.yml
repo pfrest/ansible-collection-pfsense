@@ -1,0 +1,66 @@
+---
+- name: Test pfrest.pfsense.status_system_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read System Status
+      register: result
+      pfrest.pfsense.status_system_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.platform is defined
+          - result.data.platform == "string"
+          - result.data.serial is defined
+          - result.data.serial == "string"
+          - result.data.netgate_id is defined
+          - result.data.netgate_id == "string"
+          - result.data.uptime is defined
+          - result.data.uptime == "string"
+          - result.data.bios_vendor is defined
+          - result.data.bios_vendor == "string"
+          - result.data.bios_version is defined
+          - result.data.bios_version == "string"
+          - result.data.bios_date is defined
+          - result.data.bios_date == "string"
+          - result.data.kernel_pti is defined
+          - result.data.kernel_pti == true
+          - result.data.mds_mitigation is defined
+          - result.data.mds_mitigation == "string"
+          - result.data.temp_c is defined
+          - result.data.temp_c == 1.0
+          - result.data.temp_f is defined
+          - result.data.temp_f == 1.0
+          - result.data.cpu_model is defined
+          - result.data.cpu_model == "string"
+          - result.data.cpu_load_avg is defined
+          - result.data.cpu_load_avg is sequence
+          - result.data.cpu_count is defined
+          - result.data.cpu_count == 9223372036854776000
+          - result.data.cpu_usage is defined
+          - result.data.cpu_usage == 1.0
+          - result.data.mbuf_usage is defined
+          - result.data.mbuf_usage == 1.0
+          - result.data.mem_usage is defined
+          - result.data.mem_usage == 1.0
+          - result.data.swap_usage is defined
+          - result.data.swap_usage == 1.0
+          - result.data.disk_usage is defined
+          - result.data.disk_usage == 1.0
+

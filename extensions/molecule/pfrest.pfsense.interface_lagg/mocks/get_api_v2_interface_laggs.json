@@ -1,0 +1,22 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": [
+      {
+        "laggif": "string",
+        "descr": "string",
+        "members": [
+          "string"
+        ],
+        "proto": "lacp",
+        "lacptimeout": "slow",
+        "lagghash": "l2",
+        "failovermaster": "string",
+        "id": 0
+      }
+    ]
+  }
+}

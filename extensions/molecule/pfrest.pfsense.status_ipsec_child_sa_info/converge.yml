@@ -1,0 +1,78 @@
+---
+- name: Test pfrest.pfsense.status_ipsec_child_sa_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read IPsec Child SA Status
+      register: result
+      pfrest.pfsense.status_ipsec_child_sa_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.name is defined
+          - result.data.name == "string"
+          - result.data.uniqueid is defined
+          - result.data.uniqueid == 9223372036854776000
+          - result.data.reqid is defined
+          - result.data.reqid == 9223372036854776000
+          - result.data.state is defined
+          - result.data.state == "string"
+          - result.data.mode is defined
+          - result.data.mode == "string"
+          - result.data.protocol is defined
+          - result.data.protocol == "string"
+          - result.data.encap is defined
+          - result.data.encap == true
+          - result.data.spi_in is defined
+          - result.data.spi_in == "string"
+          - result.data.spi_out is defined
+          - result.data.spi_out == "string"
+          - result.data.encr_alg is defined
+          - result.data.encr_alg == "string"
+          - result.data.encr_keysize is defined
+          - result.data.encr_keysize == 9223372036854776000
+          - result.data.integ_alg is defined
+          - result.data.integ_alg == "string"
+          - result.data.dh_group is defined
+          - result.data.dh_group == "string"
+          - result.data.bytes_in is defined
+          - result.data.bytes_in == 9223372036854776000
+          - result.data.bytes_out is defined
+          - result.data.bytes_out == 9223372036854776000
+          - result.data.packets_in is defined
+          - result.data.packets_in == 9223372036854776000
+          - result.data.packets_out is defined
+          - result.data.packets_out == 9223372036854776000
+          - result.data.use_in is defined
+          - result.data.use_in == 9223372036854776000
+          - result.data.use_out is defined
+          - result.data.use_out == 9223372036854776000
+          - result.data.rekey_time is defined
+          - result.data.rekey_time == 9223372036854776000
+          - result.data.life_time is defined
+          - result.data.life_time == 9223372036854776000
+          - result.data.install_time is defined
+          - result.data.install_time == 9223372036854776000
+          - result.data.local_ts is defined
+          - result.data.local_ts is sequence
+          - result.data.remote_ts is defined
+          - result.data.remote_ts is sequence
+          - result.data.id is defined
+          - result.data.id == 0
+

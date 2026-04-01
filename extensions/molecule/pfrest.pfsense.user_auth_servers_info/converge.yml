@@ -1,0 +1,61 @@
+---
+- name: Test pfrest.pfsense.user_auth_servers_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Retrieve authentication servers
+      register: result
+      pfrest.pfsense.user_auth_servers_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is sequence
+          - 'result.data | length > 0'
+          - result.data[0].refid is defined
+          - result.data[0].type is defined
+          - result.data[0].name is defined
+          - result.data[0].host is defined
+          - result.data[0].ldap_port is defined
+          - result.data[0].ldap_urltype is defined
+          - result.data[0].ldap_protver is defined
+          - result.data[0].ldap_timeout is defined
+          - result.data[0].ldap_caref is defined
+          - result.data[0].ldap_scope is defined
+          - result.data[0].ldap_basedn is defined
+          - result.data[0].ldap_authcn is defined
+          - result.data[0].ldap_extended_enabled is defined
+          - result.data[0].ldap_extended_query is defined
+          - result.data[0].ldap_binddn is defined
+          - result.data[0].ldap_bindpw is defined
+          - result.data[0].ldap_attr_user is defined
+          - result.data[0].ldap_attr_group is defined
+          - result.data[0].ldap_attr_member is defined
+          - result.data[0].ldap_rfc2307 is defined
+          - result.data[0].ldap_rfc2307_userdn is defined
+          - result.data[0].ldap_attr_groupobj is defined
+          - result.data[0].ldap_pam_groupdn is defined
+          - result.data[0].ldap_utf8 is defined
+          - result.data[0].ldap_nostrip_at is defined
+          - result.data[0].ldap_allow_unauthenticated is defined
+          - result.data[0].radius_secret is defined
+          - result.data[0].radius_auth_port is defined
+          - result.data[0].radius_acct_port is defined
+          - result.data[0].radius_protocol is defined
+          - result.data[0].radius_timeout is defined
+          - result.data[0].radius_nasip_attribute is defined
+          - result.data[0].id is defined
+

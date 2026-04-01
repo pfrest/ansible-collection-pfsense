@@ -1,0 +1,64 @@
+---
+- name: Test pfrest.pfsense.services_dns_resolver_settings_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read DNS Resolver Settings
+      register: result
+      pfrest.pfsense.services_dns_resolver_settings_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.enable is defined
+          - result.data.enable == true
+          - result.data.port is defined
+          - result.data.port == "string"
+          - result.data.enablessl is defined
+          - result.data.enablessl == true
+          - result.data.sslcertref is defined
+          - result.data.sslcertref == "string"
+          - result.data.tlsport is defined
+          - result.data.tlsport == "string"
+          - result.data.active_interface is defined
+          - result.data.active_interface is sequence
+          - result.data.outgoing_interface is defined
+          - result.data.outgoing_interface is sequence
+          - result.data.strictout is defined
+          - result.data.strictout == true
+          - result.data.system_domain_local_zone_type is defined
+          - result.data.system_domain_local_zone_type == "deny"
+          - result.data.dnssec is defined
+          - result.data.dnssec == true
+          - result.data.python is defined
+          - result.data.python == true
+          - result.data.python_order is defined
+          - result.data.python_order == "pre_validator"
+          - result.data.python_script is defined
+          - result.data.python_script == "string"
+          - result.data.forwarding is defined
+          - result.data.forwarding == true
+          - result.data.regdhcp is defined
+          - result.data.regdhcp == true
+          - result.data.regdhcpstatic is defined
+          - result.data.regdhcpstatic == true
+          - result.data.regovpnclients is defined
+          - result.data.regovpnclients == true
+          - result.data.custom_options is defined
+          - result.data.custom_options == "string"
+

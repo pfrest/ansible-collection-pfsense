@@ -1,0 +1,102 @@
+---
+- name: Test pfrest.pfsense.vpn_openvpn_servers_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Retrieve Open VPN Servers
+      register: result
+      pfrest.pfsense.vpn_openvpn_servers_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is sequence
+          - 'result.data | length > 0'
+          - result.data[0].vpnid is defined
+          - result.data[0].vpnif is defined
+          - result.data[0].description is defined
+          - result.data[0].disable is defined
+          - result.data[0].mode is defined
+          - result.data[0].authmode is defined
+          - result.data[0].dev_mode is defined
+          - result.data[0].protocol is defined
+          - result.data[0].interface is defined
+          - result.data[0].local_port is defined
+          - result.data[0].use_tls is defined
+          - result.data[0].tls is defined
+          - result.data[0].tls_type is defined
+          - result.data[0].tlsauth_keydir is defined
+          - result.data[0].caref is defined
+          - result.data[0].certref is defined
+          - result.data[0].cert_depth is defined
+          - result.data[0].dh_length is defined
+          - result.data[0].ecdh_curve is defined
+          - result.data[0].data_ciphers is defined
+          - result.data[0].data_ciphers_fallback is defined
+          - result.data[0].digest is defined
+          - result.data[0].strictusercn is defined
+          - result.data[0].remote_cert_tls is defined
+          - result.data[0].tunnel_network is defined
+          - result.data[0].tunnel_networkv6 is defined
+          - result.data[0].serverbridge_dhcp is defined
+          - result.data[0].serverbridge_interface is defined
+          - result.data[0].serverbridge_routegateway is defined
+          - result.data[0].serverbridge_dhcp_start is defined
+          - result.data[0].serverbridge_dhcp_end is defined
+          - result.data[0].gwredir is defined
+          - result.data[0].gwredir6 is defined
+          - result.data[0].local_network is defined
+          - result.data[0].local_networkv6 is defined
+          - result.data[0].remote_network is defined
+          - result.data[0].remote_networkv6 is defined
+          - result.data[0].maxclients is defined
+          - result.data[0].allow_compression is defined
+          - result.data[0].passtos is defined
+          - result.data[0].client2client is defined
+          - result.data[0].duplicate_cn is defined
+          - result.data[0].connlimit is defined
+          - result.data[0].dynamic_ip is defined
+          - result.data[0].topology is defined
+          - result.data[0].inactive_seconds is defined
+          - result.data[0].ping_method is defined
+          - result.data[0].keepalive_interval is defined
+          - result.data[0].keepalive_timeout is defined
+          - result.data[0].ping_seconds is defined
+          - result.data[0].ping_push is defined
+          - result.data[0].ping_action is defined
+          - result.data[0].ping_action_seconds is defined
+          - result.data[0].ping_action_push is defined
+          - result.data[0].dns_domain is defined
+          - result.data[0].dns_server1 is defined
+          - result.data[0].dns_server2 is defined
+          - result.data[0].dns_server3 is defined
+          - result.data[0].dns_server4 is defined
+          - result.data[0].push_blockoutsidedns is defined
+          - result.data[0].push_register_dns is defined
+          - result.data[0].ntp_server1 is defined
+          - result.data[0].ntp_server2 is defined
+          - result.data[0].netbios_enable is defined
+          - result.data[0].netbios_ntype is defined
+          - result.data[0].netbios_scope is defined
+          - result.data[0].wins_server1 is defined
+          - result.data[0].wins_server2 is defined
+          - result.data[0].custom_options is defined
+          - result.data[0].username_as_common_name is defined
+          - result.data[0].sndrcvbuf is defined
+          - result.data[0].create_gw is defined
+          - result.data[0].verbosity_level is defined
+          - result.data[0].id is defined
+

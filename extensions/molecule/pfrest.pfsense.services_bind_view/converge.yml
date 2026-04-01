@@ -1,0 +1,45 @@
+---
+- name: Test pfrest.pfsense.services_bind_view module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage BIND View
+      register: result
+      pfrest.pfsense.services_bind_view:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        state: present
+        lookup_fields:
+          - name
+        name: string
+        descr: string
+        recursion: true
+        match_clients:
+          - string
+        allow_recursion:
+          - string
+        bind_custom_options: string
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.name is defined
+          - result.data.descr is defined
+          - result.data.recursion is defined
+          - result.data.match_clients is defined
+          - result.data.allow_recursion is defined
+          - result.data.bind_custom_options is defined
+          - result.data.id is defined
+

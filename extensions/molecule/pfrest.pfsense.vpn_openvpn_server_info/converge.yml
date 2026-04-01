@@ -1,0 +1,176 @@
+---
+- name: Test pfrest.pfsense.vpn_openvpn_server_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read Open VPN Server
+      register: result
+      pfrest.pfsense.vpn_openvpn_server_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.vpnid is defined
+          - result.data.vpnid == 9223372036854776000
+          - result.data.vpnif is defined
+          - result.data.vpnif == "string"
+          - result.data.description is defined
+          - result.data.description == "string"
+          - result.data.disable is defined
+          - result.data.disable == true
+          - result.data.mode is defined
+          - result.data.mode == "p2p_tls"
+          - result.data.authmode is defined
+          - result.data.authmode is sequence
+          - result.data.dev_mode is defined
+          - result.data.dev_mode == "tun"
+          - result.data.protocol is defined
+          - result.data.protocol == "UDP4"
+          - result.data.interface is defined
+          - result.data.interface == "string"
+          - result.data.local_port is defined
+          - result.data.local_port == "string"
+          - result.data.use_tls is defined
+          - result.data.use_tls == true
+          - result.data.tls is defined
+          - result.data.tls == "string"
+          - result.data.tls_type is defined
+          - result.data.tls_type == "auth"
+          - result.data.tlsauth_keydir is defined
+          - result.data.tlsauth_keydir == "default"
+          - result.data.caref is defined
+          - result.data.caref == "string"
+          - result.data.certref is defined
+          - result.data.certref == "string"
+          - result.data.cert_depth is defined
+          - result.data.cert_depth == 1
+          - result.data.dh_length is defined
+          - result.data.dh_length == "string"
+          - result.data.ecdh_curve is defined
+          - result.data.ecdh_curve == "string"
+          - result.data.data_ciphers is defined
+          - result.data.data_ciphers is sequence
+          - result.data.data_ciphers_fallback is defined
+          - result.data.data_ciphers_fallback == "string"
+          - result.data.digest is defined
+          - result.data.digest == "string"
+          - result.data.strictusercn is defined
+          - result.data.strictusercn == true
+          - result.data.remote_cert_tls is defined
+          - result.data.remote_cert_tls == true
+          - result.data.tunnel_network is defined
+          - result.data.tunnel_network == "string"
+          - result.data.tunnel_networkv6 is defined
+          - result.data.tunnel_networkv6 == "string"
+          - result.data.serverbridge_dhcp is defined
+          - result.data.serverbridge_dhcp == true
+          - result.data.serverbridge_interface is defined
+          - result.data.serverbridge_interface == "string"
+          - result.data.serverbridge_routegateway is defined
+          - result.data.serverbridge_routegateway == true
+          - result.data.serverbridge_dhcp_start is defined
+          - result.data.serverbridge_dhcp_start == "string"
+          - result.data.serverbridge_dhcp_end is defined
+          - result.data.serverbridge_dhcp_end == "string"
+          - result.data.gwredir is defined
+          - result.data.gwredir == true
+          - result.data.gwredir6 is defined
+          - result.data.gwredir6 == true
+          - result.data.local_network is defined
+          - result.data.local_network is sequence
+          - result.data.local_networkv6 is defined
+          - result.data.local_networkv6 is sequence
+          - result.data.remote_network is defined
+          - result.data.remote_network is sequence
+          - result.data.remote_networkv6 is defined
+          - result.data.remote_networkv6 is sequence
+          - result.data.maxclients is defined
+          - result.data.maxclients == 9223372036854776000
+          - result.data.allow_compression is defined
+          - result.data.allow_compression == "no"
+          - result.data.passtos is defined
+          - result.data.passtos == true
+          - result.data.client2client is defined
+          - result.data.client2client == true
+          - result.data.duplicate_cn is defined
+          - result.data.duplicate_cn == true
+          - result.data.connlimit is defined
+          - result.data.connlimit == 9223372036854776000
+          - result.data.dynamic_ip is defined
+          - result.data.dynamic_ip == true
+          - result.data.topology is defined
+          - result.data.topology == "subnet"
+          - result.data.inactive_seconds is defined
+          - result.data.inactive_seconds == 9223372036854776000
+          - result.data.ping_method is defined
+          - result.data.ping_method == "keepalive"
+          - result.data.keepalive_interval is defined
+          - result.data.keepalive_interval == 9223372036854776000
+          - result.data.keepalive_timeout is defined
+          - result.data.keepalive_timeout == 9223372036854776000
+          - result.data.ping_seconds is defined
+          - result.data.ping_seconds == 9223372036854776000
+          - result.data.ping_push is defined
+          - result.data.ping_push == true
+          - result.data.ping_action is defined
+          - result.data.ping_action == "ping_restart"
+          - result.data.ping_action_seconds is defined
+          - result.data.ping_action_seconds == 9223372036854776000
+          - result.data.ping_action_push is defined
+          - result.data.ping_action_push == true
+          - result.data.dns_domain is defined
+          - result.data.dns_domain == "string"
+          - result.data.dns_server1 is defined
+          - result.data.dns_server1 == "string"
+          - result.data.dns_server2 is defined
+          - result.data.dns_server2 == "string"
+          - result.data.dns_server3 is defined
+          - result.data.dns_server3 == "string"
+          - result.data.dns_server4 is defined
+          - result.data.dns_server4 == "string"
+          - result.data.push_blockoutsidedns is defined
+          - result.data.push_blockoutsidedns == true
+          - result.data.push_register_dns is defined
+          - result.data.push_register_dns == true
+          - result.data.ntp_server1 is defined
+          - result.data.ntp_server1 == "string"
+          - result.data.ntp_server2 is defined
+          - result.data.ntp_server2 == "string"
+          - result.data.netbios_enable is defined
+          - result.data.netbios_enable == true
+          - result.data.netbios_ntype is defined
+          - result.data.netbios_ntype == 0
+          - result.data.netbios_scope is defined
+          - result.data.netbios_scope == "string"
+          - result.data.wins_server1 is defined
+          - result.data.wins_server1 == "string"
+          - result.data.wins_server2 is defined
+          - result.data.wins_server2 == "string"
+          - result.data.custom_options is defined
+          - result.data.custom_options is sequence
+          - result.data.username_as_common_name is defined
+          - result.data.username_as_common_name == true
+          - result.data.sndrcvbuf is defined
+          - result.data.sndrcvbuf == 65536
+          - result.data.create_gw is defined
+          - result.data.create_gw == "both"
+          - result.data.verbosity_level is defined
+          - result.data.verbosity_level == 0
+          - result.data.id is defined
+          - result.data.id == 0
+

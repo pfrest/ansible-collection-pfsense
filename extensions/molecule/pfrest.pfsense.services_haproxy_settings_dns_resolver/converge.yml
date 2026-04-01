@@ -1,0 +1,40 @@
+---
+- name: Test pfrest.pfsense.services_haproxy_settings_dns_resolver module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage HA Proxy DNS Resolver
+      register: result
+      pfrest.pfsense.services_haproxy_settings_dns_resolver:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        state: present
+        lookup_fields:
+          - name
+        name: string
+        server: string
+        port: string
+        parent_lookup_fields:
+          - id
+        id: 0
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.name is defined
+          - result.data.server is defined
+          - result.data.port is defined
+          - result.data.id is defined
+

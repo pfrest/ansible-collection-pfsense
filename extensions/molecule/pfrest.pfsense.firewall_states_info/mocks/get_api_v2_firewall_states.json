@@ -1,0 +1,27 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": [
+      {
+        "interface": "string",
+        "protocol": "string",
+        "direction": "string",
+        "source": "string",
+        "destination": "string",
+        "state": "string",
+        "age": "string",
+        "expires_in": "string",
+        "packets_total": 9223372036854776000,
+        "packets_in": 9223372036854776000,
+        "packets_out": 9223372036854776000,
+        "bytes_total": 9223372036854776000,
+        "bytes_in": 9223372036854776000,
+        "bytes_out": 9223372036854776000,
+        "id": 0
+      }
+    ]
+  }
+}

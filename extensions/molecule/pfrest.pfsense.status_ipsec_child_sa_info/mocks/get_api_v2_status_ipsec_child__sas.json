@@ -1,0 +1,41 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": [
+      {
+        "name": "string",
+        "uniqueid": 9223372036854776000,
+        "reqid": 9223372036854776000,
+        "state": "string",
+        "mode": "string",
+        "protocol": "string",
+        "encap": true,
+        "spi_in": "string",
+        "spi_out": "string",
+        "encr_alg": "string",
+        "encr_keysize": 9223372036854776000,
+        "integ_alg": "string",
+        "dh_group": "string",
+        "bytes_in": 9223372036854776000,
+        "bytes_out": 9223372036854776000,
+        "packets_in": 9223372036854776000,
+        "packets_out": 9223372036854776000,
+        "use_in": 9223372036854776000,
+        "use_out": 9223372036854776000,
+        "rekey_time": 9223372036854776000,
+        "life_time": 9223372036854776000,
+        "install_time": 9223372036854776000,
+        "local_ts": [
+          "string"
+        ],
+        "remote_ts": [
+          "string"
+        ],
+        "id": 0
+      }
+    ]
+  }
+}

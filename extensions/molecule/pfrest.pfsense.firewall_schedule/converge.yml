@@ -1,0 +1,47 @@
+---
+- name: Test pfrest.pfsense.firewall_schedule module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage Firewall Schedule
+      register: result
+      pfrest.pfsense.firewall_schedule:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        state: present
+        lookup_fields:
+          - name
+        name: string
+        descr: string
+        timerange:
+          - position:
+              - 1
+            month:
+              - 1
+            day:
+              - 9223372036854776000
+            hour: string
+            rangedescr: string
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.schedlabel is defined
+          - result.data.name is defined
+          - result.data.descr is defined
+          - result.data.active is defined
+          - result.data.timerange is defined
+          - result.data.id is defined
+

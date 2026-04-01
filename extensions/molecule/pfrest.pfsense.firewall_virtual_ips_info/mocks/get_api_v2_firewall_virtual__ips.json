@@ -1,0 +1,28 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": [
+      {
+        "uniqid": "string",
+        "mode": "ipalias",
+        "interface": "string",
+        "type": "single",
+        "subnet": "string",
+        "subnet_bits": 9223372036854776000,
+        "descr": "string",
+        "noexpand": true,
+        "vhid": 9223372036854776000,
+        "advbase": 9223372036854776000,
+        "advskew": 9223372036854776000,
+        "password": "string",
+        "carp_status": "string",
+        "carp_mode": "mcast",
+        "carp_peer": "string",
+        "id": 0
+      }
+    ]
+  }
+}

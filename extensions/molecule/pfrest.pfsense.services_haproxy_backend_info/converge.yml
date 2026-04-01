@@ -1,0 +1,144 @@
+---
+- name: Test pfrest.pfsense.services_haproxy_backend_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read HA Proxy Backend
+      register: result
+      pfrest.pfsense.services_haproxy_backend_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.name is defined
+          - result.data.name == "string"
+          - result.data.servers is defined
+          - result.data.servers is sequence
+          - result.data.balance is defined
+          - result.data.balance == ""
+          - result.data.balance_urilen is defined
+          - result.data.balance_urilen == 9223372036854776000
+          - result.data.balance_uridepth is defined
+          - result.data.balance_uridepth == 9223372036854776000
+          - result.data.balance_uriwhole is defined
+          - result.data.balance_uriwhole == true
+          - result.data.acls is defined
+          - result.data.acls is sequence
+          - result.data.actions is defined
+          - result.data.actions is sequence
+          - result.data.connection_timeout is defined
+          - result.data.connection_timeout == 9223372036854776000
+          - result.data.server_timeout is defined
+          - result.data.server_timeout == 9223372036854776000
+          - result.data.retries is defined
+          - result.data.retries == 9223372036854776000
+          - result.data.check_type is defined
+          - result.data.check_type == "none"
+          - result.data.checkinter is defined
+          - result.data.checkinter == 9223372036854776000
+          - result.data.log_health_checks is defined
+          - result.data.log_health_checks == true
+          - result.data.httpcheck_method is defined
+          - result.data.httpcheck_method == "OPTIONS"
+          - result.data.monitor_uri is defined
+          - result.data.monitor_uri == "string"
+          - result.data.monitor_httpversion is defined
+          - result.data.monitor_httpversion == "string"
+          - result.data.monitor_username is defined
+          - result.data.monitor_username == "string"
+          - result.data.monitor_domain is defined
+          - result.data.monitor_domain == "string"
+          - result.data.agent_checks is defined
+          - result.data.agent_checks == true
+          - result.data.agent_port is defined
+          - result.data.agent_port == "string"
+          - result.data.agent_inter is defined
+          - result.data.agent_inter == 9223372036854776000
+          - result.data.persist_cookie_enabled is defined
+          - result.data.persist_cookie_enabled == true
+          - result.data.persist_cookie_name is defined
+          - result.data.persist_cookie_name == "string"
+          - result.data.persist_cookie_mode is defined
+          - result.data.persist_cookie_mode == "passive"
+          - result.data.persist_cookie_cachable is defined
+          - result.data.persist_cookie_cachable == true
+          - result.data.persist_cookie_postonly is defined
+          - result.data.persist_cookie_postonly == true
+          - result.data.persist_cookie_httponly is defined
+          - result.data.persist_cookie_httponly == true
+          - result.data.persist_cookie_secure is defined
+          - result.data.persist_cookie_secure == true
+          - result.data.haproxy_cookie_maxidle is defined
+          - result.data.haproxy_cookie_maxidle == 9223372036854776000
+          - result.data.haproxy_cookie_maxlife is defined
+          - result.data.haproxy_cookie_maxlife == 9223372036854776000
+          - result.data.haproxy_cookie_domains is defined
+          - result.data.haproxy_cookie_domains is sequence
+          - result.data.haproxy_cookie_dynamic_cookie_key is defined
+          - result.data.haproxy_cookie_dynamic_cookie_key == "string"
+          - result.data.persist_sticky_type is defined
+          - result.data.persist_sticky_type == "none"
+          - result.data.persist_stick_expire is defined
+          - result.data.persist_stick_expire == "string"
+          - result.data.persist_stick_tablesize is defined
+          - result.data.persist_stick_tablesize == "string"
+          - result.data.persist_stick_cookiename is defined
+          - result.data.persist_stick_cookiename == "string"
+          - result.data.persist_stick_length is defined
+          - result.data.persist_stick_length == 9223372036854776000
+          - result.data.email_level is defined
+          - result.data.email_level == ""
+          - result.data.email_to is defined
+          - result.data.email_to == "string"
+          - result.data.stats_enabled is defined
+          - result.data.stats_enabled == true
+          - result.data.stats_uri is defined
+          - result.data.stats_uri == "string"
+          - result.data.stats_scope is defined
+          - result.data.stats_scope is sequence
+          - result.data.stats_realm is defined
+          - result.data.stats_realm == "string"
+          - result.data.stats_username is defined
+          - result.data.stats_username == "string"
+          - result.data.stats_password is defined
+          - result.data.stats_password == "string"
+          - result.data.stats_admin is defined
+          - result.data.stats_admin == "string"
+          - result.data.stats_node is defined
+          - result.data.stats_node == "string"
+          - result.data.stats_desc is defined
+          - result.data.stats_desc == "string"
+          - result.data.stats_refresh is defined
+          - result.data.stats_refresh == 9223372036854776000
+          - result.data.strict_transport_security is defined
+          - result.data.strict_transport_security == 9223372036854776000
+          - result.data.errorfiles is defined
+          - result.data.errorfiles is sequence
+          - result.data.cookie_attribute_secure is defined
+          - result.data.cookie_attribute_secure == true
+          - result.data.advanced is defined
+          - result.data.advanced == "string"
+          - result.data.advanced_backend is defined
+          - result.data.advanced_backend == "string"
+          - result.data.transparent_clientip is defined
+          - result.data.transparent_clientip == true
+          - result.data.transparent_interface is defined
+          - result.data.transparent_interface == "string"
+          - result.data.id is defined
+          - result.data.id == 0
+

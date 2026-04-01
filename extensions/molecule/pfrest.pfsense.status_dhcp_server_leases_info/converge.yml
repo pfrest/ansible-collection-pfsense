@@ -1,0 +1,38 @@
+---
+- name: Test pfrest.pfsense.status_dhcp_server_leases_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Retrieve DHCP Server Leases
+      register: result
+      pfrest.pfsense.status_dhcp_server_leases_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is sequence
+          - 'result.data | length > 0'
+          - result.data[0].ip is defined
+          - result.data[0].mac is defined
+          - result.data[0].hostname is defined
+          - result.data[0].if is defined
+          - result.data[0].starts is defined
+          - result.data[0].ends is defined
+          - result.data[0].active_status is defined
+          - result.data[0].online_status is defined
+          - result.data[0].descr is defined
+          - result.data[0].id is defined
+

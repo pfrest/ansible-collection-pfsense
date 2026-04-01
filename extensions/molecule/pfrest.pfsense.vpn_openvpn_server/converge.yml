@@ -1,0 +1,182 @@
+---
+- name: Test pfrest.pfsense.vpn_openvpn_server module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage Open VPN Server
+      register: result
+      pfrest.pfsense.vpn_openvpn_server:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        state: present
+        lookup_fields:
+          - local_port
+        description: string
+        disable: true
+        mode: p2p_tls
+        authmode:
+          - string
+        dev_mode: tun
+        protocol: UDP4
+        interface: string
+        local_port: string
+        use_tls: true
+        tls: string
+        tls_type: auth
+        tlsauth_keydir: default
+        caref: string
+        certref: string
+        cert_depth: 1
+        dh_length: string
+        ecdh_curve: string
+        data_ciphers:
+          - string
+        data_ciphers_fallback: string
+        digest: string
+        strictusercn: true
+        remote_cert_tls: true
+        tunnel_network: string
+        tunnel_networkv6: string
+        serverbridge_dhcp: true
+        serverbridge_interface: string
+        serverbridge_routegateway: true
+        serverbridge_dhcp_start: string
+        serverbridge_dhcp_end: string
+        gwredir: true
+        gwredir6: true
+        local_network:
+          - string
+        local_networkv6:
+          - string
+        remote_network:
+          - string
+        remote_networkv6:
+          - string
+        maxclients: 9223372036854776000
+        allow_compression: no
+        passtos: true
+        client2client: true
+        duplicate_cn: true
+        connlimit: 9223372036854776000
+        dynamic_ip: true
+        topology: subnet
+        inactive_seconds: 9223372036854776000
+        ping_method: keepalive
+        keepalive_interval: 9223372036854776000
+        keepalive_timeout: 9223372036854776000
+        ping_seconds: 9223372036854776000
+        ping_push: true
+        ping_action: ping_restart
+        ping_action_seconds: 9223372036854776000
+        ping_action_push: true
+        dns_domain: string
+        dns_server1: string
+        dns_server2: string
+        dns_server3: string
+        dns_server4: string
+        push_blockoutsidedns: true
+        push_register_dns: true
+        ntp_server1: string
+        ntp_server2: string
+        netbios_enable: true
+        netbios_ntype: 0
+        netbios_scope: string
+        wins_server1: string
+        wins_server2: string
+        custom_options:
+          - string
+        username_as_common_name: true
+        sndrcvbuf: 65536
+        create_gw: both
+        verbosity_level: 0
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.vpnid is defined
+          - result.data.vpnif is defined
+          - result.data.description is defined
+          - result.data.disable is defined
+          - result.data.mode is defined
+          - result.data.authmode is defined
+          - result.data.dev_mode is defined
+          - result.data.protocol is defined
+          - result.data.interface is defined
+          - result.data.local_port is defined
+          - result.data.use_tls is defined
+          - result.data.tls is defined
+          - result.data.tls_type is defined
+          - result.data.tlsauth_keydir is defined
+          - result.data.caref is defined
+          - result.data.certref is defined
+          - result.data.cert_depth is defined
+          - result.data.dh_length is defined
+          - result.data.ecdh_curve is defined
+          - result.data.data_ciphers is defined
+          - result.data.data_ciphers_fallback is defined
+          - result.data.digest is defined
+          - result.data.strictusercn is defined
+          - result.data.remote_cert_tls is defined
+          - result.data.tunnel_network is defined
+          - result.data.tunnel_networkv6 is defined
+          - result.data.serverbridge_dhcp is defined
+          - result.data.serverbridge_interface is defined
+          - result.data.serverbridge_routegateway is defined
+          - result.data.serverbridge_dhcp_start is defined
+          - result.data.serverbridge_dhcp_end is defined
+          - result.data.gwredir is defined
+          - result.data.gwredir6 is defined
+          - result.data.local_network is defined
+          - result.data.local_networkv6 is defined
+          - result.data.remote_network is defined
+          - result.data.remote_networkv6 is defined
+          - result.data.maxclients is defined
+          - result.data.allow_compression is defined
+          - result.data.passtos is defined
+          - result.data.client2client is defined
+          - result.data.duplicate_cn is defined
+          - result.data.connlimit is defined
+          - result.data.dynamic_ip is defined
+          - result.data.topology is defined
+          - result.data.inactive_seconds is defined
+          - result.data.ping_method is defined
+          - result.data.keepalive_interval is defined
+          - result.data.keepalive_timeout is defined
+          - result.data.ping_seconds is defined
+          - result.data.ping_push is defined
+          - result.data.ping_action is defined
+          - result.data.ping_action_seconds is defined
+          - result.data.ping_action_push is defined
+          - result.data.dns_domain is defined
+          - result.data.dns_server1 is defined
+          - result.data.dns_server2 is defined
+          - result.data.dns_server3 is defined
+          - result.data.dns_server4 is defined
+          - result.data.push_blockoutsidedns is defined
+          - result.data.push_register_dns is defined
+          - result.data.ntp_server1 is defined
+          - result.data.ntp_server2 is defined
+          - result.data.netbios_enable is defined
+          - result.data.netbios_ntype is defined
+          - result.data.netbios_scope is defined
+          - result.data.wins_server1 is defined
+          - result.data.wins_server2 is defined
+          - result.data.custom_options is defined
+          - result.data.username_as_common_name is defined
+          - result.data.sndrcvbuf is defined
+          - result.data.create_gw is defined
+          - result.data.verbosity_level is defined
+          - result.data.id is defined
+

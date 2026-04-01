@@ -1,0 +1,22 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": [
+      {
+        "ip": "string",
+        "mac": "string",
+        "hostname": "string",
+        "if": "string",
+        "starts": "string",
+        "ends": "string",
+        "active_status": "string",
+        "online_status": "string",
+        "descr": "string",
+        "id": 0
+      }
+    ]
+  }
+}

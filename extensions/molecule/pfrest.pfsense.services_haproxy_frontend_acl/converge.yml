@@ -1,0 +1,43 @@
+---
+- name: Test pfrest.pfsense.services_haproxy_frontend_acl module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage HAProxy Frontend Access Control List
+      register: result
+      pfrest.pfsense.services_haproxy_frontend_acl:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        state: present
+        lookup_fields:
+          - id
+        name: string
+        expression: host_starts_with
+        value: string
+        casesensitive: true
+        not: true
+        parent_lookup_fields:
+          - name
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.name is defined
+          - result.data.expression is defined
+          - result.data.value is defined
+          - result.data.casesensitive is defined
+          - result.data.not is defined
+          - result.data.id is defined
+

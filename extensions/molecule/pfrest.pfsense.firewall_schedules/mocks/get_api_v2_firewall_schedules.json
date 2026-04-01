@@ -1,0 +1,32 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": [
+      {
+        "schedlabel": "string",
+        "name": "string",
+        "descr": "string",
+        "active": true,
+        "timerange": [
+          {
+            "position": [
+              1
+            ],
+            "month": [
+              1
+            ],
+            "day": [
+              9223372036854776000
+            ],
+            "hour": "string",
+            "rangedescr": "string"
+          }
+        ],
+        "id": 0
+      }
+    ]
+  }
+}

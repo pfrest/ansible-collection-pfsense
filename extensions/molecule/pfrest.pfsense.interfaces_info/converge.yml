@@ -1,0 +1,72 @@
+---
+- name: Test pfrest.pfsense.interfaces_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Retrieve Network Interfaces
+      register: result
+      pfrest.pfsense.interfaces_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is sequence
+          - 'result.data | length > 0'
+          - result.data[0].if is defined
+          - result.data[0].enable is defined
+          - result.data[0].descr is defined
+          - result.data[0].spoofmac is defined
+          - result.data[0].mtu is defined
+          - result.data[0].mss is defined
+          - result.data[0].media is defined
+          - result.data[0].mediaopt is defined
+          - result.data[0].blockpriv is defined
+          - result.data[0].blockbogons is defined
+          - result.data[0].typev4 is defined
+          - result.data[0].ipaddr is defined
+          - result.data[0].subnet is defined
+          - result.data[0].gateway is defined
+          - result.data[0].dhcphostname is defined
+          - result.data[0].alias_address is defined
+          - result.data[0].alias_subnet is defined
+          - result.data[0].dhcprejectfrom is defined
+          - result.data[0].adv_dhcp_config_advanced is defined
+          - result.data[0].adv_dhcp_pt_values is defined
+          - result.data[0].adv_dhcp_pt_timeout is defined
+          - result.data[0].adv_dhcp_pt_retry is defined
+          - result.data[0].adv_dhcp_pt_select_timeout is defined
+          - result.data[0].adv_dhcp_pt_reboot is defined
+          - result.data[0].adv_dhcp_pt_backoff_cutoff is defined
+          - result.data[0].adv_dhcp_pt_initial_interval is defined
+          - result.data[0].adv_dhcp_send_options is defined
+          - result.data[0].adv_dhcp_request_options is defined
+          - result.data[0].adv_dhcp_required_options is defined
+          - result.data[0].adv_dhcp_option_modifiers is defined
+          - result.data[0].adv_dhcp_config_file_override is defined
+          - result.data[0].adv_dhcp_config_file_override_path is defined
+          - result.data[0].typev6 is defined
+          - result.data[0].ipaddrv6 is defined
+          - result.data[0].subnetv6 is defined
+          - result.data[0].gatewayv6 is defined
+          - result.data[0].ipv6usev4iface is defined
+          - result.data[0].slaacusev4iface is defined
+          - result.data[0].prefix_6rd is defined
+          - result.data[0].gateway_6rd is defined
+          - result.data[0].prefix_6rd_v4plen is defined
+          - result.data[0].track6_interface is defined
+          - result.data[0].track6_prefix_id_hex is defined
+          - result.data[0].id is defined
+

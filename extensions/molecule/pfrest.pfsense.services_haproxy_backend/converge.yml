@@ -1,0 +1,178 @@
+---
+- name: Test pfrest.pfsense.services_haproxy_backend module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage HA Proxy Backend
+      register: result
+      pfrest.pfsense.services_haproxy_backend:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        state: present
+        lookup_fields:
+          - name
+        name: string
+        servers:
+          - name: string
+            status: active
+            address: string
+            port: string
+            weight: 9223372036854776000
+            ssl: true
+            sslserververify: true
+            serverid: 9223372036854776000
+            advanced: string
+        balance: ''
+        balance_urilen: 9223372036854776000
+        balance_uridepth: 9223372036854776000
+        balance_uriwhole: true
+        acls:
+          - name: string
+            expression: host_starts_with
+            value: string
+            casesensitive: true
+            not: true
+        actions:
+          - action: use_server
+            acl: string
+            server: string
+            customaction: string
+            deny_status: string
+            realm: string
+            rule: string
+            lua_function: string
+            name: string
+            fmt: string
+            find: string
+            replace: string
+            path: string
+            status: string
+            reason: string
+        connection_timeout: 9223372036854776000
+        server_timeout: 9223372036854776000
+        retries: 9223372036854776000
+        check_type: none
+        checkinter: 9223372036854776000
+        log_health_checks: true
+        httpcheck_method: OPTIONS
+        monitor_uri: string
+        monitor_httpversion: string
+        monitor_username: string
+        monitor_domain: string
+        agent_checks: true
+        agent_port: string
+        agent_inter: 9223372036854776000
+        persist_cookie_enabled: true
+        persist_cookie_name: string
+        persist_cookie_mode: passive
+        persist_cookie_cachable: true
+        persist_cookie_postonly: true
+        persist_cookie_httponly: true
+        persist_cookie_secure: true
+        haproxy_cookie_maxidle: 9223372036854776000
+        haproxy_cookie_maxlife: 9223372036854776000
+        haproxy_cookie_domains:
+          - string
+        haproxy_cookie_dynamic_cookie_key: string
+        persist_sticky_type: none
+        persist_stick_expire: string
+        persist_stick_tablesize: string
+        persist_stick_cookiename: string
+        persist_stick_length: 9223372036854776000
+        email_level: ''
+        email_to: string
+        stats_enabled: true
+        stats_uri: string
+        stats_scope:
+          - string
+        stats_realm: string
+        stats_username: string
+        stats_password: string
+        stats_admin: string
+        stats_node: string
+        stats_desc: string
+        stats_refresh: 9223372036854776000
+        strict_transport_security: 9223372036854776000
+        errorfiles:
+          - errorcode: 9223372036854776000
+            errorfile: string
+        cookie_attribute_secure: true
+        advanced: string
+        advanced_backend: string
+        transparent_clientip: true
+        transparent_interface: string
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.name is defined
+          - result.data.servers is defined
+          - result.data.balance is defined
+          - result.data.balance_urilen is defined
+          - result.data.balance_uridepth is defined
+          - result.data.balance_uriwhole is defined
+          - result.data.acls is defined
+          - result.data.actions is defined
+          - result.data.connection_timeout is defined
+          - result.data.server_timeout is defined
+          - result.data.retries is defined
+          - result.data.check_type is defined
+          - result.data.checkinter is defined
+          - result.data.log_health_checks is defined
+          - result.data.httpcheck_method is defined
+          - result.data.monitor_uri is defined
+          - result.data.monitor_httpversion is defined
+          - result.data.monitor_username is defined
+          - result.data.monitor_domain is defined
+          - result.data.agent_checks is defined
+          - result.data.agent_port is defined
+          - result.data.agent_inter is defined
+          - result.data.persist_cookie_enabled is defined
+          - result.data.persist_cookie_name is defined
+          - result.data.persist_cookie_mode is defined
+          - result.data.persist_cookie_cachable is defined
+          - result.data.persist_cookie_postonly is defined
+          - result.data.persist_cookie_httponly is defined
+          - result.data.persist_cookie_secure is defined
+          - result.data.haproxy_cookie_maxidle is defined
+          - result.data.haproxy_cookie_maxlife is defined
+          - result.data.haproxy_cookie_domains is defined
+          - result.data.haproxy_cookie_dynamic_cookie_key is defined
+          - result.data.persist_sticky_type is defined
+          - result.data.persist_stick_expire is defined
+          - result.data.persist_stick_tablesize is defined
+          - result.data.persist_stick_cookiename is defined
+          - result.data.persist_stick_length is defined
+          - result.data.email_level is defined
+          - result.data.email_to is defined
+          - result.data.stats_enabled is defined
+          - result.data.stats_uri is defined
+          - result.data.stats_scope is defined
+          - result.data.stats_realm is defined
+          - result.data.stats_username is defined
+          - result.data.stats_password is defined
+          - result.data.stats_admin is defined
+          - result.data.stats_node is defined
+          - result.data.stats_desc is defined
+          - result.data.stats_refresh is defined
+          - result.data.strict_transport_security is defined
+          - result.data.errorfiles is defined
+          - result.data.cookie_attribute_secure is defined
+          - result.data.advanced is defined
+          - result.data.advanced_backend is defined
+          - result.data.transparent_clientip is defined
+          - result.data.transparent_interface is defined
+          - result.data.id is defined
+

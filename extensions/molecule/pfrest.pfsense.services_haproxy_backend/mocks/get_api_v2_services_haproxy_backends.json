@@ -1,0 +1,117 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": [
+      {
+        "name": "string",
+        "servers": [
+          {
+            "name": "string",
+            "status": "active",
+            "address": "string",
+            "port": "string",
+            "weight": 9223372036854776000,
+            "ssl": true,
+            "sslserververify": true,
+            "serverid": 9223372036854776000,
+            "advanced": "string"
+          }
+        ],
+        "balance": "",
+        "balance_urilen": 9223372036854776000,
+        "balance_uridepth": 9223372036854776000,
+        "balance_uriwhole": true,
+        "acls": [
+          {
+            "name": "string",
+            "expression": "host_starts_with",
+            "value": "string",
+            "casesensitive": true,
+            "not": true
+          }
+        ],
+        "actions": [
+          {
+            "action": "use_server",
+            "acl": "string",
+            "server": "string",
+            "customaction": "string",
+            "deny_status": "string",
+            "realm": "string",
+            "rule": "string",
+            "lua_function": "string",
+            "name": "string",
+            "fmt": "string",
+            "find": "string",
+            "replace": "string",
+            "path": "string",
+            "status": "string",
+            "reason": "string"
+          }
+        ],
+        "connection_timeout": 9223372036854776000,
+        "server_timeout": 9223372036854776000,
+        "retries": 9223372036854776000,
+        "check_type": "none",
+        "checkinter": 9223372036854776000,
+        "log_health_checks": true,
+        "httpcheck_method": "OPTIONS",
+        "monitor_uri": "string",
+        "monitor_httpversion": "string",
+        "monitor_username": "string",
+        "monitor_domain": "string",
+        "agent_checks": true,
+        "agent_port": "string",
+        "agent_inter": 9223372036854776000,
+        "persist_cookie_enabled": true,
+        "persist_cookie_name": "string",
+        "persist_cookie_mode": "passive",
+        "persist_cookie_cachable": true,
+        "persist_cookie_postonly": true,
+        "persist_cookie_httponly": true,
+        "persist_cookie_secure": true,
+        "haproxy_cookie_maxidle": 9223372036854776000,
+        "haproxy_cookie_maxlife": 9223372036854776000,
+        "haproxy_cookie_domains": [
+          "string"
+        ],
+        "haproxy_cookie_dynamic_cookie_key": "string",
+        "persist_sticky_type": "none",
+        "persist_stick_expire": "string",
+        "persist_stick_tablesize": "string",
+        "persist_stick_cookiename": "string",
+        "persist_stick_length": 9223372036854776000,
+        "email_level": "",
+        "email_to": "string",
+        "stats_enabled": true,
+        "stats_uri": "string",
+        "stats_scope": [
+          "string"
+        ],
+        "stats_realm": "string",
+        "stats_username": "string",
+        "stats_password": "string",
+        "stats_admin": "string",
+        "stats_node": "string",
+        "stats_desc": "string",
+        "stats_refresh": 9223372036854776000,
+        "strict_transport_security": 9223372036854776000,
+        "errorfiles": [
+          {
+            "errorcode": 9223372036854776000,
+            "errorfile": "string"
+          }
+        ],
+        "cookie_attribute_secure": true,
+        "advanced": "string",
+        "advanced_backend": "string",
+        "transparent_clientip": true,
+        "transparent_interface": "string",
+        "id": 0
+      }
+    ]
+  }
+}

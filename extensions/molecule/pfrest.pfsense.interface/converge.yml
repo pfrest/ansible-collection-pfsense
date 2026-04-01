@@ -1,0 +1,120 @@
+---
+- name: Test pfrest.pfsense.interface module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage Network Interface
+      register: result
+      pfrest.pfsense.interface:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        state: present
+        lookup_fields:
+          - if
+          - descr
+          - prefix_6rd
+        if: string
+        enable: true
+        descr: string
+        spoofmac: string
+        mtu: 9223372036854776000
+        mss: 9223372036854776000
+        media: string
+        mediaopt: string
+        blockpriv: true
+        blockbogons: true
+        typev4: static
+        ipaddr: string
+        subnet: 9223372036854776000
+        gateway: string
+        dhcphostname: string
+        alias_address: string
+        alias_subnet: 9223372036854776000
+        dhcprejectfrom:
+          - string
+        adv_dhcp_config_advanced: true
+        adv_dhcp_pt_values: SavedCfg
+        adv_dhcp_pt_timeout: 9223372036854776000
+        adv_dhcp_pt_retry: 9223372036854776000
+        adv_dhcp_pt_select_timeout: 9223372036854776000
+        adv_dhcp_pt_reboot: 9223372036854776000
+        adv_dhcp_pt_backoff_cutoff: 9223372036854776000
+        adv_dhcp_pt_initial_interval: 9223372036854776000
+        adv_dhcp_send_options: string
+        adv_dhcp_request_options: string
+        adv_dhcp_required_options: string
+        adv_dhcp_option_modifiers: string
+        adv_dhcp_config_file_override: true
+        adv_dhcp_config_file_override_path: string
+        typev6: staticv6
+        ipaddrv6: string
+        subnetv6: 9223372036854776000
+        gatewayv6: string
+        ipv6usev4iface: true
+        slaacusev4iface: true
+        prefix_6rd: string
+        gateway_6rd: string
+        prefix_6rd_v4plen: 9223372036854776000
+        track6_interface: string
+        track6_prefix_id_hex: string
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.if is defined
+          - result.data.enable is defined
+          - result.data.descr is defined
+          - result.data.spoofmac is defined
+          - result.data.mtu is defined
+          - result.data.mss is defined
+          - result.data.media is defined
+          - result.data.mediaopt is defined
+          - result.data.blockpriv is defined
+          - result.data.blockbogons is defined
+          - result.data.typev4 is defined
+          - result.data.ipaddr is defined
+          - result.data.subnet is defined
+          - result.data.gateway is defined
+          - result.data.dhcphostname is defined
+          - result.data.alias_address is defined
+          - result.data.alias_subnet is defined
+          - result.data.dhcprejectfrom is defined
+          - result.data.adv_dhcp_config_advanced is defined
+          - result.data.adv_dhcp_pt_values is defined
+          - result.data.adv_dhcp_pt_timeout is defined
+          - result.data.adv_dhcp_pt_retry is defined
+          - result.data.adv_dhcp_pt_select_timeout is defined
+          - result.data.adv_dhcp_pt_reboot is defined
+          - result.data.adv_dhcp_pt_backoff_cutoff is defined
+          - result.data.adv_dhcp_pt_initial_interval is defined
+          - result.data.adv_dhcp_send_options is defined
+          - result.data.adv_dhcp_request_options is defined
+          - result.data.adv_dhcp_required_options is defined
+          - result.data.adv_dhcp_option_modifiers is defined
+          - result.data.adv_dhcp_config_file_override is defined
+          - result.data.adv_dhcp_config_file_override_path is defined
+          - result.data.typev6 is defined
+          - result.data.ipaddrv6 is defined
+          - result.data.subnetv6 is defined
+          - result.data.gatewayv6 is defined
+          - result.data.ipv6usev4iface is defined
+          - result.data.slaacusev4iface is defined
+          - result.data.prefix_6rd is defined
+          - result.data.gateway_6rd is defined
+          - result.data.prefix_6rd_v4plen is defined
+          - result.data.track6_interface is defined
+          - result.data.track6_prefix_id_hex is defined
+          - result.data.id is defined
+

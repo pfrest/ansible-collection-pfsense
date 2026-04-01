@@ -1,0 +1,66 @@
+---
+- name: Test pfrest.pfsense.services_bind_settings_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read BIND Settings
+      register: result
+      pfrest.pfsense.services_bind_settings_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.enable_bind is defined
+          - result.data.enable_bind == true
+          - result.data.bind_ip_version is defined
+          - result.data.bind_ip_version == ""
+          - result.data.listenon is defined
+          - result.data.listenon is sequence
+          - result.data.bind_notify is defined
+          - result.data.bind_notify == true
+          - result.data.bind_hide_version is defined
+          - result.data.bind_hide_version == true
+          - result.data.bind_ram_limit is defined
+          - result.data.bind_ram_limit == "string"
+          - result.data.bind_logging is defined
+          - result.data.bind_logging == true
+          - result.data.log_severity is defined
+          - result.data.log_severity == "critical"
+          - result.data.log_options is defined
+          - result.data.log_options is sequence
+          - result.data.rate_enabled is defined
+          - result.data.rate_enabled == true
+          - result.data.rate_limit is defined
+          - result.data.rate_limit == 9223372036854776000
+          - result.data.log_only is defined
+          - result.data.log_only == true
+          - result.data.bind_forwarder is defined
+          - result.data.bind_forwarder == true
+          - result.data.bind_forwarder_ips is defined
+          - result.data.bind_forwarder_ips is sequence
+          - result.data.bind_dnssec_validation is defined
+          - result.data.bind_dnssec_validation == "auto"
+          - result.data.listenport is defined
+          - result.data.listenport == "string"
+          - result.data.controlport is defined
+          - result.data.controlport == "string"
+          - result.data.bind_custom_options is defined
+          - result.data.bind_custom_options == "string"
+          - result.data.bind_global_settings is defined
+          - result.data.bind_global_settings == "string"
+

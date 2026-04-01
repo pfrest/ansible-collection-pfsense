@@ -1,0 +1,48 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": {
+      "enable": true,
+      "maxconn": 9223372036854776000,
+      "nbthread": 9223372036854776000,
+      "terminate_on_reload": true,
+      "hard_stop_after": "string",
+      "carpdev": "string",
+      "localstatsport": "string",
+      "localstats_refreshtime": 9223372036854776000,
+      "localstats_sticktable_refreshtime": 9223372036854776000,
+      "remotesyslog": "string",
+      "logfacility": "kern",
+      "loglevel": "emerg",
+      "log_send_hostname": "string",
+      "dns_resolvers": [
+        {
+          "name": "string",
+          "server": "string",
+          "port": "string"
+        }
+      ],
+      "resolver_retries": 9223372036854776000,
+      "resolver_timeoutretry": "string",
+      "resolver_holdvalid": "string",
+      "email_mailers": [
+        {
+          "name": "string",
+          "mailserver": "string",
+          "mailserverport": "string"
+        }
+      ],
+      "email_level": "",
+      "email_myhostname": "string",
+      "email_from": "string",
+      "email_to": "string",
+      "sslcompatibilitymode": "auto",
+      "ssldefaultdhparam": 9223372036854776000,
+      "advanced": "string",
+      "enablesync": true
+    }
+  }
+}

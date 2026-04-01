@@ -1,0 +1,18 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": [
+      {
+        "domain": "string",
+        "ip": "string",
+        "descr": "string",
+        "forward_tls_upstream": true,
+        "tls_hostname": "string",
+        "id": 0
+      }
+    ]
+  }
+}

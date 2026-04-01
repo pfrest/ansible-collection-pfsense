@@ -1,0 +1,37 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": {
+      "enabled": true,
+      "read_only": true,
+      "keep_backup": true,
+      "login_protection": true,
+      "log_successful_auth": true,
+      "log_level": "LOG_DEBUG",
+      "allow_pre_releases": true,
+      "hateoas": true,
+      "expose_sensitive_fields": true,
+      "override_sensitive_fields": [
+        "string"
+      ],
+      "allowed_interfaces": [
+        "string"
+      ],
+      "represent_interfaces_as": "descr",
+      "auth_methods": [
+        "string"
+      ],
+      "jwt_exp": 9223372036854776000,
+      "ha_sync": true,
+      "ha_sync_validate_certs": true,
+      "ha_sync_hosts": [
+        "string"
+      ],
+      "ha_sync_username": "string",
+      "ha_sync_password": "string"
+    }
+  }
+}

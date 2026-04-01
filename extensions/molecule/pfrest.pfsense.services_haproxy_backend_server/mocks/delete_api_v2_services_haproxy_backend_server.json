@@ -1,0 +1,20 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": {
+      "name": "string",
+      "status": "active",
+      "address": "string",
+      "port": "string",
+      "weight": 9223372036854776000,
+      "ssl": true,
+      "sslserververify": true,
+      "serverid": 9223372036854776000,
+      "advanced": "string",
+      "id": 0
+    }
+  }
+}

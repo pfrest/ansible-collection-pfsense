@@ -1,0 +1,26 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": {
+      "refid": "string",
+      "caref": "string",
+      "descr": "string",
+      "method": "existing",
+      "lifetime": 9223372036854776000,
+      "serial": 9223372036854776000,
+      "text": "string",
+      "cert": [
+        {
+          "certref": "string",
+          "serial": "string",
+          "reason": -1,
+          "revoke_time": 9223372036854776000
+        }
+      ],
+      "id": 0
+    }
+  }
+}

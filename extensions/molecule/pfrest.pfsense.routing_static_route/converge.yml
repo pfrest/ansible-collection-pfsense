@@ -1,0 +1,39 @@
+---
+- name: Test pfrest.pfsense.routing_static_route module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage Static Route
+      register: result
+      pfrest.pfsense.routing_static_route:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        state: present
+        lookup_fields:
+          - id
+        network: string
+        gateway: string
+        descr: string
+        disabled: true
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.network is defined
+          - result.data.gateway is defined
+          - result.data.descr is defined
+          - result.data.disabled is defined
+          - result.data.id is defined
+

@@ -1,0 +1,32 @@
+{
+  "status_code": 200,
+  "body": {
+    "code": 200,
+    "response_id": "MOCK_SUCCESS",
+    "message": "Mock message.",
+    "data": {
+      "descr": "string",
+      "refid": "string",
+      "caref": "string",
+      "csr": "string",
+      "crt": "string",
+      "prv": "string",
+      "digest_alg": "string",
+      "lifetime": 9223372036854776000,
+      "type": "server",
+      "dn_dns_sans": [
+        "string"
+      ],
+      "dn_email_sans": [
+        "string"
+      ],
+      "dn_ip_sans": [
+        "string"
+      ],
+      "dn_uri_sans": [
+        "string"
+      ],
+      "id": 0
+    }
+  }
+}

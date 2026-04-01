@@ -1,0 +1,63 @@
+---
+- name: Test pfrest.pfsense.services_haproxy_frontend_action module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Manage HA Proxy Frontend Action
+      register: result
+      pfrest.pfsense.services_haproxy_frontend_action:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        state: present
+        lookup_fields:
+          - id
+        action: use_backend
+        acl: string
+        backend: string
+        customaction: string
+        deny_status: string
+        realm: string
+        rule: string
+        lua_function: string
+        name: string
+        fmt: string
+        find: string
+        replace: string
+        path: string
+        status: string
+        reason: string
+        parent_lookup_fields:
+          - name
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.action is defined
+          - result.data.acl is defined
+          - result.data.backend is defined
+          - result.data.customaction is defined
+          - result.data.deny_status is defined
+          - result.data.realm is defined
+          - result.data.rule is defined
+          - result.data.lua_function is defined
+          - result.data.name is defined
+          - result.data.fmt is defined
+          - result.data.find is defined
+          - result.data.replace is defined
+          - result.data.path is defined
+          - result.data.status is defined
+          - result.data.reason is defined
+          - result.data.id is defined
+

@@ -1,0 +1,36 @@
+---
+- name: Test pfrest.pfsense.system_certificate_authorities_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Retrieve Certificate Authorities
+      register: result
+      pfrest.pfsense.system_certificate_authorities_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is sequence
+          - 'result.data | length > 0'
+          - result.data[0].descr is defined
+          - result.data[0].refid is defined
+          - result.data[0].trust is defined
+          - result.data[0].randomserial is defined
+          - result.data[0].serial is defined
+          - result.data[0].crt is defined
+          - result.data[0].prv is defined
+          - result.data[0].id is defined
+

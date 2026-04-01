@@ -1,0 +1,52 @@
+---
+- name: Test pfrest.pfsense.user_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read User
+      register: result
+      pfrest.pfsense.user_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+        lookup_params: {}
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is mapping
+          - result.data.name is defined
+          - result.data.name == "string"
+          - result.data.password is defined
+          - result.data.password == "string"
+          - result.data.uid is defined
+          - result.data.uid == 9223372036854776000
+          - result.data.scope is defined
+          - result.data.scope == "string"
+          - result.data.priv is defined
+          - result.data.priv is sequence
+          - result.data.disabled is defined
+          - result.data.disabled == true
+          - result.data.descr is defined
+          - result.data.descr == "string"
+          - result.data.expires is defined
+          - result.data.expires == "string"
+          - result.data.cert is defined
+          - result.data.cert is sequence
+          - result.data.authorizedkeys is defined
+          - result.data.authorizedkeys == "string"
+          - result.data.ipsecpsk is defined
+          - result.data.ipsecpsk == "string"
+          - result.data.id is defined
+          - result.data.id == 0
+

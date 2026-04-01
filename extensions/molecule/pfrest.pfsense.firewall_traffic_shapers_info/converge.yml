@@ -1,0 +1,38 @@
+---
+- name: Test pfrest.pfsense.firewall_traffic_shapers_info module
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Retrieve Traffic Shapers
+      register: result
+      pfrest.pfsense.firewall_traffic_shapers_info:
+        api_host: localhost
+        api_port: 5000
+        api_protocol: http
+        validate_certs: false
+
+    - name: Assert results
+      ansible.builtin.assert:
+        that:
+          - result is defined
+          - result is mapping
+          - result.code is defined
+          - result.code == 200
+          - result.response_id is defined
+          - result.response_id == "MOCK_SUCCESS"
+          - result.msg is defined
+          - result.data is defined
+          - result.data is sequence
+          - 'result.data | length > 0'
+          - result.data[0].enabled is defined
+          - result.data[0].interface is defined
+          - result.data[0].name is defined
+          - result.data[0].scheduler is defined
+          - result.data[0].bandwidthtype is defined
+          - result.data[0].bandwidth is defined
+          - result.data[0].qlimit is defined
+          - result.data[0].tbrconfig is defined
+          - result.data[0].queue is defined
+          - result.data[0].id is defined
+
