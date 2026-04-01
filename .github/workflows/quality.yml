@@ -61,7 +61,7 @@ jobs:
         ansible-galaxy collection install .
 
     - name: Run tests with pytest
-      run: python3 -m pytest tests/unit/ --cov --cov-report=term-missing
+      run: python3 -m pytest tests/unit/ --cov --cov-report=term-missing --cov-fail-under=100
       env:
         PYTHONPATH: $PYTHONPATH:/home/runner/.ansible/collections/
 
