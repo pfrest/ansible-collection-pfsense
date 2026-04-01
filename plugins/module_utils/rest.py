@@ -17,7 +17,6 @@ class RestClient:
         timeout (int): The timeout for requests in seconds.
         base_url (str): The base URL constructed from scheme, host, and port.
         validate_certs (bool): Whether to validate SSL certificates.
-        auth_mode (str): The authentication mode (e.g., basic, key).
         username (str): The username for authentication. (if basic auth is used)
         password (str): The password for authentication. (if basic auth is used)
         api_key (str): The API key for authentication (if key auth is used).
@@ -29,7 +28,6 @@ class RestClient:
     timeout: int
     base_url: str
     validate_certs: bool
-    auth_mode: str
     username: str
     password: str
     api_key: str
@@ -42,7 +40,6 @@ class RestClient:
         scheme: str = "https",
         timeout: int = 30,
         validate_certs: bool = True,
-        auth_mode: str = "basic",
         username: str = "",
         password: str = "",
         api_key: str = "",
@@ -56,7 +53,6 @@ class RestClient:
             scheme (str): The URL scheme (http or https).
             timeout (int): The timeout for requests in seconds.
             validate_certs (bool): Whether to validate SSL certificates.
-            auth_mode (str): The authentication mode (e.g., basic, key).
             username (str): The username for authentication.
             password (str): The password for authentication.
             api_key (str): The API key for authentication.
@@ -67,28 +63,24 @@ class RestClient:
         self.timeout = timeout
         self.base_url = f"{self.scheme}://{self.host}:{self.port}"
         self.validate_certs = validate_certs
-        self.auth_mode = auth_mode
         self.username = username
         self.password = password
         self.api_key = api_key
 
     def get_auth_headers(self) -> dict:
         """
-        Generate authentication headers based on the auth_mode.
+        Generate authentication headers based on the given auth attributes.
 
         Returns:
             dict: A dictionary of headers for authentication.
         """
-        if self.auth_mode == "basic":
-            credentials = f"{self.username}:{self.password}"
-            encoded_credentials = base64.b64encode(credentials.encode()).decode()
-            return {"Authorization": f"Basic {encoded_credentials}"}
-        if self.auth_mode == "key":
-            return {"Authorization": f"x-api-key {self.api_key}"}
+        if self.api_key:
+            return {"x-api-key": self.api_key}
 
-        raise ValueError(
-            f"Unsupported auth_mode {self.auth_mode} was provided. Please use 'basic' or 'key'."
-        )
+        credentials = f"{self.username}:{self.password}"
+        encoded_credentials = base64.b64encode(credentials.encode()).decode()
+        return {"Authorization": f"Basic {encoded_credentials}"}
+
 
     def get(self, endpoint: str, params: dict = None) -> requests.Response:
         """

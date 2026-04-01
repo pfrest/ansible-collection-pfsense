@@ -26,7 +26,6 @@ class TestRestClientInit:
         client = RestClient(host="fw.local", port=443)
         assert client.validate_certs is True
         assert client.timeout == 30
-        assert client.auth_mode == "basic"
         assert client.scheme == "https"
 
     def test_scheme_stored(self):
@@ -41,7 +40,6 @@ class TestAuthHeaders:
         client = RestClient(
             host="fw",
             port=443,
-            auth_mode="basic",
             username="admin",
             password="secret",
         )
@@ -53,16 +51,10 @@ class TestAuthHeaders:
         client = RestClient(
             host="fw",
             port=443,
-            auth_mode="key",
             api_key="mykey123",
         )
         headers = client.get_auth_headers()
-        assert headers["Authorization"] == "x-api-key mykey123"
-
-    def test_invalid_auth_mode(self):
-        client = RestClient(host="fw", port=443, auth_mode="oauth")
-        with pytest.raises(ValueError, match="Unsupported auth_mode"):
-            client.get_auth_headers()
+        assert headers["x-api-key"] == "mykey123"
 
 
 class TestHttpMethods:
