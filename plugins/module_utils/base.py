@@ -10,6 +10,7 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils.rest import RestCli
 INTERNAL_ARGS = [
     "api_host",
     "api_port",
+    "api_protocol",
     "api_username",
     "api_password",
     "api_key",
