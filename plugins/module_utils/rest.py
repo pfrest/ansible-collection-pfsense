@@ -81,7 +81,6 @@ class RestClient:
         encoded_credentials = base64.b64encode(credentials.encode()).decode()
         return {"Authorization": f"Basic {encoded_credentials}"}
 
-
     def get(self, endpoint: str, params: dict = None) -> requests.Response:
         """
         Perform a GET request to the specified endpoint.
