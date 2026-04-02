@@ -86,7 +86,7 @@ jobs:
           ansible-galaxy collection install .
 
       - name: Run tests with Molecule
-        run: molecule test --all
+        run: molecule test --all --workers cpus
 
   check_docs:
     runs-on: ubuntu-latest
