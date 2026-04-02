@@ -10,18 +10,15 @@
 
 set -euo pipefail
 
-# ---------------------------------------------------------------------------
 # Resolve paths
-# ---------------------------------------------------------------------------
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 VENV_DIR="$REPO_ROOT/venv"
-INSTALLED_MODULES="$VENV_DIR/lib/python3.11/site-packages/ansible_collections/pfrest/pfsense/plugins/modules"
+PYTHON_VERSION=$("$VENV_DIR/bin/python" -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')")
+INSTALLED_MODULES="$VENV_DIR/lib/python$PYTHON_VERSION/site-packages/ansible_collections/pfrest/pfsense/plugins/modules"
 DOCS_DIR="$REPO_ROOT/docs"
 SCHEMA="$REPO_ROOT/schema.json"
 
-# ---------------------------------------------------------------------------
 # Parse flags
-# ---------------------------------------------------------------------------
 DOCS_ONLY=false
 SERVE=false
 PORT=8282
