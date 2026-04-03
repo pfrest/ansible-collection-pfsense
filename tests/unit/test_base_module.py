@@ -1,6 +1,6 @@
 """Tests for BaseModule CRUD operations and state management."""
 
-# pylint: disable=missing-function-docstring,too-few-public-methods
+# pylint: disable=missing-function-docstring,too-few-public-methods,protected-access
 
 from unittest.mock import MagicMock
 
@@ -318,6 +318,7 @@ class TestResolveParentId:
         with pytest.raises(LookupError, match="has no 'id' field"):
             child_base_module.resolve_parent_id({"name": "no_id_parent"})
 
+    # pylint: disable=unused-argument
     def test_raises_when_model_has_no_parent(self, base_module, mock_rest_client):
         with pytest.raises(LookupError, match="does not have a parent model class"):
             base_module.resolve_parent_id({"name": "obj1"})
@@ -358,7 +359,7 @@ class TestSetObjectStateWithParent:
         )
 
         data = self._data_with_internals()
-        changed, resp = child_base_module.set_object_state(
+        changed, _ = child_base_module.set_object_state(
             "present", data, ["label"], parent_lookup_query={"name": "parent1"}
         )
 

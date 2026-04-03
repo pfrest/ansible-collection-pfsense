@@ -547,7 +547,6 @@ def get_module_options(endpoint_url: str, module_type: str) -> dict:
             **get_module_options_for_resource_module(endpoint_url),
         }
 
-    field_opts = get_module_options_from_fields(endpoint_url)
     return {**standard_options, **get_module_options_from_fields(endpoint_url)}
 
 
@@ -793,7 +792,7 @@ def generate_module_examples(endpoint_url: str, module_type: str) -> list:
     Returns:
         list: A list of task dicts representing usage examples for the module.
     """
-    # pylint: disable=too-many-locals,too-many-branches
+    # pylint: disable=too-many-locals,too-many-branches,too-many-statements
     model_schema = native_schema.get_model_schema_by_endpoint(endpoint_url)
     endpoint_schema = native_schema.get_endpoint_schema(endpoint_url)
     module_name = get_module_name(endpoint_url, module_type)
