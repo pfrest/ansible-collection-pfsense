@@ -445,12 +445,22 @@ class TestValidateFieldType:
 
     def test_non_many_valid_type(self):
         """Correct primitive type passes silently."""
-        schema = {"name": "enabled", "type": "boolean", "required": False, "many": False}
+        schema = {
+            "name": "enabled",
+            "type": "boolean",
+            "required": False,
+            "many": False,
+        }
         BaseModule.validate_field_type(schema, True)  # should not raise
 
     def test_non_many_wrong_type(self):
         """Wrong primitive type raises TypeError."""
-        schema = {"name": "enabled", "type": "boolean", "required": False, "many": False}
+        schema = {
+            "name": "enabled",
+            "type": "boolean",
+            "required": False,
+            "many": False,
+        }
         with pytest.raises(TypeError, match="expects type 'bool'"):
             BaseModule.validate_field_type(schema, "not-a-bool")
 
@@ -517,5 +527,3 @@ class TestValidateDataFields:
         """Setting a read-only field raises ValueError."""
         with pytest.raises(ValueError, match="read-only and cannot be set"):
             base_module.validate_data_fields({"status": "active"})
-
-
