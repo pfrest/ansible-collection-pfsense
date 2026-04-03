@@ -16,7 +16,7 @@ INTERNAL_ARGS = [
     "api_key",
     "validate_certs",
     "lookup_fields",
-    "parent_lookup_fields",
+    "parent_lookup_query",
     "state",
 ]
 
@@ -248,18 +248,16 @@ class BaseModule:
         resp = self.rest_client.patch(self.endpoint_singular, data=data)
         return True, resp.json()
 
-    def resolve_parent_id(
-        self, parent_lookup_fields: list[str], data: dict
-    ) -> int | str:
+    def resolve_parent_id(self, parent_lookup_query: dict) -> int | str:
         """
-        Resolve the parent object's ID using the provided parent lookup fields.
+        Resolve the parent object's ID using the provided parent lookup query.
 
         This queries the parent model's plural endpoint using the parent lookup
-        fields as query parameters and returns the parent's ``id``.
+        query as query parameters and returns the parent's ``id``.
 
         Args:
-            parent_lookup_fields (list[str]): The field names used to look up the parent object.
-            data (dict): The data dictionary containing the parent lookup field values.
+            parent_lookup_query (dict): A dictionary of query parameters used to
+                look up the parent object.
 
         Returns:
             int | str: The parent object's ID.
@@ -273,16 +271,15 @@ class BaseModule:
                 f"Model '{self.model_name}' does not have a parent model class."
             )
 
-        # Build the parent lookup query
-        parent_query = self.get_lookup_query(parent_lookup_fields, data)
-
         # Determine the parent model's plural endpoint
         parent_plural_endpoint = self.full_schema.get_plural_endpoint_by_model(
             parent_model_class
         )
 
         # Query the parent endpoint
-        resp = self.rest_client.get(parent_plural_endpoint, params=parent_query).json()
+        resp = self.rest_client.get(
+            parent_plural_endpoint, params=parent_lookup_query
+        ).json()
         parents = resp.get("data", [])
 
         if not parents:
@@ -311,7 +308,7 @@ class BaseModule:
         state: str,
         data: dict,
         lookup_fields: list[str],
-        parent_lookup_fields: list[str] | None = None,
+        parent_lookup_query: dict | None = None,
     ) -> tuple[bool, dict]:
         """
         Set the state of the object based on the desired state in module parameters.
@@ -322,25 +319,17 @@ class BaseModule:
             state (str): The desired state of the object ('present' or 'absent').
             data (dict): The data to create or update the object with.
             lookup_fields (list[str]): The fields to use for looking up the existing object.
-            parent_lookup_fields (list[str] | None): The fields to use for looking up the
-                parent object when the model has a parent model class.
+            parent_lookup_query (dict | None): A dictionary of query parameters to use
+                for looking up the parent object when the model has a parent model class.
 
         Returns:
             tuple[bool, dict]: First item indicates whether the object was changed,
                 second item is the response data
         """
-        # If parent lookup fields are provided, resolve the parent ID
-        if parent_lookup_fields:
-            parent_id = self.resolve_parent_id(parent_lookup_fields, data)
+        # If parent lookup query is provided, resolve the parent ID
+        if parent_lookup_query:
+            parent_id = self.resolve_parent_id(parent_lookup_query)
             data["parent_id"] = parent_id
-
-            # Remove parent lookup field values from data if they are not
-            # fields of the child model (they were only needed to resolve
-            # the parent).
-            child_fields = set(self.model_schema.get("fields", {}).keys())
-            for field in parent_lookup_fields:
-                if field in data and field not in child_fields:
-                    del data[field]
 
         # Construct the lookup query
         lookup_query = self.get_lookup_query(lookup_fields, data)
@@ -405,14 +394,12 @@ class BaseModule:
         """
         Recursively check whether *desired* is satisfied by *existing*.
 
-        * ``None`` — the user did not supply a value, so the existing
-          value is accepted as-is (no change needed).
-        * ``dict`` vs ``dict`` — every key in *desired* must exist in
-          *existing* with a matching value (extra keys in *existing* are
-          ignored).
-        * ``list`` vs ``list`` — lengths must match and each positional
-          pair of elements must match (recursive for dicts).
-        * Everything else — plain ``==`` equality.
+        Args:
+            desired: The value the user wants.
+            existing: The value currently on the device.
+
+        Returns:
+            bool: True if the values match, False otherwise.
         """
         if (
             desired is None
@@ -546,8 +533,7 @@ class BaseModule:
                 type in the model schema.
         """
         # Nested model fields are represented as dicts (or a list of dicts
-        # when many-enabled).  The schema ``type`` for these is ``"array"``
-        # which maps to ``list``, but the *elements* are always dicts.
+        # when many-enabled).
         if field_schema.get("nested_model_class"):
             if field_schema.get("many"):
                 # Expect a list of dicts
@@ -573,6 +559,15 @@ class BaseModule:
 
         # Ensure data types match the model schema
         expected_type = NativeSchema.from_schema_type(field_schema.get("type"))
+
+        # Required fields are only truly required if they don't have conditions
+        reqd = field_schema.get("required", False) and not field_schema.get(
+            "conditions", []
+        )
+
+        # Allow None values for non-required fields
+        if value is None and not reqd:
+            return
 
         # For fields that are not many-enabled, wrap the value in a list so
         # the loop below works uniformly.

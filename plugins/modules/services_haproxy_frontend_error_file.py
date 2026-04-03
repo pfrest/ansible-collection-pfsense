@@ -63,13 +63,12 @@ options:
     required: true
     description: The list of fields to use when looking up existing resources. This
       should be a list of field names that uniquely identify a resource.
-  parent_lookup_fields:
-    type: list
-    elements: str
+  parent_lookup_query:
+    type: dict
     required: true
-    description: The list of fields to use when looking up the parent HA Proxy Frontend.
-      This should be a list of field names that uniquely identify the parent object
-      this resource is nested under.
+    description: A dictionary of query parameters used to look up the parent HA Proxy
+      Frontend. This should contain field name/value pairs that uniquely identify
+      the parent object this resource is nested under.
   errorcode:
     required: true
     type: int
@@ -94,8 +93,8 @@ EXAMPLES = """
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
-    parent_lookup_fields: &id001
-    - name
+    parent_lookup_query: &id001
+      name: string
     state: present
     errorcode: 1
     errorfile: string
@@ -104,7 +103,7 @@ EXAMPLES = """
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
-    parent_lookup_fields: *id001
+    parent_lookup_query: *id001
     state: absent
     errorcode: 1
     errorfile: string
@@ -209,23 +208,24 @@ def run_module():
             "no_log": False,
             "elements": "str",
         },
-        "parent_lookup_fields": {
-            "type": "list",
+        "parent_lookup_query": {
+            "type": "dict",
             "required": True,
             "no_log": False,
-            "elements": "str",
         },
         "errorcode": {
             "type": "int",
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "errorfile": {
             "type": "str",
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
     }
 
@@ -248,7 +248,7 @@ def run_module():
         state=module.params["state"],
         data=module.params,
         lookup_fields=module.params["lookup_fields"],
-        parent_lookup_fields=module.params.get("parent_lookup_fields", []),
+        parent_lookup_query=module.params.get("parent_lookup_query"),
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)

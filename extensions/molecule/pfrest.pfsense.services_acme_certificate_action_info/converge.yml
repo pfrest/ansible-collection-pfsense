@@ -8,7 +8,7 @@
       register: result
       pfrest.pfsense.services_acme_certificate_action_info:
         api_host: localhost
-        api_port: 5000
+        api_port: 15070
         api_protocol: http
         validate_certs: false
         lookup_params: {}
@@ -31,6 +31,7 @@
           - result.data.command == "string"
           - result.data.method is defined
           - result.data.method == "shellcommand"
+          - result.data.parent_id is defined
           - result.data.id is defined
           - result.data.id == 0
 

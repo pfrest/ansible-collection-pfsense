@@ -11,7 +11,8 @@
         "hash_algorithm": "sha1",
         "dhgroup": 1,
         "prf_algorithm": "sha1",
-        "id": 0
+        "id": 0,
+        "parent_id": 0
       }
     ]
   }

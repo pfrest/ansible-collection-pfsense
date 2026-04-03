@@ -305,18 +305,21 @@ def run_module():
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "disabled": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "nobinat": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "natreflection": {
             "type": "str",
@@ -324,6 +327,7 @@ def run_module():
             "no_log": False,
             "default": None,
             "choices": ["enable", "disable"],
+            "nullable": True,
         },
         "ipprotocol": {
             "type": "str",
@@ -331,30 +335,35 @@ def run_module():
             "no_log": False,
             "default": "inet",
             "choices": ["inet", "inet6"],
+            "nullable": True,
         },
         "external": {
             "type": "str",
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "source": {
             "type": "str",
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "destination": {
             "type": "str",
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "descr": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
     }
 
@@ -375,7 +384,7 @@ def run_module():
         state=module.params["state"],
         data=module.params,
         lookup_fields=module.params["lookup_fields"],
-        parent_lookup_fields=module.params.get("parent_lookup_fields", []),
+        parent_lookup_query=module.params.get("parent_lookup_query"),
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)

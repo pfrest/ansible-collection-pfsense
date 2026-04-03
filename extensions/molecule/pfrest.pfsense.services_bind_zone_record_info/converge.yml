@@ -8,7 +8,7 @@
       register: result
       pfrest.pfsense.services_bind_zone_record_info:
         api_host: localhost
-        api_port: 5000
+        api_port: 15070
         api_protocol: http
         validate_certs: false
         lookup_params: {}
@@ -33,6 +33,7 @@
           - result.data.rdata == "string"
           - result.data.priority is defined
           - result.data.priority == 9223372036854776000
+          - result.data.parent_id is defined
           - result.data.id is defined
           - result.data.id == 0
 

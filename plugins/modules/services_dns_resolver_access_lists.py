@@ -244,6 +244,7 @@ def run_module():
                     "required": True,
                     "no_log": False,
                     "default": None,
+                    "nullable": False,
                 },
                 "action": {
                     "type": "str",
@@ -258,12 +259,14 @@ def run_module():
                         "deny nonlocal",
                         "refuse nonlocal",
                     ],
+                    "nullable": False,
                 },
                 "description": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
                     "default": "",
+                    "nullable": True,
                 },
                 "networks": {
                     "type": "list",
@@ -271,24 +274,28 @@ def run_module():
                     "no_log": False,
                     "default": None,
                     "elements": "dict",
+                    "nullable": False,
                     "options": {
                         "network": {
                             "type": "str",
                             "required": True,
                             "no_log": False,
                             "default": None,
+                            "nullable": False,
                         },
                         "mask": {
                             "type": "int",
                             "required": True,
                             "no_log": False,
                             "default": None,
+                            "nullable": False,
                         },
                         "description": {
                             "type": "str",
                             "required": False,
                             "no_log": False,
                             "default": "",
+                            "nullable": True,
                         },
                     },
                 },

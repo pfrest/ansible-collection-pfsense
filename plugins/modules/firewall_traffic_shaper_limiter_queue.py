@@ -63,13 +63,12 @@ options:
     required: true
     description: The list of fields to use when looking up existing resources. This
       should be a list of field names that uniquely identify a resource.
-  parent_lookup_fields:
-    type: list
-    elements: str
+  parent_lookup_query:
+    type: dict
     required: true
-    description: The list of fields to use when looking up the parent Traffic Shaper
-      Limiter. This should be a list of field names that uniquely identify the parent
-      object this resource is nested under.
+    description: A dictionary of query parameters used to look up the parent Traffic
+      Shaper Limiter. This should contain field name/value pairs that uniquely identify
+      the parent object this resource is nested under.
   name:
     required: true
     type: str
@@ -270,7 +269,7 @@ options:
     description: The share of the parent limiter this queue gets.
   plr:
     required: false
-    type: str
+    type: float
     default: null
     choices: []
     description: The amount of packet loss (in percentage) added to traffic passing
@@ -292,8 +291,8 @@ EXAMPLES = """
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
-    parent_lookup_fields: &id001
-    - name
+    parent_lookup_query: &id001
+      name: string
     state: present
     name: string
     aqm: droptail
@@ -302,7 +301,7 @@ EXAMPLES = """
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
-    parent_lookup_fields: *id001
+    parent_lookup_query: *id001
     state: absent
     name: string
     aqm: droptail
@@ -542,23 +541,24 @@ def run_module():
             "no_log": False,
             "elements": "str",
         },
-        "parent_lookup_fields": {
-            "type": "list",
+        "parent_lookup_query": {
+            "type": "dict",
             "required": True,
             "no_log": False,
-            "elements": "str",
         },
         "name": {
             "type": "str",
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "enabled": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "mask": {
             "type": "str",
@@ -566,36 +566,42 @@ def run_module():
             "no_log": False,
             "default": "none",
             "choices": ["none", "srcaddress", "dstaddress"],
+            "nullable": True,
         },
         "maskbits": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 32,
+            "nullable": True,
         },
         "maskbitsv6": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 128,
+            "nullable": True,
         },
         "qlimit": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "ecn": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "description": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "aqm": {
             "type": "str",
@@ -603,144 +609,168 @@ def run_module():
             "no_log": False,
             "default": None,
             "choices": ["droptail", "codel", "pie", "red", "gred"],
+            "nullable": False,
         },
         "param_codel_target": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 0,
+            "nullable": True,
         },
         "param_codel_interval": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 0,
+            "nullable": True,
         },
         "param_pie_target": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 0,
+            "nullable": True,
         },
         "param_pie_tupdate": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 0,
+            "nullable": True,
         },
         "param_pie_alpha": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 0,
+            "nullable": True,
         },
         "param_pie_beta": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 0,
+            "nullable": True,
         },
         "param_pie_max_burst": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 0,
+            "nullable": True,
         },
         "param_pie_max_ecnth": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 0,
+            "nullable": True,
         },
         "pie_onoff": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "pie_capdrop": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "pie_qdelay": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "pie_pderand": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "param_red_w_q": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 1,
+            "nullable": True,
         },
         "param_red_min_th": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 0,
+            "nullable": True,
         },
         "param_red_max_th": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 1,
+            "nullable": True,
         },
         "param_red_max_p": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 1,
+            "nullable": True,
         },
         "param_gred_w_q": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 1,
+            "nullable": True,
         },
         "param_gred_min_th": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 0,
+            "nullable": True,
         },
         "param_gred_max_th": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 1,
+            "nullable": True,
         },
         "param_gred_max_p": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 1,
+            "nullable": True,
         },
         "weight": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "plr": {
-            "type": "str",
+            "type": "float",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "buckets": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
     }
 
@@ -763,7 +793,7 @@ def run_module():
         state=module.params["state"],
         data=module.params,
         lookup_fields=module.params["lookup_fields"],
-        parent_lookup_fields=module.params.get("parent_lookup_fields", []),
+        parent_lookup_query=module.params.get("parent_lookup_query"),
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)

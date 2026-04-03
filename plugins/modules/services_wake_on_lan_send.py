@@ -162,12 +162,14 @@ def run_module():
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "mac_addr": {
             "type": "str",
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
     }
 

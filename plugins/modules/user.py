@@ -285,12 +285,14 @@ def run_module():
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "password": {
             "type": "str",
             "required": True,
             "no_log": True,
             "default": None,
+            "nullable": False,
         },
         "priv": {
             "type": "list",
@@ -298,24 +300,28 @@ def run_module():
             "no_log": False,
             "default": [],
             "elements": "str",
+            "nullable": True,
         },
         "disabled": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "descr": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "expires": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "cert": {
             "type": "list",
@@ -323,18 +329,21 @@ def run_module():
             "no_log": False,
             "default": [],
             "elements": "str",
+            "nullable": True,
         },
         "authorizedkeys": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "ipsecpsk": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
     }
 
@@ -355,7 +364,7 @@ def run_module():
         state=module.params["state"],
         data=module.params,
         lookup_fields=module.params["lookup_fields"],
-        parent_lookup_fields=module.params.get("parent_lookup_fields", []),
+        parent_lookup_query=module.params.get("parent_lookup_query"),
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)

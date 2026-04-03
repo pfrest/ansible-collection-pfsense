@@ -8,7 +8,7 @@
       register: result
       pfrest.pfsense.services_haproxy_backend_servers_info:
         api_host: localhost
-        api_port: 5000
+        api_port: 15070
         api_protocol: http
         validate_certs: false
 
@@ -34,5 +34,6 @@
           - result.data[0].sslserververify is defined
           - result.data[0].serverid is defined
           - result.data[0].advanced is defined
+          - result.data[0].parent_id is defined
           - result.data[0].id is defined
 

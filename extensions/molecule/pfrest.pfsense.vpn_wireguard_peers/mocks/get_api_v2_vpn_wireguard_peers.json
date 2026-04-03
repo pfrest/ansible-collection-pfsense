@@ -13,6 +13,7 @@
         "descr": "string",
         "persistentkeepalive": 9223372036854776000,
         "publickey": "string",
+        "presharedkey": "string",
         "allowedips": [
           {
             "address": "string",

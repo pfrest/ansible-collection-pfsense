@@ -227,24 +227,28 @@ def run_module():
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "keep_conf": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": True,
+            "nullable": True,
         },
         "resolve_interval_track": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "resolve_interval": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 300,
+            "nullable": True,
         },
         "interface_group": {
             "type": "str",
@@ -252,18 +256,21 @@ def run_module():
             "no_log": False,
             "default": "all",
             "choices": ["all", "unassigned", "none"],
+            "nullable": True,
         },
         "hide_secrets": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "hide_peers": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
     }
 

@@ -8,7 +8,7 @@
       register: result
       pfrest.pfsense.services_haproxy_frontend_address:
         api_host: localhost
-        api_port: 5000
+        api_port: 15070
         api_protocol: http
         validate_certs: false
         state: present
@@ -19,10 +19,8 @@
         extaddr_port: string
         extaddr_ssl: true
         exaddr_advanced: string
-        parent_lookup_fields:
-          - name
-        name: string
-
+        parent_lookup_query:
+          name: string
     - name: Assert results
       ansible.builtin.assert:
         that:
@@ -40,5 +38,6 @@
           - result.data.extaddr_port is defined
           - result.data.extaddr_ssl is defined
           - result.data.exaddr_advanced is defined
+          - result.data.parent_id is defined
           - result.data.id is defined
 

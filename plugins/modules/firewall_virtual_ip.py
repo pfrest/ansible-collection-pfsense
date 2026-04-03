@@ -347,12 +347,14 @@ def run_module():
             "no_log": False,
             "default": None,
             "choices": ["ipalias", "proxyarp", "carp", "other"],
+            "nullable": False,
         },
         "interface": {
             "type": "str",
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "type": {
             "type": "str",
@@ -360,54 +362,63 @@ def run_module():
             "no_log": False,
             "default": "single",
             "choices": ["single", "network"],
+            "nullable": True,
         },
         "subnet": {
             "type": "str",
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "subnet_bits": {
             "type": "int",
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "descr": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "noexpand": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "vhid": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "advbase": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 1,
+            "nullable": True,
         },
         "advskew": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 0,
+            "nullable": True,
         },
         "password": {
             "type": "str",
             "required": False,
             "no_log": True,
             "default": None,
+            "nullable": True,
         },
         "carp_mode": {
             "type": "str",
@@ -415,12 +426,14 @@ def run_module():
             "no_log": False,
             "default": "mcast",
             "choices": ["mcast", "ucast"],
+            "nullable": True,
         },
         "carp_peer": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
     }
 
@@ -441,7 +454,7 @@ def run_module():
         state=module.params["state"],
         data=module.params,
         lookup_fields=module.params["lookup_fields"],
-        parent_lookup_fields=module.params.get("parent_lookup_fields", []),
+        parent_lookup_query=module.params.get("parent_lookup_query"),
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)

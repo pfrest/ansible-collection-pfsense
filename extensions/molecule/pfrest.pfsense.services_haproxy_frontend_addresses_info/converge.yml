@@ -8,7 +8,7 @@
       register: result
       pfrest.pfsense.services_haproxy_frontend_addresses_info:
         api_host: localhost
-        api_port: 5000
+        api_port: 15070
         api_protocol: http
         validate_certs: false
 
@@ -30,5 +30,6 @@
           - result.data[0].extaddr_port is defined
           - result.data[0].extaddr_ssl is defined
           - result.data[0].exaddr_advanced is defined
+          - result.data[0].parent_id is defined
           - result.data[0].id is defined
 

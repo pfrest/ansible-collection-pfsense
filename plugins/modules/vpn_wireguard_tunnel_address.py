@@ -63,13 +63,12 @@ options:
     required: true
     description: The list of fields to use when looking up existing resources. This
       should be a list of field names that uniquely identify a resource.
-  parent_lookup_fields:
-    type: list
-    elements: str
+  parent_lookup_query:
+    type: dict
     required: true
-    description: The list of fields to use when looking up the parent WireGuard Tunnel.
-      This should be a list of field names that uniquely identify the parent object
-      this resource is nested under.
+    description: A dictionary of query parameters used to look up the parent WireGuard
+      Tunnel. This should contain field name/value pairs that uniquely identify the
+      parent object this resource is nested under.
   address:
     required: true
     type: str
@@ -99,8 +98,8 @@ EXAMPLES = """
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
-    parent_lookup_fields: &id001
-    - listenport
+    parent_lookup_query: &id001
+      listenport: '51820'
     state: present
     address: string
     mask: 1
@@ -109,7 +108,7 @@ EXAMPLES = """
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
-    parent_lookup_fields: *id001
+    parent_lookup_query: *id001
     state: absent
     address: string
     mask: 1
@@ -216,29 +215,31 @@ def run_module():
             "no_log": False,
             "elements": "str",
         },
-        "parent_lookup_fields": {
-            "type": "list",
+        "parent_lookup_query": {
+            "type": "dict",
             "required": True,
             "no_log": False,
-            "elements": "str",
         },
         "address": {
             "type": "str",
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "mask": {
             "type": "int",
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "descr": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
     }
 
@@ -259,7 +260,7 @@ def run_module():
         state=module.params["state"],
         data=module.params,
         lookup_fields=module.params["lookup_fields"],
-        parent_lookup_fields=module.params.get("parent_lookup_fields", []),
+        parent_lookup_query=module.params.get("parent_lookup_query"),
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)

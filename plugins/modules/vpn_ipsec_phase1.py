@@ -691,12 +691,14 @@ def run_module():
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "disabled": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "iketype": {
             "type": "str",
@@ -704,6 +706,7 @@ def run_module():
             "no_log": False,
             "default": None,
             "choices": ["ikev1", "ikev2", "auto"],
+            "nullable": False,
         },
         "mode": {
             "type": "str",
@@ -711,6 +714,7 @@ def run_module():
             "no_log": False,
             "default": None,
             "choices": ["main", "aggressive"],
+            "nullable": True,
         },
         "protocol": {
             "type": "str",
@@ -718,18 +722,21 @@ def run_module():
             "no_log": False,
             "default": None,
             "choices": ["inet", "inet6", "both"],
+            "nullable": False,
         },
         "interface": {
             "type": "str",
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "remote_gateway": {
             "type": "str",
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "authentication_method": {
             "type": "str",
@@ -737,6 +744,7 @@ def run_module():
             "no_log": False,
             "default": None,
             "choices": ["pre_shared_key", "cert"],
+            "nullable": False,
         },
         "myid_type": {
             "type": "str",
@@ -753,12 +761,14 @@ def run_module():
                 "dyn_dns",
                 "auto",
             ],
+            "nullable": False,
         },
         "myid_data": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "peerid_type": {
             "type": "str",
@@ -776,54 +786,63 @@ def run_module():
                 "dyn_dns",
                 "auto",
             ],
+            "nullable": False,
         },
         "peerid_data": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "pre_shared_key": {
             "type": "str",
             "required": False,
             "no_log": True,
             "default": None,
+            "nullable": True,
         },
         "certref": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "caref": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "rekey_time": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 25920,
+            "nullable": True,
         },
         "reauth_time": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 0,
+            "nullable": True,
         },
         "rand_time": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 2880,
+            "nullable": True,
         },
         "lifetime": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 28800,
+            "nullable": True,
         },
         "startaction": {
             "type": "str",
@@ -831,6 +850,7 @@ def run_module():
             "no_log": False,
             "default": "",
             "choices": ["", "none", "start", "trap"],
+            "nullable": True,
         },
         "closeaction": {
             "type": "str",
@@ -838,6 +858,7 @@ def run_module():
             "no_log": False,
             "default": "",
             "choices": ["", "none", "start", "trap"],
+            "nullable": True,
         },
         "nat_traversal": {
             "type": "str",
@@ -845,54 +866,63 @@ def run_module():
             "no_log": False,
             "default": "on",
             "choices": ["on", "force"],
+            "nullable": True,
         },
         "gw_duplicates": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "mobike": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "splitconn": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "prfselect_enable": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "ikeport": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "500",
+            "nullable": True,
         },
         "nattport": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "4500",
+            "nullable": True,
         },
         "dpd_delay": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 10,
+            "nullable": True,
         },
         "dpd_maxfail": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 5,
+            "nullable": True,
         },
         "encryption": {
             "type": "list",
@@ -900,6 +930,7 @@ def run_module():
             "no_log": False,
             "default": None,
             "elements": "dict",
+            "nullable": False,
             "options": {
                 "encryption_algorithm_name": {
                     "type": "str",
@@ -913,12 +944,14 @@ def run_module():
                         "aes256gcm",
                         "chacha20poly1305",
                     ],
+                    "nullable": False,
                 },
                 "encryption_algorithm_keylen": {
                     "type": "int",
                     "required": False,
                     "no_log": False,
                     "default": None,
+                    "nullable": True,
                 },
                 "hash_algorithm": {
                     "type": "str",
@@ -926,6 +959,7 @@ def run_module():
                     "no_log": False,
                     "default": None,
                     "choices": ["sha1", "sha256", "sha384", "sha512", "aesxcbc"],
+                    "nullable": False,
                 },
                 "dhgroup": {
                     "type": "int",
@@ -956,6 +990,7 @@ def run_module():
                         31,
                         32,
                     ],
+                    "nullable": False,
                 },
                 "prf_algorithm": {
                     "type": "str",
@@ -963,6 +998,7 @@ def run_module():
                     "no_log": False,
                     "default": "sha256",
                     "choices": ["sha1", "sha256", "sha384", "sha512", "aesxcbc"],
+                    "nullable": True,
                 },
             },
         },
@@ -985,7 +1021,7 @@ def run_module():
         state=module.params["state"],
         data=module.params,
         lookup_fields=module.params["lookup_fields"],
-        parent_lookup_fields=module.params.get("parent_lookup_fields", []),
+        parent_lookup_query=module.params.get("parent_lookup_query"),
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)

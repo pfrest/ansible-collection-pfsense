@@ -7,7 +7,7 @@
     - name: Check successful basic authentication
       pfrest.pfsense.status_system_info:
         api_host: 'localhost'
-        api_port: 5000
+        api_port: 15070
         api_protocol: 'http'
         api_username: 'test_username'
         api_password: 'test_password'
@@ -18,7 +18,7 @@
       failed_when: result.error != "Unauthorized"
       pfrest.pfsense.status_system_info:
         api_host: 'localhost'
-        api_port: 5000
+        api_port: 15070
         api_protocol: 'http'
         api_username: 'invalid_username'
         api_password: 'invalid_password'
@@ -27,7 +27,7 @@
     - name: Test API key authentication
       pfrest.pfsense.status_system_info:
         api_host: 'localhost'
-        api_port: 5001
+        api_port: 15071
         api_protocol: 'http'
         api_key: 'sometestapikey'
         validate_certs: false
@@ -37,7 +37,7 @@
       failed_when: result.error != "Unauthorized"
       pfrest.pfsense.status_system_info:
         api_host: 'localhost'
-        api_port: 5001
+        api_port: 15071
         api_protocol: 'http'
         api_key: 'invalidapikey'
         validate_certs: false

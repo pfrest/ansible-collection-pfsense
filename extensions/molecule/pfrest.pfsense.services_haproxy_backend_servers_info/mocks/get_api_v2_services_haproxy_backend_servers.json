@@ -15,7 +15,8 @@
         "sslserververify": true,
         "serverid": 9223372036854776000,
         "advanced": "string",
-        "id": 0
+        "id": 0,
+        "parent_id": 0
       }
     ]
   }

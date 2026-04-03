@@ -8,7 +8,7 @@
       register: result
       pfrest.pfsense.firewall_schedule_time_range:
         api_host: localhost
-        api_port: 5000
+        api_port: 15070
         api_protocol: http
         validate_certs: false
         state: present
@@ -22,10 +22,8 @@
           - 9223372036854776000
         hour: string
         rangedescr: string
-        parent_lookup_fields:
-          - name
-        name: string
-
+        parent_lookup_query:
+          name: string
     - name: Assert results
       ansible.builtin.assert:
         that:
@@ -43,5 +41,6 @@
           - result.data.day is defined
           - result.data.hour is defined
           - result.data.rangedescr is defined
+          - result.data.parent_id is defined
           - result.data.id is defined
 

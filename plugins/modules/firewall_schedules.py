@@ -305,12 +305,14 @@ def run_module():
                     "required": True,
                     "no_log": False,
                     "default": None,
+                    "nullable": False,
                 },
                 "descr": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
                     "default": "",
+                    "nullable": True,
                 },
                 "timerange": {
                     "type": "list",
@@ -318,6 +320,7 @@ def run_module():
                     "no_log": False,
                     "default": None,
                     "elements": "dict",
+                    "nullable": False,
                     "options": {
                         "position": {
                             "type": "list",
@@ -326,6 +329,7 @@ def run_module():
                             "default": None,
                             "choices": [1, 2, 3, 4, 5, 6, 7],
                             "elements": "int",
+                            "nullable": True,
                         },
                         "month": {
                             "type": "list",
@@ -334,6 +338,7 @@ def run_module():
                             "default": None,
                             "choices": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
                             "elements": "int",
+                            "nullable": True,
                         },
                         "day": {
                             "type": "list",
@@ -341,18 +346,21 @@ def run_module():
                             "no_log": False,
                             "default": None,
                             "elements": "int",
+                            "nullable": True,
                         },
                         "hour": {
                             "type": "str",
                             "required": True,
                             "no_log": False,
                             "default": None,
+                            "nullable": False,
                         },
                         "rangedescr": {
                             "type": "str",
                             "required": False,
                             "no_log": False,
                             "default": "",
+                            "nullable": True,
                         },
                     },
                 },

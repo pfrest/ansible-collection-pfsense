@@ -8,7 +8,7 @@
       register: result
       pfrest.pfsense.services_haproxy_settings_email_mailers_info:
         api_host: localhost
-        api_port: 5000
+        api_port: 15070
         api_protocol: http
         validate_certs: false
 
@@ -28,5 +28,6 @@
           - result.data[0].name is defined
           - result.data[0].mailserver is defined
           - result.data[0].mailserverport is defined
+          - result.data[0].parent_id is defined
           - result.data[0].id is defined
 

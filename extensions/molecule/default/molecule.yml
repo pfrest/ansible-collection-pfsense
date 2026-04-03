@@ -7,7 +7,7 @@ platforms:
     pre_build_image: true
     override_command: false
     published_ports:
-      - "0.0.0.0:5000:5000"
+      - "0.0.0.0:15070:5000"
     volumes:
       - "${MOLECULE_SCENARIO_DIRECTORY}/mocks:/mocks:ro"
     env:
@@ -19,7 +19,7 @@ platforms:
     pre_build_image: true
     override_command: false
     published_ports:
-      - "0.0.0.0:5001:5000"
+      - "0.0.0.0:15071:5000"
     volumes:
       - "${MOLECULE_SCENARIO_DIRECTORY}/mocks:/mocks:ro"
     env:

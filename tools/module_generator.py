@@ -216,7 +216,7 @@ def schema_type_to_ansible_type(schema_type: str) -> str:
     type_mapping = {
         "string": "str",
         "integer": "int",
-        "float": "float",
+        "double": "float",
         "boolean": "bool",
         "array": "list",
     }
@@ -343,6 +343,22 @@ def has_parent_model(endpoint_url: str) -> bool:
     return bool(model_schema.get("parent_model_class", ""))
 
 
+def get_parent_model(endpoint_url: str) -> dict:
+    """
+    Obtains the parent model schema for a given endpoint URL.
+    Args:
+        endpoint_url (str): The endpoint URL.
+
+    Returns:
+        dict: The endpoint's model's parent model schema.
+    """
+    model_schema = native_schema.get_model_schema_by_endpoint(endpoint_url)
+    parent_model_class = model_schema.get("parent_model_class", "")
+    if parent_model_class:
+        return native_schema.get_model_schema(parent_model_class)
+    return {}
+
+
 def get_module_options_for_resource_module(endpoint_url: str) -> dict:
     """
     Generates the module options documentation for a resource module based on the endpoint.
@@ -370,20 +386,21 @@ def get_module_options_for_resource_module(endpoint_url: str) -> dict:
         },
     }
 
-    # Add parent_lookup_fields for models with a parent model class
-    if has_parent_model(endpoint_url):
+    # Add parent_lookup_query for models with a 'many' parent model class
+    if has_parent_model(endpoint_url) and get_parent_model(endpoint_url).get(
+        "many", False
+    ):
         model_schema = native_schema.get_model_schema_by_endpoint(endpoint_url)
         parent_model_class = model_schema.get("parent_model_class", "")
         parent_model_schema = native_schema.get_model_schema(parent_model_class)
         parent_verbose_name = parent_model_schema.get(
             "verbose_name", parent_model_class
         )
-        opts["parent_lookup_fields"] = {
-            "type": "list",
-            "elements": "str",
+        opts["parent_lookup_query"] = {
+            "type": "dict",
             "required": True,
-            "description": f"The list of fields to use when looking up the parent "
-            f"{parent_verbose_name}. This should be a list of field names that "
+            "description": f"A dictionary of query parameters used to look up the parent "
+            f"{parent_verbose_name}. This should contain field name/value pairs that "
             f"uniquely identify the parent object this resource is nested under.",
         }
 
@@ -407,14 +424,11 @@ def get_module_options_from_fields(endpoint_url: str) -> dict:
 
 def _build_field_options(model_schema: dict, visited: set) -> dict:
     """
-    Build the module options dict from a model schema's fields.
-
-    This is the recursive workhorse behind :func:`get_module_options_from_fields`.
-    When a field references a nested model (via ``nested_model_class``), the
-    function recurses into that model to produce ``suboptions``.
+    Build the module options dict from a model schema's fields. For nested
+    model fields, this function will recursively build the suboptions dict.
 
     Args:
-        model_schema: The model schema dict containing a ``fields`` mapping.
+        model_schema: The model schema dict containing a `fields` mapping.
         visited: A set of model class names already processed (cycle guard).
 
     Returns:
@@ -442,6 +456,7 @@ def _build_field_options(model_schema: dict, visited: set) -> dict:
             "default": field_schema.get("default", None),
             "choices": field_schema.get("choices", None),
             "no_log": field_schema.get("sensitive", False),
+            "nullable": not required,
             "description": descr,
         }
 
@@ -532,6 +547,7 @@ def get_module_options(endpoint_url: str, module_type: str) -> dict:
             **get_module_options_for_resource_module(endpoint_url),
         }
 
+    field_opts = get_module_options_from_fields(endpoint_url)
     return {**standard_options, **get_module_options_from_fields(endpoint_url)}
 
 
@@ -809,12 +825,12 @@ def generate_module_examples(endpoint_url: str, module_type: str) -> list:
     examples = []
 
     if module_type == "resource":
-        # Build base resource params, including parent_lookup_fields if applicable
+        # Build base resource params, including parent_lookup_query if applicable
         resource_base_params = dict(connection_params)
         if has_parent_model(endpoint_url):
             parent_model_class = model_schema.get("parent_model_class", "")
             parent_model_schema = native_schema.get_model_schema(parent_model_class)
-            # Get the unique fields of the parent model for the parent_lookup_fields example
+            # Build a query dict using the unique fields of the parent model
             parent_unique_fields = [
                 fname
                 for fname, fschema in parent_model_schema.get("fields", {}).items()
@@ -822,7 +838,13 @@ def generate_module_examples(endpoint_url: str, module_type: str) -> list:
             ]
             if not parent_unique_fields:
                 parent_unique_fields = ["id"]
-            resource_base_params["parent_lookup_fields"] = parent_unique_fields
+            parent_lookup_query = {}
+            for fname in parent_unique_fields:
+                fschema = parent_model_schema.get("fields", {}).get(fname, {})
+                parent_lookup_query[fname] = (
+                    get_example_value_for_field(fschema) if fschema else fname
+                )
+            resource_base_params["parent_lookup_query"] = parent_lookup_query
 
         # Present example with all required fields
         examples.append(
@@ -893,13 +915,13 @@ def _strip_argspec_only_keys(options: dict) -> dict:
     generated ``DOCUMENTATION`` passes ``antsibull-docs`` validation.
 
     Args:
-        options: The module options dict (may contain nested ``suboptions``).
+        options: The module options dict (may contain nested `suboptions`).
 
     Returns:
-        A new dict safe for use in the ``DOCUMENTATION`` string.
+        A new dict safe for use in the `DOCUMENTATION` string.
     """
     # Keys that belong in argument_spec but NOT in DOCUMENTATION options
-    _argspec_only = {"no_log"}
+    _argspec_only = ["no_log", "nullable"]
 
     cleaned: dict = {}
     for name, spec in options.items():

@@ -8,7 +8,7 @@
       register: result
       pfrest.pfsense.vpn_ipsec_phase1_encryption:
         api_host: localhost
-        api_port: 5000
+        api_port: 15070
         api_protocol: http
         validate_certs: false
         state: present
@@ -19,10 +19,8 @@
         hash_algorithm: sha1
         dhgroup: 1
         prf_algorithm: sha1
-        parent_lookup_fields:
-          - id
-        id: 0
-
+        parent_lookup_query:
+          id: 0
     - name: Assert results
       ansible.builtin.assert:
         that:
@@ -40,5 +38,6 @@
           - result.data.hash_algorithm is defined
           - result.data.dhgroup is defined
           - result.data.prf_algorithm is defined
+          - result.data.parent_id is defined
           - result.data.id is defined
 

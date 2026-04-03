@@ -8,7 +8,7 @@
       register: result
       pfrest.pfsense.services_acme_certificate_domain_info:
         api_host: localhost
-        api_port: 5000
+        api_port: 15070
         api_protocol: http
         validate_certs: false
         lookup_params: {}
@@ -477,6 +477,7 @@
           - result.data.anydnschallengealias == "string"
           - result.data.anydnschallengedomain is defined
           - result.data.anydnschallengedomain == true
+          - result.data.parent_id is defined
           - result.data.id is defined
           - result.data.id == 0
 

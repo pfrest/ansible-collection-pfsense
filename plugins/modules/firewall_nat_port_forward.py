@@ -431,6 +431,7 @@ def run_module():
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "ipprotocol": {
             "type": "str",
@@ -438,6 +439,7 @@ def run_module():
             "no_log": False,
             "default": "inet",
             "choices": ["inet", "inet6", "inet46"],
+            "nullable": True,
         },
         "protocol": {
             "type": "str",
@@ -458,66 +460,77 @@ def run_module():
                 "pim",
                 "ospf",
             ],
+            "nullable": False,
         },
         "source": {
             "type": "str",
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "source_port": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "destination": {
             "type": "str",
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "destination_port": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "target": {
             "type": "str",
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "local_port": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "disabled": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "nordr": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "nosync": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "descr": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "natreflection": {
             "type": "str",
@@ -525,12 +538,14 @@ def run_module():
             "no_log": False,
             "default": None,
             "choices": ["enable", "disable", "purenat"],
+            "nullable": True,
         },
         "associated_rule_id": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
     }
 
@@ -551,7 +566,7 @@ def run_module():
         state=module.params["state"],
         data=module.params,
         lookup_fields=module.params["lookup_fields"],
-        parent_lookup_fields=module.params.get("parent_lookup_fields", []),
+        parent_lookup_query=module.params.get("parent_lookup_query"),
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)

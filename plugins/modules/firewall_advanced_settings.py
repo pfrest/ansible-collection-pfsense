@@ -162,12 +162,14 @@ def run_module():
             "required": False,
             "no_log": False,
             "default": 9223372036854775807,
+            "nullable": True,
         },
         "checkaliasesurlcert": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": True,
+            "nullable": True,
         },
     }
 

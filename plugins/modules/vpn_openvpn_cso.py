@@ -503,24 +503,28 @@ def run_module():
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "disable": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "block": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "description": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "server_list": {
             "type": "list",
@@ -528,18 +532,21 @@ def run_module():
             "no_log": False,
             "default": [],
             "elements": "str",
+            "nullable": True,
         },
         "tunnel_network": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "tunnel_networkv6": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "local_network": {
             "type": "list",
@@ -547,6 +554,7 @@ def run_module():
             "no_log": False,
             "default": [],
             "elements": "str",
+            "nullable": True,
         },
         "local_networkv6": {
             "type": "list",
@@ -554,6 +562,7 @@ def run_module():
             "no_log": False,
             "default": [],
             "elements": "str",
+            "nullable": True,
         },
         "remote_network": {
             "type": "list",
@@ -561,6 +570,7 @@ def run_module():
             "no_log": False,
             "default": [],
             "elements": "str",
+            "nullable": True,
         },
         "remote_networkv6": {
             "type": "list",
@@ -568,18 +578,21 @@ def run_module():
             "no_log": False,
             "default": [],
             "elements": "str",
+            "nullable": True,
         },
         "gwredir": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "push_reset": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "remove_options": {
             "type": "list",
@@ -602,54 +615,63 @@ def run_module():
                 "remove_wins",
             ],
             "elements": "str",
+            "nullable": True,
         },
         "dns_domain": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "dns_server1": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "dns_server2": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "dns_server3": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "dns_server4": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "ntp_server1": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "ntp_server2": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "netbios_enable": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "netbios_ntype": {
             "type": "int",
@@ -657,24 +679,28 @@ def run_module():
             "no_log": False,
             "default": 0,
             "choices": [0, 1, 2, 4, 8],
+            "nullable": True,
         },
         "netbios_scope": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "wins_server1": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "wins_server2": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "custom_options": {
             "type": "list",
@@ -682,6 +708,7 @@ def run_module():
             "no_log": False,
             "default": [],
             "elements": "str",
+            "nullable": True,
         },
     }
 
@@ -702,7 +729,7 @@ def run_module():
         state=module.params["state"],
         data=module.params,
         lookup_fields=module.params["lookup_fields"],
-        parent_lookup_fields=module.params.get("parent_lookup_fields", []),
+        parent_lookup_query=module.params.get("parent_lookup_query"),
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)

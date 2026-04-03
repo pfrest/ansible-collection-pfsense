@@ -8,7 +8,7 @@
       register: result
       pfrest.pfsense.routing_gateway_group_priority:
         api_host: localhost
-        api_port: 5000
+        api_port: 15070
         api_protocol: http
         validate_certs: false
         state: present
@@ -17,10 +17,8 @@
         gateway: string
         tier: 9223372036854776000
         virtual_ip: string
-        parent_lookup_fields:
-          - name
-        name: string
-
+        parent_lookup_query:
+          name: string
     - name: Assert results
       ansible.builtin.assert:
         that:
@@ -36,5 +34,6 @@
           - result.data.gateway is defined
           - result.data.tier is defined
           - result.data.virtual_ip is defined
+          - result.data.parent_id is defined
           - result.data.id is defined
 

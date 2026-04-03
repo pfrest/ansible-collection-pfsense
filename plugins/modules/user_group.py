@@ -243,6 +243,7 @@ def run_module():
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "scope": {
             "type": "str",
@@ -250,12 +251,14 @@ def run_module():
             "no_log": False,
             "default": "local",
             "choices": ["local", "remote", "system"],
+            "nullable": True,
         },
         "description": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "member": {
             "type": "list",
@@ -263,6 +266,7 @@ def run_module():
             "no_log": False,
             "default": [],
             "elements": "str",
+            "nullable": True,
         },
         "priv": {
             "type": "list",
@@ -270,6 +274,7 @@ def run_module():
             "no_log": False,
             "default": [],
             "elements": "str",
+            "nullable": True,
         },
     }
 
@@ -290,7 +295,7 @@ def run_module():
         state=module.params["state"],
         data=module.params,
         lookup_fields=module.params["lookup_fields"],
-        parent_lookup_fields=module.params.get("parent_lookup_fields", []),
+        parent_lookup_query=module.params.get("parent_lookup_query"),
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)

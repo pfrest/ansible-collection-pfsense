@@ -8,7 +8,8 @@
       "name": "string",
       "server": "string",
       "port": "string",
-      "id": 0
+      "id": 0,
+      "parent_id": 0
     }
   }
 }

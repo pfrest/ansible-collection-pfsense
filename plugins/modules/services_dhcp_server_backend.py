@@ -156,6 +156,7 @@ def run_module():
             "no_log": False,
             "default": "isc",
             "choices": ["isc", "kea"],
+            "nullable": True,
         },
     }
 

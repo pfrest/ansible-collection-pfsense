@@ -166,12 +166,14 @@ def run_module():
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "writecerts": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
     }
 

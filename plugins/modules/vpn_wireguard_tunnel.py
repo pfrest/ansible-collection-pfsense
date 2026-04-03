@@ -287,30 +287,35 @@ def run_module():
             "required": False,
             "no_log": False,
             "default": True,
+            "nullable": True,
         },
         "descr": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "listenport": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "51820",
+            "nullable": True,
         },
         "privatekey": {
             "type": "str",
             "required": True,
             "no_log": True,
             "default": None,
+            "nullable": False,
         },
         "mtu": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 1420,
+            "nullable": True,
         },
         "addresses": {
             "type": "list",
@@ -318,24 +323,28 @@ def run_module():
             "no_log": False,
             "default": [],
             "elements": "dict",
+            "nullable": True,
             "options": {
                 "address": {
                     "type": "str",
                     "required": True,
                     "no_log": False,
                     "default": None,
+                    "nullable": False,
                 },
                 "mask": {
                     "type": "int",
                     "required": True,
                     "no_log": False,
                     "default": None,
+                    "nullable": False,
                 },
                 "descr": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
                     "default": "",
+                    "nullable": True,
                 },
             },
         },
@@ -358,7 +367,7 @@ def run_module():
         state=module.params["state"],
         data=module.params,
         lookup_fields=module.params["lookup_fields"],
-        parent_lookup_fields=module.params.get("parent_lookup_fields", []),
+        parent_lookup_query=module.params.get("parent_lookup_query"),
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)

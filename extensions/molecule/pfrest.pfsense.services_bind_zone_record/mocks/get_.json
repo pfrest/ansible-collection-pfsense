@@ -10,7 +10,8 @@
         "type": "A",
         "rdata": "string",
         "priority": 9223372036854776000,
-        "id": 0
+        "id": 0,
+        "parent_id": 0
       }
     ]
   }

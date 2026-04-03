@@ -8,7 +8,7 @@
       register: result
       pfrest.pfsense.services_haproxy_settings_email_mailer:
         api_host: localhost
-        api_port: 5000
+        api_port: 15070
         api_protocol: http
         validate_certs: false
         state: present
@@ -17,9 +17,6 @@
         name: string
         mailserver: string
         mailserverport: string
-        parent_lookup_fields:
-          - id
-        id: 0
 
     - name: Assert results
       ansible.builtin.assert:
@@ -36,5 +33,6 @@
           - result.data.name is defined
           - result.data.mailserver is defined
           - result.data.mailserverport is defined
+          - result.data.parent_id is defined
           - result.data.id is defined
 

@@ -8,7 +8,7 @@
       register: result
       pfrest.pfsense.services_haproxy_backend_error_file:
         api_host: localhost
-        api_port: 5000
+        api_port: 15070
         api_protocol: http
         validate_certs: false
         state: present
@@ -16,10 +16,8 @@
           - errorcode
         errorcode: 9223372036854776000
         errorfile: string
-        parent_lookup_fields:
-          - name
-        name: string
-
+        parent_lookup_query:
+          name: string
     - name: Assert results
       ansible.builtin.assert:
         that:
@@ -34,5 +32,6 @@
           - result.data is mapping
           - result.data.errorcode is defined
           - result.data.errorfile is defined
+          - result.data.parent_id is defined
           - result.data.id is defined
 

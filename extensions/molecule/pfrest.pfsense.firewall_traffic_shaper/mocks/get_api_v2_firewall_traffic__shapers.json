@@ -16,7 +16,6 @@
         "tbrconfig": 9223372036854776000,
         "queue": [
           {
-            "interface": "string",
             "enabled": true,
             "name": "string",
             "priority": 9223372036854776000,

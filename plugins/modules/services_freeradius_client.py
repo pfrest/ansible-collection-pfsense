@@ -320,6 +320,7 @@ def run_module():
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "ip_version": {
             "type": "str",
@@ -327,24 +328,28 @@ def run_module():
             "no_log": False,
             "default": "ipaddr",
             "choices": ["ipaddr", "ipv6addr"],
+            "nullable": True,
         },
         "description": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "shortname": {
             "type": "str",
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "secret": {
             "type": "str",
             "required": True,
             "no_log": True,
             "default": None,
+            "nullable": False,
         },
         "proto": {
             "type": "str",
@@ -352,6 +357,7 @@ def run_module():
             "no_log": False,
             "default": "udp",
             "choices": ["udp", "tcp"],
+            "nullable": True,
         },
         "nastype": {
             "type": "str",
@@ -371,30 +377,35 @@ def run_module():
                 "dot1x",
                 "other",
             ],
+            "nullable": True,
         },
         "msgauth": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "maxconn": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 16,
+            "nullable": True,
         },
         "naslogin": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "naspassword": {
             "type": "str",
             "required": False,
             "no_log": True,
             "default": "",
+            "nullable": True,
         },
     }
 
@@ -415,7 +426,7 @@ def run_module():
         state=module.params["state"],
         data=module.params,
         lookup_fields=module.params["lookup_fields"],
-        parent_lookup_fields=module.params.get("parent_lookup_fields", []),
+        parent_lookup_query=module.params.get("parent_lookup_query"),
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)

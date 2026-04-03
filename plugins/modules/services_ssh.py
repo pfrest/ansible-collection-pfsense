@@ -191,12 +191,14 @@ def run_module():
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "port": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "22",
+            "nullable": True,
         },
         "sshdkeyonly": {
             "type": "str",
@@ -204,12 +206,14 @@ def run_module():
             "no_log": False,
             "default": None,
             "choices": ["enabled", "both"],
+            "nullable": True,
         },
         "sshdagentforwarding": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
     }
 

@@ -2,7 +2,6 @@
 testpaths = ["tests"]
 
 [tool.coverage.run]
-# Track the installed namespace path that the tests actually import.
 source = ["ansible_collections.pfrest.pfsense.plugins.module_utils"]
 omit = [
     "*/assets/*",
@@ -10,8 +9,6 @@ omit = [
 ]
 
 [tool.coverage.paths]
-# Map the installed site-packages path back to the local source tree so
-# reports show your working-copy file names instead of site-packages paths.
 source = [
     "plugins/module_utils",
     "**/ansible_collections/pfrest/pfsense/plugins/module_utils",
@@ -28,3 +25,7 @@ exclude_lines = [
 [tool.coverage.html]
 directory = "htmlcov"
 
+[tool.black]
+exclude = '''/(
+    plugins/module_utils/embedded_schema.py
+)'''

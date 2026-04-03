@@ -182,6 +182,7 @@ def run_module():
             "no_log": False,
             "default": None,
             "choices": ["disabled", "manual", "auto"],
+            "nullable": False,
         },
         "synctimeout": {
             "type": "int",
@@ -189,12 +190,14 @@ def run_module():
             "no_log": False,
             "default": 30,
             "choices": [30, 60, 90, 120, 150, 250],
+            "nullable": True,
         },
         "masterip": {
             "type": "str",
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
     }
 

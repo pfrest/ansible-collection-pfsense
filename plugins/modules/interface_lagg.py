@@ -258,6 +258,7 @@ def run_module():
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "members": {
             "type": "list",
@@ -265,6 +266,7 @@ def run_module():
             "no_log": False,
             "default": None,
             "elements": "str",
+            "nullable": False,
         },
         "proto": {
             "type": "str",
@@ -272,6 +274,7 @@ def run_module():
             "no_log": False,
             "default": None,
             "choices": ["lacp", "failover", "loadbalance", "roundrobin", "none"],
+            "nullable": False,
         },
         "lacptimeout": {
             "type": "str",
@@ -279,6 +282,7 @@ def run_module():
             "no_log": False,
             "default": "slow",
             "choices": ["slow", "fast"],
+            "nullable": True,
         },
         "lagghash": {
             "type": "str",
@@ -286,12 +290,14 @@ def run_module():
             "no_log": False,
             "default": "l2,l3,l4",
             "choices": ["l2", "l3", "l4", "l2,l3", "l2,l4", "l3,l4", "l2,l3,l4"],
+            "nullable": True,
         },
         "failovermaster": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "auto",
+            "nullable": True,
         },
     }
 
@@ -312,7 +318,7 @@ def run_module():
         state=module.params["state"],
         data=module.params,
         lookup_fields=module.params["lookup_fields"],
-        parent_lookup_fields=module.params.get("parent_lookup_fields", []),
+        parent_lookup_query=module.params.get("parent_lookup_query"),
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)

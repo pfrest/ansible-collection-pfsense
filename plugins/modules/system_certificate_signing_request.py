@@ -351,6 +351,7 @@ def run_module():
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "keytype": {
             "type": "str",
@@ -358,6 +359,7 @@ def run_module():
             "no_log": False,
             "default": None,
             "choices": ["RSA", "ECDSA"],
+            "nullable": False,
         },
         "keylen": {
             "type": "int",
@@ -365,60 +367,70 @@ def run_module():
             "no_log": False,
             "default": None,
             "choices": [1024, 2048, 3072, 4096, 6144, 7680, 8192, 15360, 16384],
+            "nullable": True,
         },
         "ecname": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "digest_alg": {
             "type": "str",
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "lifetime": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 3650,
+            "nullable": True,
         },
         "dn_commonname": {
             "type": "str",
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "dn_country": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "dn_state": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "dn_city": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "dn_organization": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "dn_organizationalunit": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "type": {
             "type": "str",
@@ -426,6 +438,7 @@ def run_module():
             "no_log": False,
             "default": "user",
             "choices": ["server", "user"],
+            "nullable": True,
         },
         "dn_dns_sans": {
             "type": "list",
@@ -433,6 +446,7 @@ def run_module():
             "no_log": False,
             "default": [],
             "elements": "str",
+            "nullable": True,
         },
         "dn_email_sans": {
             "type": "list",
@@ -440,6 +454,7 @@ def run_module():
             "no_log": False,
             "default": [],
             "elements": "str",
+            "nullable": True,
         },
         "dn_ip_sans": {
             "type": "list",
@@ -447,6 +462,7 @@ def run_module():
             "no_log": False,
             "default": [],
             "elements": "str",
+            "nullable": True,
         },
         "dn_uri_sans": {
             "type": "list",
@@ -454,6 +470,7 @@ def run_module():
             "no_log": False,
             "default": [],
             "elements": "str",
+            "nullable": True,
         },
     }
 

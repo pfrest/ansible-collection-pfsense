@@ -63,13 +63,12 @@ options:
     required: true
     description: The list of fields to use when looking up existing resources. This
       should be a list of field names that uniquely identify a resource.
-  parent_lookup_fields:
-    type: list
-    elements: str
+  parent_lookup_query:
+    type: dict
     required: true
-    description: The list of fields to use when looking up the parent IPsec Phase
-      1. This should be a list of field names that uniquely identify the parent object
-      this resource is nested under.
+    description: A dictionary of query parameters used to look up the parent IPsec
+      Phase 1. This should contain field name/value pairs that uniquely identify the
+      parent object this resource is nested under.
   encryption_algorithm_name:
     required: true
     type: str
@@ -150,8 +149,8 @@ EXAMPLES = """
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
-    parent_lookup_fields: &id001
-    - id
+    parent_lookup_query: &id001
+      id: id
     state: present
     encryption_algorithm_name: aes
     encryption_algorithm_keylen: 1
@@ -162,7 +161,7 @@ EXAMPLES = """
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
-    parent_lookup_fields: *id001
+    parent_lookup_query: *id001
     state: absent
     encryption_algorithm_name: aes
     encryption_algorithm_keylen: 1
@@ -281,11 +280,10 @@ def run_module():
             "no_log": False,
             "elements": "str",
         },
-        "parent_lookup_fields": {
-            "type": "list",
+        "parent_lookup_query": {
+            "type": "dict",
             "required": True,
             "no_log": False,
-            "elements": "str",
         },
         "encryption_algorithm_name": {
             "type": "str",
@@ -299,12 +297,14 @@ def run_module():
                 "aes256gcm",
                 "chacha20poly1305",
             ],
+            "nullable": False,
         },
         "encryption_algorithm_keylen": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "hash_algorithm": {
             "type": "str",
@@ -312,6 +312,7 @@ def run_module():
             "no_log": False,
             "default": None,
             "choices": ["sha1", "sha256", "sha384", "sha512", "aesxcbc"],
+            "nullable": False,
         },
         "dhgroup": {
             "type": "int",
@@ -342,6 +343,7 @@ def run_module():
                 31,
                 32,
             ],
+            "nullable": False,
         },
         "prf_algorithm": {
             "type": "str",
@@ -349,6 +351,7 @@ def run_module():
             "no_log": False,
             "default": "sha256",
             "choices": ["sha1", "sha256", "sha384", "sha512", "aesxcbc"],
+            "nullable": True,
         },
     }
 
@@ -369,7 +372,7 @@ def run_module():
         state=module.params["state"],
         data=module.params,
         lookup_fields=module.params["lookup_fields"],
-        parent_lookup_fields=module.params.get("parent_lookup_fields", []),
+        parent_lookup_query=module.params.get("parent_lookup_query"),
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)

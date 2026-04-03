@@ -278,16 +278,14 @@ class TestValidateLookupFields:
 
 
 class TestResolveParentId:
-    """resolve_parent_id: resolves the parent object's ID from lookup fields."""
+    """resolve_parent_id: resolves the parent object's ID from a lookup query dict."""
 
     def test_resolves_single_parent(self, child_base_module, mock_rest_client):
         mock_rest_client.get.return_value = _make_json_response(
             {"code": 200, "data": [{"name": "parent1", "id": 42}]}
         )
 
-        parent_id = child_base_module.resolve_parent_id(
-            ["name"], {"name": "parent1", "label": "child1"}
-        )
+        parent_id = child_base_module.resolve_parent_id({"name": "parent1"})
 
         assert parent_id == 42
         mock_rest_client.get.assert_called_once_with(
@@ -300,9 +298,7 @@ class TestResolveParentId:
         )
 
         with pytest.raises(LookupError, match="matched no existing objects"):
-            child_base_module.resolve_parent_id(
-                ["name"], {"name": "missing", "label": "child1"}
-            )
+            child_base_module.resolve_parent_id({"name": "missing"})
 
     def test_raises_when_multiple_parents_found(
         self, child_base_module, mock_rest_client
@@ -312,9 +308,7 @@ class TestResolveParentId:
         )
 
         with pytest.raises(LookupError, match="matched multiple existing objects"):
-            child_base_module.resolve_parent_id(
-                ["name"], {"name": "dup", "label": "child1"}
-            )
+            child_base_module.resolve_parent_id({"name": "dup"})
 
     def test_raises_when_parent_has_no_id(self, child_base_module, mock_rest_client):
         mock_rest_client.get.return_value = _make_json_response(
@@ -322,17 +316,15 @@ class TestResolveParentId:
         )
 
         with pytest.raises(LookupError, match="has no 'id' field"):
-            child_base_module.resolve_parent_id(
-                ["name"], {"name": "no_id_parent", "label": "child1"}
-            )
+            child_base_module.resolve_parent_id({"name": "no_id_parent"})
 
     def test_raises_when_model_has_no_parent(self, base_module, mock_rest_client):
         with pytest.raises(LookupError, match="does not have a parent model class"):
-            base_module.resolve_parent_id(["name"], {"name": "obj1"})
+            base_module.resolve_parent_id({"name": "obj1"})
 
 
 class TestSetObjectStateWithParent:
-    """set_object_state with parent_lookup_fields: resolves parent ID before CRUD."""
+    """set_object_state with parent_lookup_query: resolves parent ID before CRUD."""
 
     def _data_with_internals(self, **overrides):
         base = {
@@ -344,9 +336,8 @@ class TestSetObjectStateWithParent:
             "api_key": "",
             "validate_certs": True,
             "lookup_fields": ["label"],
-            "parent_lookup_fields": ["name"],
+            "parent_lookup_query": {"name": "parent1"},
             "state": "present",
-            "name": "parent1",
             "label": "child1",
             "value": "v1",
         }
@@ -368,7 +359,7 @@ class TestSetObjectStateWithParent:
 
         data = self._data_with_internals()
         changed, resp = child_base_module.set_object_state(
-            "present", data, ["label"], parent_lookup_fields=["name"]
+            "present", data, ["label"], parent_lookup_query={"name": "parent1"}
         )
 
         assert changed is True
@@ -384,7 +375,7 @@ class TestSetObjectStateWithParent:
 
         data = self._data_with_internals()
         changed, _resp = child_base_module.set_object_state(
-            "present", data, ["label"], parent_lookup_fields=["name"]
+            "present", data, ["label"], parent_lookup_query={"name": "parent1"}
         )
 
         assert changed is False
@@ -401,8 +392,130 @@ class TestSetObjectStateWithParent:
 
         data = self._data_with_internals(state="absent")
         changed, _resp = child_base_module.set_object_state(
-            "absent", data, ["label"], parent_lookup_fields=["name"]
+            "absent", data, ["label"], parent_lookup_query={"name": "parent1"}
         )
 
         assert changed is True
         mock_rest_client.delete.assert_called_once()
+
+
+class TestValidateFieldType:
+    """validate_field_type: nested model and primitive type validation."""
+
+    # -- Nested model, many=True -------------------------------------------------
+
+    def test_nested_many_valid_list_of_dicts(self):
+        """Valid list[dict] for a nested many field passes silently."""
+        schema = {"name": "aliases", "nested_model_class": "FakeAlias", "many": True}
+        BaseModule.validate_field_type(schema, [{"host": "h1"}, {"host": "h2"}])
+
+    def test_nested_many_rejects_non_list(self):
+        """Non-list value for a nested many field raises TypeError."""
+        schema = {"name": "aliases", "nested_model_class": "FakeAlias", "many": True}
+        with pytest.raises(TypeError, match="expects type 'list'"):
+            BaseModule.validate_field_type(schema, "not-a-list")
+
+    def test_nested_many_rejects_non_dict_element(self):
+        """List element that isn't a dict raises TypeError."""
+        schema = {"name": "aliases", "nested_model_class": "FakeAlias", "many": True}
+        with pytest.raises(TypeError, match="expects elements of type 'dict'"):
+            BaseModule.validate_field_type(schema, [{"host": "ok"}, 42])
+
+    # -- Nested model, many=False ------------------------------------------------
+
+    def test_nested_single_valid_dict(self):
+        """Valid dict for a nested non-many field passes silently."""
+        schema = {"name": "detail", "nested_model_class": "FakeDetail", "many": False}
+        BaseModule.validate_field_type(schema, {"key": "val"})
+
+    def test_nested_single_rejects_non_dict(self):
+        """Non-dict value for a nested non-many field raises TypeError."""
+        schema = {"name": "detail", "nested_model_class": "FakeDetail", "many": False}
+        with pytest.raises(TypeError, match="expects type 'dict'"):
+            BaseModule.validate_field_type(schema, "not-a-dict")
+
+    # -- Non-nested: None short-circuit ------------------------------------------
+
+    def test_none_allowed_for_non_required_field(self):
+        """None value on a non-required, non-nested field returns without error."""
+        schema = {"name": "descr", "type": "string", "required": False, "many": False}
+        BaseModule.validate_field_type(schema, None)  # should not raise
+
+    # -- Non-nested: type validation (non-many) ----------------------------------
+
+    def test_non_many_valid_type(self):
+        """Correct primitive type passes silently."""
+        schema = {"name": "enabled", "type": "boolean", "required": False, "many": False}
+        BaseModule.validate_field_type(schema, True)  # should not raise
+
+    def test_non_many_wrong_type(self):
+        """Wrong primitive type raises TypeError."""
+        schema = {"name": "enabled", "type": "boolean", "required": False, "many": False}
+        with pytest.raises(TypeError, match="expects type 'bool'"):
+            BaseModule.validate_field_type(schema, "not-a-bool")
+
+    # -- Non-nested: type validation (many) --------------------------------------
+
+    def test_many_wrong_element_type(self):
+        """Wrong element type inside a many-enabled primitive field raises TypeError."""
+        schema = {"name": "tags", "type": "string", "required": False, "many": True}
+        with pytest.raises(TypeError, match="expects type 'str'"):
+            BaseModule.validate_field_type(schema, [123])
+
+
+class TestValuesMatch:
+    """_values_match: edge cases for the recursive comparison helper."""
+
+    def test_none_matches_empty_list(self):
+        """None desired is considered equivalent to an existing empty list."""
+        assert BaseModule._values_match(None, []) is True
+
+    def test_none_matches_empty_dict(self):
+        """None desired is considered equivalent to an existing empty dict."""
+        assert BaseModule._values_match(None, {}) is True
+
+    def test_empty_list_matches_none(self):
+        """Empty list desired is considered equivalent to existing None."""
+        assert BaseModule._values_match([], None) is True
+
+    def test_empty_dict_matches_none(self):
+        """Empty dict desired is considered equivalent to existing None."""
+        assert BaseModule._values_match({}, None) is True
+
+    def test_missing_key_with_none_value_still_matches(self):
+        """A desired key with value None that is absent from existing is OK."""
+        assert BaseModule._values_match({"a": 1, "b": None}, {"a": 1}) is True
+
+    def test_missing_key_with_non_none_value_does_not_match(self):
+        """A desired key with a real value absent from existing is a mismatch."""
+        assert BaseModule._values_match({"a": 1, "b": "x"}, {"a": 1}) is False
+
+    def test_list_comparison_equal(self):
+        """Two equal flat lists match."""
+        assert BaseModule._values_match([1, 2, 3], [1, 2, 3]) is True
+
+    def test_list_comparison_different_lengths(self):
+        """Lists of different lengths do not match."""
+        assert BaseModule._values_match([1, 2], [1, 2, 3]) is False
+
+    def test_list_comparison_nested_dicts(self):
+        """Lists of dicts are compared element-by-element with subset logic."""
+        desired = [{"a": 1}]
+        existing = [{"a": 1, "id": 99}]
+        assert BaseModule._values_match(desired, existing) is True
+
+
+class TestValidateDataFields:
+    """validate_data_fields: unknown field and read-only field errors."""
+
+    def test_raises_for_unknown_field(self, base_module):
+        """A field not in the model schema raises LookupError."""
+        with pytest.raises(LookupError, match="does not exist for model"):
+            base_module.validate_data_fields({"totally_unknown": "val"})
+
+    def test_raises_for_read_only_field(self, base_module):
+        """Setting a read-only field raises ValueError."""
+        with pytest.raises(ValueError, match="read-only and cannot be set"):
+            base_module.validate_data_fields({"status": "active"})
+
+

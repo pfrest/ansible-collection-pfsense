@@ -11,7 +11,8 @@
         "value": "string",
         "casesensitive": true,
         "not": true,
-        "id": 0
+        "id": 0,
+        "parent_id": 0
       }
     ]
   }

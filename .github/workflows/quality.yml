@@ -69,6 +69,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
+        tag: ["auth", "diagnostics", "firewall", "services", "status", "user", "vpn"]
         python-version: ["3.11", "3.12", "3.13"]
 
     steps:
@@ -86,7 +87,7 @@ jobs:
           ansible-galaxy collection install .
 
       - name: Run tests with Molecule
-        run: molecule test --all --workers cpus
+        run: molecule test -s 'pfrest.pfsense.${{ matrix.tag }}*'
 
   check_docs:
     runs-on: ubuntu-latest

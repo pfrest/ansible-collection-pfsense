@@ -8,7 +8,7 @@
       register: result
       pfrest.pfsense.firewall_traffic_shaper_queue:
         api_host: localhost
-        api_port: 5000
+        api_port: 15070
         api_protocol: http
         validate_certs: false
         state: present
@@ -42,10 +42,8 @@
         linkshare_m1: string
         linkshare_d: 9223372036854776000
         linkshare_m2: string
-        parent_lookup_fields:
-          - interface
-        interface: string
-
+        parent_lookup_query:
+          interface: string
     - name: Assert results
       ansible.builtin.assert:
         that:
@@ -86,5 +84,6 @@
           - result.data.linkshare_m1 is defined
           - result.data.linkshare_d is defined
           - result.data.linkshare_m2 is defined
+          - result.data.parent_id is defined
           - result.data.id is defined
 

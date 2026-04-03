@@ -8,7 +8,7 @@
       register: result
       pfrest.pfsense.status_ipsec_child_sa_info:
         api_host: localhost
-        api_port: 5000
+        api_port: 15070
         api_protocol: http
         validate_certs: false
         lookup_params: {}
@@ -73,6 +73,7 @@
           - result.data.local_ts is sequence
           - result.data.remote_ts is defined
           - result.data.remote_ts is sequence
+          - result.data.parent_id is defined
           - result.data.id is defined
           - result.data.id == 0
 

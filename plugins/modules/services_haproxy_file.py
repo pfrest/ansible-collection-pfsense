@@ -209,6 +209,7 @@ def run_module():
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "type": {
             "type": "str",
@@ -216,12 +217,14 @@ def run_module():
             "no_log": False,
             "default": None,
             "choices": ["luascript", "writetodisk"],
+            "nullable": True,
         },
         "content": {
             "type": "str",
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
     }
 
@@ -242,7 +245,7 @@ def run_module():
         state=module.params["state"],
         data=module.params,
         lookup_fields=module.params["lookup_fields"],
-        parent_lookup_fields=module.params.get("parent_lookup_fields", []),
+        parent_lookup_query=module.params.get("parent_lookup_query"),
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)

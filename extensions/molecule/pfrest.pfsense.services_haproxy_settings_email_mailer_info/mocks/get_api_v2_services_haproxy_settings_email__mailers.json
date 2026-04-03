@@ -9,7 +9,8 @@
         "name": "string",
         "mailserver": "string",
         "mailserverport": "string",
-        "id": 0
+        "id": 0,
+        "parent_id": 0
       }
     ]
   }

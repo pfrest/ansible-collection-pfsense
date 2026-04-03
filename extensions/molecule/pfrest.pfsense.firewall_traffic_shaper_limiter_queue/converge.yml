@@ -8,7 +8,7 @@
       register: result
       pfrest.pfsense.firewall_traffic_shaper_limiter_queue:
         api_host: localhost
-        api_port: 5000
+        api_port: 15070
         api_protocol: http
         validate_certs: false
         state: present
@@ -46,9 +46,8 @@
         weight: 9223372036854776000
         plr: 1.0
         buckets: 9223372036854776000
-        parent_lookup_fields:
-          - name
-
+        parent_lookup_query:
+          name: string
     - name: Assert results
       ansible.builtin.assert:
         that:
@@ -94,5 +93,6 @@
           - result.data.weight is defined
           - result.data.plr is defined
           - result.data.buckets is defined
+          - result.data.parent_id is defined
           - result.data.id is defined
 

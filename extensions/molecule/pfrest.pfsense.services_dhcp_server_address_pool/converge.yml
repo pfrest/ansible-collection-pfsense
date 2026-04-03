@@ -8,7 +8,7 @@
       register: result
       pfrest.pfsense.services_dhcp_server_address_pool:
         api_host: localhost
-        api_port: 5000
+        api_port: 15070
         api_protocol: http
         validate_certs: false
         state: present
@@ -35,10 +35,8 @@
         ignorebootp: true
         ignoreclientuids: true
         denyunknown: enabled
-        parent_lookup_fields:
-          - id
-        id: 0
-
+        parent_lookup_query:
+          id: 0
     - name: Assert results
       ansible.builtin.assert:
         that:
@@ -66,5 +64,6 @@
           - result.data.ignorebootp is defined
           - result.data.ignoreclientuids is defined
           - result.data.denyunknown is defined
+          - result.data.parent_id is defined
           - result.data.id is defined
 

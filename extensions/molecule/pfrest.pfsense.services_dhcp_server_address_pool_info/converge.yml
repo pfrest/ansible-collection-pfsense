@@ -8,7 +8,7 @@
       register: result
       pfrest.pfsense.services_dhcp_server_address_pool_info:
         api_host: localhost
-        api_port: 5000
+        api_port: 15070
         api_protocol: http
         validate_certs: false
         lookup_params: {}
@@ -55,6 +55,7 @@
           - result.data.ignoreclientuids == true
           - result.data.denyunknown is defined
           - result.data.denyunknown == "enabled"
+          - result.data.parent_id is defined
           - result.data.id is defined
           - result.data.id == 0
 

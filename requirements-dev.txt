@@ -7,4 +7,5 @@ pytest-cov==6.1.1
 molecule==26.3.0
 molecule-plugins[docker]==25.8.12
 Sphinx==9.0.4
+sphinx-ansible-theme==0.10.4
 antsibull-docs==2.24.0

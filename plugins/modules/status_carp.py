@@ -162,12 +162,14 @@ def run_module():
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "maintenance_mode": {
             "type": "bool",
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
     }
 

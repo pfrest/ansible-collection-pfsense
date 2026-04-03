@@ -14,6 +14,9 @@
 {%- if arg.elements is defined %}
 "elements": "{{ arg.elements }}",
 {%- endif %}
+{%- if arg.nullable is defined %}
+"nullable": {{ arg.nullable }},
+{%- endif %}
 {%- if arg.suboptions is defined %}
 "options": {{ render_options(arg.suboptions) }},
 {%- endif %}

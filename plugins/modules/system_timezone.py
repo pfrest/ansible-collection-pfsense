@@ -153,6 +153,7 @@ def run_module():
             "required": False,
             "no_log": False,
             "default": "UTC",
+            "nullable": True,
         },
     }
 

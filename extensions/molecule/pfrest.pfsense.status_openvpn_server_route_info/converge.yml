@@ -8,7 +8,7 @@
       register: result
       pfrest.pfsense.status_openvpn_server_route_info:
         api_host: localhost
-        api_port: 5000
+        api_port: 15070
         api_protocol: http
         validate_certs: false
         lookup_params: {}
@@ -33,6 +33,7 @@
           - result.data.virtual_addr == "string"
           - result.data.last_time is defined
           - result.data.last_time == "string"
+          - result.data.parent_id is defined
           - result.data.id is defined
           - result.data.id == 0
 

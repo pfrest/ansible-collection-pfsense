@@ -200,6 +200,7 @@ def run_module():
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "interface": {
             "type": "list",
@@ -207,18 +208,21 @@ def run_module():
             "no_log": False,
             "default": [],
             "elements": "str",
+            "nullable": True,
         },
         "agentoption": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "carpstatusvip": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "none",
+            "nullable": True,
         },
         "server": {
             "type": "list",
@@ -226,6 +230,7 @@ def run_module():
             "no_log": False,
             "default": None,
             "elements": "str",
+            "nullable": False,
         },
     }
 

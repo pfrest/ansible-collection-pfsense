@@ -9,7 +9,8 @@
         "status": "active",
         "command": "string",
         "method": "shellcommand",
-        "id": 0
+        "id": 0,
+        "parent_id": 0
       }
     ]
   }

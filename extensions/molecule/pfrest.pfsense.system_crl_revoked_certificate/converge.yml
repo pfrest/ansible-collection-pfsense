@@ -8,7 +8,7 @@
       register: result
       pfrest.pfsense.system_crl_revoked_certificate:
         api_host: localhost
-        api_port: 5000
+        api_port: 15070
         api_protocol: http
         validate_certs: false
         state: present
@@ -18,9 +18,8 @@
         serial: string
         reason: -1
         revoke_time: 9223372036854776000
-        parent_lookup_fields:
-          - descr
-        descr: string
+        parent_lookup_query:
+          descr: string
 
     - name: Assert results
       ansible.builtin.assert:
@@ -38,5 +37,6 @@
           - result.data.serial is defined
           - result.data.reason is defined
           - result.data.revoke_time is defined
+          - result.data.parent_id is defined
           - result.data.id is defined
 

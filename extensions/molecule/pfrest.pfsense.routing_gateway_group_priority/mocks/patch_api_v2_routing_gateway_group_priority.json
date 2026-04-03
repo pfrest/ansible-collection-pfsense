@@ -8,7 +8,8 @@
       "gateway": "string",
       "tier": 9223372036854776000,
       "virtual_ip": "string",
-      "id": 0
+      "id": 0,
+      "parent_id": 0
     }
   }
 }

@@ -166,6 +166,7 @@ def run_module():
             "no_log": False,
             "default": None,
             "choices": ["start", "stop", "restart"],
+            "nullable": False,
         },
     }
 

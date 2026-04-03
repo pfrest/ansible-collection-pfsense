@@ -170,12 +170,14 @@ def run_module():
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "defaultgw6": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
     }
 

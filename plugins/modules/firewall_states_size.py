@@ -160,6 +160,7 @@ def run_module():
             "required": False,
             "no_log": False,
             "default": 96000,
+            "nullable": True,
         },
     }
 

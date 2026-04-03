@@ -597,6 +597,7 @@ def run_module():
             "no_log": False,
             "default": None,
             "choices": ["pass", "block", "reject"],
+            "nullable": False,
         },
         "interface": {
             "type": "list",
@@ -604,6 +605,7 @@ def run_module():
             "no_log": False,
             "default": None,
             "elements": "str",
+            "nullable": False,
         },
         "ipprotocol": {
             "type": "str",
@@ -611,6 +613,7 @@ def run_module():
             "no_log": False,
             "default": None,
             "choices": ["inet", "inet6", "inet46"],
+            "nullable": False,
         },
         "protocol": {
             "type": "str",
@@ -632,6 +635,7 @@ def run_module():
                 "carp",
                 "pfsync",
             ],
+            "nullable": True,
         },
         "icmptype": {
             "type": "list",
@@ -667,54 +671,63 @@ def run_module():
                 "unreach",
             ],
             "elements": "str",
+            "nullable": True,
         },
         "source": {
             "type": "str",
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "source_port": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "destination": {
             "type": "str",
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "destination_port": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "descr": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "disabled": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "log": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "tag": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "statetype": {
             "type": "str",
@@ -722,12 +735,14 @@ def run_module():
             "no_log": False,
             "default": "keep state",
             "choices": ["keep state", "sloppy state", "synproxy state", "none"],
+            "nullable": True,
         },
         "tcp_flags_any": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "tcp_flags_out_of": {
             "type": "list",
@@ -736,6 +751,7 @@ def run_module():
             "default": None,
             "choices": ["fin", "syn", "rst", "psh", "ack", "urg", "ece", "cwr"],
             "elements": "str",
+            "nullable": True,
         },
         "tcp_flags_set": {
             "type": "list",
@@ -744,54 +760,63 @@ def run_module():
             "default": None,
             "choices": ["fin", "syn", "rst", "psh", "ack", "urg", "ece", "cwr"],
             "elements": "str",
+            "nullable": True,
         },
         "gateway": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "sched": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "dnpipe": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "pdnpipe": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "defaultqueue": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "ackqueue": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "floating": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "quick": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "direction": {
             "type": "str",
@@ -799,6 +824,7 @@ def run_module():
             "no_log": False,
             "default": "any",
             "choices": ["any", "in", "out"],
+            "nullable": True,
         },
     }
 
@@ -819,7 +845,7 @@ def run_module():
         state=module.params["state"],
         data=module.params,
         lookup_fields=module.params["lookup_fields"],
-        parent_lookup_fields=module.params.get("parent_lookup_fields", []),
+        parent_lookup_query=module.params.get("parent_lookup_query"),
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)

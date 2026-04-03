@@ -63,13 +63,12 @@ options:
     required: true
     description: The list of fields to use when looking up existing resources. This
       should be a list of field names that uniquely identify a resource.
-  parent_lookup_fields:
-    type: list
-    elements: str
+  parent_lookup_query:
+    type: dict
     required: true
-    description: The list of fields to use when looking up the parent DHCP Server.
-      This should be a list of field names that uniquely identify the parent object
-      this resource is nested under.
+    description: A dictionary of query parameters used to look up the parent DHCP
+      Server. This should contain field name/value pairs that uniquely identify the
+      parent object this resource is nested under.
   range_from:
     required: true
     type: str
@@ -195,8 +194,8 @@ EXAMPLES = """
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
-    parent_lookup_fields: &id001
-    - id
+    parent_lookup_query: &id001
+      id: id
     state: present
     range_from: string
     range_to: string
@@ -205,7 +204,7 @@ EXAMPLES = """
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
-    parent_lookup_fields: *id001
+    parent_lookup_query: *id001
     state: absent
     range_from: string
     range_to: string
@@ -383,29 +382,31 @@ def run_module():
             "no_log": False,
             "elements": "str",
         },
-        "parent_lookup_fields": {
-            "type": "list",
+        "parent_lookup_query": {
+            "type": "dict",
             "required": True,
             "no_log": False,
-            "elements": "str",
         },
         "range_from": {
             "type": "str",
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "range_to": {
             "type": "str",
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "domain": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "mac_allow": {
             "type": "list",
@@ -413,6 +414,7 @@ def run_module():
             "no_log": False,
             "default": [],
             "elements": "str",
+            "nullable": True,
         },
         "mac_deny": {
             "type": "list",
@@ -420,6 +422,7 @@ def run_module():
             "no_log": False,
             "default": [],
             "elements": "str",
+            "nullable": True,
         },
         "domainsearchlist": {
             "type": "list",
@@ -427,24 +430,28 @@ def run_module():
             "no_log": False,
             "default": [],
             "elements": "str",
+            "nullable": True,
         },
         "defaultleasetime": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 7200,
+            "nullable": True,
         },
         "maxleasetime": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 86400,
+            "nullable": True,
         },
         "gateway": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "dnsserver": {
             "type": "list",
@@ -452,6 +459,7 @@ def run_module():
             "no_log": False,
             "default": [],
             "elements": "str",
+            "nullable": True,
         },
         "winsserver": {
             "type": "list",
@@ -459,6 +467,7 @@ def run_module():
             "no_log": False,
             "default": [],
             "elements": "str",
+            "nullable": True,
         },
         "ntpserver": {
             "type": "list",
@@ -466,18 +475,21 @@ def run_module():
             "no_log": False,
             "default": [],
             "elements": "str",
+            "nullable": True,
         },
         "ignorebootp": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "ignoreclientuids": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "denyunknown": {
             "type": "str",
@@ -485,6 +497,7 @@ def run_module():
             "no_log": False,
             "default": None,
             "choices": ["enabled", "class"],
+            "nullable": True,
         },
     }
 
@@ -505,7 +518,7 @@ def run_module():
         state=module.params["state"],
         data=module.params,
         lookup_fields=module.params["lookup_fields"],
-        parent_lookup_fields=module.params.get("parent_lookup_fields", []),
+        parent_lookup_query=module.params.get("parent_lookup_query"),
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)

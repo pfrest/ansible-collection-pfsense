@@ -191,6 +191,7 @@ def run_module():
                     "required": True,
                     "no_log": False,
                     "default": None,
+                    "nullable": False,
                 },
                 "type": {
                     "type": "str",
@@ -198,12 +199,14 @@ def run_module():
                     "no_log": False,
                     "default": None,
                     "choices": ["luascript", "writetodisk"],
+                    "nullable": True,
                 },
                 "content": {
                     "type": "str",
                     "required": True,
                     "no_log": False,
                     "default": None,
+                    "nullable": False,
                 },
             },
         },

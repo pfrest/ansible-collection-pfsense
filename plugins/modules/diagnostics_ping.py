@@ -166,18 +166,21 @@ def run_module():
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "count": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 3,
+            "nullable": True,
         },
         "source_address": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
     }
 

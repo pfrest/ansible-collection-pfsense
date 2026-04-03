@@ -10,7 +10,8 @@
         "remote_host": "string",
         "virtual_addr": "string",
         "last_time": "string",
-        "id": 0
+        "id": 0,
+        "parent_id": 0
       }
     ]
   }

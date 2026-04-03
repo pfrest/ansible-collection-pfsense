@@ -8,7 +8,7 @@
       register: result
       pfrest.pfsense.vpn_ipsec_phase2_encryption_info:
         api_host: localhost
-        api_port: 5000
+        api_port: 15070
         api_protocol: http
         validate_certs: false
         lookup_params: {}
@@ -29,6 +29,7 @@
           - result.data.name == "aes"
           - result.data.keylen is defined
           - result.data.keylen == 9223372036854776000
+          - result.data.parent_id is defined
           - result.data.id is defined
           - result.data.id == 0
 

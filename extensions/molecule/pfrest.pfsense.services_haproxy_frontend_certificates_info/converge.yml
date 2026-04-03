@@ -8,7 +8,7 @@
       register: result
       pfrest.pfsense.services_haproxy_frontend_certificates_info:
         api_host: localhost
-        api_port: 5000
+        api_port: 15070
         api_protocol: http
         validate_certs: false
 
@@ -26,5 +26,6 @@
           - result.data is sequence
           - 'result.data | length > 0'
           - result.data[0].ssl_certificate is defined
+          - result.data[0].parent_id is defined
           - result.data[0].id is defined
 

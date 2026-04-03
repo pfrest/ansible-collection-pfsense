@@ -8,7 +8,7 @@
       register: result
       pfrest.pfsense.services_haproxy_frontend_acls_info:
         api_host: localhost
-        api_port: 5000
+        api_port: 15070
         api_protocol: http
         validate_certs: false
 
@@ -30,5 +30,6 @@
           - result.data[0].value is defined
           - result.data[0].casesensitive is defined
           - result.data[0].not is defined
+          - result.data[0].parent_id is defined
           - result.data[0].id is defined
 

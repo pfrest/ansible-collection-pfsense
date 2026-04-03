@@ -8,7 +8,7 @@
       register: result
       pfrest.pfsense.services_haproxy_frontend_acl:
         api_host: localhost
-        api_port: 5000
+        api_port: 15070
         api_protocol: http
         validate_certs: false
         state: present
@@ -19,9 +19,8 @@
         value: string
         casesensitive: true
         not: true
-        parent_lookup_fields:
-          - name
-
+        parent_lookup_query:
+          name: string
     - name: Assert results
       ansible.builtin.assert:
         that:
@@ -39,5 +38,6 @@
           - result.data.value is defined
           - result.data.casesensitive is defined
           - result.data.not is defined
+          - result.data.parent_id is defined
           - result.data.id is defined
 

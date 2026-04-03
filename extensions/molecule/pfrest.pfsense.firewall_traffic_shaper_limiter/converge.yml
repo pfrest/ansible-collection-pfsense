@@ -8,7 +8,7 @@
       register: result
       pfrest.pfsense.firewall_traffic_shaper_limiter:
         api_host: localhost
-        api_port: 5000
+        api_port: 15070
         api_protocol: http
         validate_certs: false
         state: present
@@ -59,7 +59,7 @@
         param_fq_pie_limit: 9223372036854776000
         param_fq_pie_flows: 9223372036854776000
         delay: 9223372036854776000
-        plr: 1.0
+        plr: 1.00
         buckets: 9223372036854776000
         bandwidth:
           - bw: 9223372036854776000
@@ -67,7 +67,6 @@
             bwsched: string
         queue:
           - name: string
-            number: 9223372036854776000
             enabled: true
             mask: none
             maskbits: 9223372036854776000
@@ -97,7 +96,7 @@
             param_gred_max_th: 9223372036854776000
             param_gred_max_p: 9223372036854776000
             weight: 9223372036854776000
-            plr: 1.0
+            plr: 1.00
             buckets: 9223372036854776000
 
     - name: Assert results

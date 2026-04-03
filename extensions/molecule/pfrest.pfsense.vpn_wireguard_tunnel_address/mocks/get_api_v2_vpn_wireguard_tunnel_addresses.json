@@ -9,7 +9,8 @@
         "address": "string",
         "mask": 9223372036854776000,
         "descr": "string",
-        "id": 0
+        "id": 0,
+        "parent_id": 0
       }
     ]
   }

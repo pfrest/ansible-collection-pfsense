@@ -8,7 +8,7 @@
       register: result
       pfrest.pfsense.firewall_traffic_shaper_limiters:
         api_host: localhost
-        api_port: 5000
+        api_port: 15070
         api_protocol: http
         validate_certs: false
         objects:
@@ -65,7 +65,6 @@
                 bwsched: string
             queue:
               - name: string
-                number: 9223372036854776000
                 enabled: true
                 mask: none
                 maskbits: 9223372036854776000

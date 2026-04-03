@@ -10,7 +10,8 @@
       "extaddr_port": "string",
       "extaddr_ssl": true,
       "exaddr_advanced": "string",
-      "id": 0
+      "id": 0,
+      "parent_id": 0
     }
   }
 }

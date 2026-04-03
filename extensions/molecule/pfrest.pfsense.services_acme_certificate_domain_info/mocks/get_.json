@@ -232,7 +232,8 @@
         "zone_key": "string",
         "anydnschallengealias": "string",
         "anydnschallengedomain": true,
-        "id": 0
+        "id": 0,
+        "parent_id": 0
       }
     ]
   }

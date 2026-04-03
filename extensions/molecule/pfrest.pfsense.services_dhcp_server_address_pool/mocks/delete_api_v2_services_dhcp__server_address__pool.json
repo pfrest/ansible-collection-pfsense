@@ -32,7 +32,8 @@
       "ignorebootp": true,
       "ignoreclientuids": true,
       "denyunknown": "enabled",
-      "id": 0
+      "id": 0,
+      "parent_id": 0
     }
   }
 }

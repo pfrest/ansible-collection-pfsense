@@ -214,12 +214,14 @@ def run_module():
                     "required": True,
                     "no_log": False,
                     "default": None,
+                    "nullable": False,
                 },
                 "description": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
                     "default": "",
+                    "nullable": True,
                 },
                 "entries": {
                     "type": "list",
@@ -227,18 +229,21 @@ def run_module():
                     "no_log": False,
                     "default": None,
                     "elements": "dict",
+                    "nullable": False,
                     "options": {
                         "value": {
                             "type": "str",
                             "required": True,
                             "no_log": False,
                             "default": None,
+                            "nullable": False,
                         },
                         "description": {
                             "type": "str",
                             "required": False,
                             "no_log": False,
                             "default": "",
+                            "nullable": True,
                         },
                     },
                 },

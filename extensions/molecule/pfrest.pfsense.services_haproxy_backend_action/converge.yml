@@ -8,7 +8,7 @@
       register: result
       pfrest.pfsense.services_haproxy_backend_action:
         api_host: localhost
-        api_port: 5000
+        api_port: 15070
         api_protocol: http
         validate_certs: false
         state: present
@@ -29,9 +29,8 @@
         path: string
         status: string
         reason: string
-        parent_lookup_fields:
-          - name
-
+        parent_lookup_query:
+          name: string
     - name: Assert results
       ansible.builtin.assert:
         that:
@@ -59,5 +58,6 @@
           - result.data.path is defined
           - result.data.status is defined
           - result.data.reason is defined
+          - result.data.parent_id is defined
           - result.data.id is defined
 

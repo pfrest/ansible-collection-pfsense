@@ -273,36 +273,42 @@ def run_module():
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "caref": {
             "type": "str",
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "csr": {
             "type": "str",
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "prv": {
             "type": "str",
             "required": False,
             "no_log": True,
             "default": None,
+            "nullable": True,
         },
         "digest_alg": {
             "type": "str",
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "lifetime": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 3650,
+            "nullable": True,
         },
         "type": {
             "type": "str",
@@ -310,6 +316,7 @@ def run_module():
             "no_log": False,
             "default": "user",
             "choices": ["server", "user"],
+            "nullable": True,
         },
         "dn_dns_sans": {
             "type": "list",
@@ -317,6 +324,7 @@ def run_module():
             "no_log": False,
             "default": [],
             "elements": "str",
+            "nullable": True,
         },
         "dn_email_sans": {
             "type": "list",
@@ -324,6 +332,7 @@ def run_module():
             "no_log": False,
             "default": [],
             "elements": "str",
+            "nullable": True,
         },
         "dn_ip_sans": {
             "type": "list",
@@ -331,6 +340,7 @@ def run_module():
             "no_log": False,
             "default": [],
             "elements": "str",
+            "nullable": True,
         },
         "dn_uri_sans": {
             "type": "list",
@@ -338,6 +348,7 @@ def run_module():
             "no_log": False,
             "default": [],
             "elements": "str",
+            "nullable": True,
         },
     }
 

@@ -8,7 +8,7 @@
       register: result
       pfrest.pfsense.services_dns_forwarder_host_override_alias:
         api_host: localhost
-        api_port: 5000
+        api_port: 15070
         api_protocol: http
         validate_certs: false
         state: present
@@ -17,10 +17,8 @@
         host: string
         domain: string
         description: string
-        parent_lookup_fields:
-          - id
-        id: 0
-
+        parent_lookup_query:
+          id: 0
     - name: Assert results
       ansible.builtin.assert:
         that:
@@ -36,5 +34,6 @@
           - result.data.host is defined
           - result.data.domain is defined
           - result.data.description is defined
+          - result.data.parent_id is defined
           - result.data.id is defined
 

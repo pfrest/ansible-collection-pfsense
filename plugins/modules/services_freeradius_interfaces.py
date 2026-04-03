@@ -222,12 +222,14 @@ def run_module():
                     "required": True,
                     "no_log": False,
                     "default": None,
+                    "nullable": False,
                 },
                 "port": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
                     "default": "1812",
+                    "nullable": True,
                 },
                 "type": {
                     "type": "str",
@@ -235,6 +237,7 @@ def run_module():
                     "no_log": False,
                     "default": "auth",
                     "choices": ["auth", "acct", "proxy", "detail", "status", "coa"],
+                    "nullable": True,
                 },
                 "ip_version": {
                     "type": "str",
@@ -242,12 +245,14 @@ def run_module():
                     "no_log": False,
                     "default": None,
                     "choices": ["ipaddr", "ipv6addr"],
+                    "nullable": False,
                 },
                 "description": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
                     "default": "",
+                    "nullable": True,
                 },
             },
         },

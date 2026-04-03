@@ -162,12 +162,14 @@ def run_module():
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "variables": {
             "type": "list",
             "required": False,
             "no_log": False,
             "default": [],
+            "nullable": True,
         },
     }
 

@@ -182,6 +182,7 @@ def run_module():
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "dnslocalhost": {
             "type": "str",
@@ -189,6 +190,7 @@ def run_module():
             "no_log": False,
             "default": None,
             "choices": ["local", "remote"],
+            "nullable": True,
         },
         "dnsserver": {
             "type": "list",
@@ -196,6 +198,7 @@ def run_module():
             "no_log": False,
             "default": [],
             "elements": "str",
+            "nullable": True,
         },
     }
 

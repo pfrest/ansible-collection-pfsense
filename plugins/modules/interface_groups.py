@@ -192,6 +192,7 @@ def run_module():
                     "required": True,
                     "no_log": False,
                     "default": None,
+                    "nullable": False,
                 },
                 "members": {
                     "type": "list",
@@ -199,12 +200,14 @@ def run_module():
                     "no_log": False,
                     "default": [],
                     "elements": "str",
+                    "nullable": True,
                 },
                 "descr": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
                     "default": "",
+                    "nullable": True,
                 },
             },
         },

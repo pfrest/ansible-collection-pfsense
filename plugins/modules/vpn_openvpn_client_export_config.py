@@ -458,6 +458,7 @@ def run_module():
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "useaddr": {
             "type": "str",
@@ -471,12 +472,14 @@ def run_module():
                 "serverhostname",
                 "other",
             ],
+            "nullable": True,
         },
         "useaddr_hostname": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "verifyservercn": {
             "type": "str",
@@ -484,24 +487,28 @@ def run_module():
             "no_log": False,
             "default": "auto",
             "choices": ["auto", "none"],
+            "nullable": True,
         },
         "blockoutsidedns": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "legacy": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "silent": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "bindmode": {
             "type": "str",
@@ -509,12 +516,14 @@ def run_module():
             "no_log": False,
             "default": "nobind",
             "choices": ["nobind", "lport0", "bind"],
+            "nullable": True,
         },
         "usepkcs11": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "pkcs11providers": {
             "type": "list",
@@ -522,30 +531,35 @@ def run_module():
             "no_log": False,
             "default": None,
             "elements": "str",
+            "nullable": True,
         },
         "pkcs11id": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "usetoken": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "usepass": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "pass": {
             "type": "str",
             "required": False,
             "no_log": True,
             "default": None,
+            "nullable": True,
         },
         "p12encryption": {
             "type": "str",
@@ -553,12 +567,14 @@ def run_module():
             "no_log": False,
             "default": "high",
             "choices": ["high", "low", "legacy"],
+            "nullable": True,
         },
         "useproxy": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "useproxytype": {
             "type": "str",
@@ -566,18 +582,21 @@ def run_module():
             "no_log": False,
             "default": "http",
             "choices": ["http", "socks"],
+            "nullable": True,
         },
         "proxyaddr": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "proxyport": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "useproxypass": {
             "type": "str",
@@ -585,24 +604,28 @@ def run_module():
             "no_log": False,
             "default": None,
             "choices": ["none", "basic", "ntlm"],
+            "nullable": True,
         },
         "proxyuser": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "proxypass": {
             "type": "str",
             "required": False,
             "no_log": True,
             "default": None,
+            "nullable": True,
         },
         "advancedoptions": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
     }
 
@@ -623,7 +646,7 @@ def run_module():
         state=module.params["state"],
         data=module.params,
         lookup_fields=module.params["lookup_fields"],
-        parent_lookup_fields=module.params.get("parent_lookup_fields", []),
+        parent_lookup_query=module.params.get("parent_lookup_query"),
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)

@@ -8,7 +8,7 @@
       register: result
       pfrest.pfsense.firewall_traffic_shapers:
         api_host: localhost
-        api_port: 5000
+        api_port: 15070
         api_protocol: http
         validate_certs: false
         objects:
@@ -20,8 +20,7 @@
             qlimit: 9223372036854776000
             tbrconfig: 9223372036854776000
             queue:
-              - interface: string
-                enabled: true
+              - enabled: true
                 name: string
                 priority: 9223372036854776000
                 qlimit: 9223372036854776000

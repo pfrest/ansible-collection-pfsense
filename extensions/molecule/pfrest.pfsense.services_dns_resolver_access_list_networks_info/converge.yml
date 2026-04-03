@@ -8,7 +8,7 @@
       register: result
       pfrest.pfsense.services_dns_resolver_access_list_networks_info:
         api_host: localhost
-        api_port: 5000
+        api_port: 15070
         api_protocol: http
         validate_certs: false
 
@@ -28,5 +28,6 @@
           - result.data[0].network is defined
           - result.data[0].mask is defined
           - result.data[0].description is defined
+          - result.data[0].parent_id is defined
           - result.data[0].id is defined
 

@@ -167,6 +167,7 @@ def run_module():
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
     }
 

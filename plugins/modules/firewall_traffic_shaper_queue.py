@@ -63,13 +63,12 @@ options:
     required: true
     description: The list of fields to use when looking up existing resources. This
       should be a list of field names that uniquely identify a resource.
-  parent_lookup_fields:
-    type: list
-    elements: str
+  parent_lookup_query:
+    type: dict
     required: true
-    description: The list of fields to use when looking up the parent Traffic Shaper.
-      This should be a list of field names that uniquely identify the parent object
-      this resource is nested under.
+    description: A dictionary of query parameters used to look up the parent Traffic
+      Shaper. This should contain field name/value pairs that uniquely identify the
+      parent object this resource is nested under.
   enabled:
     required: false
     type: bool
@@ -266,8 +265,8 @@ EXAMPLES = """
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
-    parent_lookup_fields: &id001
-    - interface
+    parent_lookup_query: &id001
+      interface: string
     state: present
     name: string
     qlimit: 1
@@ -280,7 +279,7 @@ EXAMPLES = """
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
-    parent_lookup_fields: *id001
+    parent_lookup_query: *id001
     state: absent
     name: string
     qlimit: 1
@@ -513,71 +512,80 @@ def run_module():
             "no_log": False,
             "elements": "str",
         },
-        "parent_lookup_fields": {
-            "type": "list",
+        "parent_lookup_query": {
+            "type": "dict",
             "required": True,
             "no_log": False,
-            "elements": "str",
         },
         "enabled": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "name": {
             "type": "str",
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "priority": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 1,
+            "nullable": True,
         },
         "qlimit": {
             "type": "int",
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "description": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "default": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "red": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "rio": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "ecn": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "codel": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "bandwidthtype": {
             "type": "str",
@@ -585,102 +593,119 @@ def run_module():
             "no_log": False,
             "default": "Mb",
             "choices": ["%", "b", "Kb", "Mb", "Gb"],
+            "nullable": True,
         },
         "bandwidth": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "buckets": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "hogs": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "borrow": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "upperlimit": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "upperlimit_m1": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "upperlimit_d": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "upperlimit_m2": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "realtime": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "realtime_m1": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "realtime_d": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "realtime_m2": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "linkshare": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "linkshare_m1": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "linkshare_d": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "linkshare_m2": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
     }
 
@@ -701,7 +726,7 @@ def run_module():
         state=module.params["state"],
         data=module.params,
         lookup_fields=module.params["lookup_fields"],
-        parent_lookup_fields=module.params.get("parent_lookup_fields", []),
+        parent_lookup_query=module.params.get("parent_lookup_query"),
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)

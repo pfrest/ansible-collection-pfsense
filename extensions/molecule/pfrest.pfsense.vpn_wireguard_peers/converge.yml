@@ -8,7 +8,7 @@
       register: result
       pfrest.pfsense.vpn_wireguard_peers:
         api_host: localhost
-        api_port: 5000
+        api_port: 15070
         api_protocol: http
         validate_certs: false
         objects:
@@ -19,6 +19,7 @@
             descr: string
             persistentkeepalive: 9223372036854776000
             publickey: string
+            presharedkey: string
             allowedips:
               - address: string
                 mask: 9223372036854776000

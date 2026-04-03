@@ -8,11 +8,13 @@
       register: result
       pfrest.pfsense.vpn_openvpn_client_export:
         api_host: localhost
-        api_port: 5000
+        api_port: 15070
         api_protocol: http
         validate_certs: false
         type: confzip
         server: 9223372036854776000
+        certref: "string"
+        username: "string"
 
     - name: Assert results
       ansible.builtin.assert:

@@ -185,6 +185,7 @@ def run_module():
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "encryption": {
             "type": "str",
@@ -192,12 +193,14 @@ def run_module():
             "no_log": False,
             "default": "high",
             "choices": ["high", "low", "legacy"],
+            "nullable": True,
         },
         "passphrase": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
     }
 

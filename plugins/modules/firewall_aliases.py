@@ -240,6 +240,7 @@ def run_module():
                     "required": True,
                     "no_log": False,
                     "default": None,
+                    "nullable": False,
                 },
                 "type": {
                     "type": "str",
@@ -247,12 +248,14 @@ def run_module():
                     "no_log": False,
                     "default": None,
                     "choices": ["host", "network", "port"],
+                    "nullable": False,
                 },
                 "descr": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
                     "default": "",
+                    "nullable": True,
                 },
                 "address": {
                     "type": "list",
@@ -260,6 +263,7 @@ def run_module():
                     "no_log": False,
                     "default": [],
                     "elements": "str",
+                    "nullable": True,
                 },
                 "detail": {
                     "type": "list",
@@ -267,6 +271,7 @@ def run_module():
                     "no_log": False,
                     "default": [],
                     "elements": "str",
+                    "nullable": True,
                 },
             },
         },

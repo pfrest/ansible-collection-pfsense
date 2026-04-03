@@ -8,7 +8,7 @@
       register: result
       pfrest.pfsense.firewall_traffic_shaper_limiter_queue_info:
         api_host: localhost
-        api_port: 5000
+        api_port: 15070
         api_protocol: http
         validate_certs: false
         lookup_params: {}
@@ -91,6 +91,7 @@
           - result.data.plr == 1.0
           - result.data.buckets is defined
           - result.data.buckets == 9223372036854776000
+          - result.data.parent_id is defined
           - result.data.id is defined
           - result.data.id == 0
 

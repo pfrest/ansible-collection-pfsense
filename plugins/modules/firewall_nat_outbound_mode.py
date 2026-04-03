@@ -166,6 +166,7 @@ def run_module():
             "no_log": False,
             "default": None,
             "choices": ["automatic", "hybrid", "advanced", "disabled"],
+            "nullable": False,
         },
     }
 

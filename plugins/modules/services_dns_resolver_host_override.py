@@ -266,12 +266,14 @@ def run_module():
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "domain": {
             "type": "str",
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "ip": {
             "type": "list",
@@ -279,12 +281,14 @@ def run_module():
             "no_log": False,
             "default": None,
             "elements": "str",
+            "nullable": False,
         },
         "descr": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "aliases": {
             "type": "list",
@@ -292,24 +296,28 @@ def run_module():
             "no_log": False,
             "default": [],
             "elements": "dict",
+            "nullable": True,
             "options": {
                 "host": {
                     "type": "str",
                     "required": True,
                     "no_log": False,
                     "default": None,
+                    "nullable": False,
                 },
                 "domain": {
                     "type": "str",
                     "required": True,
                     "no_log": False,
                     "default": None,
+                    "nullable": False,
                 },
                 "descr": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
                     "default": "",
+                    "nullable": True,
                 },
             },
         },
@@ -332,7 +340,7 @@ def run_module():
         state=module.params["state"],
         data=module.params,
         lookup_fields=module.params["lookup_fields"],
-        parent_lookup_fields=module.params.get("parent_lookup_fields", []),
+        parent_lookup_query=module.params.get("parent_lookup_query"),
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)

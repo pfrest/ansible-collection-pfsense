@@ -1,6 +1,9 @@
 """Tests for accessing embedded schemas."""
 
-from ansible_collections.pfrest.pfsense.plugins.module_utils.embedded_schema import SCHEMA_DICT
+from ansible_collections.pfrest.pfsense.plugins.module_utils.embedded_schema import (
+    SCHEMA_DICT,
+)
+
 
 def test_embedded_schema():
     """Tests accessing embedded schema."""

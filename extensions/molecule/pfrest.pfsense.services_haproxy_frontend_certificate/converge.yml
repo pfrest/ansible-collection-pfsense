@@ -8,17 +8,15 @@
       register: result
       pfrest.pfsense.services_haproxy_frontend_certificate:
         api_host: localhost
-        api_port: 5000
+        api_port: 15070
         api_protocol: http
         validate_certs: false
         state: present
         lookup_fields:
           - id
         ssl_certificate: string
-        parent_lookup_fields:
-          - name
-        name: string
-
+        parent_lookup_query:
+          name: string
     - name: Assert results
       ansible.builtin.assert:
         that:
@@ -32,5 +30,6 @@
           - result.data is defined
           - result.data is mapping
           - result.data.ssl_certificate is defined
+          - result.data.parent_id is defined
           - result.data.id is defined
 

@@ -7,7 +7,8 @@
     "data": {
       "value": "string",
       "description": "string",
-      "id": 0
+      "id": 0,
+      "parent_id": 0
     }
   }
 }

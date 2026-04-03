@@ -8,7 +8,7 @@
       register: result
       pfrest.pfsense.services_haproxy_backends:
         api_host: localhost
-        api_port: 5000
+        api_port: 15070
         api_protocol: http
         validate_certs: false
         objects:
@@ -21,7 +21,6 @@
                 weight: 9223372036854776000
                 ssl: true
                 sslserververify: true
-                serverid: 9223372036854776000
                 advanced: string
             balance: ''
             balance_urilen: 9223372036854776000

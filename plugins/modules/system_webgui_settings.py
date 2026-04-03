@@ -176,18 +176,21 @@ def run_module():
             "no_log": False,
             "default": "https",
             "choices": ["http", "https"],
+            "nullable": True,
         },
         "port": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "443",
+            "nullable": True,
         },
         "sslcertref": {
             "type": "str",
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
     }
 

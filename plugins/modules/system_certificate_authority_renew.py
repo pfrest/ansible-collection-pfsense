@@ -191,24 +191,28 @@ def run_module():
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "reusekey": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": True,
+            "nullable": True,
         },
         "reuseserial": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": True,
+            "nullable": True,
         },
         "strictsecurity": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
     }
 

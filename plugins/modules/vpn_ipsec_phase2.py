@@ -543,18 +543,21 @@ def run_module():
             "required": True,
             "no_log": False,
             "default": None,
+            "nullable": False,
         },
         "descr": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "disabled": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
         "mode": {
             "type": "str",
@@ -562,60 +565,70 @@ def run_module():
             "no_log": False,
             "default": None,
             "choices": ["tunnel", "tunnel6", "transport", "vti"],
+            "nullable": False,
         },
         "localid_type": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "localid_address": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "localid_netbits": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "natlocalid_type": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "natlocalid_address": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "natlocalid_netbits": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "remoteid_type": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "remoteid_address": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "remoteid_netbits": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": None,
+            "nullable": True,
         },
         "protocol": {
             "type": "str",
@@ -623,6 +636,7 @@ def run_module():
             "no_log": False,
             "default": "esp",
             "choices": ["esp", "ah"],
+            "nullable": True,
         },
         "encryption_algorithm_option": {
             "type": "list",
@@ -630,6 +644,7 @@ def run_module():
             "no_log": False,
             "default": None,
             "elements": "dict",
+            "nullable": True,
             "options": {
                 "name": {
                     "type": "str",
@@ -643,12 +658,14 @@ def run_module():
                         "aes256gcm",
                         "chacha20poly1305",
                     ],
+                    "nullable": False,
                 },
                 "keylen": {
                     "type": "int",
                     "required": False,
                     "no_log": False,
                     "default": None,
+                    "nullable": True,
                 },
             },
         },
@@ -665,6 +682,7 @@ def run_module():
                 "aesxcbc",
             ],
             "elements": "str",
+            "nullable": False,
         },
         "pfsgroup": {
             "type": "int",
@@ -696,36 +714,42 @@ def run_module():
                 31,
                 32,
             ],
+            "nullable": True,
         },
         "rekey_time": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 3240,
+            "nullable": True,
         },
         "rand_time": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 360,
+            "nullable": True,
         },
         "lifetime": {
             "type": "int",
             "required": False,
             "no_log": False,
             "default": 3600,
+            "nullable": True,
         },
         "pinghost": {
             "type": "str",
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
         },
         "keepalive": {
             "type": "bool",
             "required": False,
             "no_log": False,
             "default": False,
+            "nullable": True,
         },
     }
 
@@ -746,7 +770,7 @@ def run_module():
         state=module.params["state"],
         data=module.params,
         lookup_fields=module.params["lookup_fields"],
-        parent_lookup_fields=module.params.get("parent_lookup_fields", []),
+        parent_lookup_query=module.params.get("parent_lookup_query"),
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)
