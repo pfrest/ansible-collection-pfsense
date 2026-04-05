@@ -16,12 +16,21 @@ jobs:
   generate_modules:
     runs-on: ubuntu-latest
     steps:
+      - name: Generate app token
+        id: app-token
+        uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v3.0.0
+        with:
+          app-id: ${{ vars.PFREST_AUTOMATION_APP_ID }}
+          private-key: ${{ secrets.PFREST_AUTOMATION_PRIVATE_KEY }}
+
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: Get latest release from pfrest/pfSense-pkg-RESTAPI
         id: release
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
           RELEASE_JSON=$(gh api repos/pfrest/pfSense-pkg-RESTAPI/releases/latest)
           TAG=$(echo "$RELEASE_JSON" | jq -r '.tag_name')
@@ -71,14 +80,10 @@ jobs:
       - name: Open pull request
         if: steps.commit.outputs.changed == 'true'
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
           gh pr create \
             --title "feat: generate modules for pfSense-pkg-RESTAPI ${{ steps.release.outputs.tag }}" \
             --body "Auto-generated module updates from [pfSense-pkg-RESTAPI ${{ steps.release.outputs.tag }}](https://github.com/pfrest/pfSense-pkg-RESTAPI/releases/tag/${{ steps.release.outputs.tag }})." \
             --head "${{ steps.commit.outputs.branch }}" \
             --base main
-          
-          # Wait a few seconds for the PR to be created then force push to trigger PR checks
-          sleep 10
-          git push origin "${{ steps.commit.outputs.branch }}" --force
