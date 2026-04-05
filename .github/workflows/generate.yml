@@ -13,7 +13,7 @@ env:
   PYTHON_VERSION: "3.14"
 
 jobs:
-  sync:
+  generate_modules:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -45,7 +45,9 @@ jobs:
           ansible-galaxy collection install .
 
       - name: Generate modules
-        run: python3 tools/module_generator.py native.json
+        run: |
+          python3 tools/module_generator.py native.json
+          rm native.json
         env:
           PYTHONPATH: $PYTHONPATH:/home/runner/.ansible/collections/
 
