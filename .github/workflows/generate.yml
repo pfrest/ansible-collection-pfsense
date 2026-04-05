@@ -1,0 +1,78 @@
+name: Generate
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [pfSense-pkg-RESTAPI-release]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  PYTHON_VERSION: "3.14"
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Get latest release from pfrest/pfSense-pkg-RESTAPI
+        id: release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          RELEASE_JSON=$(gh api repos/pfrest/pfSense-pkg-RESTAPI/releases/latest)
+          TAG=$(echo "$RELEASE_JSON" | jq -r '.tag_name')
+          ASSET_URL=$(echo "$RELEASE_JSON" | jq -r '.assets[] | select(.name == "native.json") | .browser_download_url')
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "asset_url=$ASSET_URL" >> "$GITHUB_OUTPUT"
+
+      - name: Download native.json schema
+        run: |
+          curl -fsSL -o native.json "${{ steps.release.outputs.asset_url }}"
+
+      - name: Set up Python
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install -r requirements-dev.txt
+          ansible-galaxy collection install .
+
+      - name: Generate modules
+        run: python3 tools/module_generator.py native.json
+        env:
+          PYTHONPATH: $PYTHONPATH:/home/runner/.ansible/collections/
+
+      - name: Create branch, commit, and push
+        id: commit
+        run: |
+          BRANCH="feat/sync-modules-for-pfSense-pkg-RESTAPI-${{ steps.release.outputs.tag }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "feat: generate modules for pfSense-pkg-RESTAPI ${{ steps.release.outputs.tag }}"
+            git push origin "$BRANCH"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Open pull request
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create \
+            --title "feat: generate modules for pfSense-pkg-RESTAPI ${{ steps.release.outputs.tag }}" \
+            --body "Auto-generated module updates from [pfSense-pkg-RESTAPI ${{ steps.release.outputs.tag }}](https://github.com/pfrest/pfSense-pkg-RESTAPI/releases/tag/${{ steps.release.outputs.tag }})." \
+            --head "${{ steps.commit.outputs.branch }}" \
+            --base main
