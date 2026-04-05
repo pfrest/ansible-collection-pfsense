@@ -78,3 +78,7 @@ jobs:
             --body "Auto-generated module updates from [pfSense-pkg-RESTAPI ${{ steps.release.outputs.tag }}](https://github.com/pfrest/pfSense-pkg-RESTAPI/releases/tag/${{ steps.release.outputs.tag }})." \
             --head "${{ steps.commit.outputs.branch }}" \
             --base main
+          
+          # Wait a few seconds for the PR to be created then force push to trigger PR checks
+          sleep 10
+          git push origin "${{ steps.commit.outputs.branch }}" --force
