@@ -50,6 +50,12 @@ options:
     type: bool
     default: true
     description: Whether to validate SSL certificates when connecting to the API.
+  name:
+    required: true
+    type: str
+    default: null
+    choices: []
+    description: The internal name of the service.
   action:
     required: true
     type: str
@@ -70,6 +76,7 @@ EXAMPLES = """
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
+    name: string
 
 """
 
@@ -159,6 +166,13 @@ def run_module():
             "required": False,
             "no_log": False,
             "default": True,
+        },
+        "name": {
+            "type": "str",
+            "required": True,
+            "no_log": False,
+            "default": None,
+            "nullable": False,
         },
         "action": {
             "type": "str",
