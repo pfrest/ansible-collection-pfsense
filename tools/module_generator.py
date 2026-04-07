@@ -1076,7 +1076,7 @@ def main() -> None:
     native_schema = NativeSchema()
 
     # Walk every endpoint and generate the appropriate module(s).
-    generated_files: list[Path] = []
+    generated_files: list[Path] = [SCHEMA_DICT_PATH]
     for endpoint_url in native_schema.full_schema.get("endpoints", {}).keys():
         for module_type in get_module_types(endpoint_url):
             module_name = get_module_name(endpoint_url, module_type)
