@@ -50,6 +50,9 @@ def parse_args() -> argparse.Namespace:
 args = parse_args()
 native_schema = NativeSchema()
 
+with open(args.schema, "r") as sf:
+    native_schema.full_schema = json.load(sf)
+
 
 def get_module_types(endpoint_url: str) -> list[str]:
     """
@@ -1066,14 +1069,12 @@ def main() -> None:
     template = env.get_template("module.py.j2")
 
     # Embed the schema as a Python dict for runtime use by modules.
-    # below also uses the fresh data.
     with args.schema.open("r", encoding="utf-8") as fh:
         print("Embedding native schema from JSON file... ", end="")
         schema_to_dict_file(
             fh.read(), template=env.get_template("embedded_schema.py.j2")
         )
         print("done.")
-    native_schema = NativeSchema()
 
     # Walk every endpoint and generate the appropriate module(s).
     generated_files: list[Path] = [SCHEMA_DICT_PATH]
@@ -1081,7 +1082,7 @@ def main() -> None:
         for module_type in get_module_types(endpoint_url):
             module_name = get_module_name(endpoint_url, module_type)
 
-            # Honour the exclude list from generator.yml.
+            # Honor the exclude list from generator.yml.
             if module_name in exclude_modules:
                 print(f"Skipping excluded module '{module_name}'... done.")
                 continue
