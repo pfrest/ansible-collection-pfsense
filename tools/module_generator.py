@@ -1,7 +1,7 @@
 """Automatically generate Ansible modules from the REST API native schema.
 
 This script reads the pfSense REST API schema and uses Jinja2 templates to
-generate fully documented Ansible module ``.py`` files.  It is driven
+generate fully documented Ansible module `.py` files.  It is driven
 entirely by the schema -- when the API evolves, re-running this script
 brings every module up to date.
 
@@ -34,7 +34,7 @@ def parse_args() -> argparse.Namespace:
     """Parse and return command-line arguments.
 
     Returns:
-        An ``argparse.Namespace`` containing the ``schema`` path.
+        An `argparse.Namespace` containing the `schema` path.
     """
     parser = argparse.ArgumentParser(
         description="Generate Ansible modules based on a REST API native schema file.",
@@ -908,10 +908,10 @@ def generate_module_examples(endpoint_url: str, module_type: str) -> list:
 def _strip_argspec_only_keys(options: dict) -> dict:
     """Return a deep copy of *options* with argument_spec-only keys removed.
 
-    Keys like ``no_log`` are valid in the Python ``argument_spec`` but are
-    **not** permitted in Ansible's ``DOCUMENTATION`` YAML schema.  This
+    Keys like `no_log` are valid in the Python `argument_spec` but are
+    **not** permitted in Ansible's `DOCUMENTATION` YAML schema.  This
     helper recursively walks the options tree and drops those keys so the
-    generated ``DOCUMENTATION`` passes ``antsibull-docs`` validation.
+    generated `DOCUMENTATION` passes `antsibull-docs` validation.
 
     Args:
         options: The module options dict (may contain nested `suboptions`).
@@ -955,7 +955,7 @@ def generate_module_documentation(endpoint_url: str, module_type: str) -> dict:
 
 
 def schema_to_dict_file(schema_json: str, template: jinja2.Template) -> None:
-    """Embed the native schema as a Python dict in ``schema_dict.py``.
+    """Embed the native schema as a Python dict in `schema_dict.py`.
 
     This allows modules to load the schema at runtime without reading a
     JSON file from the filesystem (which fails inside Ansible's zip
@@ -979,7 +979,7 @@ def schema_to_dict_file(schema_json: str, template: jinja2.Template) -> None:
 
 
 def load_generator_config() -> dict:
-    """Load the generator configuration from ``generator.yml``.
+    """Load the generator configuration from `generator.yml`.
 
     The config file lives alongside this script and may contain an
     ``exclude_modules`` list of module names to skip during generation.

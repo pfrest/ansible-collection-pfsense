@@ -166,8 +166,8 @@ class BaseModule:
 
         Before issuing the PUT request the method fetches the current objects
         from the API and performs a deep comparison.  If the desired list
-        already matches what exists (ignoring read-only fields like ``id``
-        and ``parent_id``), the PUT is skipped and ``changed`` is ``False``.
+        already matches what exists (ignoring read-only fields like `id`
+        and `parent_id`), the PUT is skipped and `changed` is `False`.
 
         Args:
             data (list[dict]): The list of objects to replace existing objects with.
@@ -192,7 +192,7 @@ class BaseModule:
         """
         Compare a desired list of objects against an existing list.
 
-        Returns ``True`` when every desired object has a positional match in
+        Returns `True` when every desired object has a positional match in
         the existing list (using the same deep-subset logic as
         :meth:`_values_match`) *and* the lists are the same length.
 
@@ -253,7 +253,7 @@ class BaseModule:
         Resolve the parent object's ID using the provided parent lookup query.
 
         This queries the parent model's plural endpoint using the parent lookup
-        query as query parameters and returns the parent's ``id``.
+        query as query parameters and returns the parent's `id`.
 
         Args:
             parent_lookup_query (dict): A dictionary of query parameters used to
@@ -370,9 +370,9 @@ class BaseModule:
         Determine if the existing object needs to be updated based on the provided data.
 
         The comparison is a *deep subset check*: for every key the caller
-        supplies in ``new_object``, the corresponding value in
-        ``existing_object`` must match.  Extra keys present in the existing
-        object (e.g. ``id``, ``parent_id``, read-only fields returned by the
+        supplies in `new_object`, the corresponding value in
+        `existing_object` must match.  Extra keys present in the existing
+        object (e.g. `id`, `parent_id`, read-only fields returned by the
         API) are ignored so that idempotent runs do not falsely report
         changes.
 
