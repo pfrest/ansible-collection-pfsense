@@ -9,7 +9,6 @@ description: >-
   package.
 license:
   - MIT
-license_file: LICENSE
 repository: https://github.com/pfrest/ansible-collection-pfsense
 issues: https://github.com/pfrest/ansible-collection-pfsense/issues
 tags:
