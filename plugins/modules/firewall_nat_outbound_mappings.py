@@ -181,7 +181,7 @@ options:
       source_hash_key:
         required: false
         type: str
-        default: '0x6f3f38a910783005876778e37577e881'
+        default: '0xbfa5f749ada4f5aea46079a7f4a31962'
         choices: []
         description: The key that is fed to the hashing algorithm in hex format. This
           must be a 16 byte (32 character) hex string prefixed with `0x`. If a value
@@ -505,7 +505,7 @@ def run_module():
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "0x6f3f38a910783005876778e37577e881",
+                    "default": "0xbfa5f749ada4f5aea46079a7f4a31962",
                     "nullable": True,
                 },
                 "descr": {

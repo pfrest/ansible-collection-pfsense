@@ -1003,6 +1003,14 @@ data:
       description: Zone.ee API Key
       type: str
       returned: always
+    technitium_server:
+      description: Technitium DNS Server address
+      type: str
+      returned: always
+    technitium_token:
+      description: Technitium DNS Server API Token
+      type: str
+      returned: always
     anydnschallengealias:
       description: (Optional) Adds the --challenge-alias flag to the acme.sh call.<br/>To
         use a CNAME for _acme-challenge.importantDomain.tld to direct the acme validation
