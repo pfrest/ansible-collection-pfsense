@@ -50,7 +50,7 @@ def parse_args() -> argparse.Namespace:
 args = parse_args()
 native_schema = NativeSchema()
 
-with open(args.schema, "r") as sf:
+with open(args.schema, "r", encoding="utf-8") as sf:
     native_schema.full_schema = json.load(sf)
 
 
@@ -1058,8 +1058,6 @@ def render_module(
 
 def main() -> None:
     """Entry-point: embed the schema dict, then generate all modules."""
-    global native_schema  # pylint: disable=global-statement
-
     # Load generator config (contains the exclude list).
     config = load_generator_config()
     exclude_modules: list[str] = config.get("exclude_modules") or []
