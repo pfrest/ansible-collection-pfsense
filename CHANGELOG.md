@@ -1,0 +1,16 @@
+# Changelog
+
+## [0.0.2](https://github.com/pfrest/ansible-collection-pfsense/compare/v0.0.1...v0.0.2) (2026-04-08)
+
+
+### Features
+
+* allow modules to interact with parent model objects ([cc31781](https://github.com/pfrest/ansible-collection-pfsense/commit/cc31781f87134d3c35b6004f6a861fb700a934b0))
+* support api_protocol in module_utils ([70f5562](https://github.com/pfrest/ansible-collection-pfsense/commit/70f556207d36a5c8758d86cf89f48d229d619fa9))
+
+
+### Bug Fixes
+
+* ensure black runs on embedded_schema ([2bad00f](https://github.com/pfrest/ansible-collection-pfsense/commit/2bad00f3b03fb150166370bdf16ff06d5d6ff78c))
+* ensure only the new schema is used to generate module changes ([8896a35](https://github.com/pfrest/ansible-collection-pfsense/commit/8896a35c1a1e76d73c1e62df90a36bd074e13eb5))
+* idempotency/action fixes ([c973bbb](https://github.com/pfrest/ansible-collection-pfsense/commit/c973bbb2828e1b3b7c417c625ad3b4691a72caf7))

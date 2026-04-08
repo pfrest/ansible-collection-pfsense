@@ -1,11 +1,12 @@
----
 namespace: pfrest
 name: pfsense
-version: 0.0.1
+version: 0.0.2
 readme: README.md
 authors:
   - Jared Hendrickson (@jaredhendrickson13)
-description: Ansible modules for managing pfSense devices using the pfSense REST API package.
+description: >-
+  Ansible modules for managing pfSense devices using the pfSense REST API
+  package.
 license:
   - MIT
 license_file: LICENSE
