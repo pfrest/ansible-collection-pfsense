@@ -13,8 +13,6 @@ set -euo pipefail
 # Resolve paths
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 VENV_DIR="$REPO_ROOT/venv"
-PYTHON_VERSION=$("$VENV_DIR/bin/python" -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')")
-INSTALLED_MODULES="$VENV_DIR/lib/python$PYTHON_VERSION/site-packages/ansible_collections/pfrest/pfsense/plugins/modules"
 DOCS_DIR="$REPO_ROOT/docs"
 SCHEMA="$REPO_ROOT/schema.json"
 
@@ -45,15 +43,13 @@ if [[ "$DOCS_ONLY" == false ]]; then
     echo ""
 fi
 
-# Sync workspace modules → installed collection
-echo "==> Syncing modules to installed collection..."
-cp "$REPO_ROOT/plugins/modules/"*.py "$INSTALLED_MODULES/"
-echo "    Copied $(ls "$REPO_ROOT/plugins/modules/"*.py | wc -l | tr -d ' ') modules."
+# Reinstall the collection so antsibull-docs sees the latest modules
+echo "==> Reinstalling collection..."
+ansible-galaxy collection install . --force
+echo "    Done."
 
 # Clear __pycache__
 echo "==> Clearing __pycache__..."
-find "$VENV_DIR/lib/python3.11/site-packages/ansible_collections/pfrest" \
-    -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
 find "$REPO_ROOT/plugins" \
     -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
 
