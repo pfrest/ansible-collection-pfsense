@@ -1865,6 +1865,18 @@ options:
     default: ''
     choices: []
     description: Zilore API Key
+  technitium_server:
+    required: false
+    type: str
+    default: ''
+    choices: []
+    description: Technitium DNS Server address
+  technitium_token:
+    required: false
+    type: str
+    default: ''
+    choices: []
+    description: Technitium DNS Server API Token
   anydnschallengealias:
     required: false
     type: str
@@ -2843,6 +2855,14 @@ data:
       returned: always
     zone_key:
       description: Zone.ee API Key
+      type: str
+      returned: always
+    technitium_server:
+      description: Technitium DNS Server address
+      type: str
+      returned: always
+    technitium_token:
+      description: Technitium DNS Server API Token
       type: str
       returned: always
     anydnschallengealias:
@@ -4995,6 +5015,20 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
+            "default": "",
+            "nullable": True,
+        },
+        "technitium_server": {
+            "type": "str",
+            "required": False,
+            "no_log": False,
+            "default": "",
+            "nullable": True,
+        },
+        "technitium_token": {
+            "type": "str",
+            "required": False,
+            "no_log": True,
             "default": "",
             "nullable": True,
         },
