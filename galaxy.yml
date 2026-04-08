@@ -23,14 +23,19 @@ build_ignore:
   - .gitignore
   - .idea
   - .pylintrc
+  - .release-please-manifest.json
   - _build
+  - CHANGELOG.md
   - docs
-  - molecule
-  - schema.json
+  - extensions
   - generator.yml
+  - native.json
   - playbook.yml
   - pyproject.toml
+  - release-please-config.json
   - requirements-dev.txt
+  - schema.json
   - tests
   - tools
   - venv
+  - version.txt
