@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.4](https://github.com/pfrest/ansible-collection-pfsense/compare/v0.0.3...v0.0.4) (2026-04-09)
+
+
+### Bug Fixes
+
+* add missing runtime.yml file ([99d1d52](https://github.com/pfrest/ansible-collection-pfsense/commit/99d1d52c52a25d58e5a4ae6420effede7470fb72))
+
 ## [0.0.3](https://github.com/pfrest/ansible-collection-pfsense/compare/v0.0.2...v0.0.3) (2026-04-08)
 
 
