@@ -19,6 +19,10 @@ module: services_freeradius_clients
 description:
 - Manage all Free RADIUS Clients.
 short_description: Manage all Free RADIUS Clients.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
+- pfSense package C(pfSense-pkg-freeradius3) must be installed on the target system.
 options:
   api_host:
     type: str

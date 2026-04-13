@@ -19,6 +19,9 @@ module: firewall_virtual_ip_apply_info
 description:
 - Retrieve information about the Virtual IP Apply.
 short_description: Retrieve information about the Virtual IP Apply.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

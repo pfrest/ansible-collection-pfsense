@@ -19,6 +19,9 @@ module: firewall_aliases_info
 description:
 - Retrieve information about many Firewall Aliases.
 short_description: Retrieve information about many Firewall Aliases.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

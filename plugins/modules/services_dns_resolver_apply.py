@@ -19,6 +19,9 @@ module: services_dns_resolver_apply
 description:
 - Perform the DNS Resolver Apply action.
 short_description: Perform the DNS Resolver Apply action.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

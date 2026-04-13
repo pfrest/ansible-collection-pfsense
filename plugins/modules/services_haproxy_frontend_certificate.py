@@ -19,6 +19,10 @@ module: services_haproxy_frontend_certificate
 description:
 - Manage individual HAProxy Frontend Certificateses.
 short_description: Manage individual HAProxy Frontend Certificateses.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
+- pfSense package C(pfSense-pkg-haproxy) must be installed on the target system.
 options:
   api_host:
     type: str

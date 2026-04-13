@@ -19,6 +19,10 @@ module: services_freeradius_users_info
 description:
 - Retrieve information about many Free RADIUS Users.
 short_description: Retrieve information about many Free RADIUS Users.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
+- pfSense package C(pfSense-pkg-freeradius3) must be installed on the target system.
 options:
   api_host:
     type: str

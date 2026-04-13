@@ -20,6 +20,9 @@ description:
 - Retrieve information about a single Certificate Revocation List Revoked Certificate.
 short_description: Retrieve information about a single Certificate Revocation List
   Revoked Certificate.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

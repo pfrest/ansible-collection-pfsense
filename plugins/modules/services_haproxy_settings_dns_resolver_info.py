@@ -19,6 +19,10 @@ module: services_haproxy_settings_dns_resolver_info
 description:
 - Retrieve information about a single HA Proxy DNS Resolver.
 short_description: Retrieve information about a single HA Proxy DNS Resolver.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
+- pfSense package C(pfSense-pkg-haproxy) must be installed on the target system.
 options:
   api_host:
     type: str

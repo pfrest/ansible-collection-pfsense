@@ -19,6 +19,9 @@ module: services_ntp_time_servers
 description:
 - Manage all NTP Time Servers.
 short_description: Manage all NTP Time Servers.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

@@ -19,6 +19,9 @@ module: system_restapi_access_list_info
 description:
 - Retrieve information about many REST API Access List Entries.
 short_description: Retrieve information about many REST API Access List Entries.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

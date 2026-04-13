@@ -19,6 +19,9 @@ module: system_webgui_settings
 description:
 - Manage Web GUI Settings.
 short_description: Manage Web GUI Settings.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

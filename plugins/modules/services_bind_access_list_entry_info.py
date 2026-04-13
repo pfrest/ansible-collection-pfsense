@@ -19,6 +19,10 @@ module: services_bind_access_list_entry_info
 description:
 - Retrieve information about a single BIND Access List Entry.
 short_description: Retrieve information about a single BIND Access List Entry.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
+- pfSense package C(pfSense-pkg-bind) must be installed on the target system.
 options:
   api_host:
     type: str

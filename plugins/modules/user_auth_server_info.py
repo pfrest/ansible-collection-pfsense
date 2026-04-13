@@ -19,6 +19,9 @@ module: user_auth_server_info
 description:
 - Retrieve information about a single authentication server.
 short_description: Retrieve information about a single authentication server.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

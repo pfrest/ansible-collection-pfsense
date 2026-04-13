@@ -19,6 +19,10 @@ module: vpn_wireguard_peer
 description:
 - Manage individual WireGuard Peers.
 short_description: Manage individual WireGuard Peers.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
+- pfSense package C(pfSense-pkg-WireGuard) must be installed on the target system.
 options:
   api_host:
     type: str

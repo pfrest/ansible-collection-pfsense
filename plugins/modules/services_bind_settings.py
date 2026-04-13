@@ -19,6 +19,10 @@ module: services_bind_settings
 description:
 - Manage BIND Settings.
 short_description: Manage BIND Settings.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
+- pfSense package C(pfSense-pkg-bind) must be installed on the target system.
 options:
   api_host:
     type: str

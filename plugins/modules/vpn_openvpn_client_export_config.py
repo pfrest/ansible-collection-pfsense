@@ -19,6 +19,11 @@ module: vpn_openvpn_client_export_config
 description:
 - Manage individual Open VPN Client Export Configs.
 short_description: Manage individual Open VPN Client Export Configs.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
+- pfSense package C(pfSense-pkg-openvpn-client-export) must be installed on the target
+  system.
 options:
   api_host:
     type: str

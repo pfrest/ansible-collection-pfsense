@@ -19,6 +19,9 @@ module: system_timezone_info
 description:
 - Retrieve information about the System Timezone.
 short_description: Retrieve information about the System Timezone.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

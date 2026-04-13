@@ -19,6 +19,9 @@ module: system_restapi_settings_info
 description:
 - Retrieve information about the REST API Settings.
 short_description: Retrieve information about the REST API Settings.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

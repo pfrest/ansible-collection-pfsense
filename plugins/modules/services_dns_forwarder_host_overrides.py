@@ -19,6 +19,9 @@ module: services_dns_forwarder_host_overrides
 description:
 - Manage all DNS Forwarder Host Overrides.
 short_description: Manage all DNS Forwarder Host Overrides.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

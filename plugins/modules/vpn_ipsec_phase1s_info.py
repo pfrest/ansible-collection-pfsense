@@ -19,6 +19,9 @@ module: vpn_ipsec_phase1s_info
 description:
 - Retrieve information about many IPsec Phase 1s.
 short_description: Retrieve information about many IPsec Phase 1s.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

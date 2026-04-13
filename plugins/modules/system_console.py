@@ -19,6 +19,9 @@ module: system_console
 description:
 - Manage System Console.
 short_description: Manage System Console.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

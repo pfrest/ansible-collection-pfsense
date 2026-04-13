@@ -19,6 +19,9 @@ module: status_carp_info
 description:
 - Retrieve information about the CARP.
 short_description: Retrieve information about the CARP.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

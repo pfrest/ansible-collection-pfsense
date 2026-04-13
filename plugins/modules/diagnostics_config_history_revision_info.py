@@ -19,6 +19,9 @@ module: diagnostics_config_history_revision_info
 description:
 - Retrieve information about a single Configuration History Entry.
 short_description: Retrieve information about a single Configuration History Entry.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

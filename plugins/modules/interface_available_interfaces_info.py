@@ -19,6 +19,9 @@ module: interface_available_interfaces_info
 description:
 - Retrieve information about many Available Interfaces.
 short_description: Retrieve information about many Available Interfaces.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

@@ -19,6 +19,9 @@ module: users_info
 description:
 - Retrieve information about many Users.
 short_description: Retrieve information about many Users.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

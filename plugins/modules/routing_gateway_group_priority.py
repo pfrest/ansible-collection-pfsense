@@ -19,6 +19,9 @@ module: routing_gateway_group_priority
 description:
 - Manage individual Routing Gateway Group Priorities.
 short_description: Manage individual Routing Gateway Group Priorities.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

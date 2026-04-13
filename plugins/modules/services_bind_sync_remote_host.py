@@ -19,6 +19,10 @@ module: services_bind_sync_remote_host
 description:
 - Manage individual BIND Sync Remote Hosts.
 short_description: Manage individual BIND Sync Remote Hosts.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
+- pfSense package C(pfSense-pkg-bind) must be installed on the target system.
 options:
   api_host:
     type: str

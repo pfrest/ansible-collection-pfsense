@@ -19,6 +19,9 @@ module: system_tunables
 description:
 - Manage all System Tunables.
 short_description: Manage all System Tunables.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

@@ -19,6 +19,9 @@ module: services_dns_resolver_apply_info
 description:
 - Retrieve information about the DNS Resolver Apply.
 short_description: Retrieve information about the DNS Resolver Apply.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

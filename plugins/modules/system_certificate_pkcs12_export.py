@@ -19,6 +19,9 @@ module: system_certificate_pkcs12_export
 description:
 - Perform the Certificate PKCS#12 Export action.
 short_description: Perform the Certificate PKCS#12 Export action.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

@@ -19,6 +19,9 @@ module: services_dns_resolver_access_list
 description:
 - Manage individual DNS Resolver Access Lists.
 short_description: Manage individual DNS Resolver Access Lists.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

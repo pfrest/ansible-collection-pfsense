@@ -19,6 +19,9 @@ module: system_restapi_version
 description:
 - Manage REST API Version.
 short_description: Manage REST API Version.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str
