@@ -19,6 +19,9 @@ module: services_dhcp_relay
 description:
 - Manage DHCP Relay.
 short_description: Manage DHCP Relay.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

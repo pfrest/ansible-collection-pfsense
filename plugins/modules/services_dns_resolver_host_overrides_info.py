@@ -19,6 +19,9 @@ module: services_dns_resolver_host_overrides_info
 description:
 - Retrieve information about many DNS Resolver Host Overrides.
 short_description: Retrieve information about many DNS Resolver Host Overrides.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

@@ -19,6 +19,9 @@ module: system_certificate_authorities_info
 description:
 - Retrieve information about many Certificate Authorities.
 short_description: Retrieve information about many Certificate Authorities.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

@@ -19,6 +19,10 @@ module: services_acme_certificate_domain
 description:
 - Manage individual ACME Certificate Domains.
 short_description: Manage individual ACME Certificate Domains.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
+- pfSense package C(pfSense-pkg-acme) must be installed on the target system.
 options:
   api_host:
     type: str

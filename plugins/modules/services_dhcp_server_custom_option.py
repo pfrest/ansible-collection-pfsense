@@ -19,6 +19,9 @@ module: services_dhcp_server_custom_option
 description:
 - Manage individual DHCP Server Custom Options.
 short_description: Manage individual DHCP Server Custom Options.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

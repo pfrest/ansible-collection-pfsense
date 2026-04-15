@@ -19,6 +19,9 @@ module: firewall_schedule_time_range
 description:
 - Manage individual Firewall Schedule Time Ranges.
 short_description: Manage individual Firewall Schedule Time Ranges.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

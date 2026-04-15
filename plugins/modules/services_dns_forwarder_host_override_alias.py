@@ -19,6 +19,9 @@ module: services_dns_forwarder_host_override_alias
 description:
 - Manage individual DNS Forwarder Host Override Aliases.
 short_description: Manage individual DNS Forwarder Host Override Aliases.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

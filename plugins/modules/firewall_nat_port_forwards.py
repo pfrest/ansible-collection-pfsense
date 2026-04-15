@@ -19,6 +19,9 @@ module: firewall_nat_port_forwards
 description:
 - Manage all Port Forwards.
 short_description: Manage all Port Forwards.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

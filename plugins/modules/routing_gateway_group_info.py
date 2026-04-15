@@ -19,6 +19,9 @@ module: routing_gateway_group_info
 description:
 - Retrieve information about a single Routing Gateway Group.
 short_description: Retrieve information about a single Routing Gateway Group.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

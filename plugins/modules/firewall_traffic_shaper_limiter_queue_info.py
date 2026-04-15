@@ -19,6 +19,9 @@ module: firewall_traffic_shaper_limiter_queue_info
 description:
 - Retrieve information about a single Traffic Shaper Limiter Queue.
 short_description: Retrieve information about a single Traffic Shaper Limiter Queue.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

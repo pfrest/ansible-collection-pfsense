@@ -19,6 +19,10 @@ module: services_haproxy_backend_acl
 description:
 - Manage individual HAProxy Backend Access Control Lists.
 short_description: Manage individual HAProxy Backend Access Control Lists.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
+- pfSense package C(pfSense-pkg-haproxy) must be installed on the target system.
 options:
   api_host:
     type: str

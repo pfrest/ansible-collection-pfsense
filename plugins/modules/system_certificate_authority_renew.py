@@ -19,6 +19,9 @@ module: system_certificate_authority_renew
 description:
 - Perform the Certificate Authority Renew action.
 short_description: Perform the Certificate Authority Renew action.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

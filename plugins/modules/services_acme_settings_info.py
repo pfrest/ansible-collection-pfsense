@@ -19,6 +19,10 @@ module: services_acme_settings_info
 description:
 - Retrieve information about the ACME Settings.
 short_description: Retrieve information about the ACME Settings.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
+- pfSense package C(pfSense-pkg-acme) must be installed on the target system.
 options:
   api_host:
     type: str

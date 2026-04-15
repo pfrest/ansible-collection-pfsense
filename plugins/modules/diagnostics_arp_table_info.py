@@ -19,6 +19,9 @@ module: diagnostics_arp_table_info
 description:
 - Retrieve information about many ARP Table Entries.
 short_description: Retrieve information about many ARP Table Entries.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

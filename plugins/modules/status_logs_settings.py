@@ -19,6 +19,9 @@ module: status_logs_settings
 description:
 - Manage Log Settings.
 short_description: Manage Log Settings.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

@@ -19,6 +19,9 @@ module: system_restapi_version_info
 description:
 - Retrieve information about the REST API Version.
 short_description: Retrieve information about the REST API Version.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

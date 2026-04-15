@@ -19,6 +19,9 @@ module: firewall_alias
 description:
 - Manage individual Firewall Aliases.
 short_description: Manage individual Firewall Aliases.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

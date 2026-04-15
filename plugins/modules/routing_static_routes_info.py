@@ -19,6 +19,9 @@ module: routing_static_routes_info
 description:
 - Retrieve information about many Static Routes.
 short_description: Retrieve information about many Static Routes.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

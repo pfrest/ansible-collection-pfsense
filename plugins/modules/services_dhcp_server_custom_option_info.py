@@ -19,6 +19,9 @@ module: services_dhcp_server_custom_option_info
 description:
 - Retrieve information about a single DHCP Server Custom Option.
 short_description: Retrieve information about a single DHCP Server Custom Option.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

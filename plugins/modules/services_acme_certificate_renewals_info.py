@@ -19,6 +19,10 @@ module: services_acme_certificate_renewals_info
 description:
 - Retrieve information about many ACME Certificate Renews.
 short_description: Retrieve information about many ACME Certificate Renews.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
+- pfSense package C(pfSense-pkg-acme) must be installed on the target system.
 options:
   api_host:
     type: str

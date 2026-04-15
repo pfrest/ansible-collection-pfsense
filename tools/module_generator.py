@@ -553,6 +553,29 @@ def get_module_options(endpoint_url: str, module_type: str) -> dict:
     return {**standard_options, **get_module_options_from_fields(endpoint_url)}
 
 
+def get_module_requirements(endpoint_url: str) -> list:
+    """
+    Determines the requirements for a given endpoint URL. This is primarily used to determine
+    if the module requires any additional pfSense packages.
+
+    Args:
+        endpoint_url (str): The URL of the endpoint of the module to generate requirements for.
+
+    Returns:
+        list: A list of requirements for the module.
+    """
+    model_schema = native_schema.get_model_schema_by_endpoint(endpoint_url)
+    required_pfsense_pkgs = model_schema.get("packages", [])
+    requirements = [
+        "L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system."
+    ]
+
+    for pkg in required_pfsense_pkgs:
+        requirements.append(f"C({pkg}) must be installed on the target system.")
+
+    return requirements
+
+
 def schema_type_to_returns_type(schema_type: str) -> str:
     """
     Converts a schema type string to an Ansible RETURNS type string.
@@ -950,6 +973,7 @@ def generate_module_documentation(endpoint_url: str, module_type: str) -> dict:
         "module": get_module_name(endpoint_url, module_type),
         "description": [get_module_short_description(endpoint_url, module_type)],
         "short_description": get_module_short_description(endpoint_url, module_type),
+        "requirements": get_module_requirements(endpoint_url),
         "options": _strip_argspec_only_keys(
             get_module_options(endpoint_url, module_type)
         ),

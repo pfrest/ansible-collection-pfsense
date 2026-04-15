@@ -19,6 +19,9 @@ module: services_dns_resolver_access_list_network_info
 description:
 - Retrieve information about a single DNS Resolver Access List Network.
 short_description: Retrieve information about a single DNS Resolver Access List Network.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

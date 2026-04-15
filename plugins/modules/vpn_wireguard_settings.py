@@ -19,6 +19,10 @@ module: vpn_wireguard_settings
 description:
 - Manage WireGuard Settings.
 short_description: Manage WireGuard Settings.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
+- pfSense package C(pfSense-pkg-WireGuard) must be installed on the target system.
 options:
   api_host:
     type: str

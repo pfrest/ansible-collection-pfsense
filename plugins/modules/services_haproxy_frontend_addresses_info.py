@@ -19,6 +19,10 @@ module: services_haproxy_frontend_addresses_info
 description:
 - Retrieve information about many HA Proxy Frontend Addresses.
 short_description: Retrieve information about many HA Proxy Frontend Addresses.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
+- pfSense package C(pfSense-pkg-haproxy) must be installed on the target system.
 options:
   api_host:
     type: str

@@ -19,6 +19,9 @@ module: status_logs_system_info
 description:
 - Retrieve information about many System Logs.
 short_description: Retrieve information about many System Logs.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

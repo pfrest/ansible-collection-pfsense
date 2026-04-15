@@ -19,6 +19,9 @@ module: firewall_traffic_shaper_queues_info
 description:
 - Retrieve information about many Traffic Shaper Queues.
 short_description: Retrieve information about many Traffic Shaper Queues.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

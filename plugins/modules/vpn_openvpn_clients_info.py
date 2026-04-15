@@ -19,6 +19,9 @@ module: vpn_openvpn_clients_info
 description:
 - Retrieve information about many Open VPN Clients.
 short_description: Retrieve information about many Open VPN Clients.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

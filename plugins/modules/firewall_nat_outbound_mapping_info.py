@@ -19,6 +19,9 @@ module: firewall_nat_outbound_mapping_info
 description:
 - Retrieve information about a single Outbound NAT Mapping.
 short_description: Retrieve information about a single Outbound NAT Mapping.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

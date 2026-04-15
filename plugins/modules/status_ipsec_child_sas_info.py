@@ -19,6 +19,9 @@ module: status_ipsec_child_sas_info
 description:
 - Retrieve information about many IPsec Child SA Statuses.
 short_description: Retrieve information about many IPsec Child SA Statuses.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

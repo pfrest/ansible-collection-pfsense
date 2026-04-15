@@ -19,6 +19,9 @@ module: vpn_ipsec_phase2s
 description:
 - Manage all IPsec Phase 2s.
 short_description: Manage all IPsec Phase 2s.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

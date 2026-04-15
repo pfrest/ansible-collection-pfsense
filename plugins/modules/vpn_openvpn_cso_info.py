@@ -19,6 +19,9 @@ module: vpn_openvpn_cso_info
 description:
 - Retrieve information about a single Open VPN Client Specific Override.
 short_description: Retrieve information about a single Open VPN Client Specific Override.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

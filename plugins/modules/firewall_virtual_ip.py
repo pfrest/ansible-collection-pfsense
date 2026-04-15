@@ -19,6 +19,9 @@ module: firewall_virtual_ip
 description:
 - Manage individual Virtual IPs.
 short_description: Manage individual Virtual IPs.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

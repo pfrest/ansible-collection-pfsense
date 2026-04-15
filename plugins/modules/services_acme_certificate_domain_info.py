@@ -19,6 +19,10 @@ module: services_acme_certificate_domain_info
 description:
 - Retrieve information about a single ACME Certificate Domain.
 short_description: Retrieve information about a single ACME Certificate Domain.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
+- pfSense package C(pfSense-pkg-acme) must be installed on the target system.
 options:
   api_host:
     type: str

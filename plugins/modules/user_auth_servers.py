@@ -19,6 +19,9 @@ module: user_auth_servers
 description:
 - Manage all authentication servers.
 short_description: Manage all authentication servers.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

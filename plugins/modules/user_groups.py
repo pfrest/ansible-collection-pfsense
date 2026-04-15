@@ -19,6 +19,9 @@ module: user_groups
 description:
 - Manage all User Groups.
 short_description: Manage all User Groups.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

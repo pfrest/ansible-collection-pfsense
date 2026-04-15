@@ -19,6 +19,9 @@ module: system_dns_info
 description:
 - Retrieve information about the System DNS.
 short_description: Retrieve information about the System DNS.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
 options:
   api_host:
     type: str

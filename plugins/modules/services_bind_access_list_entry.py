@@ -19,6 +19,10 @@ module: services_bind_access_list_entry
 description:
 - Manage individual BIND Access List Entries.
 short_description: Manage individual BIND Access List Entries.
+requirements:
+- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
+  target system.
+- pfSense package C(pfSense-pkg-bind) must be installed on the target system.
 options:
   api_host:
     type: str
