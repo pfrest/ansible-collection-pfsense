@@ -571,9 +571,7 @@ def get_module_requirements(endpoint_url: str) -> list:
     ]
 
     for pkg in required_pfsense_pkgs:
-        requirements.append(
-            f"C({pkg}) must be installed on the target system."
-        )
+        requirements.append(f"C({pkg}) must be installed on the target system.")
 
     return requirements
 
