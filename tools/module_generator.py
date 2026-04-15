@@ -567,12 +567,12 @@ def get_module_requirements(endpoint_url: str) -> list:
     model_schema = native_schema.get_model_schema_by_endpoint(endpoint_url)
     required_pfsense_pkgs = model_schema.get("packages", [])
     requirements = [
-        "pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system."
+        "L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system."
     ]
 
     for pkg in required_pfsense_pkgs:
         requirements.append(
-            f"pfSense package C({pkg}) must be installed on the target system."
+            f"C({pkg}) must be installed on the target system."
         )
 
     return requirements
