@@ -20,8 +20,7 @@ description:
 - Perform the Wire Guard Apply action.
 short_description: Perform the Wire Guard Apply action.
 requirements:
-- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
-  target system.
+- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
 options:
   api_host:
     type: str

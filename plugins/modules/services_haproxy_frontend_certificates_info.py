@@ -20,9 +20,8 @@ description:
 - Retrieve information about many HAProxy Frontend Certificateses.
 short_description: Retrieve information about many HAProxy Frontend Certificateses.
 requirements:
-- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
-  target system.
-- pfSense package C(pfSense-pkg-haproxy) must be installed on the target system.
+- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- C(pfSense-pkg-haproxy) must be installed on the target system.
 options:
   api_host:
     type: str

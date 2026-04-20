@@ -20,8 +20,7 @@ description:
 - Manage individual DNS Forwarder Host Overrides.
 short_description: Manage individual DNS Forwarder Host Overrides.
 requirements:
-- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
-  target system.
+- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
 options:
   api_host:
     type: str

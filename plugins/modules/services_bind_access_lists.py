@@ -20,9 +20,8 @@ description:
 - Manage all BIND Access Lists.
 short_description: Manage all BIND Access Lists.
 requirements:
-- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
-  target system.
-- pfSense package C(pfSense-pkg-bind) must be installed on the target system.
+- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- C(pfSense-pkg-bind) must be installed on the target system.
 options:
   api_host:
     type: str

@@ -20,8 +20,7 @@ description:
 - Perform the Command Prompt action.
 short_description: Perform the Command Prompt action.
 requirements:
-- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
-  target system.
+- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
 options:
   api_host:
     type: str
