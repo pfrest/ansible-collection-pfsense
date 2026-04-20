@@ -266,6 +266,8 @@
       "simply_accountname": "string",
       "simply_apikey": "string",
       "simply_api": "string",
+      "technitium_server": "string",
+      "technitium_token": "string",
       "tele3_key": "string",
       "tele3_secret": "string",
       "tencent_secretid": "string",

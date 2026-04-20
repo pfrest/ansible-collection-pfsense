@@ -20,8 +20,7 @@ description:
 - Manage individual Outbound NAT Mappings.
 short_description: Manage individual Outbound NAT Mappings.
 requirements:
-- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
-  target system.
+- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
 options:
   api_host:
     type: str

@@ -20,9 +20,8 @@ description:
 - Retrieve information about a single Cron Job.
 short_description: Retrieve information about a single Cron Job.
 requirements:
-- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
-  target system.
-- pfSense package C(pfSense-pkg-Cron) must be installed on the target system.
+- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- C(pfSense-pkg-Cron) must be installed on the target system.
 options:
   api_host:
     type: str

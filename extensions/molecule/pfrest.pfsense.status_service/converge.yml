@@ -11,6 +11,7 @@
         api_port: 15070
         api_protocol: http
         validate_certs: false
+        name: testservice
         action: restart
 
     - name: Assert results

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.5](https://github.com/pfrest/ansible-collection-pfsense/compare/v0.0.4...v0.0.5) (2026-04-15)
+
+
+### Features
+
+* add system_restapi_install module ([04e561d](https://github.com/pfrest/ansible-collection-pfsense/commit/04e561d8d077f623966b32c29d3df609151e5bb0))
+
 ## [0.0.4](https://github.com/pfrest/ansible-collection-pfsense/compare/v0.0.3...v0.0.4) (2026-04-09)
 
 

@@ -20,9 +20,8 @@ description:
 - Perform the ACME Certificate Issue action.
 short_description: Perform the ACME Certificate Issue action.
 requirements:
-- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
-  target system.
-- pfSense package C(pfSense-pkg-acme) must be installed on the target system.
+- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- C(pfSense-pkg-acme) must be installed on the target system.
 options:
   api_host:
     type: str

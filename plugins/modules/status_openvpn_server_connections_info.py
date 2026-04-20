@@ -20,8 +20,7 @@ description:
 - Retrieve information about many OpenVPN Server Connection Statuses.
 short_description: Retrieve information about many OpenVPN Server Connection Statuses.
 requirements:
-- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
-  target system.
+- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
 options:
   api_host:
     type: str

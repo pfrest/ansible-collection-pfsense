@@ -20,8 +20,7 @@ description:
 - Retrieve information about many IPsec Phase 2 Encryptions.
 short_description: Retrieve information about many IPsec Phase 2 Encryptions.
 requirements:
-- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
-  target system.
+- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
 options:
   api_host:
     type: str

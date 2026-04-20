@@ -20,9 +20,8 @@ description:
 - Manage individual HA Proxy DNS Resolvers.
 short_description: Manage individual HA Proxy DNS Resolvers.
 requirements:
-- pfSense package L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the
-  target system.
-- pfSense package C(pfSense-pkg-haproxy) must be installed on the target system.
+- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- C(pfSense-pkg-haproxy) must be installed on the target system.
 options:
   api_host:
     type: str
