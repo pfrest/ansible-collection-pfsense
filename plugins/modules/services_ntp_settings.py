@@ -190,7 +190,6 @@ options:
   serverauthkey:
     required: false
     type: str
-    default: null
     choices: []
     description: The NTP server authentication key.
   serverauthalgo:
@@ -513,7 +512,6 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": True,
-            "default": None,
             "nullable": True,
         },
         "serverauthalgo": {

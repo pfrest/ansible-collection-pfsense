@@ -75,7 +75,6 @@ options:
   name:
     required: true
     type: str
-    default: null
     choices: []
     description: The unique name for this backend server.
   status:
@@ -91,14 +90,12 @@ options:
   address:
     required: true
     type: str
-    default: null
     choices: []
     description: The hostname or IP address of this backend server. Hostname values
       are only resolved at service startup.
   port:
     required: true
     type: str
-    default: null
     choices: []
     description: 'The port to forward to for this backend server. Valid options are:
       a TCP/UDP port number'
@@ -296,7 +293,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "status": {
@@ -311,14 +307,12 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "port": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "weight": {

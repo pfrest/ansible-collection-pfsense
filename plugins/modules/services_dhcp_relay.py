@@ -82,7 +82,6 @@ options:
   server:
     required: true
     type: list
-    default: null
     choices: []
     description: The IPv4 addresses of the DHCP server to relay requests to.
     elements: str
@@ -230,7 +229,6 @@ def run_module():
             "type": "list",
             "required": True,
             "no_log": False,
-            "default": None,
             "elements": "str",
             "nullable": False,
         },

@@ -1057,7 +1057,7 @@ data:
           description: Zone.ee API Key
           type: str
           returned: always
-        technitium_server:
+        pytho_server:
           description: Technitium DNS Server address
           type: str
           returned: always

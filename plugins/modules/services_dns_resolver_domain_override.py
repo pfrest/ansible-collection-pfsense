@@ -68,13 +68,11 @@ options:
   domain:
     required: true
     type: str
-    default: null
     choices: []
     description: The domain to override.
   ip:
     required: true
     type: str
-    default: null
     choices: []
     description: The IP address to which the domain should resolve.
   descr:
@@ -93,7 +91,6 @@ options:
   tls_hostname:
     required: false
     type: str
-    default: ''
     choices: []
     description: The hostname to use for the TLS connection to the upstream DNS server.
 author:
@@ -231,14 +228,12 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "ip": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "descr": {
@@ -259,7 +254,6 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
     }

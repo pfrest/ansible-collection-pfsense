@@ -60,7 +60,6 @@ options:
       interface:
         required: true
         type: str
-        default: null
         choices: []
         description: The interface on which traffic is matched as it exits the firewall.
           In most cases this is a WAN-type or another externally-connected interface.
@@ -102,7 +101,6 @@ options:
       source:
         required: true
         type: str
-        default: null
         choices: []
         description: 'The source network this rule should match. Valid value options
           are: an existing interface, a subnet CIDR, an existing alias, `any`, `(self)`,
@@ -120,7 +118,6 @@ options:
       destination:
         required: true
         type: str
-        default: null
         choices: []
         description: 'The destination network this rule should match. Valid value
           options are: an existing interface, a subnet CIDR, an existing alias, `any`,
@@ -138,7 +135,6 @@ options:
       target:
         required: false
         type: str
-        default: null
         choices: []
         description: 'The target network traffic matching this rule should be translated
           to. Valid value options are: an IP address, an existing alias. For interface
@@ -147,7 +143,6 @@ options:
       target_subnet:
         required: false
         type: int
-        default: 128
         choices: []
         description: The subnet bits for the assigned `target`. This field is only
           applicable if `target` is set to an IP address. This has no affect for alias
@@ -155,7 +150,6 @@ options:
       nat_port:
         required: false
         type: str
-        default: ''
         choices: []
         description: 'The external source port or port range used for rewriting the
           original source port on connections matching the rule. Valid options are:
@@ -163,13 +157,11 @@ options:
       static_nat_port:
         required: false
         type: bool
-        default: false
         choices: []
         description: Do not rewrite source port for traffic matching this rule.
       poolopts:
         required: false
         type: str
-        default: null
         choices:
         - round-robin
         - round-robin sticky-address
@@ -183,7 +175,6 @@ options:
       source_hash_key:
         required: false
         type: str
-        default: '0xbfa5f749ada4f5aea46079a7f4a31962'
         choices: []
         description: The key that is fed to the hashing algorithm in hex format. This
           must be a 16 byte (32 character) hex string prefixed with `0x`. If a value
@@ -388,7 +379,6 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "protocol": {
@@ -436,7 +426,6 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "source_port": {
@@ -450,7 +439,6 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "destination_port": {
@@ -464,35 +452,30 @@ def run_module():
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
                 "target_subnet": {
                     "type": "int",
                     "required": False,
                     "no_log": False,
-                    "default": 128,
                     "nullable": True,
                 },
                 "nat_port": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "static_nat_port": {
                     "type": "bool",
                     "required": False,
                     "no_log": False,
-                    "default": False,
                     "nullable": True,
                 },
                 "poolopts": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "choices": [
                         "round-robin",
                         "round-robin sticky-address",
@@ -507,7 +490,6 @@ def run_module():
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "0xbfa5f749ada4f5aea46079a7f4a31962",
                     "nullable": True,
                 },
                 "descr": {

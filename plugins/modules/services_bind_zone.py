@@ -75,7 +75,6 @@ options:
   name:
     required: true
     type: str
-    default: null
     choices: []
     description: The name of this BIND zone.
   description:
@@ -104,19 +103,16 @@ options:
   reversev4:
     required: false
     type: bool
-    default: false
     choices: []
     description: Enable reverse DNS for this BIND zone.
   reversev6:
     required: false
     type: bool
-    default: false
     choices: []
     description: Enable reverse IPv6 DNS for this BIND zone.
   rpz:
     required: false
     type: bool
-    default: false
     choices: []
     description: Enable this zone as part of a response policy.
   custom:
@@ -128,87 +124,74 @@ options:
   dnssec:
     required: false
     type: bool
-    default: false
     choices: []
     description: Enable DNSSEC for this BIND zone.
   backupkeys:
     required: false
     type: bool
-    default: false
     choices: []
     description: Enable backing up DNSSEC keys in the XML configuration for this BIND
       zone.
   slaveip:
     required: false
     type: str
-    default: ''
     choices: []
     description: The IP address of the slave server for this BIND zone.
   forwarders:
     required: false
     type: list
-    default: null
     choices: []
     description: The forwarders for this BIND zone.
     elements: str
   ttl:
     required: false
     type: int
-    default: null
     choices: []
     description: The default TTL interval (in seconds) for records within this BIND
       zone without a specific TTL.
   baseip:
     required: false
     type: str
-    default: null
     choices: []
     description: The IP address of the base domain for this zone. This sets an A record
       for the base domain.
   nameserver:
     required: false
     type: str
-    default: null
     choices: []
     description: The SOA nameserver for this zone.
   mail:
     required: false
     type: str
-    default: null
     choices: []
     description: The SOA email address (RNAME) for this zone. This must be in an FQDN
       format.
   serial:
     required: false
     type: int
-    default: null
     choices: []
     description: The SOA serial number for this zone.
   refresh:
     required: false
     type: str
-    default: null
     choices: []
     description: The SOA refresh interval for this zone. TTL-style time-unit suffixes
       are supported (e.g. 1h, 1d, 1w), otherwise time in seconds is assumed.
   retry:
     required: false
     type: str
-    default: null
     choices: []
     description: The SOA retry interval for this zone. TTL-style time-unit suffixes
       are supported (e.g. 1h, 1d, 1w), otherwise time in seconds is assumed.
   expire:
     required: false
     type: str
-    default: null
     choices: []
     description: The SOA expiry interval for this zone. TTL-style time-unit suffixes
       are supported (e.g. 1h, 1d, 1w), otherwise time in seconds is assumed.
   minimum:
     required: false
     type: str
-    default: null
     choices: []
     description: The SOA minimum TTL interval (in seconds) for this zone. This is
       also referred to as the negative TTL. TTL-style time-unit suffixes are supported
@@ -216,19 +199,16 @@ options:
   enable_updatepolicy:
     required: false
     type: bool
-    default: false
     choices: []
     description: Enable a specific dynamic update policy for this BIND zone.
   updatepolicy:
     required: false
     type: str
-    default: ''
     choices: []
     description: The update policy for this BIND zone.
   allowupdate:
     required: false
     type: list
-    default: []
     choices: []
     description: The access lists that are allowed to submit dynamic updates for 'master'
       zones (e.g. dynamic DNS).
@@ -236,7 +216,6 @@ options:
   allowtransfer:
     required: false
     type: list
-    default: []
     choices: []
     description: The access lists that are allowed to transfer this BIND zone.
     elements: str
@@ -270,13 +249,11 @@ options:
       name:
         required: true
         type: str
-        default: null
         choices: []
         description: The domain name for this record.
       type:
         required: true
         type: str
-        default: null
         choices:
         - A
         - AAAA
@@ -292,14 +269,12 @@ options:
       rdata:
         required: true
         type: str
-        default: null
         choices: []
         description: The data for this record. This can be an IP address, domain name,
           or other data depending on the record type.
       priority:
         required: false
         type: int
-        default: null
         choices: []
         description: The priority for this record.
 author:
@@ -585,7 +560,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "description": {
@@ -615,21 +589,18 @@ def run_module():
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "reversev6": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "rpz": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "custom": {
@@ -643,28 +614,24 @@ def run_module():
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "backupkeys": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "slaveip": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "forwarders": {
             "type": "list",
             "required": False,
             "no_log": False,
-            "default": None,
             "elements": "str",
             "nullable": True,
         },
@@ -672,84 +639,72 @@ def run_module():
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "baseip": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "nameserver": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "mail": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "serial": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "refresh": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "retry": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "expire": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "minimum": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "enable_updatepolicy": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "updatepolicy": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "allowupdate": {
             "type": "list",
             "required": False,
             "no_log": False,
-            "default": [],
             "elements": "str",
             "nullable": True,
         },
@@ -757,7 +712,6 @@ def run_module():
             "type": "list",
             "required": False,
             "no_log": False,
-            "default": [],
             "elements": "str",
             "nullable": True,
         },
@@ -795,14 +749,12 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "type": {
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "choices": [
                         "A",
                         "AAAA",
@@ -821,14 +773,12 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "priority": {
                     "type": "int",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
             },

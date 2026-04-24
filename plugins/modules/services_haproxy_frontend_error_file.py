@@ -75,13 +75,11 @@ options:
   errorcode:
     required: true
     type: int
-    default: null
     choices: []
     description: The HTTP status code that will trigger this error file to be used.
   errorfile:
     required: true
     type: str
-    default: null
     choices: []
     description: The HAProxy error file object that should be used for the assigned
       HTTP status code.
@@ -220,14 +218,12 @@ def run_module():
             "type": "int",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "errorfile": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
     }

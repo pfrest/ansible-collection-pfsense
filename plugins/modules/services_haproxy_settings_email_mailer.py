@@ -69,13 +69,11 @@ options:
   name:
     required: true
     type: str
-    default: null
     choices: []
     description: The descriptive name for this mail server.
   mailserver:
     required: true
     type: str
-    default: null
     choices: []
     description: The IP or hostname of the mail server.
   mailserverport:
@@ -219,14 +217,12 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "mailserver": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "mailserverport": {

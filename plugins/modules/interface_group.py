@@ -68,7 +68,6 @@ options:
   ifname:
     required: true
     type: str
-    default: null
     choices: []
     description: The name of this interface group.
   members:
@@ -208,7 +207,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "members": {

@@ -74,13 +74,11 @@ options:
   sslcertref:
     required: false
     type: str
-    default: null
     choices: []
     description: The SSL/TLS certificate to use for the DNS Resolver service.
   tlsport:
     required: false
     type: str
-    default: '853'
     choices: []
     description: 'The port on which the DNS Resolver service listens for SSL/TLS connections.
       Valid options are: a TCP/UDP port number'
@@ -137,7 +135,6 @@ options:
   python_order:
     required: false
     type: str
-    default: pre_validator
     choices:
     - pre_validator
     - post_validator
@@ -145,7 +142,6 @@ options:
   python_script:
     required: false
     type: str
-    default: ''
     choices: []
     description: The Python module to utilize.
   forwarding:
@@ -373,14 +369,12 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "tlsport": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "853",
             "nullable": True,
         },
         "active_interface": {
@@ -442,7 +436,6 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "pre_validator",
             "choices": ["pre_validator", "post_validator"],
             "nullable": True,
         },
@@ -450,7 +443,6 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "forwarding": {

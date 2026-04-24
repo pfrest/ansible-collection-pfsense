@@ -83,13 +83,11 @@ options:
   command:
     required: true
     type: str
-    default: null
     choices: []
     description: The command to execute on the ACME certificate.
   method:
     required: true
     type: str
-    default: null
     choices:
     - shellcommand
     - php_command
@@ -241,14 +239,12 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "method": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": [
                 "shellcommand",
                 "php_command",

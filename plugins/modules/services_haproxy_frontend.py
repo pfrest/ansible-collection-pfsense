@@ -69,7 +69,6 @@ options:
   name:
     required: true
     type: str
-    default: null
     choices: []
     description: The unique name for this HAProxy frontend.
   descr:
@@ -97,7 +96,6 @@ options:
       extaddr:
         required: true
         type: str
-        default: null
         choices:
         - custom
         - any_ipv4
@@ -108,7 +106,6 @@ options:
       extaddr_custom:
         required: false
         type: str
-        default: null
         choices: []
         description: The custom IPv4 or IPv6 address to use as the external address.
       extaddr_port:
@@ -139,7 +136,6 @@ options:
   type:
     required: true
     type: str
-    default: null
     choices:
     - http
     - https
@@ -156,13 +152,11 @@ options:
       name:
         required: true
         type: str
-        default: null
         choices: []
         description: The unique name for this frontend ACL.
       expression:
         required: true
         type: str
-        default: null
         choices:
         - host_starts_with
         - host_ends_with
@@ -193,7 +187,6 @@ options:
       value:
         required: true
         type: str
-        default: null
         choices: []
         description: The value which indicates a match for this ACL.
       casesensitive:
@@ -219,7 +212,6 @@ options:
       action:
         required: true
         type: str
-        default: null
         choices:
         - use_backend
         - custom
@@ -269,85 +261,71 @@ options:
       acl:
         required: true
         type: str
-        default: null
         choices: []
         description: The name of the frontend ACL this action is associated with.
       backend:
         required: false
         type: str
-        default: null
         choices: []
         description: The backend to use when an ACL match is found.
       customaction:
         required: false
         type: str
-        default: null
         choices: []
         description: The custom action to take when an ACL match is found.
       deny_status:
         required: false
         type: str
-        default: null
         choices: []
         description: The deny status to use when an ACL match is found.
       realm:
         required: false
         type: str
-        default: null
         choices: []
         description: The authentication realm to use when an ACL match is found.
       rule:
         required: false
         type: str
-        default: null
         choices: []
         description: The redirect rule to use when an ACL match is found.
       lua_function:
         required: false
         type: str
-        default: null
         choices: []
         description: The Lua function to use when an ACL match is found.
       name:
         required: false
         type: str
-        default: null
         choices: []
         description: The name to use when an ACL match is found.
       fmt:
         required: false
         type: str
-        default: null
         choices: []
         description: The fmt value to use when an ACL match is found.
       find:
         required: false
         type: str
-        default: null
         choices: []
         description: The value to find when an ACL match is found.
       replace:
         required: false
         type: str
-        default: null
         choices: []
         description: The value to replace with when an ACL match is found.
       path:
         required: false
         type: str
-        default: null
         choices: []
         description: The path to use when an ACL match is found.
       status:
         required: false
         type: str
-        default: null
         choices: []
         description: The status to use when an ACL match is found.
       reason:
         required: false
         type: str
-        default: null
         choices: []
         description: The status reason to use when an ACL match is found.
   backend_serverpool:
@@ -399,14 +377,12 @@ options:
       errorcode:
         required: true
         type: int
-        default: null
         choices: []
         description: The HTTP status code that will trigger this error file to be
           used.
       errorfile:
         required: true
         type: str
-        default: null
         choices: []
         description: The HAProxy error file object that should be used for the assigned
           HTTP status code.
@@ -419,7 +395,6 @@ options:
   forwardfor:
     required: false
     type: bool
-    default: false
     choices: []
     description: Enables or disables the HTTP X-Forwarded-For header which contains
       the client's IP address.
@@ -796,7 +771,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "descr": {
@@ -826,7 +800,6 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "choices": [
                         "custom",
                         "any_ipv4",
@@ -840,7 +813,6 @@ def run_module():
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
                 "extaddr_port": {
@@ -877,7 +849,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": ["http", "https", "tcp"],
             "nullable": False,
         },
@@ -893,14 +864,12 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "expression": {
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "choices": [
                         "host_starts_with",
                         "host_ends_with",
@@ -934,7 +903,6 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "casesensitive": {
@@ -965,7 +933,6 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "choices": [
                         "use_backend",
                         "custom",
@@ -1018,98 +985,84 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "backend": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
                 "customaction": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
                 "deny_status": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
                 "realm": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
                 "rule": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
                 "lua_function": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
                 "name": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
                 "fmt": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
                 "find": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
                 "replace": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
                 "path": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
                 "status": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
                 "reason": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
             },
@@ -1168,14 +1121,12 @@ def run_module():
                     "type": "int",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "errorfile": {
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
             },
@@ -1191,7 +1142,6 @@ def run_module():
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "httpclose": {

@@ -60,7 +60,6 @@ options:
       timeserver:
         required: true
         type: str
-        default: null
         choices: []
         description: The IP or hostname of the remote NTP time server, pool or peer.
       type:
@@ -84,7 +83,6 @@ options:
       noselect:
         required: false
         type: bool
-        default: false
         choices: []
         description: Prevent NTP from using this timeserver, but continue collecting
           stats.
@@ -211,7 +209,6 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "type": {
@@ -233,7 +230,6 @@ def run_module():
                     "type": "bool",
                     "required": False,
                     "no_log": False,
-                    "default": False,
                     "nullable": True,
                 },
             },

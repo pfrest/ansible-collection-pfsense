@@ -55,19 +55,16 @@ options:
   descr:
     required: true
     type: str
-    default: null
     choices: []
     description: The descriptive name for this certificate.
   caref:
     required: true
     type: str
-    default: null
     choices: []
     description: The certificate authority to use as the parent for this certificate.
   keytype:
     required: true
     type: str
-    default: null
     choices:
     - RSA
     - ECDSA
@@ -75,7 +72,6 @@ options:
   keylen:
     required: false
     type: int
-    default: null
     choices:
     - 1024
     - 2048
@@ -90,13 +86,11 @@ options:
   ecname:
     required: false
     type: str
-    default: null
     choices: []
     description: The name of the elliptic curve to use for the ECDSA key pair.
   digest_alg:
     required: true
     type: str
-    default: null
     choices: []
     description: The digest method used when the certificate is signed.
   lifetime:
@@ -108,7 +102,6 @@ options:
   dn_commonname:
     required: true
     type: str
-    default: null
     choices: []
     description: The common name of the certificate.
   dn_country:
@@ -368,21 +361,18 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "caref": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "keytype": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": ["RSA", "ECDSA"],
             "nullable": False,
         },
@@ -390,7 +380,6 @@ def run_module():
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": None,
             "choices": [1024, 2048, 3072, 4096, 6144, 7680, 8192, 15360, 16384],
             "nullable": True,
         },
@@ -398,14 +387,12 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "digest_alg": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "lifetime": {
@@ -419,7 +406,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "dn_country": {

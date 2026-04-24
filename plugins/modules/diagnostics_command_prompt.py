@@ -55,7 +55,6 @@ options:
   command:
     required: true
     type: str
-    default: null
     choices: []
     description: The command to be executed.
 author:
@@ -155,7 +154,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
     }

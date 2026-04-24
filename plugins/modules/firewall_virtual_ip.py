@@ -68,7 +68,6 @@ options:
   mode:
     required: true
     type: str
-    default: null
     choices:
     - ipalias
     - proxyarp
@@ -78,7 +77,6 @@ options:
   interface:
     required: true
     type: str
-    default: null
     choices: []
     description: The interface this virtual IP will apply to.
   type:
@@ -93,13 +91,11 @@ options:
   subnet:
     required: true
     type: str
-    default: null
     choices: []
     description: The address for this virtual IP.
   subnet_bits:
     required: true
     type: int
-    default: null
     choices: []
     description: The subnet bits for this virtual IP. For `proxyarp` and `other` virtual
       IPs, this value specifies a block of many IP address. For all other virtual
@@ -113,38 +109,32 @@ options:
   noexpand:
     required: false
     type: bool
-    default: false
     choices: []
     description: Disable expansion of this entry into IPs on NAT lists (e.g. 192.168.1.0/24
       expands to 256 entries.)
   vhid:
     required: false
     type: int
-    default: null
     choices: []
     description: The VHID group that the machines will share.
   advbase:
     required: false
     type: int
-    default: 1
     choices: []
     description: The base frequency that this machine will advertise.
   advskew:
     required: false
     type: int
-    default: 0
     choices: []
     description: The frequency skew that this machine will advertise.
   password:
     required: false
     type: str
-    default: null
     choices: []
     description: The VHID group password shared by all CARP members.
   carp_mode:
     required: false
     type: str
-    default: mcast
     choices:
     - mcast
     - ucast
@@ -153,7 +143,6 @@ options:
   carp_peer:
     required: false
     type: str
-    default: null
     choices: []
     description: The IP address of the CARP peer. Please note this field is exclusive
       to pfSense Plus and has no effect on CE.
@@ -347,7 +336,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": ["ipalias", "proxyarp", "carp", "other"],
             "nullable": False,
         },
@@ -355,7 +343,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "type": {
@@ -370,14 +357,12 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "subnet_bits": {
             "type": "int",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "descr": {
@@ -391,42 +376,36 @@ def run_module():
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "vhid": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "advbase": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 1,
             "nullable": True,
         },
         "advskew": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 0,
             "nullable": True,
         },
         "password": {
             "type": "str",
             "required": False,
             "no_log": True,
-            "default": None,
             "nullable": True,
         },
         "carp_mode": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "mcast",
             "choices": ["mcast", "ucast"],
             "nullable": True,
         },
@@ -434,7 +413,6 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
     }

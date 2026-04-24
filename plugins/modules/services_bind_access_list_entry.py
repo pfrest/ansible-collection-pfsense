@@ -75,7 +75,6 @@ options:
   value:
     required: true
     type: str
-    default: null
     choices: []
     description: The network CIDR to allow.
   description:
@@ -215,7 +214,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "description": {

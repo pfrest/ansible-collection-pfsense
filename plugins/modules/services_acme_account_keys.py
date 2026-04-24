@@ -61,7 +61,6 @@ options:
       name:
         required: true
         type: str
-        default: null
         choices: []
         description: The name of the ACME account key.
       descr:
@@ -79,7 +78,6 @@ options:
       acmeserver:
         required: true
         type: str
-        default: null
         choices: []
         description: The ACME server this account key will belong to.
       accountkey:
@@ -212,7 +210,6 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "descr": {
@@ -233,7 +230,6 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "accountkey": {

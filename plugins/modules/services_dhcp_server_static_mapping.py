@@ -74,7 +74,6 @@ options:
   mac:
     required: true
     type: str
-    default: null
     choices: []
     description: The MAC address of the client this mapping is for.
   ipaddr:
@@ -352,7 +351,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "ipaddr": {

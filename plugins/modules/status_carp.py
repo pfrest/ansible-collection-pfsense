@@ -55,13 +55,11 @@ options:
   enable:
     required: true
     type: bool
-    default: null
     choices: []
     description: Enables or disables CARP on this system.
   maintenance_mode:
     required: true
     type: bool
-    default: null
     choices: []
     description: Enables or disables CARP maintenance mode on this system.
 author:
@@ -163,14 +161,12 @@ def run_module():
             "type": "bool",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "maintenance_mode": {
             "type": "bool",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
     }

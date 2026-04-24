@@ -75,13 +75,11 @@ options:
   name:
     required: true
     type: str
-    default: null
     choices: []
     description: The domain name for this record.
   type:
     required: true
     type: str
-    default: null
     choices:
     - A
     - AAAA
@@ -97,14 +95,12 @@ options:
   rdata:
     required: true
     type: str
-    default: null
     choices: []
     description: The data for this record. This can be an IP address, domain name,
       or other data depending on the record type.
   priority:
     required: false
     type: int
-    default: null
     choices: []
     description: The priority for this record.
 author:
@@ -254,14 +250,12 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "type": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": [
                 "A",
                 "AAAA",
@@ -280,14 +274,12 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "priority": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
     }

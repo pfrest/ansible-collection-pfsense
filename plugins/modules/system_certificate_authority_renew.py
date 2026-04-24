@@ -55,7 +55,6 @@ options:
   caref:
     required: true
     type: str
-    default: null
     choices: []
     description: The Certificate Authority to renew.
   reusekey:
@@ -192,7 +191,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "reusekey": {

@@ -55,7 +55,6 @@ options:
   host:
     required: true
     type: str
-    default: null
     choices: []
     description: The IP address or hostname to ping.
   count:
@@ -167,7 +166,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "count": {

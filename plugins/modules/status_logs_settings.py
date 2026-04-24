@@ -167,7 +167,6 @@ options:
   ipprotocol:
     required: false
     type: str
-    default: ipv4
     choices:
     - ipv4
     - ipv6
@@ -175,103 +174,86 @@ options:
   sourceip:
     required: false
     type: str
-    default: ''
     choices: []
     description: The interface to use as the source IP address for remote logging.
   remoteserver:
     required: false
     type: str
-    default: null
     choices: []
     description: The first remote syslog server to send log entries to.
   remoteserver2:
     required: false
     type: str
-    default: null
     choices: []
     description: The second remote syslog server to send log entries to.
   remoteserver3:
     required: false
     type: str
-    default: null
     choices: []
     description: The third remote syslog server to send log entries to.
   logall:
     required: false
     type: bool
-    default: false
     choices: []
     description: Log everything to the remote syslog server(s).
   filter:
     required: false
     type: bool
-    default: false
     choices: []
     description: Log filter events to the remote syslog server(s).
   dhcp:
     required: false
     type: bool
-    default: false
     choices: []
     description: Log DHCP events to the remote syslog server(s).
   auth:
     required: false
     type: bool
-    default: false
     choices: []
     description: Log authentication events to the remote syslog server(s).
   portalauth:
     required: false
     type: bool
-    default: false
     choices: []
     description: Log captive portal authentication events to the remote syslog server(s).
   vpn:
     required: false
     type: bool
-    default: false
     choices: []
     description: Log VPN events to the remote syslog server(s).
   dpinger:
     required: false
     type: bool
-    default: false
     choices: []
     description: Log gateway monitoring events to the remote syslog server(s).
   hostapd:
     required: false
     type: bool
-    default: false
     choices: []
     description: Log wireless authentication events to the remote syslog server(s).
   system:
     required: false
     type: bool
-    default: false
     choices: []
     description: Log system events to the remote syslog server(s).
   resolver:
     required: false
     type: bool
-    default: false
     choices: []
     description: Log DNS resolver events to the remote syslog server(s).
   ppp:
     required: false
     type: bool
-    default: false
     choices: []
     description: Log PPP events to the remote syslog server(s).
   routing:
     required: false
     type: bool
-    default: false
     choices: []
     description: Log routing events to the remote syslog server(s).
   ntpd:
     required: false
     type: bool
-    default: false
     choices: []
     description: Log NTP events to the remote syslog server(s).
 author:
@@ -623,7 +605,6 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "ipv4",
             "choices": ["ipv4", "ipv6"],
             "nullable": True,
         },
@@ -631,119 +612,102 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "remoteserver": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "remoteserver2": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "remoteserver3": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "logall": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "filter": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "dhcp": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "auth": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "portalauth": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "vpn": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "dpinger": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "hostapd": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "system": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "resolver": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "ppp": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "routing": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "ntpd": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
     }

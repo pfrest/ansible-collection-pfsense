@@ -69,7 +69,6 @@ options:
   name:
     required: true
     type: str
-    default: null
     choices: []
     description: The name of the view.
   descr:
@@ -241,7 +240,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "descr": {

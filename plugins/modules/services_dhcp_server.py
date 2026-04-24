@@ -68,7 +68,6 @@ options:
   interface:
     required: true
     type: str
-    default: null
     choices: []
     description: The interface to configure the DHCP server for. This field is only
       necessary when you wantto change the interface (ID) of an existing DHCP server,
@@ -246,14 +245,12 @@ options:
       range_from:
         required: true
         type: str
-        default: null
         choices: []
         description: The starting IP address for this address pool. This address must
           be less than or equal to the `range_to` field.
       range_to:
         required: true
         type: str
-        default: null
         choices: []
         description: The ending IP address for the this address pool. This address
           must be greater than or equal to the `range_to` field.
@@ -369,13 +366,11 @@ options:
       number:
         required: true
         type: int
-        default: null
         choices: []
         description: The DHCP option number to configure.
       type:
         required: true
         type: str
-        default: null
         choices:
         - text
         - string
@@ -391,7 +386,6 @@ options:
       value:
         required: true
         type: str
-        default: null
         choices: []
         description: The value to configure for the option.
   staticmap:
@@ -405,7 +399,6 @@ options:
       mac:
         required: true
         type: str
-        default: null
         choices: []
         description: The MAC address of the client this mapping is for.
       ipaddr:
@@ -908,7 +901,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "enable": {
@@ -1084,14 +1076,12 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "range_to": {
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "domain": {
@@ -1206,14 +1196,12 @@ def run_module():
                     "type": "int",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "type": {
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "choices": [
                         "text",
                         "string",
@@ -1232,7 +1220,6 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
             },
@@ -1249,7 +1236,6 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "ipaddr": {

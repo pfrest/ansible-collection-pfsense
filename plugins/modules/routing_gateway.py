@@ -68,7 +68,6 @@ options:
   name:
     required: true
     type: str
-    default: null
     choices: []
     description: Sets a name for the gateway.
   descr:
@@ -86,7 +85,6 @@ options:
   ipprotocol:
     required: true
     type: str
-    default: null
     choices:
     - inet
     - inet6
@@ -94,13 +92,11 @@ options:
   interface:
     required: true
     type: str
-    default: null
     choices: []
     description: Sets the interface this gateway will apply to.
   gateway:
     required: true
     type: str
-    default: null
     choices: []
     description: Sets the IP address of the remote gateway.
   monitor_disable:
@@ -112,7 +108,6 @@ options:
   monitor:
     required: false
     type: str
-    default: null
     choices: []
     description: Sets a different IP address to use when monitoring this gateway.
       This is typically only necessary if the gateway IP does not accept ICMP probes.
@@ -443,7 +438,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "descr": {
@@ -464,7 +458,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": ["inet", "inet6"],
             "nullable": False,
         },
@@ -472,14 +465,12 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "gateway": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "monitor_disable": {
@@ -493,7 +484,6 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "action_disable": {

@@ -55,7 +55,6 @@ options:
   sync_data:
     required: true
     type: str
-    default: null
     choices: []
     description: The serialized REST API settings data to be synced.
 author:
@@ -152,7 +151,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
     }

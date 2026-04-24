@@ -68,13 +68,11 @@ options:
   if:
     required: true
     type: str
-    default: null
     choices: []
     description: The real parent interface this VLAN will be applied to.
   tag:
     required: true
     type: int
-    default: null
     choices: []
     description: The VLAN ID tag to use. This must be unique from all other VLANs
       on the parent interface.
@@ -225,14 +223,12 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "tag": {
             "type": "int",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "pcp": {

@@ -69,7 +69,6 @@ options:
   server:
     required: true
     type: int
-    default: null
     choices: []
     description: The VPN ID of the OpenVPN server this client export corresponds to.
   useaddr:
@@ -87,7 +86,6 @@ options:
   useaddr_hostname:
     required: false
     type: str
-    default: ''
     choices: []
     description: The hostname to use for the OpenVPN server address.
   verifyservercn:
@@ -137,14 +135,12 @@ options:
   pkcs11providers:
     required: false
     type: list
-    default: null
     choices: []
     description: The client local path to the PKCS#11 provider(s) (DLL, module)
     elements: str
   pkcs11id:
     required: false
     type: str
-    default: null
     choices: []
     description: The object's ID on the PKCS#11 device.
   usetoken:
@@ -163,7 +159,6 @@ options:
   pass:
     required: false
     type: str
-    default: null
     choices: []
     description: Password used to protect the certificate file contents.
   p12encryption:
@@ -185,7 +180,6 @@ options:
   useproxytype:
     required: false
     type: str
-    default: http
     choices:
     - http
     - socks
@@ -193,20 +187,17 @@ options:
   proxyaddr:
     required: false
     type: str
-    default: null
     choices: []
     description: The IP address or hostname of the proxy server to use.
   proxyport:
     required: false
     type: str
-    default: null
     choices: []
     description: 'The port where the proxy server is listening. Valid options are:
       a TCP/UDP port number'
   useproxypass:
     required: false
     type: str
-    default: null
     choices:
     - none
     - basic
@@ -215,13 +206,11 @@ options:
   proxyuser:
     required: false
     type: str
-    default: null
     choices: []
     description: The username to use to authenticate with the proxy server.
   proxypass:
     required: false
     type: str
-    default: null
     choices: []
     description: The password to use to authenticate with the proxy server.
   advancedoptions:
@@ -460,7 +449,6 @@ def run_module():
             "type": "int",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "useaddr": {
@@ -481,7 +469,6 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "verifyservercn": {
@@ -532,7 +519,6 @@ def run_module():
             "type": "list",
             "required": False,
             "no_log": False,
-            "default": None,
             "elements": "str",
             "nullable": True,
         },
@@ -540,7 +526,6 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "usetoken": {
@@ -561,7 +546,6 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": True,
-            "default": None,
             "nullable": True,
         },
         "p12encryption": {
@@ -583,7 +567,6 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "http",
             "choices": ["http", "socks"],
             "nullable": True,
         },
@@ -591,21 +574,18 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "proxyport": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "useproxypass": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "choices": ["none", "basic", "ntlm"],
             "nullable": True,
         },
@@ -613,14 +593,12 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "proxypass": {
             "type": "str",
             "required": False,
             "no_log": True,
-            "default": None,
             "nullable": True,
         },
         "advancedoptions": {

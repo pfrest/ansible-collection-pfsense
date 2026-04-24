@@ -68,7 +68,6 @@ options:
   type:
     required: true
     type: str
-    default: null
     choices:
     - ldap
     - radius
@@ -76,26 +75,22 @@ options:
   name:
     required: true
     type: str
-    default: null
     choices: []
     description: The descriptive name for this authentication server.
   host:
     required: true
     type: str
-    default: null
     choices: []
     description: The remote IP address or hostname of the authentication server.
   ldap_port:
     required: false
     type: str
-    default: null
     choices: []
     description: 'The LDAP port to connect to on this LDAP authentication server.
       Valid options are: a TCP/UDP port number'
   ldap_urltype:
     required: false
     type: str
-    default: null
     choices:
     - Standard TCP
     - STARTTLS Encrypt
@@ -107,7 +102,6 @@ options:
   ldap_protver:
     required: false
     type: int
-    default: 3
     choices:
     - 2
     - 3
@@ -116,20 +110,17 @@ options:
   ldap_timeout:
     required: false
     type: int
-    default: 25
     choices: []
     description: The timeout (in seconds) for connections to the LDAP authentication
       server.
   ldap_caref:
     required: false
     type: str
-    default: global
     choices: []
     description: The certificate authority used to validate the LDAP server certificate.
   ldap_scope:
     required: false
     type: str
-    default: null
     choices:
     - one
     - subtree
@@ -138,100 +129,84 @@ options:
   ldap_basedn:
     required: false
     type: str
-    default: ''
     choices: []
     description: The root for LDAP searches on this authentication server.
   ldap_authcn:
     required: false
     type: str
-    default: ''
     choices: []
     description: The LDAP authentication container.
   ldap_extended_enabled:
     required: false
     type: bool
-    default: false
     choices: []
     description: Enable LDAP extended queries.
   ldap_extended_query:
     required: false
     type: str
-    default: ''
     choices: []
     description: The extended LDAP query to make during LDAP searches.
   ldap_binddn:
     required: false
     type: str
-    default: null
     choices: []
     description: The DN to use when binding to this authentication server. Set to
       `null` to bind anonymously.
   ldap_bindpw:
     required: false
     type: str
-    default: null
     choices: []
     description: The password to use when binding to this authentication server.
   ldap_attr_user:
     required: false
     type: str
-    default: cn
     choices: []
     description: The LDAP user attribute.
   ldap_attr_group:
     required: false
     type: str
-    default: cn
     choices: []
     description: The LDAP group attribute.
   ldap_attr_member:
     required: false
     type: str
-    default: member
     choices: []
     description: The LDAP member attribute.
   ldap_rfc2307:
     required: false
     type: bool
-    default: false
     choices: []
     description: Enables or disable RFC2307 LDAP options.
   ldap_rfc2307_userdn:
     required: false
     type: bool
-    default: false
     choices: []
     description: Enables or disable the use of DNs for username searches.
   ldap_attr_groupobj:
     required: false
     type: str
-    default: posixGroup
     choices: []
     description: The group object class for groups in RFC2307 mode.
   ldap_pam_groupdn:
     required: false
     type: str
-    default: ''
     choices: []
     description: The group DN to use for shell authentication. Users must be a member
       of this group and have valid posixAccount attributes to sign in.
   ldap_utf8:
     required: false
     type: bool
-    default: false
     choices: []
     description: Enables or disables UTF-8 encoding LDAP parameters before sending
       them to this authentication server
   ldap_nostrip_at:
     required: false
     type: bool
-    default: false
     choices: []
     description: Do not strip away parts of the username after the @ symbol.
   ldap_allow_unauthenticated:
     required: false
     type: bool
-    default: true
     choices: []
     description: Enables or disables unauthenticated binding. Unauthenticated binds
       are bind with an existing login but with an empty password. Some LDAP servers
@@ -239,27 +214,23 @@ options:
   radius_secret:
     required: false
     type: str
-    default: null
     choices: []
     description: The shared secret to use when authenticating to this RADIUS server.
   radius_auth_port:
     required: false
     type: str
-    default: '1812'
     choices: []
     description: 'The port used by RADIUS for authentication. Set to `null` to disable
       use of authentication services. Valid options are: a TCP/UDP port number'
   radius_acct_port:
     required: false
     type: str
-    default: '1813'
     choices: []
     description: 'The port used by RADIUS for accounting. Set to `null` to disable
       use of accounting services. Valid options are: a TCP/UDP port number'
   radius_protocol:
     required: false
     type: str
-    default: MSCHAPv2
     choices:
     - MSCHAPv2
     - MSCHAPv1
@@ -269,14 +240,12 @@ options:
   radius_timeout:
     required: false
     type: int
-    default: 5
     choices: []
     description: The timeout (in seconds) for connections to this RADIUS authentication
       server.
   radius_nasip_attribute:
     required: false
     type: str
-    default: null
     choices: []
     description: The interface whose IP will be used as the 'NAS-IP-Address' attribute
       during RADIUS Access-Requests. This choice will not change the interface used
@@ -555,7 +524,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": ["ldap", "radius"],
             "nullable": False,
         },
@@ -563,28 +531,24 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "host": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "ldap_port": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "ldap_urltype": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "choices": ["Standard TCP", "STARTTLS Encrypt", "SSL/TLS Encrypted"],
             "nullable": True,
         },
@@ -592,7 +556,6 @@ def run_module():
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 3,
             "choices": [2, 3],
             "nullable": True,
         },
@@ -600,21 +563,18 @@ def run_module():
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 25,
             "nullable": True,
         },
         "ldap_caref": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "global",
             "nullable": True,
         },
         "ldap_scope": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "choices": ["one", "subtree"],
             "nullable": True,
         },
@@ -622,140 +582,120 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "ldap_authcn": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "ldap_extended_enabled": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "ldap_extended_query": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "ldap_binddn": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "ldap_bindpw": {
             "type": "str",
             "required": False,
             "no_log": True,
-            "default": None,
             "nullable": True,
         },
         "ldap_attr_user": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "cn",
             "nullable": True,
         },
         "ldap_attr_group": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "cn",
             "nullable": True,
         },
         "ldap_attr_member": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "member",
             "nullable": True,
         },
         "ldap_rfc2307": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "ldap_rfc2307_userdn": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "ldap_attr_groupobj": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "posixGroup",
             "nullable": True,
         },
         "ldap_pam_groupdn": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "ldap_utf8": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "ldap_nostrip_at": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "ldap_allow_unauthenticated": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": True,
             "nullable": True,
         },
         "radius_secret": {
             "type": "str",
             "required": False,
             "no_log": True,
-            "default": None,
             "nullable": True,
         },
         "radius_auth_port": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "1812",
             "nullable": True,
         },
         "radius_acct_port": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "1813",
             "nullable": True,
         },
         "radius_protocol": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "MSCHAPv2",
             "choices": ["MSCHAPv2", "MSCHAPv1", "CHAP_MD5", "PAP"],
             "nullable": True,
         },
@@ -763,14 +703,12 @@ def run_module():
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 5,
             "nullable": True,
         },
         "radius_nasip_attribute": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
     }

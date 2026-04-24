@@ -68,19 +68,16 @@ options:
   host:
     required: true
     type: str
-    default: null
     choices: []
     description: The hostname of this override.
   domain:
     required: true
     type: str
-    default: null
     choices: []
     description: The domain of this override.
   ip:
     required: true
     type: str
-    default: null
     choices: []
     description: The IP address of this override.
   descr:
@@ -100,13 +97,11 @@ options:
       host:
         required: true
         type: str
-        default: null
         choices: []
         description: The hostname of this override alias.
       domain:
         required: true
         type: str
-        default: null
         choices: []
         description: The domain of this override alias.
       description:
@@ -264,21 +259,18 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "domain": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "ip": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "descr": {
@@ -300,14 +292,12 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "domain": {
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "description": {

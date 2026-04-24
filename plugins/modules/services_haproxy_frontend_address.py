@@ -75,7 +75,6 @@ options:
   extaddr:
     required: true
     type: str
-    default: null
     choices:
     - custom
     - any_ipv4
@@ -86,7 +85,6 @@ options:
   extaddr_custom:
     required: false
     type: str
-    default: null
     choices: []
     description: The custom IPv4 or IPv6 address to use as the external address.
   extaddr_port:
@@ -255,7 +253,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": [
                 "custom",
                 "any_ipv4",
@@ -269,7 +266,6 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "extaddr_port": {

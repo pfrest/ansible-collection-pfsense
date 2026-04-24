@@ -56,7 +56,6 @@ options:
   synconchanges:
     required: true
     type: str
-    default: null
     choices:
     - disabled
     - manual
@@ -77,7 +76,6 @@ options:
   masterip:
     required: true
     type: str
-    default: null
     choices: []
     description: The IP address of the master BIND server.
 author:
@@ -183,7 +181,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": ["disabled", "manual", "auto"],
             "nullable": False,
         },
@@ -199,7 +196,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
     }

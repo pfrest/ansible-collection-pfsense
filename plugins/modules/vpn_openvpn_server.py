@@ -80,7 +80,6 @@ options:
   mode:
     required: true
     type: str
-    default: null
     choices:
     - p2p_tls
     - server_tls
@@ -90,8 +89,6 @@ options:
   authmode:
     required: false
     type: list
-    default:
-    - Local Database
     choices: []
     description: The name of the authentication server to use as the authentication
       backend for this OpenVPN server
@@ -99,7 +96,6 @@ options:
   dev_mode:
     required: true
     type: str
-    default: null
     choices:
     - tun
     - tap
@@ -109,7 +105,6 @@ options:
   protocol:
     required: true
     type: str
-    default: null
     choices:
     - UDP4
     - UDP6
@@ -121,7 +116,6 @@ options:
   interface:
     required: false
     type: str
-    default: null
     choices: []
     description: The interface or Virtual IP address where OpenVPN will receive client
       connections.
@@ -141,14 +135,12 @@ options:
   tls:
     required: false
     type: str
-    default: null
     choices: []
     description: The TLS key this OpenVPN server will use to sign control channel
       packets with an HMAC signature for authentication when establishing the tunnel.
   tls_type:
     required: false
     type: str
-    default: null
     choices:
     - auth
     - crypt
@@ -160,7 +152,6 @@ options:
   tlsauth_keydir:
     required: false
     type: str
-    default: default
     choices:
     - default
     - '0'
@@ -173,13 +164,11 @@ options:
   caref:
     required: true
     type: str
-    default: null
     choices: []
     description: The `refid` of the CA object to assume as the peer CA.
   certref:
     required: true
     type: str
-    default: null
     choices: []
     description: The `refid` of the certificate object to assume as the OpenVPN server
       certificate.
@@ -200,13 +189,11 @@ options:
   dh_length:
     required: true
     type: str
-    default: null
     choices: []
     description: The Diffie-Hellman (DH) parameter set used for key exchange.
   ecdh_curve:
     required: true
     type: str
-    default: null
     choices: []
     description: The Elliptic Curve to use for key exchange. The curve from the server
       certificate is used by default when the server uses an ECDSA certificate. Otherwise,
@@ -214,14 +201,12 @@ options:
   data_ciphers:
     required: true
     type: list
-    default: null
     choices: []
     description: The encryption algorithms/ciphers allowed by this OpenVPN server.
     elements: str
   data_ciphers_fallback:
     required: true
     type: str
-    default: null
     choices: []
     description: The fallback encryption algorithm/cipher used for data channel packets
       when communicating with clients that do not support data encryption algorithm
@@ -229,14 +214,12 @@ options:
   digest:
     required: true
     type: str
-    default: null
     choices: []
     description: The algorithm used to authenticate data channel packets, and control
       channel packets if a TLS Key is present.
   strictusercn:
     required: false
     type: bool
-    default: false
     choices: []
     description: Enables or disables enforcing a match between the common name of
       the client certificate and the username given at login.
@@ -264,13 +247,11 @@ options:
   serverbridge_dhcp:
     required: false
     type: bool
-    default: false
     choices: []
     description: Enables or disables clients on the bridge to obtain DHCP.
   serverbridge_interface:
     required: false
     type: str
-    default: null
     choices: []
     description: The interface to which this TAP instance will be bridged. This is
       not done automatically. This interface must be assigned and the bridge created
@@ -279,20 +260,17 @@ options:
   serverbridge_routegateway:
     required: false
     type: bool
-    default: false
     choices: []
     description: Enables or disables pushing the bridge interface's IPv4 address to
       connecting clients as a route gateway.
   serverbridge_dhcp_start:
     required: false
     type: str
-    default: null
     choices: []
     description: The bridge DHCP range's start address.
   serverbridge_dhcp_end:
     required: false
     type: str
-    default: null
     choices: []
     description: The bridge DHCP range's end address.
   gwredir:
@@ -310,7 +288,6 @@ options:
   local_network:
     required: false
     type: list
-    default: []
     choices: []
     description: The IPv4 networks that will be accessible from the remote endpoint.
       Expressed as a list of one or more CIDR ranges or host/network type aliases.
@@ -320,7 +297,6 @@ options:
   local_networkv6:
     required: false
     type: list
-    default: []
     choices: []
     description: The IPv6 networks that will be accessible from the remote endpoint.
       Expressed as a list of one or more CIDR ranges or host/network type aliases.
@@ -390,7 +366,6 @@ options:
   connlimit:
     required: false
     type: int
-    default: null
     choices: []
     description: The number of concurrent connections a single user can have.
   dynamic_ip:
@@ -403,7 +378,6 @@ options:
   topology:
     required: false
     type: str
-    default: subnet
     choices:
     - subnet
     - net30
@@ -427,32 +401,27 @@ options:
   keepalive_interval:
     required: false
     type: int
-    default: 10
     choices: []
     description: The keepalive interval parameter.
   keepalive_timeout:
     required: false
     type: int
-    default: 60
     choices: []
     description: The keepalive timeout parameter.
   ping_seconds:
     required: false
     type: int
-    default: 10
     choices: []
     description: The number of seconds to accept no packets before sending a ping
       to the remote peer over the TCP/UDP control channel.
   ping_push:
     required: false
     type: bool
-    default: false
     choices: []
     description: Enables or disables push ping to the VPN client.
   ping_action:
     required: false
     type: str
-    default: ping_restart
     choices:
     - ping_restart
     - ping_exit
@@ -460,57 +429,48 @@ options:
   ping_action_seconds:
     required: false
     type: int
-    default: 60
     choices: []
     description: The number of seconds that must elapse before the ping is considered
       a timeout and the configured `ping_action` is performed.
   ping_action_push:
     required: false
     type: bool
-    default: false
     choices: []
     description: Enables or disables pushing the ping action to the VPN client.
   dns_domain:
     required: false
     type: str
-    default: ''
     choices: []
     description: The default domain to provide to clients.
   dns_server1:
     required: false
     type: str
-    default: ''
     choices: []
     description: The primary DNS server to provide to clients.
   dns_server2:
     required: false
     type: str
-    default: ''
     choices: []
     description: The secondary DNS server to provide to clients.
   dns_server3:
     required: false
     type: str
-    default: ''
     choices: []
     description: The tertiary DNS server to provide to clients.
   dns_server4:
     required: false
     type: str
-    default: ''
     choices: []
     description: The quaternary DNS server to provide to clients.
   push_blockoutsidedns:
     required: false
     type: bool
-    default: false
     choices: []
     description: Enables or disables blocking Windows 10 clients' access to DNS servers
       except across OpenVPN while connected, forcing clients to use only VPN DNS servers.
   push_register_dns:
     required: false
     type: bool
-    default: false
     choices: []
     description: Enables or disables running `net stop dnscache`, `net start dnscache`,
       `ipconfig /flushdns` and `ipconfig /registerdns` on connection initiation for
@@ -518,25 +478,21 @@ options:
   ntp_server1:
     required: false
     type: str
-    default: ''
     choices: []
     description: The primary NTP server to provide to clients.
   ntp_server2:
     required: false
     type: str
-    default: ''
     choices: []
     description: The secondary NTP server to provide to clients.
   netbios_enable:
     required: false
     type: bool
-    default: false
     choices: []
     description: Enables or disables NetBIOS over TCP/IP.
   netbios_ntype:
     required: false
     type: int
-    default: 0
     choices:
     - 0
     - 1
@@ -547,7 +503,6 @@ options:
   netbios_scope:
     required: false
     type: str
-    default: ''
     choices: []
     description: The NetBIOS Scope ID. This provides an extended naming service for
       NetBIOS over TCP/IP. The NetBIOS scope ID isolates NetBIOS traffic on a single
@@ -555,13 +510,11 @@ options:
   wins_server1:
     required: false
     type: str
-    default: ''
     choices: []
     description: The primary WINS server to provide to clients.
   wins_server2:
     required: false
     type: str
-    default: ''
     choices: []
     description: The secondary WINS server to provide to clients.
   custom_options:
@@ -574,7 +527,6 @@ options:
   username_as_common_name:
     required: false
     type: bool
-    default: false
     choices: []
     description: Enables or disable the username of the client being used in place
       of the certificate common name for purposes such as determining Client Specific
@@ -1139,7 +1091,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": ["p2p_tls", "server_tls", "server_user", "server_tls_user"],
             "nullable": False,
         },
@@ -1147,7 +1098,6 @@ def run_module():
             "type": "list",
             "required": False,
             "no_log": False,
-            "default": ["Local Database"],
             "elements": "str",
             "nullable": True,
         },
@@ -1155,7 +1105,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": ["tun", "tap"],
             "nullable": False,
         },
@@ -1163,7 +1112,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": ["UDP4", "UDP6", "UDP", "TCP4", "TCP6", "TCP"],
             "nullable": False,
         },
@@ -1171,7 +1119,6 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "local_port": {
@@ -1192,14 +1139,12 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": True,
-            "default": None,
             "nullable": True,
         },
         "tls_type": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "choices": ["auth", "crypt"],
             "nullable": True,
         },
@@ -1207,7 +1152,6 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "default",
             "choices": ["default", "0", "1", "2"],
             "nullable": True,
         },
@@ -1215,14 +1159,12 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "certref": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "cert_depth": {
@@ -1237,21 +1179,18 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "ecdh_curve": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "data_ciphers": {
             "type": "list",
             "required": True,
             "no_log": False,
-            "default": None,
             "elements": "str",
             "nullable": False,
         },
@@ -1259,21 +1198,18 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "digest": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "strictusercn": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "remote_cert_tls": {
@@ -1301,35 +1237,30 @@ def run_module():
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "serverbridge_interface": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "serverbridge_routegateway": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "serverbridge_dhcp_start": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "serverbridge_dhcp_end": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "gwredir": {
@@ -1350,7 +1281,6 @@ def run_module():
             "type": "list",
             "required": False,
             "no_log": False,
-            "default": [],
             "elements": "str",
             "nullable": True,
         },
@@ -1358,7 +1288,6 @@ def run_module():
             "type": "list",
             "required": False,
             "no_log": False,
-            "default": [],
             "elements": "str",
             "nullable": True,
         },
@@ -1418,7 +1347,6 @@ def run_module():
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "dynamic_ip": {
@@ -1432,7 +1360,6 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "subnet",
             "choices": ["subnet", "net30"],
             "nullable": True,
         },
@@ -1455,35 +1382,30 @@ def run_module():
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 10,
             "nullable": True,
         },
         "keepalive_timeout": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 60,
             "nullable": True,
         },
         "ping_seconds": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 10,
             "nullable": True,
         },
         "ping_push": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "ping_action": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "ping_restart",
             "choices": ["ping_restart", "ping_exit"],
             "nullable": True,
         },
@@ -1491,91 +1413,78 @@ def run_module():
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 60,
             "nullable": True,
         },
         "ping_action_push": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "dns_domain": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "dns_server1": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "dns_server2": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "dns_server3": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "dns_server4": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "push_blockoutsidedns": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "push_register_dns": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "ntp_server1": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "ntp_server2": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "netbios_enable": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "netbios_ntype": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 0,
             "choices": [0, 1, 2, 4, 8],
             "nullable": True,
         },
@@ -1583,21 +1492,18 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "wins_server1": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "wins_server2": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "custom_options": {
@@ -1612,7 +1518,6 @@ def run_module():
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "sndrcvbuf": {

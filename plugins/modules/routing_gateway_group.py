@@ -68,7 +68,6 @@ options:
   name:
     required: true
     type: str
-    default: null
     choices: []
     description: The name of the gateway group.
   trigger:
@@ -90,7 +89,6 @@ options:
   priorities:
     required: true
     type: list
-    default: null
     choices: []
     description: The priorities of the gateways in this group.
     elements: dict
@@ -98,13 +96,11 @@ options:
       gateway:
         required: true
         type: str
-        default: null
         choices: []
         description: The name of the gateway to prioritize in this gateway group.
       tier:
         required: true
         type: int
-        default: null
         choices: []
         description: The priority of this gateway in the group. Lower numbered tiers
           are higher priority.
@@ -266,7 +262,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "trigger": {
@@ -288,7 +283,6 @@ def run_module():
             "type": "list",
             "required": True,
             "no_log": False,
-            "default": None,
             "elements": "dict",
             "nullable": False,
             "options": {
@@ -296,14 +290,12 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "tier": {
                     "type": "int",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "virtual_ip": {

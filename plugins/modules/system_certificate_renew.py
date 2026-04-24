@@ -55,7 +55,6 @@ options:
   certref:
     required: true
     type: str
-    default: null
     choices: []
     description: The `refid` of the Certificate to renew.
   reusekey:
@@ -190,7 +189,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "reusekey": {

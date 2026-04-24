@@ -60,7 +60,6 @@ options:
       interface:
         required: true
         type: str
-        default: null
         choices: []
         description: The interface this 1:1 NAT mapping applies to.
       disabled:
@@ -96,7 +95,6 @@ options:
       external:
         required: true
         type: str
-        default: null
         choices: []
         description: 'The external IP address or interface for the 1:1 mapping. Valid
           value options are: an IP address. For interface values, the `:ip` modifier
@@ -105,7 +103,6 @@ options:
       source:
         required: true
         type: str
-        default: null
         choices: []
         description: 'The source IP address or subnet that traffic must match to apply
           this mapping. Valid value options are: an existing interface, an IP address,
@@ -116,7 +113,6 @@ options:
       destination:
         required: true
         type: str
-        default: null
         choices: []
         description: 'The destination IP address or subnet that traffic must match
           to apply this mapping. Valid value options are: an existing interface, an
@@ -287,7 +283,6 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "disabled": {
@@ -324,21 +319,18 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "source": {
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "destination": {
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "descr": {

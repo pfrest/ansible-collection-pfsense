@@ -138,7 +138,6 @@ options:
   override_sensitive_fields:
     required: false
     type: list
-    default: []
     choices: []
     description: Specifies a list of fields (formatted as ModelName:FieldName) that
       should have their sensitive attribute overridden. Fields selected here will
@@ -502,7 +501,6 @@ def run_module():
             "type": "list",
             "required": False,
             "no_log": False,
-            "default": [],
             "elements": "str",
             "nullable": True,
         },

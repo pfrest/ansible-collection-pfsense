@@ -77,7 +77,6 @@ options:
   resolve_interval:
     required: false
     type: int
-    default: 300
     choices: []
     description: The interval (in seconds) for re-resolving endpoint host/domain names.
   interface_group:
@@ -250,7 +249,6 @@ def run_module():
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 300,
             "nullable": True,
         },
         "interface_group": {

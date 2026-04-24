@@ -91,7 +91,6 @@ options:
   month:
     required: false
     type: list
-    default: null
     choices:
     - 1
     - 2
@@ -113,7 +112,6 @@ options:
   day:
     required: false
     type: list
-    default: null
     choices: []
     description: The day for each specified `month` value. Each value specified must
       correspond with a `month` field value and must match the order exactly. For
@@ -123,7 +121,6 @@ options:
   hour:
     required: true
     type: str
-    default: null
     choices: []
     description: The start time and end time for this time range in 24-hour format
       (i.e. HH:MM-HH:MM).
@@ -306,7 +303,6 @@ def run_module():
             "type": "list",
             "required": False,
             "no_log": False,
-            "default": None,
             "choices": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
             "elements": "int",
             "nullable": True,
@@ -315,7 +311,6 @@ def run_module():
             "type": "list",
             "required": False,
             "no_log": False,
-            "default": None,
             "elements": "int",
             "nullable": True,
         },
@@ -323,7 +318,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "rangedescr": {

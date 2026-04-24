@@ -55,13 +55,11 @@ options:
   hostname:
     required: true
     type: str
-    default: null
     choices: []
     description: The hostname portion of the FQDN to assign to this system.
   domain:
     required: true
     type: str
-    default: null
     choices: []
     description: The domain portion of the FQDN to assign to this system.
 author:
@@ -163,14 +161,12 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "domain": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
     }

@@ -55,7 +55,6 @@ options:
   certref:
     required: true
     type: str
-    default: null
     choices: []
     description: The Certificate to export as a PKCS12 file.
   encryption:
@@ -186,7 +185,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "encryption": {

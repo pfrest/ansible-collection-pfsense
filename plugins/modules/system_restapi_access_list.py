@@ -78,7 +78,6 @@ options:
       network:
         required: true
         type: str
-        default: null
         choices: []
         description: The network (in CIDR notation) that this entry applies to. Clients
           interacting with the REST API from this network will be affected by this
@@ -257,7 +256,6 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "users": {

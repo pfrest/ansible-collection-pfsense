@@ -75,7 +75,6 @@ options:
   action:
     required: true
     type: str
-    default: null
     choices:
     - use_server
     - custom
@@ -125,85 +124,71 @@ options:
   acl:
     required: true
     type: str
-    default: null
     choices: []
     description: The name of the backend ACL this action is associated with.
   server:
     required: false
     type: str
-    default: null
     choices: []
     description: The backend server to use when an ACL match is found.
   customaction:
     required: false
     type: str
-    default: null
     choices: []
     description: The custom action to take when an ACL match is found.
   deny_status:
     required: false
     type: str
-    default: null
     choices: []
     description: The deny status to use when an ACL match is found.
   realm:
     required: false
     type: str
-    default: null
     choices: []
     description: The authentication realm to use when an ACL match is found.
   rule:
     required: false
     type: str
-    default: null
     choices: []
     description: The redirect rule to use when an ACL match is found.
   lua_function:
     required: false
     type: str
-    default: null
     choices: []
     description: The Lua function to use when an ACL match is found.
   name:
     required: false
     type: str
-    default: null
     choices: []
     description: The name to use when an ACL match is found.
   fmt:
     required: false
     type: str
-    default: null
     choices: []
     description: The fmt value to use when an ACL match is found.
   find:
     required: false
     type: str
-    default: null
     choices: []
     description: The value to find when an ACL match is found.
   replace:
     required: false
     type: str
-    default: null
     choices: []
     description: The value to replace with when an ACL match is found.
   path:
     required: false
     type: str
-    default: null
     choices: []
     description: The path to use when an ACL match is found.
   status:
     required: false
     type: str
-    default: null
     choices: []
     description: The status to use when an ACL match is found.
   reason:
     required: false
     type: str
-    default: null
     choices: []
     description: The status reason to use when an ACL match is found.
 author:
@@ -417,7 +402,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": [
                 "use_server",
                 "custom",
@@ -470,98 +454,84 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "server": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "customaction": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "deny_status": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "realm": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "rule": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "lua_function": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "name": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "fmt": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "find": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "replace": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "path": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "status": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "reason": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
     }

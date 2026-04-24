@@ -68,7 +68,6 @@ options:
   name:
     required: true
     type: str
-    default: null
     choices: []
     description: The name for this user group.
   scope:
@@ -244,7 +243,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "scope": {

@@ -56,7 +56,6 @@ options:
   name:
     required: true
     type: str
-    default: null
     choices: []
     description: The name of the ACME account key to register.
 author:
@@ -161,7 +160,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
     }

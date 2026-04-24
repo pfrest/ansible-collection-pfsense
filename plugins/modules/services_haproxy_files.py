@@ -61,7 +61,6 @@ options:
       name:
         required: true
         type: str
-        default: null
         choices: []
         description: The unique name for this file.
       type:
@@ -75,7 +74,6 @@ options:
       content:
         required: true
         type: str
-        default: null
         choices: []
         description: The content of this file.
     description: The list of items to manage in the collection. Each item should be
@@ -193,7 +191,6 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "type": {
@@ -208,7 +205,6 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
             },

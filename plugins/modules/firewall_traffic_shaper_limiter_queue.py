@@ -74,7 +74,6 @@ options:
   name:
     required: true
     type: str
-    default: null
     choices: []
     description: The unique name for this limiter queue.
   enabled:
@@ -98,14 +97,12 @@ options:
   maskbits:
     required: false
     type: int
-    default: 32
     choices: []
     description: The IPv4 mask bits to use when determine the scope of the dynamic
       pipe for IPv4 traffic.
   maskbitsv6:
     required: false
     type: int
-    default: 128
     choices: []
     description: The IPv6 mask bits to use when determine the scope of the dynamic
       pipe for IPv4 traffic.
@@ -119,7 +116,6 @@ options:
   ecn:
     required: false
     type: bool
-    default: false
     choices: []
     description: Enable or disable ECN. ECN sets a reserved TCP flag when the queue
       is nearing or exceeding capacity. Not all AQMs or schedulers support this.
@@ -132,7 +128,6 @@ options:
   aqm:
     required: true
     type: str
-    default: null
     choices:
     - droptail
     - codel
@@ -145,122 +140,102 @@ options:
   param_codel_target:
     required: false
     type: int
-    default: 0
     choices: []
     description: The value for the CoDel target parameter.
   param_codel_interval:
     required: false
     type: int
-    default: 0
     choices: []
     description: The value for the CoDel interval parameter.
   param_pie_target:
     required: false
     type: int
-    default: 0
     choices: []
     description: The value for the PIE target parameter.
   param_pie_tupdate:
     required: false
     type: int
-    default: 0
     choices: []
     description: The value for the PIE tupdate parameter.
   param_pie_alpha:
     required: false
     type: int
-    default: 0
     choices: []
     description: The value for the PIE alpha parameter.
   param_pie_beta:
     required: false
     type: int
-    default: 0
     choices: []
     description: The value for the PIE beta parameter.
   param_pie_max_burst:
     required: false
     type: int
-    default: 0
     choices: []
     description: The value for the PIE max_burst parameter.
   param_pie_max_ecnth:
     required: false
     type: int
-    default: 0
     choices: []
     description: The value for the PIE ecnth parameter.
   pie_onoff:
     required: false
     type: bool
-    default: false
     choices: []
     description: Enable or disable turning PIE on and off depending on queue load.
   pie_capdrop:
     required: false
     type: bool
-    default: false
     choices: []
     description: Enable or disable cap drop adjustment.
   pie_qdelay:
     required: false
     type: bool
-    default: false
     choices: []
     description: Set queue delay type to timestamps (true) or departure rate estimation
       (false).
   pie_pderand:
     required: false
     type: bool
-    default: false
     choices: []
     description: Enable or disable drop probability de-randomisation.
   param_red_w_q:
     required: false
     type: int
-    default: 1
     choices: []
     description: The value for the RED w_q parameter.
   param_red_min_th:
     required: false
     type: int
-    default: 0
     choices: []
     description: The value for the RED min_th parameter.
   param_red_max_th:
     required: false
     type: int
-    default: 1
     choices: []
     description: The value for the RED max_th parameter.
   param_red_max_p:
     required: false
     type: int
-    default: 1
     choices: []
     description: The value for the RED max_p parameter.
   param_gred_w_q:
     required: false
     type: int
-    default: 1
     choices: []
     description: The value for the GRED w_q parameter.
   param_gred_min_th:
     required: false
     type: int
-    default: 0
     choices: []
     description: The value for the GRED min_th parameter.
   param_gred_max_th:
     required: false
     type: int
-    default: 1
     choices: []
     description: The value for the GRED max_th parameter.
   param_gred_max_p:
     required: false
     type: int
-    default: 1
     choices: []
     description: The value for the GRED max_p parameter.
   weight:
@@ -552,7 +527,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "enabled": {
@@ -574,14 +548,12 @@ def run_module():
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 32,
             "nullable": True,
         },
         "maskbitsv6": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 128,
             "nullable": True,
         },
         "qlimit": {
@@ -595,7 +567,6 @@ def run_module():
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "description": {
@@ -609,7 +580,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": ["droptail", "codel", "pie", "red", "gred"],
             "nullable": False,
         },
@@ -617,140 +587,120 @@ def run_module():
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 0,
             "nullable": True,
         },
         "param_codel_interval": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 0,
             "nullable": True,
         },
         "param_pie_target": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 0,
             "nullable": True,
         },
         "param_pie_tupdate": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 0,
             "nullable": True,
         },
         "param_pie_alpha": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 0,
             "nullable": True,
         },
         "param_pie_beta": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 0,
             "nullable": True,
         },
         "param_pie_max_burst": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 0,
             "nullable": True,
         },
         "param_pie_max_ecnth": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 0,
             "nullable": True,
         },
         "pie_onoff": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "pie_capdrop": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "pie_qdelay": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "pie_pderand": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "param_red_w_q": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 1,
             "nullable": True,
         },
         "param_red_min_th": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 0,
             "nullable": True,
         },
         "param_red_max_th": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 1,
             "nullable": True,
         },
         "param_red_max_p": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 1,
             "nullable": True,
         },
         "param_gred_w_q": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 1,
             "nullable": True,
         },
         "param_gred_min_th": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 0,
             "nullable": True,
         },
         "param_gred_max_th": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 1,
             "nullable": True,
         },
         "param_gred_max_p": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 1,
             "nullable": True,
         },
         "weight": {

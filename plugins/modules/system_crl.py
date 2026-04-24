@@ -68,19 +68,16 @@ options:
   caref:
     required: true
     type: str
-    default: null
     choices: []
     description: The unique ID of the CA that this CRL is associated with.
   descr:
     required: true
     type: str
-    default: null
     choices: []
     description: The unique name/description for this CRL.
   method:
     required: true
     type: str
-    default: null
     choices:
     - existing
     - internal
@@ -88,25 +85,21 @@ options:
   lifetime:
     required: false
     type: int
-    default: 730
     choices: []
     description: The lifetime of this CRL in days.
   serial:
     required: false
     type: int
-    default: 0
     choices: []
     description: The serial number of the CRL.
   text:
     required: false
     type: str
-    default: null
     choices: []
     description: The raw x509 CRL data.
   cert:
     required: false
     type: list
-    default: []
     choices: []
     description: The list of revoked certificates in this CRL.
     elements: dict
@@ -114,7 +107,6 @@ options:
       certref:
         required: false
         type: str
-        default: null
         choices: []
         description: The reference ID of the certificate to be revoked
       serial:
@@ -141,7 +133,6 @@ options:
       revoke_time:
         required: true
         type: int
-        default: null
         choices: []
         description: The unix timestamp of when the certificate was revoked.
       caref:
@@ -342,21 +333,18 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "descr": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "method": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": ["existing", "internal"],
             "nullable": False,
         },
@@ -364,28 +352,24 @@ def run_module():
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 730,
             "nullable": True,
         },
         "serial": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 0,
             "nullable": True,
         },
         "text": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "cert": {
             "type": "list",
             "required": False,
             "no_log": False,
-            "default": [],
             "elements": "dict",
             "nullable": True,
             "options": {
@@ -393,7 +377,6 @@ def run_module():
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
                 "serial": {
@@ -415,7 +398,6 @@ def run_module():
                     "type": "int",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "caref": {

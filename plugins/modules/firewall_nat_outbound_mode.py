@@ -55,7 +55,6 @@ options:
   mode:
     required: true
     type: str
-    default: null
     choices:
     - automatic
     - hybrid
@@ -166,7 +165,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": ["automatic", "hybrid", "advanced", "disabled"],
             "nullable": False,
         },

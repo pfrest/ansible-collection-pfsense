@@ -68,13 +68,11 @@ options:
   tunable:
     required: true
     type: str
-    default: null
     choices: []
     description: The name of the tunable to set.
   value:
     required: true
     type: str
-    default: null
     choices: []
     description: The value to assign this tunable.
   descr:
@@ -208,14 +206,12 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "value": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "descr": {

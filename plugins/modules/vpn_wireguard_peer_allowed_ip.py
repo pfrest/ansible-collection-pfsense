@@ -75,13 +75,11 @@ options:
   address:
     required: true
     type: str
-    default: null
     choices: []
     description: The IPv4 or IPv6 address for this peer IP.
   mask:
     required: true
     type: int
-    default: null
     choices: []
     description: The subnet mask for this peer IP.
   descr:
@@ -227,14 +225,12 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "mask": {
             "type": "int",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "descr": {
