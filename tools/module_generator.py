@@ -449,9 +449,8 @@ def _build_field_options(model_schema: dict, visited: set) -> dict:
         base_type = schema_type_to_ansible_type(field_schema.get("type", "str"))
 
         # Required fields are only truly required if they don't have conditions
-        required = field_schema.get("required", False) and not field_schema.get(
-            "conditions", []
-        )
+        conditions = field_schema.get("conditions", [])
+        required = field_schema.get("required", False) and not conditions
 
         opts[field_name] = {
             "required": required,
@@ -462,6 +461,10 @@ def _build_field_options(model_schema: dict, visited: set) -> dict:
             "nullable": not required,
             "description": descr,
         }
+
+        # Remove default for required and conditional fields
+        if required or conditions:
+            del opts[field_name]["default"]
 
         # If the field is 'many' enabled and not already a list type, wrap it as a list
         if field_schema.get("many", False) and base_type != "list":
