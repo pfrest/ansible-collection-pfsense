@@ -20,8 +20,8 @@ description:
 - Retrieve information about many ACME Certificate Renews.
 short_description: Retrieve information about many ACME Certificate Renews.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
-- C(pfSense-pkg-acme) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
+- pfSense-pkg-acme must be installed on the target system.
 options:
   api_host:
     type: str

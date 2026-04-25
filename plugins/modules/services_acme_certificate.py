@@ -20,8 +20,8 @@ description:
 - Manage individual ACME Certificates.
 short_description: Manage individual ACME Certificates.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
-- C(pfSense-pkg-acme) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
+- pfSense-pkg-acme must be installed on the target system.
 options:
   api_host:
     type: str
@@ -1645,7 +1645,7 @@ options:
         type: str
         choices: []
         description: Zilore API Key
-      pytho_server:
+      technitium_server:
         required: false
         type: str
         choices: []
@@ -2718,7 +2718,7 @@ data:
           description: Zone.ee API Key
           type: str
           returned: always
-        pytho_server:
+        technitium_server:
           description: Technitium DNS Server address
           type: str
           returned: always
@@ -4674,7 +4674,7 @@ def run_module():
                     "no_log": False,
                     "nullable": True,
                 },
-                "pytho_server": {
+                "technitium_server": {
                     "type": "str",
                     "required": False,
                     "no_log": False,

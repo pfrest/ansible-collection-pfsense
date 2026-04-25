@@ -20,8 +20,8 @@ description:
 - Perform the ACME Certificate Renew action.
 short_description: Perform the ACME Certificate Renew action.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
-- C(pfSense-pkg-acme) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
+- pfSense-pkg-acme must be installed on the target system.
 options:
   api_host:
     type: str

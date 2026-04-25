@@ -20,7 +20,7 @@ description:
 - Manage individual 1:1 NAT mappings.
 short_description: Manage individual 1:1 NAT mappings.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str

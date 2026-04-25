@@ -20,7 +20,7 @@ description:
 - Manage individual Traffic Shaper Limiter Bandwidths.
 short_description: Manage individual Traffic Shaper Limiter Bandwidths.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str

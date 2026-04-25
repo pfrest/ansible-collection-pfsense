@@ -20,8 +20,8 @@ description:
 - Retrieve information about many ACME Certificates.
 short_description: Retrieve information about many ACME Certificates.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
-- C(pfSense-pkg-acme) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
+- pfSense-pkg-acme must be installed on the target system.
 options:
   api_host:
     type: str
@@ -1057,7 +1057,7 @@ data:
           description: Zone.ee API Key
           type: str
           returned: always
-        pytho_server:
+        technitium_server:
           description: Technitium DNS Server address
           type: str
           returned: always
