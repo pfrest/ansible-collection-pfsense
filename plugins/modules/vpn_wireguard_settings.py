@@ -20,8 +20,8 @@ description:
 - Manage WireGuard Settings.
 short_description: Manage WireGuard Settings.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
-- C(pfSense-pkg-WireGuard) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
+- pfSense-pkg-WireGuard must be installed on the target system.
 options:
   api_host:
     type: str
@@ -77,7 +77,6 @@ options:
   resolve_interval:
     required: false
     type: int
-    default: 300
     choices: []
     description: The interval (in seconds) for re-resolving endpoint host/domain names.
   interface_group:
@@ -250,7 +249,6 @@ def run_module():
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 300,
             "nullable": True,
         },
         "interface_group": {

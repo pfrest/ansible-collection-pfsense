@@ -20,7 +20,7 @@ description:
 - Manage individual Static Routes.
 short_description: Manage individual Static Routes.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str
@@ -68,13 +68,11 @@ options:
   network:
     required: true
     type: str
-    default: null
     choices: []
     description: Sets the destination network for this static route in CIDR notation.
   gateway:
     required: true
     type: str
-    default: null
     choices: []
     description: Sets which gateway this route applies to.
   descr:
@@ -218,14 +216,12 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "gateway": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "descr": {

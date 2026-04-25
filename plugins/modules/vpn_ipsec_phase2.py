@@ -20,7 +20,7 @@ description:
 - Manage individual IPsec Phase 2s.
 short_description: Manage individual IPsec Phase 2s.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str
@@ -68,7 +68,6 @@ options:
   ikeid:
     required: true
     type: int
-    default: null
     choices: []
     description: The `ikeid` of the parent IPsec phase 1 entry this IPsec phase 2
       entry belongs to.
@@ -87,7 +86,6 @@ options:
   mode:
     required: true
     type: str
-    default: null
     choices:
     - tunnel
     - tunnel6
@@ -97,7 +95,6 @@ options:
   localid_type:
     required: false
     type: str
-    default: null
     choices: []
     description: 'The local ID type to use for this phase 2 entry. Valid value options
       are: an existing interface, `address`, `network`. For interface values, the
@@ -106,19 +103,16 @@ options:
   localid_address:
     required: false
     type: str
-    default: null
     choices: []
     description: The local network IP component of this IPsec security association.
   localid_netbits:
     required: false
     type: int
-    default: null
     choices: []
     description: The subnet bits of the `localid_address` network.
   natlocalid_type:
     required: false
     type: str
-    default: null
     choices: []
     description: 'The NAT/BINAT translation type for this IPsec phase 2 entry. Leave
       as `null` if NAT/BINAT is not needed. Valid value options are: an existing interface,
@@ -127,19 +121,16 @@ options:
   natlocalid_address:
     required: false
     type: str
-    default: null
     choices: []
     description: The NAT/BINAT local network IP component of this IPsec security association.
   natlocalid_netbits:
     required: false
     type: int
-    default: null
     choices: []
     description: The subnet bits of the `natlocalid_address` network.
   remoteid_type:
     required: false
     type: str
-    default: null
     choices: []
     description: 'The remote ID type to use for this phase 2 entry. Valid value options
       are: `address`, `network`. For interface values, the `:ip` modifier can be appended
@@ -147,13 +138,11 @@ options:
   remoteid_address:
     required: false
     type: str
-    default: null
     choices: []
     description: The remote network IP component of this IPsec security association.
   remoteid_netbits:
     required: false
     type: int
-    default: null
     choices: []
     description: The subnet bits of the `remoteid_address` network.
   protocol:
@@ -169,7 +158,6 @@ options:
   encryption_algorithm_option:
     required: false
     type: list
-    default: null
     choices: []
     description: The encryption algorithms to be used by this phase 2 entry.
     elements: dict
@@ -177,7 +165,6 @@ options:
       name:
         required: true
         type: str
-        default: null
         choices:
         - aes
         - aes128gcm
@@ -189,13 +176,11 @@ options:
       keylen:
         required: false
         type: int
-        default: null
         choices: []
         description: The key length for the encryption algorithm.
   hash_algorithm_option:
     required: true
     type: list
-    default: null
     choices:
     - hmac_sha1
     - hmac_sha256
@@ -544,7 +529,6 @@ def run_module():
             "type": "int",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "descr": {
@@ -565,7 +549,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": ["tunnel", "tunnel6", "transport", "vti"],
             "nullable": False,
         },
@@ -573,63 +556,54 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "localid_address": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "localid_netbits": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "natlocalid_type": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "natlocalid_address": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "natlocalid_netbits": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "remoteid_type": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "remoteid_address": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "remoteid_netbits": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "protocol": {
@@ -644,7 +618,6 @@ def run_module():
             "type": "list",
             "required": False,
             "no_log": False,
-            "default": None,
             "elements": "dict",
             "nullable": True,
             "options": {
@@ -652,7 +625,6 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "choices": [
                         "aes",
                         "aes128gcm",
@@ -666,7 +638,6 @@ def run_module():
                     "type": "int",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
             },
@@ -675,7 +646,6 @@ def run_module():
             "type": "list",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": [
                 "hmac_sha1",
                 "hmac_sha256",

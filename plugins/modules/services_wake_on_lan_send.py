@@ -20,7 +20,7 @@ description:
 - Perform the Wake On LAN Send action.
 short_description: Perform the Wake On LAN Send action.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str
@@ -55,13 +55,11 @@ options:
   interface:
     required: true
     type: str
-    default: null
     choices: []
     description: The interface the host to be woken up is connected to.
   mac_addr:
     required: true
     type: str
-    default: null
     choices: []
     description: The MAC address of the host to be awoken.
 author:
@@ -163,14 +161,12 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "mac_addr": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
     }

@@ -20,7 +20,7 @@ description:
 - Manage individual Open VPN Clients.
 short_description: Manage individual Open VPN Clients.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str
@@ -80,14 +80,12 @@ options:
   mode:
     required: true
     type: str
-    default: null
     choices:
     - p2p_tls
     description: The OpenVPN client mode.
   dev_mode:
     required: true
     type: str
-    default: null
     choices:
     - tun
     - tap
@@ -97,7 +95,6 @@ options:
   protocol:
     required: true
     type: str
-    default: null
     choices:
     - UDP4
     - UDP6
@@ -109,21 +106,18 @@ options:
   interface:
     required: false
     type: str
-    default: null
     choices: []
     description: The interface used by the firewall to originate this OpenVPN client
       connection.
   server_addr:
     required: true
     type: str
-    default: null
     choices: []
     description: The IP address or hostname of the OpenVPN server this client will
       connect to.
   server_port:
     required: true
     type: str
-    default: null
     choices: []
     description: 'The port used by the server to receive client connections. Valid
       options are: a TCP/UDP port number'
@@ -160,13 +154,11 @@ options:
   proxy_user:
     required: false
     type: str
-    default: null
     choices: []
     description: The username to use for authentication to the remote proxy.
   proxy_passwd:
     required: false
     type: str
-    default: null
     choices: []
     description: The username to use for authentication to the remote proxy.
   auth_user:
@@ -178,7 +170,6 @@ options:
   auth_pass:
     required: false
     type: str
-    default: null
     choices: []
     description: The password used to authenticate with the OpenVPN server.
   auth_retry_none:
@@ -198,7 +189,6 @@ options:
   tls_type:
     required: false
     type: str
-    default: null
     choices:
     - auth
     - crypt
@@ -210,7 +200,6 @@ options:
   tlsauth_keydir:
     required: false
     type: str
-    default: default
     choices:
     - default
     - '0'
@@ -223,7 +212,6 @@ options:
   caref:
     required: true
     type: str
-    default: null
     choices: []
     description: The `refid` of the CA object to assume as the peer CA.
   certref:
@@ -236,14 +224,12 @@ options:
   data_ciphers:
     required: true
     type: list
-    default: null
     choices: []
     description: The encryption algorithms/ciphers allowed by this OpenVPN client.
     elements: str
   data_ciphers_fallback:
     required: true
     type: str
-    default: null
     choices: []
     description: The fallback encryption algorithm/cipher used for data channel packets
       when communicating with clients that do not support data encryption algorithm
@@ -251,7 +237,6 @@ options:
   digest:
     required: true
     type: str
-    default: null
     choices: []
     description: The algorithm used to authenticate data channel packets, and control
       channel packets if a TLS Key is present.
@@ -346,7 +331,6 @@ options:
   topology:
     required: false
     type: str
-    default: subnet
     choices:
     - subnet
     - net30
@@ -370,26 +354,22 @@ options:
   keepalive_interval:
     required: false
     type: int
-    default: 10
     choices: []
     description: The keepalive interval parameter.
   keepalive_timeout:
     required: false
     type: int
-    default: 60
     choices: []
     description: The keepalive timeout parameter.
   ping_seconds:
     required: false
     type: int
-    default: 10
     choices: []
     description: The number of seconds to accept no packets before sending a ping
       to the remote peer over the TCP/UDP control channel.
   ping_action:
     required: false
     type: str
-    default: ping_restart
     choices:
     - ping_restart
     - ping_exit
@@ -397,7 +377,6 @@ options:
   ping_action_seconds:
     required: false
     type: int
-    default: 60
     choices: []
     description: The number of seconds that must elapse before the ping is considered
       a timeout and the configured `ping_action` is performed.
@@ -877,7 +856,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": ["p2p_tls"],
             "nullable": False,
         },
@@ -885,7 +863,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": ["tun", "tap"],
             "nullable": False,
         },
@@ -893,7 +870,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": ["UDP4", "UDP6", "UDP", "TCP4", "TCP6", "TCP"],
             "nullable": False,
         },
@@ -901,21 +877,18 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "server_addr": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "server_port": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "local_port": {
@@ -951,14 +924,12 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "proxy_passwd": {
             "type": "str",
             "required": False,
             "no_log": True,
-            "default": None,
             "nullable": True,
         },
         "auth_user": {
@@ -972,7 +943,6 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "auth_retry_none": {
@@ -993,7 +963,6 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "choices": ["auth", "crypt"],
             "nullable": True,
         },
@@ -1001,7 +970,6 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "default",
             "choices": ["default", "0", "1", "2"],
             "nullable": True,
         },
@@ -1009,7 +977,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "certref": {
@@ -1023,7 +990,6 @@ def run_module():
             "type": "list",
             "required": True,
             "no_log": False,
-            "default": None,
             "elements": "str",
             "nullable": False,
         },
@@ -1031,14 +997,12 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "digest": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "remote_cert_tls": {
@@ -1125,7 +1089,6 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "subnet",
             "choices": ["subnet", "net30"],
             "nullable": True,
         },
@@ -1148,28 +1111,24 @@ def run_module():
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 10,
             "nullable": True,
         },
         "keepalive_timeout": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 60,
             "nullable": True,
         },
         "ping_seconds": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 10,
             "nullable": True,
         },
         "ping_action": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "ping_restart",
             "choices": ["ping_restart", "ping_exit"],
             "nullable": True,
         },
@@ -1177,7 +1136,6 @@ def run_module():
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 60,
             "nullable": True,
         },
         "custom_options": {

@@ -20,7 +20,7 @@ description:
 - Retrieve information about a single Configuration History Entry.
 short_description: Retrieve information about a single Configuration History Entry.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str

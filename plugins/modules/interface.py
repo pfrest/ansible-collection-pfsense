@@ -20,7 +20,7 @@ description:
 - Manage individual Network Interfaces.
 short_description: Manage individual Network Interfaces.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str
@@ -68,7 +68,6 @@ options:
   if:
     required: true
     type: str
-    default: null
     choices: []
     description: The real interface this configuration will be applied to.
   enable:
@@ -80,7 +79,6 @@ options:
   descr:
     required: true
     type: str
-    default: null
     choices: []
     description: The descriptive name for this interface.
   spoofmac:
@@ -134,7 +132,6 @@ options:
   typev4:
     required: true
     type: str
-    default: null
     choices:
     - static
     - dhcp
@@ -143,45 +140,38 @@ options:
   ipaddr:
     required: false
     type: str
-    default: null
     choices: []
     description: Sets the IPv4 address to assign to this interface.
   subnet:
     required: false
     type: int
-    default: null
     choices: []
     description: Sets the subnet bit count to assign this interface.
   gateway:
     required: false
     type: str
-    default: null
     choices: []
     description: Sets the upstream gateway this interface will use. This is only applicable
       for WAN-type interfaces.
   dhcphostname:
     required: false
     type: str
-    default: ''
     choices: []
     description: Sets the DHCP hostname this interface will advertise via DHCP.
   alias_address:
     required: false
     type: str
-    default: ''
     choices: []
     description: Sets the value used as a fixed alias IPv4 address by the DHCP client.
   alias_subnet:
     required: false
     type: int
-    default: 32
     choices: []
     description: Sets the value used as the fixed alias IPv4 address's subnet bit
       count by the DHCP client.
   dhcprejectfrom:
     required: false
     type: list
-    default: []
     choices: []
     description: Sets a list of IPv4 DHCP server addresses to reject DHCP offers for
       on this interface.
@@ -189,96 +179,82 @@ options:
   adv_dhcp_config_advanced:
     required: false
     type: bool
-    default: false
     choices: []
     description: Enables or disables the advanced DHCP settings on this interface.
   adv_dhcp_pt_values:
     required: false
     type: str
-    default: SavedCfg
     choices:
     - SavedCfg
     description: Selects the advanced DHCP timing preset.
   adv_dhcp_pt_timeout:
     required: false
     type: int
-    default: null
     choices: []
     description: Manually sets the timeout timing value used when requested DHCP leases
       on this interface.
   adv_dhcp_pt_retry:
     required: false
     type: int
-    default: null
     choices: []
     description: Manually sets the retry timing value used when requested DHCP leases
       on this interface.
   adv_dhcp_pt_select_timeout:
     required: false
     type: int
-    default: null
     choices: []
     description: Manually sets the select timing value used when requested DHCP leases
       on this interface.
   adv_dhcp_pt_reboot:
     required: false
     type: int
-    default: null
     choices: []
     description: Manually sets the reboot timing value used when requested DHCP leases
       on this interface.
   adv_dhcp_pt_backoff_cutoff:
     required: false
     type: int
-    default: null
     choices: []
     description: Manually sets the backoff cutoff timing value used when requested
       DHCP leases on this interface.
   adv_dhcp_pt_initial_interval:
     required: false
     type: int
-    default: null
     choices: []
     description: Manually sets the initial interval timing value used when requested
       DHCP leases on this interface.
   adv_dhcp_send_options:
     required: false
     type: str
-    default: null
     choices: []
     description: Sets DHCP options to be sent when requesting a DHCP lease for this
       interface.
   adv_dhcp_request_options:
     required: false
     type: str
-    default: null
     choices: []
     description: Sets DHCP option 55 values to be sent when requesting a DHCP lease
       for this interface.
   adv_dhcp_required_options:
     required: false
     type: str
-    default: null
     choices: []
     description: Sets DHCP options required by the client when requesting a DHCP lease
       for this interface.
   adv_dhcp_option_modifiers:
     required: false
     type: str
-    default: null
     choices: []
     description: Sets DHCP option modifiers applied to the obtained DHCP lease.
   adv_dhcp_config_file_override:
     required: false
     type: bool
-    default: false
     choices: []
     description: Enables or disables overriding the entire DHCP configuration file
       for this interface.
   adv_dhcp_config_file_override_path:
     required: false
     type: str
-    default: null
     choices: []
     description: Sets the local file path of the custom DHCP configuration file.
   typev6:
@@ -297,63 +273,53 @@ options:
   ipaddrv6:
     required: false
     type: str
-    default: null
     choices: []
     description: Sets the IPv6 address to assign to this interface.
   subnetv6:
     required: false
     type: int
-    default: null
     choices: []
     description: Sets the subnet bit count to assign this interface.
   gatewayv6:
     required: false
     type: str
-    default: null
     choices: []
     description: Sets the upstream IPv6 gateway this interface will use. This is only
       applicable for WAN-type interfaces.
   ipv6usev4iface:
     required: false
     type: bool
-    default: false
     choices: []
     description: Enable or disable IPv6 using the IPv4 connectivity link (PPPoE).
   slaacusev4iface:
     required: false
     type: bool
-    default: false
     choices: []
     description: Enable or disable IPv6 using the IPv4 connectivity link (PPPoE).
   prefix_6rd:
     required: false
     type: str
-    default: null
     choices: []
     description: Sets the 6RD IPv6 prefix assigned by the ISP for this interface.
   gateway_6rd:
     required: false
     type: str
-    default: null
     choices: []
     description: Sets the 6RD IPv4 gateway address assigned by the ISP for this interface.
   prefix_6rd_v4plen:
     required: false
     type: int
-    default: null
     choices: []
     description: Sets the 6RD IPv4 prefix length. Normally specified by the ISP. A
       value of 0 means embed theentire IPv4 address in the 6RD prefix.
   track6_interface:
     required: false
     type: str
-    default: null
     choices: []
     description: Sets the dynamic IPv6 WAN interface to track for configuration.
   track6_prefix_id_hex:
     required: false
     type: str
-    default: '0'
     choices: []
     description: Sets the hexadecimal IPv6 prefix ID. This determines the configurable
       network ID based on the dynamic IPv6 connection.
@@ -685,7 +651,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "enable": {
@@ -699,7 +664,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "spoofmac": {
@@ -755,7 +719,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": ["static", "dhcp", "none"],
             "nullable": False,
         },
@@ -763,49 +726,42 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "subnet": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "gateway": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "dhcphostname": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "alias_address": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "alias_subnet": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 32,
             "nullable": True,
         },
         "dhcprejectfrom": {
             "type": "list",
             "required": False,
             "no_log": False,
-            "default": [],
             "elements": "str",
             "nullable": True,
         },
@@ -813,14 +769,12 @@ def run_module():
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "adv_dhcp_pt_values": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "SavedCfg",
             "choices": ["SavedCfg"],
             "nullable": True,
         },
@@ -828,84 +782,72 @@ def run_module():
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "adv_dhcp_pt_retry": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "adv_dhcp_pt_select_timeout": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "adv_dhcp_pt_reboot": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "adv_dhcp_pt_backoff_cutoff": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "adv_dhcp_pt_initial_interval": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "adv_dhcp_send_options": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "adv_dhcp_request_options": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "adv_dhcp_required_options": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "adv_dhcp_option_modifiers": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "adv_dhcp_config_file_override": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "adv_dhcp_config_file_override_path": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "typev6": {
@@ -920,70 +862,60 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "subnetv6": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "gatewayv6": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "ipv6usev4iface": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "slaacusev4iface": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "prefix_6rd": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "gateway_6rd": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "prefix_6rd_v4plen": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "track6_interface": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "track6_prefix_id_hex": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "0",
             "nullable": True,
         },
     }

@@ -20,7 +20,7 @@ description:
 - Manage individual Firewall Aliases.
 short_description: Manage individual Firewall Aliases.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str
@@ -68,14 +68,12 @@ options:
   name:
     required: true
     type: str
-    default: null
     choices: []
     description: Sets the name for the alias. This name must be unique from all other
       aliases.
   type:
     required: true
     type: str
-    default: null
     choices:
     - host
     - network
@@ -256,14 +254,12 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "type": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": ["host", "network", "port"],
             "nullable": False,
         },

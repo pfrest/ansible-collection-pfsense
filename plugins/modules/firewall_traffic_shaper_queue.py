@@ -20,7 +20,7 @@ description:
 - Manage individual Traffic Shaper Queues.
 short_description: Manage individual Traffic Shaper Queues.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str
@@ -80,19 +80,16 @@ options:
   name:
     required: true
     type: str
-    default: null
     choices: []
     description: The name to assign this traffic shaper queue.
   priority:
     required: false
     type: int
-    default: 1
     choices: []
     description: The priority level for this traffic shaper queue.
   qlimit:
     required: true
     type: int
-    default: null
     choices: []
     description: The number of packets that can be held in a queue waiting to be transmitted
       by the shaper.
@@ -139,7 +136,6 @@ options:
   bandwidthtype:
     required: false
     type: str
-    default: Mb
     choices:
     - '%'
     - b
@@ -150,51 +146,43 @@ options:
   bandwidth:
     required: false
     type: int
-    default: null
     choices: []
     description: The total bandwidth amount allowed by this traffic shaper.
   buckets:
     required: false
     type: int
-    default: null
     choices: []
     description: ''
   hogs:
     required: false
     type: int
-    default: null
     choices: []
     description: The bandwidth limit per host.
   borrow:
     required: false
     type: bool
-    default: false
     choices: []
     description: Allow this queue to borrow from other queues when available.
   upperlimit:
     required: false
     type: bool
-    default: false
     choices: []
     description: Allow setting the maximum bandwidth allowed for the queue. Will force
       hard bandwidth limiting.
   upperlimit_m1:
     required: false
     type: str
-    default: null
     choices: []
     description: The burst-able bandwidth limit for this traffic shaper queue.
   upperlimit_d:
     required: false
     type: int
-    default: null
     choices: []
     description: The duration (in milliseconds) that the burst-able bandwidth limit
       (`upperlimit_m1` is in effect.
   upperlimit_m2:
     required: false
     type: str
-    default: null
     choices: []
     description: The normal bandwidth limit for this traffic shaper queue. If `upperlimit_m1`
       is not defined, this limit will always be in effect. If `upperlimit_m1` is defined,
@@ -202,55 +190,47 @@ options:
   realtime:
     required: false
     type: bool
-    default: false
     choices: []
     description: Allow setting the guaranteed bandwidth minimum allotted to the queue.
   realtime_m1:
     required: false
     type: str
-    default: null
     choices: []
     description: The guaranteed minimum bandwidth limit for this traffic shaper queue
       during real time.
   realtime_d:
     required: false
     type: int
-    default: null
     choices: []
     description: The duration (in milliseconds) that the guaranteed bandwidth limit
       (`realtime_m1`) is in effect.
   realtime_m2:
     required: false
     type: str
-    default: null
     choices: []
     description: 'The maximum bandwidth this traffic shaper queue is allowed to use.
       Note: This value should not exceed 30% of parent queue''s maximum bandwidth.'
   linkshare:
     required: false
     type: bool
-    default: false
     choices: []
     description: Allow sharing bandwidth from this queue for other queues as long
       as the real time values have been satisfied.
   linkshare_m1:
     required: false
     type: str
-    default: null
     choices: []
     description: The initial bandwidth limit for this traffic shaper queue when link
       sharing.
   linkshare_d:
     required: false
     type: int
-    default: null
     choices: []
     description: The duration (in milliseconds) that the initial bandwidth limit (`linkshare_m1`)
       is in effect.
   linkshare_m2:
     required: false
     type: str
-    default: null
     choices: []
     description: 'The maximum bandwidth this traffic shaper queue is allowed to use.
       Note: This behaves exactly the same as the `bandwidth` field. If this field
@@ -530,21 +510,18 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "priority": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 1,
             "nullable": True,
         },
         "qlimit": {
             "type": "int",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "description": {
@@ -593,7 +570,6 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "Mb",
             "choices": ["%", "b", "Kb", "Mb", "Gb"],
             "nullable": True,
         },
@@ -601,112 +577,96 @@ def run_module():
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "buckets": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "hogs": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "borrow": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "upperlimit": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "upperlimit_m1": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "upperlimit_d": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "upperlimit_m2": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "realtime": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "realtime_m1": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "realtime_d": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "realtime_m2": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "linkshare": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "linkshare_m1": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "linkshare_d": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "linkshare_m2": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
     }

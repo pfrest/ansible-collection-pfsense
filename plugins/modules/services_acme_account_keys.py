@@ -20,8 +20,8 @@ description:
 - Manage all ACME Account Keys.
 short_description: Manage all ACME Account Keys.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
-- C(pfSense-pkg-acme) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
+- pfSense-pkg-acme must be installed on the target system.
 options:
   api_host:
     type: str
@@ -61,7 +61,6 @@ options:
       name:
         required: true
         type: str
-        default: null
         choices: []
         description: The name of the ACME account key.
       descr:
@@ -79,7 +78,6 @@ options:
       acmeserver:
         required: true
         type: str
-        default: null
         choices: []
         description: The ACME server this account key will belong to.
       accountkey:
@@ -212,7 +210,6 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "descr": {
@@ -233,7 +230,6 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "accountkey": {

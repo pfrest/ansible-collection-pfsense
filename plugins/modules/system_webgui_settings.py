@@ -20,7 +20,7 @@ description:
 - Manage Web GUI Settings.
 short_description: Manage Web GUI Settings.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str
@@ -70,7 +70,6 @@ options:
   sslcertref:
     required: true
     type: str
-    default: null
     choices: []
     description: The SSL/TLS certificate to use for the web GUI.
 author:
@@ -191,7 +190,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
     }

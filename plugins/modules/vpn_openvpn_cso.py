@@ -20,7 +20,7 @@ description:
 - Manage individual Open VPN Client Specific Overrides.
 short_description: Manage individual Open VPN Client Specific Overrides.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str
@@ -68,7 +68,6 @@ options:
   common_name:
     required: true
     type: str
-    default: null
     choices: []
     description: The X.509 common name for the client certificate, or the username
       for VPNs utilizing password authentication.
@@ -162,7 +161,6 @@ options:
   remove_options:
     required: false
     type: list
-    default: []
     choices:
     - remove_route
     - remove_iroute
@@ -230,7 +228,6 @@ options:
   netbios_ntype:
     required: false
     type: int
-    default: 0
     choices:
     - 0
     - 1
@@ -241,7 +238,6 @@ options:
   netbios_scope:
     required: false
     type: str
-    default: ''
     choices: []
     description: The NetBIOS Scope ID. This provides an extended naming service for
       NetBIOS over TCP/IP. The NetBIOS scope ID isolates NetBIOS traffic on a single
@@ -249,13 +245,11 @@ options:
   wins_server1:
     required: false
     type: str
-    default: ''
     choices: []
     description: The primary WINS server to provide to the client.
   wins_server2:
     required: false
     type: str
-    default: ''
     choices: []
     description: The secondary WINS server to provide to the client.
   custom_options:
@@ -504,7 +498,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "disable": {
@@ -600,7 +593,6 @@ def run_module():
             "type": "list",
             "required": False,
             "no_log": False,
-            "default": [],
             "choices": [
                 "remove_route",
                 "remove_iroute",
@@ -679,7 +671,6 @@ def run_module():
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 0,
             "choices": [0, 1, 2, 4, 8],
             "nullable": True,
         },
@@ -687,21 +678,18 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "wins_server1": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "wins_server2": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "custom_options": {

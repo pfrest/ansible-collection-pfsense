@@ -20,7 +20,7 @@ description:
 - Manage individual Users.
 short_description: Manage individual Users.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str
@@ -68,13 +68,11 @@ options:
   name:
     required: true
     type: str
-    default: null
     choices: []
     description: The username of this local user.
   password:
     required: true
     type: str
-    default: null
     choices: []
     description: The password of this local user.
   priv:
@@ -286,14 +284,12 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "password": {
             "type": "str",
             "required": True,
             "no_log": True,
-            "default": None,
             "nullable": False,
         },
         "priv": {

@@ -20,7 +20,7 @@ description:
 - Manage individual Interface GREs.
 short_description: Manage individual Interface GREs.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str
@@ -68,7 +68,6 @@ options:
   if:
     required: true
     type: str
-    default: null
     choices: []
     description: The pfSense interface interface serving as the local address to be
       used for the GRE tunnel.
@@ -88,7 +87,6 @@ options:
   remote_addr:
     required: true
     type: str
-    default: null
     choices: []
     description: The remote address to use for the GRE tunnel.
   tunnel_local_addr:
@@ -100,13 +98,11 @@ options:
   tunnel_remote_addr:
     required: false
     type: str
-    default: null
     choices: []
     description: The remote IPv4 address to use for the GRE tunnel.
   tunnel_remote_net:
     required: false
     type: int
-    default: 32
     choices: []
     description: The remote IPv4 subnet bitmask to use for the GRE tunnel.
   tunnel_local_addr6:
@@ -118,13 +114,11 @@ options:
   tunnel_remote_addr6:
     required: false
     type: str
-    default: null
     choices: []
     description: The remote IPv6 address to use for the GRE tunnel.
   tunnel_remote_net6:
     required: false
     type: int
-    default: 128
     choices: []
     description: The remote IPv6 subnet bitmask to use for the GRE tunnel.
 author:
@@ -290,7 +284,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "descr": {
@@ -311,7 +304,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "tunnel_local_addr": {
@@ -325,14 +317,12 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "tunnel_remote_net": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 32,
             "nullable": True,
         },
         "tunnel_local_addr6": {
@@ -346,14 +336,12 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "tunnel_remote_net6": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 128,
             "nullable": True,
         },
     }

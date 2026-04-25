@@ -20,7 +20,7 @@ description:
 - Manage individual DHCP Server Address Pools.
 short_description: Manage individual DHCP Server Address Pools.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str
@@ -74,14 +74,12 @@ options:
   range_from:
     required: true
     type: str
-    default: null
     choices: []
     description: The starting IP address for this address pool. This address must
       be less than or equal to the `range_to` field.
   range_to:
     required: true
     type: str
-    default: null
     choices: []
     description: The ending IP address for the this address pool. This address must
       be greater than or equal to the `range_to` field.
@@ -393,14 +391,12 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "range_to": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "domain": {

@@ -20,7 +20,7 @@ description:
 - Manage individual User Groups.
 short_description: Manage individual User Groups.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str
@@ -68,7 +68,6 @@ options:
   name:
     required: true
     type: str
-    default: null
     choices: []
     description: The name for this user group.
   scope:
@@ -244,7 +243,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "scope": {

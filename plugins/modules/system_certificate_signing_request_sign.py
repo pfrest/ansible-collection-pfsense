@@ -20,7 +20,7 @@ description:
 - Perform the Certificate Signing Request Sign action.
 short_description: Perform the Certificate Signing Request Sign action.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str
@@ -55,19 +55,16 @@ options:
   descr:
     required: true
     type: str
-    default: null
     choices: []
     description: The descriptive name for this certificate.
   caref:
     required: true
     type: str
-    default: null
     choices: []
     description: The certificate authority to sign the certificate with.
   csr:
     required: true
     type: str
-    default: null
     choices: []
     description: The X509 certificate signing request to sign.
   prv:
@@ -79,7 +76,6 @@ options:
   digest_alg:
     required: true
     type: str
-    default: null
     choices: []
     description: The digest method used when the certificate is signed.
   lifetime:
@@ -274,21 +270,18 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "caref": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "csr": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "prv": {
@@ -302,7 +295,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "lifetime": {

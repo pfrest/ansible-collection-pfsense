@@ -20,7 +20,7 @@ description:
 - Manage individual IPsec Phase 1s.
 short_description: Manage individual IPsec Phase 1s.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str
@@ -80,7 +80,6 @@ options:
   iketype:
     required: true
     type: str
-    default: null
     choices:
     - ikev1
     - ikev2
@@ -89,7 +88,6 @@ options:
   mode:
     required: false
     type: str
-    default: null
     choices:
     - main
     - aggressive
@@ -97,7 +95,6 @@ options:
   protocol:
     required: true
     type: str
-    default: null
     choices:
     - inet
     - inet6
@@ -106,20 +103,17 @@ options:
   interface:
     required: true
     type: str
-    default: null
     choices: []
     description: The interface for the local endpoint of this phase 1 entry. This
       should be an interface that is reachable by the remote peer.
   remote_gateway:
     required: true
     type: str
-    default: null
     choices: []
     description: The IP address or hostname of the remote gateway.
   authentication_method:
     required: true
     type: str
-    default: null
     choices:
     - pre_shared_key
     - cert
@@ -127,7 +121,6 @@ options:
   myid_type:
     required: true
     type: str
-    default: null
     choices:
     - myaddress
     - address
@@ -141,14 +134,12 @@ options:
   myid_data:
     required: false
     type: str
-    default: null
     choices: []
     description: The identifier value used by the local end of the tunnel. This must
       be a value that corresponds with the current `myid_type` value.
   peerid_type:
     required: true
     type: str
-    default: null
     choices:
     - any
     - peeraddress
@@ -163,14 +154,12 @@ options:
   peerid_data:
     required: false
     type: str
-    default: null
     choices: []
     description: The identifier value used by the remote end of the tunnel. This must
       be a value that corresponds with the current `peerid_type` value.
   pre_shared_key:
     required: false
     type: str
-    default: null
     choices: []
     description: The Pre-Shared Key (PSK) value. This key must match on both peers
       and should be long and random to protect the tunnel and its contents. A weak
@@ -178,14 +167,12 @@ options:
   certref:
     required: false
     type: str
-    default: null
     choices: []
     description: The certificate which identifies this system. The certificate must
       have at least one non-wildcard SAN.
   caref:
     required: false
     type: str
-    default: null
     choices: []
     description: The certificate authority to use when validating the peer certificate.
   rekey_time:
@@ -304,7 +291,6 @@ options:
   encryption:
     required: true
     type: list
-    default: null
     choices: []
     description: The encryption algorithms supported by this P1 encryption.
     elements: dict
@@ -312,7 +298,6 @@ options:
       encryption_algorithm_name:
         required: true
         type: str
-        default: null
         choices:
         - aes
         - aes128gcm
@@ -324,13 +309,11 @@ options:
       encryption_algorithm_keylen:
         required: false
         type: int
-        default: null
         choices: []
         description: The key length for the encryption algorithm.
       hash_algorithm:
         required: true
         type: str
-        default: null
         choices:
         - sha1
         - sha256
@@ -341,7 +324,6 @@ options:
       dhgroup:
         required: true
         type: int
-        default: null
         choices:
         - 1
         - 2
@@ -706,7 +688,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": ["ikev1", "ikev2", "auto"],
             "nullable": False,
         },
@@ -714,7 +695,6 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "choices": ["main", "aggressive"],
             "nullable": True,
         },
@@ -722,7 +702,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": ["inet", "inet6", "both"],
             "nullable": False,
         },
@@ -730,21 +709,18 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "remote_gateway": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "authentication_method": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": ["pre_shared_key", "cert"],
             "nullable": False,
         },
@@ -752,7 +728,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": [
                 "myaddress",
                 "address",
@@ -769,14 +744,12 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "peerid_type": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": [
                 "any",
                 "peeraddress",
@@ -794,28 +767,24 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "pre_shared_key": {
             "type": "str",
             "required": False,
             "no_log": True,
-            "default": None,
             "nullable": True,
         },
         "certref": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "caref": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "rekey_time": {
@@ -930,7 +899,6 @@ def run_module():
             "type": "list",
             "required": True,
             "no_log": False,
-            "default": None,
             "elements": "dict",
             "nullable": False,
             "options": {
@@ -938,7 +906,6 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "choices": [
                         "aes",
                         "aes128gcm",
@@ -952,14 +919,12 @@ def run_module():
                     "type": "int",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
                 "hash_algorithm": {
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "choices": ["sha1", "sha256", "sha384", "sha512", "aesxcbc"],
                     "nullable": False,
                 },
@@ -967,7 +932,6 @@ def run_module():
                     "type": "int",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "choices": [
                         1,
                         2,

@@ -20,7 +20,7 @@ description:
 - Perform the Certificate PKCS#12 Export action.
 short_description: Perform the Certificate PKCS#12 Export action.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str
@@ -55,7 +55,6 @@ options:
   certref:
     required: true
     type: str
-    default: null
     choices: []
     description: The Certificate to export as a PKCS12 file.
   encryption:
@@ -186,7 +185,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "encryption": {

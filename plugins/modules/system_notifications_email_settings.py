@@ -20,7 +20,7 @@ description:
 - Manage Email Notification Settings.
 short_description: Manage Email Notification Settings.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str
@@ -112,13 +112,11 @@ options:
   username:
     required: false
     type: str
-    default: null
     choices: []
     description: The username to use for SMTP authentication.
   password:
     required: false
     type: str
-    default: null
     choices: []
     description: The password to use for SMTP authentication.
 author:
@@ -322,14 +320,12 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "password": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
     }

@@ -20,7 +20,7 @@ description:
 - Manage REST API Settings.
 short_description: Manage REST API Settings.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str
@@ -138,7 +138,6 @@ options:
   override_sensitive_fields:
     required: false
     type: list
-    default: []
     choices: []
     description: Specifies a list of fields (formatted as ModelName:FieldName) that
       should have their sensitive attribute overridden. Fields selected here will
@@ -502,7 +501,6 @@ def run_module():
             "type": "list",
             "required": False,
             "no_log": False,
-            "default": [],
             "elements": "str",
             "nullable": True,
         },

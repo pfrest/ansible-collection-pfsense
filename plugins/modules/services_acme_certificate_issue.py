@@ -20,8 +20,8 @@ description:
 - Perform the ACME Certificate Issue action.
 short_description: Perform the ACME Certificate Issue action.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
-- C(pfSense-pkg-acme) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
+- pfSense-pkg-acme must be installed on the target system.
 options:
   api_host:
     type: str
@@ -56,7 +56,6 @@ options:
   certificate:
     required: true
     type: str
-    default: null
     choices: []
     description: The name of the ACME certificate to be issued.
 author:
@@ -170,7 +169,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
     }

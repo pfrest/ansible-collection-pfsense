@@ -20,8 +20,8 @@ description:
 - Manage individual HA Proxy Backends.
 short_description: Manage individual HA Proxy Backends.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
-- C(pfSense-pkg-haproxy) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
+- pfSense-pkg-haproxy must be installed on the target system.
 options:
   api_host:
     type: str
@@ -69,7 +69,6 @@ options:
   name:
     required: true
     type: str
-    default: null
     choices: []
     description: The unique name for this backend.
   servers:
@@ -83,7 +82,6 @@ options:
       name:
         required: true
         type: str
-        default: null
         choices: []
         description: The unique name for this backend server.
       status:
@@ -99,14 +97,12 @@ options:
       address:
         required: true
         type: str
-        default: null
         choices: []
         description: The hostname or IP address of this backend server. Hostname values
           are only resolved at service startup.
       port:
         required: true
         type: str
-        default: null
         choices: []
         description: 'The port to forward to for this backend server. Valid options
           are: a TCP/UDP port number'
@@ -151,20 +147,17 @@ options:
   balance_urilen:
     required: false
     type: int
-    default: null
     choices: []
     description: The number of URI characters the algorithm should consider when hashing.
   balance_uridepth:
     required: false
     type: int
-    default: null
     choices: []
     description: The maximum directory depth to be used to compute the hash. One level
       is counted for each slash in the request.
   balance_uriwhole:
     required: false
     type: bool
-    default: false
     choices: []
     description: Enables or disables allowing the use of whole URIs, including URL
       parameters.
@@ -179,13 +172,11 @@ options:
       name:
         required: true
         type: str
-        default: null
         choices: []
         description: The unique name for this backend ACL.
       expression:
         required: true
         type: str
-        default: null
         choices:
         - host_starts_with
         - host_ends_with
@@ -216,7 +207,6 @@ options:
       value:
         required: true
         type: str
-        default: null
         choices: []
         description: The value which indicates a match for this ACL.
       casesensitive:
@@ -242,7 +232,6 @@ options:
       action:
         required: true
         type: str
-        default: null
         choices:
         - use_server
         - custom
@@ -292,85 +281,71 @@ options:
       acl:
         required: true
         type: str
-        default: null
         choices: []
         description: The name of the backend ACL this action is associated with.
       server:
         required: false
         type: str
-        default: null
         choices: []
         description: The backend server to use when an ACL match is found.
       customaction:
         required: false
         type: str
-        default: null
         choices: []
         description: The custom action to take when an ACL match is found.
       deny_status:
         required: false
         type: str
-        default: null
         choices: []
         description: The deny status to use when an ACL match is found.
       realm:
         required: false
         type: str
-        default: null
         choices: []
         description: The authentication realm to use when an ACL match is found.
       rule:
         required: false
         type: str
-        default: null
         choices: []
         description: The redirect rule to use when an ACL match is found.
       lua_function:
         required: false
         type: str
-        default: null
         choices: []
         description: The Lua function to use when an ACL match is found.
       name:
         required: false
         type: str
-        default: null
         choices: []
         description: The name to use when an ACL match is found.
       fmt:
         required: false
         type: str
-        default: null
         choices: []
         description: The fmt value to use when an ACL match is found.
       find:
         required: false
         type: str
-        default: null
         choices: []
         description: The value to find when an ACL match is found.
       replace:
         required: false
         type: str
-        default: null
         choices: []
         description: The value to replace with when an ACL match is found.
       path:
         required: false
         type: str
-        default: null
         choices: []
         description: The path to use when an ACL match is found.
       status:
         required: false
         type: str
-        default: null
         choices: []
         description: The status to use when an ACL match is found.
       reason:
         required: false
         type: str
-        default: null
         choices: []
         description: The status reason to use when an ACL match is found.
   connection_timeout:
@@ -414,19 +389,16 @@ options:
   checkinter:
     required: false
     type: int
-    default: null
     choices: []
     description: The interval (in milliseconds) in which health checks will be performed.
   log_health_checks:
     required: false
     type: bool
-    default: false
     choices: []
     description: Enables or disables logging changes to the health check status
   httpcheck_method:
     required: false
     type: str
-    default: OPTIONS
     choices:
     - OPTIONS
     - HEAD
@@ -439,25 +411,21 @@ options:
   monitor_uri:
     required: false
     type: str
-    default: /
     choices: []
     description: The URL to use for HTTP health checks.
   monitor_httpversion:
     required: false
     type: str
-    default: HTTP/1.0
     choices: []
     description: The HTTP version to use for HTTP health checks.
   monitor_username:
     required: false
     type: str
-    default: ''
     choices: []
     description: The username to use for MySQL or PostgreSQL health checks.
   monitor_domain:
     required: false
     type: str
-    default: ''
     choices: []
     description: The domain to use for SMTP or ESMTP health checks.
   agent_checks:
@@ -470,13 +438,11 @@ options:
   agent_port:
     required: false
     type: str
-    default: null
     choices: []
     description: 'Valid options are: a TCP/UDP port number'
   agent_inter:
     required: false
     type: int
-    default: 2000
     choices: []
     description: The interval (in milliseconds) between agent checks.
   persist_cookie_enabled:
@@ -488,13 +454,11 @@ options:
   persist_cookie_name:
     required: false
     type: str
-    default: null
     choices: []
     description: The string name to track in Set-Cookie and Cookie HTTP headers.
   persist_cookie_mode:
     required: false
     type: str
-    default: passive
     choices:
     - passive
     - passive-silent
@@ -510,52 +474,44 @@ options:
   persist_cookie_cachable:
     required: false
     type: bool
-    default: false
     choices: []
     description: Enables or disables allowing shared caches to cache the server response.
   persist_cookie_postonly:
     required: false
     type: bool
-    default: false
     choices: []
     description: Enables or disables only inserting cookies on POST requests.
   persist_cookie_httponly:
     required: false
     type: bool
-    default: false
     choices: []
     description: Enables or disables preventing the use of cookies with non-HTTP components.
   persist_cookie_secure:
     required: false
     type: bool
-    default: false
     choices: []
     description: Enables or disables prevention of cookie usage over non-secure channels.
   haproxy_cookie_maxidle:
     required: false
     type: int
-    default: null
     choices: []
     description: The max-idle time to allow. This option only applies to insert mode
       cookies.
   haproxy_cookie_maxlife:
     required: false
     type: int
-    default: null
     choices: []
     description: The max-life time to allow. This option only applies to insert mode
       cookies.
   haproxy_cookie_domains:
     required: false
     type: list
-    default: []
     choices: []
     description: The domains to set the cookies for.
     elements: str
   haproxy_cookie_dynamic_cookie_key:
     required: false
     type: str
-    default: ''
     choices: []
     description: The dynamic cookie secret key. This is will be used to generate dynamic
       cookies for this backend.
@@ -575,27 +531,23 @@ options:
   persist_stick_expire:
     required: false
     type: str
-    default: ''
     choices: []
     description: The maximum duration of an entry in the stick-table since it was
       last created, refreshed or matched.
   persist_stick_tablesize:
     required: false
     type: str
-    default: ''
     choices: []
     description: The maximum number of entries allowed in the table. This value directly
       impacts memory usage.
   persist_stick_cookiename:
     required: false
     type: str
-    default: ''
     choices: []
     description: The cookie name to use for stick table.
   persist_stick_length:
     required: false
     type: int
-    default: null
     choices: []
     description: The maximum number of characters allowed in a string type stick table
   email_level:
@@ -632,13 +584,11 @@ options:
   stats_uri:
     required: false
     type: str
-    default: ''
     choices: []
     description: The statistics URL for this backend.
   stats_scope:
     required: false
     type: list
-    default: []
     choices: []
     description: The frontends and backends stats to be shown, leave empty to show
       all.
@@ -646,45 +596,38 @@ options:
   stats_realm:
     required: false
     type: str
-    default: ''
     choices: []
     description: The realm that is shown when authentication is requested by HAProxy.
   stats_username:
     required: false
     type: str
-    default: ''
     choices: []
     description: The stats page username
   stats_password:
     required: false
     type: str
-    default: ''
     choices: []
     description: The stats page password.
   stats_admin:
     required: false
     type: str
-    default: ''
     choices: []
     description: The admin to make use of the options disable/enable/softstop/softstart/killsessions
       from the stats page.
   stats_node:
     required: false
     type: str
-    default: ''
     choices: []
     description: The short name displayed in stats and helps differentiate which server
       in the cluster is actually serving clients.
   stats_desc:
     required: false
     type: str
-    default: ''
     choices: []
     description: The verbose description for this node.
   stats_refresh:
     required: false
     type: int
-    default: 10
     choices: []
     description: The interval (in seconds) in which the stats page is refreshed.
   strict_transport_security:
@@ -705,14 +648,12 @@ options:
       errorcode:
         required: true
         type: int
-        default: null
         choices: []
         description: The HTTP status code that will trigger this error file to be
           used.
       errorfile:
         required: true
         type: str
-        default: null
         choices: []
         description: The HAProxy error file object that should be used for the assigned
           HTTP status code.
@@ -744,7 +685,6 @@ options:
   transparent_interface:
     required: false
     type: str
-    default: null
     choices: []
     description: The interface that will connect to the backend server.
 author:
@@ -1259,7 +1199,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "servers": {
@@ -1274,7 +1213,6 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "status": {
@@ -1289,14 +1227,12 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "port": {
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "weight": {
@@ -1341,21 +1277,18 @@ def run_module():
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "balance_uridepth": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "balance_uriwhole": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "acls": {
@@ -1370,14 +1303,12 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "expression": {
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "choices": [
                         "host_starts_with",
                         "host_ends_with",
@@ -1411,7 +1342,6 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "casesensitive": {
@@ -1442,7 +1372,6 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "choices": [
                         "use_server",
                         "custom",
@@ -1495,98 +1424,84 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "server": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
                 "customaction": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
                 "deny_status": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
                 "realm": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
                 "rule": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
                 "lua_function": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
                 "name": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
                 "fmt": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
                 "find": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
                 "replace": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
                 "path": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
                 "status": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
                 "reason": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
             },
@@ -1635,21 +1550,18 @@ def run_module():
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "log_health_checks": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "httpcheck_method": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "OPTIONS",
             "choices": ["OPTIONS", "HEAD", "GET", "POST", "PUT", "DELETE", "TRACE"],
             "nullable": True,
         },
@@ -1657,28 +1569,24 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "/",
             "nullable": True,
         },
         "monitor_httpversion": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "HTTP/1.0",
             "nullable": True,
         },
         "monitor_username": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "monitor_domain": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "agent_checks": {
@@ -1692,14 +1600,12 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "agent_inter": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 2000,
             "nullable": True,
         },
         "persist_cookie_enabled": {
@@ -1713,14 +1619,12 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "persist_cookie_mode": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "passive",
             "choices": [
                 "passive",
                 "passive-silent",
@@ -1738,49 +1642,42 @@ def run_module():
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "persist_cookie_postonly": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "persist_cookie_httponly": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "persist_cookie_secure": {
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "haproxy_cookie_maxidle": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "haproxy_cookie_maxlife": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "haproxy_cookie_domains": {
             "type": "list",
             "required": False,
             "no_log": False,
-            "default": [],
             "elements": "str",
             "nullable": True,
         },
@@ -1788,7 +1685,6 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "persist_sticky_type": {
@@ -1810,28 +1706,24 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "persist_stick_tablesize": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "persist_stick_cookiename": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "persist_stick_length": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "email_level": {
@@ -1871,14 +1763,12 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "stats_scope": {
             "type": "list",
             "required": False,
             "no_log": False,
-            "default": [],
             "elements": "str",
             "nullable": True,
         },
@@ -1886,49 +1776,42 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "stats_username": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "stats_password": {
             "type": "str",
             "required": False,
             "no_log": True,
-            "default": "",
             "nullable": True,
         },
         "stats_admin": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "stats_node": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "stats_desc": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "",
             "nullable": True,
         },
         "stats_refresh": {
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": 10,
             "nullable": True,
         },
         "strict_transport_security": {
@@ -1950,14 +1833,12 @@ def run_module():
                     "type": "int",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "errorfile": {
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
             },
@@ -1994,7 +1875,6 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
     }

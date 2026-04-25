@@ -20,8 +20,8 @@ description:
 - Manage individual Free RADIUS Interfaces.
 short_description: Manage individual Free RADIUS Interfaces.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
-- C(pfSense-pkg-freeradius3) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
+- pfSense-pkg-freeradius3 must be installed on the target system.
 options:
   api_host:
     type: str
@@ -69,7 +69,6 @@ options:
   addr:
     required: true
     type: str
-    default: null
     choices: []
     description: The IP address of the listening interface. If you choose * then it
       means all interfaces.
@@ -95,7 +94,6 @@ options:
   ip_version:
     required: true
     type: str
-    default: null
     choices:
     - ipaddr
     - ipv6addr
@@ -241,7 +239,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "port": {
@@ -263,7 +260,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": ["ipaddr", "ipv6addr"],
             "nullable": False,
         },

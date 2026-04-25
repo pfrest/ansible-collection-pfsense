@@ -20,7 +20,7 @@ description:
 - Manage individual DNS Resolver Access List Networks.
 short_description: Manage individual DNS Resolver Access List Networks.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str
@@ -74,13 +74,11 @@ options:
   network:
     required: true
     type: str
-    default: null
     choices: []
     description: The network address of this access list entry.
   mask:
     required: true
     type: int
-    default: null
     choices: []
     description: The subnet mask of this access list entry's network.
   description:
@@ -227,14 +225,12 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "mask": {
             "type": "int",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "description": {

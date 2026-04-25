@@ -20,7 +20,7 @@ description:
 - Manage individual Certificate Revocation List Revoked Certificates.
 short_description: Manage individual Certificate Revocation List Revoked Certificates.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str
@@ -74,7 +74,6 @@ options:
   certref:
     required: false
     type: str
-    default: null
     choices: []
     description: The reference ID of the certificate to be revoked
   serial:
@@ -101,7 +100,6 @@ options:
   revoke_time:
     required: true
     type: int
-    default: null
     choices: []
     description: The unix timestamp of when the certificate was revoked.
   caref:
@@ -277,7 +275,6 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "serial": {
@@ -299,7 +296,6 @@ def run_module():
             "type": "int",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "caref": {

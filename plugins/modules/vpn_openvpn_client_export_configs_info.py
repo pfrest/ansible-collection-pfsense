@@ -20,8 +20,8 @@ description:
 - Retrieve information about many Open VPN Client Export Configs.
 short_description: Retrieve information about many Open VPN Client Export Configs.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
-- C(pfSense-pkg-openvpn-client-export) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
+- pfSense-pkg-openvpn-client-export must be installed on the target system.
 options:
   api_host:
     type: str

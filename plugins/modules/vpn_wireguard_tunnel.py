@@ -20,8 +20,8 @@ description:
 - Manage individual WireGuard Tunnels.
 short_description: Manage individual WireGuard Tunnels.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
-- C(pfSense-pkg-WireGuard) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
+- pfSense-pkg-WireGuard must be installed on the target system.
 options:
   api_host:
     type: str
@@ -88,7 +88,6 @@ options:
   privatekey:
     required: true
     type: str
-    default: null
     choices: []
     description: The private key for this tunnel.
   mtu:
@@ -111,13 +110,11 @@ options:
       address:
         required: true
         type: str
-        default: null
         choices: []
         description: The IPv4 or IPv6 address for this WireGuard tunnel.
       mask:
         required: true
         type: int
-        default: null
         choices: []
         description: The subnet mask for this WireGuard tunnel.
       descr:
@@ -310,7 +307,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": True,
-            "default": None,
             "nullable": False,
         },
         "mtu": {
@@ -332,14 +328,12 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "mask": {
                     "type": "int",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "descr": {

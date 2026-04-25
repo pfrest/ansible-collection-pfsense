@@ -20,7 +20,7 @@ description:
 - Manage individual Firewall Rules.
 short_description: Manage individual Firewall Rules.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str
@@ -68,7 +68,6 @@ options:
   type:
     required: true
     type: str
-    default: null
     choices:
     - pass
     - block
@@ -77,14 +76,12 @@ options:
   interface:
     required: true
     type: list
-    default: null
     choices: []
     description: The interface where packets must originate to match this rule.
     elements: str
   ipprotocol:
     required: true
     type: str
-    default: null
     choices:
     - inet
     - inet6
@@ -112,8 +109,6 @@ options:
   icmptype:
     required: false
     type: list
-    default:
-    - any
     choices:
     - any
     - althost
@@ -147,7 +142,6 @@ options:
   source:
     required: true
     type: str
-    default: null
     choices: []
     description: 'The source address this rule applies to. Valid value options are:
       an existing interface, an IP address, a subnet CIDR, an existing alias, `any`,
@@ -157,7 +151,6 @@ options:
   source_port:
     required: false
     type: str
-    default: null
     choices: []
     description: 'The source port this rule applies to. Set to `null` to allow any
       source port. Valid options are: a TCP/UDP port number, a TCP/UDP port range
@@ -165,7 +158,6 @@ options:
   destination:
     required: true
     type: str
-    default: null
     choices: []
     description: 'The destination address this rule applies to. Valid value options
       are: an existing interface, an IP address, a subnet CIDR, an existing alias,
@@ -176,7 +168,6 @@ options:
   destination_port:
     required: false
     type: str
-    default: null
     choices: []
     description: 'The destination port this rule applies to. Set to `null` to allow
       any destination port. Valid options are: a TCP/UDP port number, a TCP/UDP port
@@ -226,7 +217,6 @@ options:
   tcp_flags_out_of:
     required: false
     type: list
-    default: null
     choices:
     - fin
     - syn
@@ -241,7 +231,6 @@ options:
   tcp_flags_set:
     required: false
     type: list
-    default: null
     choices:
     - fin
     - syn
@@ -304,14 +293,12 @@ options:
   quick:
     required: false
     type: bool
-    default: false
     choices: []
     description: Apply this action to traffic that matches this rule immediately.
       This field only applies to floating firewall rules.
   direction:
     required: false
     type: str
-    default: any
     choices:
     - any
     - in
@@ -597,7 +584,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": ["pass", "block", "reject"],
             "nullable": False,
         },
@@ -605,7 +591,6 @@ def run_module():
             "type": "list",
             "required": True,
             "no_log": False,
-            "default": None,
             "elements": "str",
             "nullable": False,
         },
@@ -613,7 +598,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": ["inet", "inet6", "inet46"],
             "nullable": False,
         },
@@ -643,7 +627,6 @@ def run_module():
             "type": "list",
             "required": False,
             "no_log": False,
-            "default": ["any"],
             "choices": [
                 "any",
                 "althost",
@@ -679,28 +662,24 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "source_port": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "destination": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "destination_port": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "descr": {
@@ -750,7 +729,6 @@ def run_module():
             "type": "list",
             "required": False,
             "no_log": False,
-            "default": None,
             "choices": ["fin", "syn", "rst", "psh", "ack", "urg", "ece", "cwr"],
             "elements": "str",
             "nullable": True,
@@ -759,7 +737,6 @@ def run_module():
             "type": "list",
             "required": False,
             "no_log": False,
-            "default": None,
             "choices": ["fin", "syn", "rst", "psh", "ack", "urg", "ece", "cwr"],
             "elements": "str",
             "nullable": True,
@@ -817,14 +794,12 @@ def run_module():
             "type": "bool",
             "required": False,
             "no_log": False,
-            "default": False,
             "nullable": True,
         },
         "direction": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "any",
             "choices": ["any", "in", "out"],
             "nullable": True,
         },

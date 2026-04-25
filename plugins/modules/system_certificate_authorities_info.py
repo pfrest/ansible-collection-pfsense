@@ -20,7 +20,7 @@ description:
 - Retrieve information about many Certificate Authorities.
 short_description: Retrieve information about many Certificate Authorities.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str

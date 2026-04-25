@@ -20,8 +20,8 @@ description:
 - Manage individual ACME Certificates.
 short_description: Manage individual ACME Certificates.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
-- C(pfSense-pkg-acme) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
+- pfSense-pkg-acme must be installed on the target system.
 options:
   api_host:
     type: str
@@ -69,7 +69,6 @@ options:
   name:
     required: true
     type: str
-    default: null
     choices: []
     description: The name of the ACME certificate.
   descr:
@@ -89,7 +88,6 @@ options:
   acmeaccount:
     required: true
     type: str
-    default: null
     choices: []
     description: The ACME account key to use for the ACME certificate.
   keylength:
@@ -107,7 +105,6 @@ options:
   keypaste:
     required: false
     type: str
-    default: null
     choices: []
     description: The custom private key to use for the ACME certificate.
   preferredchain:
@@ -138,7 +135,6 @@ options:
   a_domainlist:
     required: true
     type: list
-    default: null
     choices: []
     description: The list of domain verifications to include in the ACME certificate.
     elements: dict
@@ -146,7 +142,6 @@ options:
       name:
         required: true
         type: str
-        default: null
         choices: []
         description: The fully-qualified domain name of this domain (SAN).
       status:
@@ -160,46 +155,39 @@ options:
       method:
         required: true
         type: str
-        default: null
         choices: []
         description: The method to use to validate this domain.
       webrootfolder:
         required: false
         type: str
-        default: ''
         choices: []
         description: 'Folder into which the acme challenge response is written; for
           example: /usr/local/www/.well-known/acme-challenge/'
       webrootftpftpserver:
         required: false
         type: str
-        default: ''
         choices: []
         description: Hostname of FTP server to which ACME will connect (e.g. ftps://www.webserver.tld
           ). Currently supports FTPS (passive) and SFTP.
       webrootftpusername:
         required: false
         type: str
-        default: ''
         choices: []
         description: Username for the remote server
       webrootftppassword:
         required: false
         type: str
-        default: ''
         choices: []
         description: Password to authenticate this user on the remote server
       webrootftpfolder:
         required: false
         type: str
-        default: ''
         choices: []
         description: Folder into which the acme challenge response is written (e.g.
           /.well-known/acme-challenge/)
       standaloneport:
         required: false
         type: str
-        default: ''
         choices: []
         description: HTTP listen port for stand-alone server. Must be 80 or have port
           80 on WAN forwarded to this port. Firewall rules must allow traffic to reach
@@ -207,13 +195,11 @@ options:
       standaloneipv6:
         required: false
         type: bool
-        default: false
         choices: []
         description: Bind to IPv6 instead of IPv4.
       standalonetlsport:
         required: false
         type: str
-        default: ''
         choices: []
         description: TLS listen port for stand-alone server. Must be 443 or have port
           443 on WAN forwarded to this port. Firewall rules must allow traffic to
@@ -221,19 +207,16 @@ options:
       nsupdate_server:
         required: false
         type: str
-        default: ''
         choices: []
         description: The DNS server to which updates are sent (IP address or hostname)
       nsupdate_keyname:
         required: false
         type: str
-        default: ''
         choices: []
         description: (Optional) A name for the key, if it is different than _acme-challenge.[DomainName]
       nsupdate_keyalgo:
         required: false
         type: str
-        default: ''
         choices:
         - ''
         - '157'
@@ -246,605 +229,505 @@ options:
       nsupdate_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: The key which authenticates updates for this zone
       nsupdate_zone:
         required: false
         type: str
-        default: ''
         choices: []
         description: (Optional) Explicitly set the zone name for updates.
       one984hosting_username:
         required: false
         type: str
-        default: ''
         choices: []
         description: 1984Hosting Username
       one984hosting_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: 1984Hosting Password
       acmeproxy_endpoint:
         required: false
         type: str
-        default: ''
         choices: []
         description: Acmeproxy Endpoint URL (https://ip:port)
       acmeproxy_username:
         required: false
         type: str
-        default: ''
         choices: []
         description: Acmeproxy Username
       acmeproxy_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: Acmeproxy Password
       acmedns_username:
         required: false
         type: str
-        default: ''
         choices: []
         description: acme-dns.io Username
       acmedns_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: acme-dns.io Password
       acmedns_subdomain:
         required: false
         type: str
-        default: ''
         choices: []
         description: acme-dns.io subdomain
       acmedns_update_url:
         required: false
         type: str
-        default: ''
         choices: []
         description: (optional) Custom ACME DNS Base URL
       active24_token:
         required: false
         type: str
-        default: ''
         choices: []
         description: Active24 Token
       akamai_host:
         required: false
         type: str
-        default: ''
         choices: []
         description: Hostname
       akamai_access_token:
         required: false
         type: str
-        default: ''
         choices: []
         description: Access Token
       akamai_client_token:
         required: false
         type: str
-        default: ''
         choices: []
         description: Client Token
       akamai_client_secret:
         required: false
         type: str
-        default: ''
         choices: []
         description: Client Secret
       ali_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: API Key
       ali_secret:
         required: false
         type: str
-        default: ''
         choices: []
         description: API Secret
       kas_login:
         required: false
         type: str
-        default: ''
         choices: []
         description: Login
       kas_authtype:
         required: false
         type: str
-        default: ''
         choices: []
         description: 'Auth type (default: sha1)'
       kas_authdata:
         required: false
         type: str
-        default: ''
         choices: []
         description: Auth data
       ad_api_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: Alwaysdata API Key
       anx_token:
         required: false
         type: str
-        default: ''
         choices: []
         description: API Token
       af_api_username:
         required: false
         type: str
-        default: ''
         choices: []
         description: ArtFiles Username
       af_api_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: ArtFiles Password
       arvan_token:
         required: false
         type: str
-        default: ''
         choices: []
         description: Arvan API Token
       aurora_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: API Key
       aurora_secret:
         required: false
         type: str
-        default: ''
         choices: []
         description: API Secret. Obtain the key and secret from https://cp.pcextreme.nl/auroradns/users.
       autodns_user:
         required: false
         type: str
-        default: ''
         choices: []
         description: autoDNS Username
       autodns_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: autoDNS Password
       autodns_context:
         required: false
         type: str
-        default: ''
         choices: []
         description: autoDNS Context
       aws_access_key_id:
         required: false
         type: str
-        default: ''
         choices: []
         description: AWS Access Key / API ID
       aws_secret_access_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: AWS Secret Access / API Key
       aws_dns_slowrate:
         required: false
         type: str
-        default: ''
         choices: []
         description: 'Sleep interval after TXT record update, in seconds (default:
           1)'
       azion_email:
         required: false
         type: str
-        default: ''
         choices: []
         description: Account e-mail address
       azion_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: Account password
       azuredns_subscriptionid:
         required: false
         type: str
-        default: ''
         choices: []
         description: Azure Subscription ID. First, <a href="https://github.com/acmesh-official/acme.sh/wiki/How-to-use-Azure-DNS">setup
           a service principal for access to the DNS Zone</a>.
       azuredns_tenantid:
         required: false
         type: str
-        default: ''
         choices: []
         description: Azure Tenant ID
       azuredns_appid:
         required: false
         type: str
-        default: ''
         choices: []
         description: Azure App ID
       azuredns_clientsecret:
         required: false
         type: str
-        default: ''
         choices: []
         description: Azure Client Secret
       bookmyname_username:
         required: false
         type: str
-        default: ''
         choices: []
         description: BookMyName Username
       bookmyname_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: BookMyName Password
       bunny_api_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: Bunny DNS API Key
       clouddns_email:
         required: false
         type: str
-        default: ''
         choices: []
         description: CloudDNS e-mail address
       clouddns_client_id:
         required: false
         type: str
-        default: ''
         choices: []
         description: CloudDNS client ID
       clouddns_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: CloudDNS Password
       cloudns_auth_id:
         required: false
         type: str
-        default: ''
         choices: []
         description: Authentication ID
       cloudns_sub_auth_id:
         required: false
         type: str
-        default: ''
         choices: []
         description: Sub authentication ID
       cloudns_auth_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: ClouDNS Password
       cf_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: Cloudflare API Key
       cf_email:
         required: false
         type: str
-        default: ''
         choices: []
         description: Cloudflare API Email Address
       cf_token:
         required: false
         type: str
-        default: ''
         choices: []
         description: Cloudflare API Token
       cf_account_id:
         required: false
         type: str
-        default: ''
         choices: []
         description: Cloudflare API Account ID
       cf_zone_id:
         required: false
         type: str
-        default: ''
         choices: []
         description: Cloudflare API Zone ID
       conoha_username:
         required: false
         type: str
-        default: ''
         choices: []
         description: Conoha Username
       conoha_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: Conoha Password
       conoha_tenantid:
         required: false
         type: str
-        default: ''
         choices: []
         description: Conoha Tenant ID
       conoha_identityserviceapi:
         required: false
         type: str
-        default: ''
         choices: []
         description: Conoha Identity Service API
       constellix_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: Constellix Key
       constellix_secret:
         required: false
         type: str
-        default: ''
         choices: []
         description: Constellix Secret
       cpanel_username:
         required: false
         type: str
-        default: ''
         choices: []
         description: cPanel username
       cpanel_apitoken:
         required: false
         type: str
-        default: ''
         choices: []
         description: cPanel API token
       cpanel_hostname:
         required: false
         type: str
-        default: ''
         choices: []
         description: URL to cPanel instance
       cn_user:
         required: false
         type: str
-        default: ''
         choices: []
         description: Core Networks Username
       cn_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: Core Networks Password
       curanet_authclientid:
         required: false
         type: str
-        default: ''
         choices: []
         description: Authentication Client ID
       curanet_authsecret:
         required: false
         type: str
-        default: ''
         choices: []
         description: Authentication Secret
       cy_username:
         required: false
         type: str
-        default: ''
         choices: []
         description: CY username
       cy_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: CY Password
       ddnss_token:
         required: false
         type: str
-        default: ''
         choices: []
         description: API Token (e.g. aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee)
       dedyn_token:
         required: false
         type: str
-        default: ''
         choices: []
         description: deSEC.io API Token
       dedyn_name:
         required: false
         type: str
-        default: ''
         choices: []
         description: deSEC.io Username
       do_api_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: DigitalOcean API Key
       da_api:
         required: false
         type: str
-        default: ''
         choices: []
         description: DirectAdmin API URI (e.g. https://remoteUser:remotePassword@da.example.com:8443)
       da_api_insecure:
         required: false
         type: str
-        default: ''
         choices: []
         description: DirectAdmin API Security check, 0=check for valid SSL certificate,
           1=always accept
       dnsexit_api_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: DNSExit API Key
       dnsexit_auth_user:
         required: false
         type: str
-        default: ''
         choices: []
         description: DNSExit Username
       dnsexit_auth_pass:
         required: false
         type: str
-        default: ''
         choices: []
         description: DNSExit Password
       dnshome_subdomain:
         required: false
         type: str
-        default: ''
         choices: []
         description: Subdomain
       dnshome_subdomainpassword:
         required: false
         type: str
-        default: ''
         choices: []
         description: Subdomain Password
       dnsimple_oauth_token:
         required: false
         type: str
-        default: ''
         choices: []
         description: DNSimple oauth token, visit <a href="https://dnsimple.com/user">https://dnsimple.com/user</a>
           to generate.
       me_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: DNSMadeEasy API Key
       me_secret:
         required: false
         type: str
-        default: ''
         choices: []
         description: DNSMadeEasy API Secret
       dnsservices_username:
         required: false
         type: str
-        default: ''
         choices: []
         description: dns.services Username
       dnsservices_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: dns.services Password
       do_letoken:
         required: false
         type: str
-        default: ''
         choices: []
         description: DO.de API Token
       do_pid:
         required: false
         type: str
-        default: ''
         choices: []
         description: DO Customer ID
       do_pw:
         required: false
         type: str
-        default: ''
         choices: []
         description: DO Password
       domeneshop_token:
         required: false
         type: str
-        default: ''
         choices: []
         description: Domeneshop API Token
       domeneshop_secret:
         required: false
         type: str
-        default: ''
         choices: []
         description: Domeneshop API Secret
       dp_id:
         required: false
         type: str
-        default: ''
         choices: []
         description: Dnspod API ID
       dp_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: Dnspod API Key
       dpi_id:
         required: false
         type: str
-        default: ''
         choices: []
         description: Dnspod API ID
       dpi_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: Dnspod API Key
       dh_api_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: Dreamhost API Token
       duckdns_token:
         required: false
         type: str
-        default: ''
         choices: []
         description: DuckDNS API Token (Look in DuckDNS account settings)
       dd_api_user:
         required: false
         type: str
-        default: ''
         choices: []
         description: DurableDNS API User
       dd_api_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: DurableDNS API Key
       dyn_customer:
         required: false
         type: str
-        default: ''
         choices: []
         description: dyn.com customer ID
       dyn_username:
         required: false
         type: str
-        default: ''
         choices: []
         description: dyn.com API Username (Dyn Managed DNS user, Needs Z&R Permissions
           for RecordAdd, RecordUpdate, RecordDelete, RecordGet, ZoneGet, ZoneAddNode,
@@ -852,605 +735,505 @@ options:
       dyn_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: dyn.com Password
       df_user:
         required: false
         type: str
-        default: ''
         choices: []
         description: dyndnsfree.de Username
       df_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: dyndnsfree.de Password
       dynu_clientid:
         required: false
         type: str
-        default: ''
         choices: []
         description: Dynu API Client ID created in the Dynu account settings
       dynu_secret:
         required: false
         type: str
-        default: ''
         choices: []
         description: Dynu API Secret
       easydns_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: easyDNS API Key. Sign up for a key at https://cp.easydns.com/manage/security/api/signup.php
       easydns_token:
         required: false
         type: str
-        default: ''
         choices: []
         description: easyDNS API Token
       euserv_username:
         required: false
         type: str
-        default: ''
         choices: []
         description: Euserv.eu Username
       euserv_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: Euserv.eu Password
       exoscale_api_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: Exoscale API Key
       exoscale_secret_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: Exoscale Secret Key
       fornex_api_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: Fornex API Key
       freedns_user:
         required: false
         type: str
-        default: ''
         choices: []
         description: FreeDNS username
       freedns_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: FreeDNS Password
       gandi_livedns_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: Gandi LiveDNS API Key, retrieved from <a href="https://account.gandi.net">https://account.gandi.net</a>
       gcore_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: Gcore API Key
       geoscaling_username:
         required: false
         type: str
-        default: ''
         choices: []
         description: Username
       geoscaling_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: Password
       gd_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: GoDaddy API Key
       gd_secret:
         required: false
         type: str
-        default: ''
         choices: []
         description: GoDaddy API Secret
       googledomains_access_token:
         required: false
         type: str
-        default: ''
         choices: []
         description: Google Domains API Access Token
       googledomains_zone:
         required: false
         type: str
-        default: ''
         choices: []
         description: Google Domains DNS Zone
       hetzner_token:
         required: false
         type: str
-        default: ''
         choices: []
         description: Hetzner API Token. Visit https://dns.hetzner.com/settings/api-token
           to retrieve.
       hexonet_login:
         required: false
         type: str
-        default: ''
         choices: []
         description: Hexonet Username
       hexonet_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: Hexonet Password
       huaweicloud_username:
         required: false
         type: str
-        default: ''
         choices: []
         description: Username
       huaweicloud_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: Password
       huaweicloud_domainname:
         required: false
         type: str
-        default: ''
         choices: []
         description: Domain Name
       he_username:
         required: false
         type: str
-        default: ''
         choices: []
         description: Hurricane Electric username
       he_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: Hurricane Electric password
       hostingde_apikey:
         required: false
         type: str
-        default: ''
         choices: []
         description: Hosting.de API Key
       hostingde_endpoint:
         required: false
         type: str
-        default: ''
         choices: []
         description: Hosting.de API endpoint, e.g. https://secure.hosting.de
       infoblox_creds:
         required: false
         type: str
-        default: ''
         choices: []
         description: Infoblox credentials in <strong>username:password</strong> format
       infoblox_server:
         required: false
         type: str
-        default: ''
         choices: []
         description: Infoblox server IP address or hostname
       infoblox_view:
         required: false
         type: str
-        default: ''
         choices: []
         description: Infoblox DNS View name, or enter "default"
       infomaniak_api_token:
         required: false
         type: str
-        default: ''
         choices: []
         description: Infomaniak API token. Visit https://manager.infomaniak.com/v3/&lt;account_id&gt;/api/dashboard
           and generate a token with the scope Domain.
       default_infomaniak_api_url:
         required: false
         type: str
-        default: ''
         choices: []
         description: 'Infomaniak API URL (Default: https://api.infomaniak.com)'
       infomaniak_ttl:
         required: false
         type: str
-        default: ''
         choices: []
         description: 'Infomaniak DNS record TTL (Default: 300)'
       ionos_prefix:
         required: false
         type: str
-        default: ''
         choices: []
         description: Prefix
       ionos_secret:
         required: false
         type: str
-        default: ''
         choices: []
         description: Secret. Read https://beta.developer.hosting.ionos.de/docs/getstarted
           to learn how to get a prefix and secret.
       ipv64_token:
         required: false
         type: str
-        default: ''
         choices: []
         description: IPv64.net Access Token
       internetbs_api_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: Internet.BS API Key
       internetbs_api_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: Internet.BS API Password
       inwx_username:
         required: false
         type: str
-        default: ''
         choices: []
         description: INWX.de username
       inwx_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: INWX.de password
       inwx_shared_secret:
         required: false
         type: str
-        default: ''
         choices: []
         description: INWX.de shared secret
       ispc_user:
         required: false
         type: str
-        default: ''
         choices: []
         description: ISPConfig remoteUser
       ispc_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: ISPConfig remotePassword
       ispc_api:
         required: false
         type: str
-        default: ''
         choices: []
         description: API URL (e.g. https://ispc.domain.tld:8080/remote/json.php )
       ispc_api_insecure:
         required: false
         type: str
-        default: ''
         choices: []
         description: Set 1 for insecure and 0 for secure. Controls whether the server
           TLS certificate is checked for validity (0) or always accepted (1)
       jd_access_key_id:
         required: false
         type: str
-        default: ''
         choices: []
         description: jdcloud Access Key ID
       jd_access_key_secret:
         required: false
         type: str
-        default: ''
         choices: []
         description: jdcloud Access Key Secret
       jd_region:
         required: false
         type: str
-        default: ''
         choices: []
         description: jdcloud Region
       joker_username:
         required: false
         type: str
-        default: ''
         choices: []
         description: Joker.com Username
       joker_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: Joker.com Password
       kappernetdns_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: kapper.net API Key
       kappernetdns_secret:
         required: false
         type: str
-        default: ''
         choices: []
         description: kapper.net API Secret
       kinghost_username:
         required: false
         type: str
-        default: ''
         choices: []
         description: Kinghost API Username
       kinghost_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: Kinghost API Password
       knot_server:
         required: false
         type: str
-        default: ''
         choices: []
         description: IP address of the Knot server
       knot_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: Knot TSIG Key
       la_id:
         required: false
         type: str
-        default: ''
         choices: []
         description: ID
       la_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: Key
       lsw_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: Leaseweb API Key
       limacity_apikey:
         required: false
         type: str
-        default: ''
         choices: []
         description: 'API Key must have the following roles: dns.admin, domains.reader'
       linode_api_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: Linode API Key
       linode_v4_api_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: Linode v4 API Key
       loopia_user:
         required: false
         type: str
-        default: ''
         choices: []
         description: Loopia username
       loopia_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: Loopia Password
       lua_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: Luadns API Key
       lua_email:
         required: false
         type: str
-        default: ''
         choices: []
         description: Luadns API Email Address
       miab_username:
         required: false
         type: str
-        default: ''
         choices: []
         description: MailinaBox Username
       miab_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: MailinaBox Password
       miab_server:
         required: false
         type: str
-        default: ''
         choices: []
         description: MailinaBox Server
       misaka_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: misaka.io Key
       mydnsjp_masterid:
         required: false
         type: str
-        default: ''
         choices: []
         description: MyDNS.jp Master ID
       mydnsjp_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: MyDNS.jp Password
       mb_ak:
         required: false
         type: str
-        default: ''
         choices: []
         description: OAuth2 Key
       mb_as:
         required: false
         type: str
-        default: ''
         choices: []
         description: OAuth2 Secret
       namecom_username:
         required: false
         type: str
-        default: ''
         choices: []
         description: Name.com username
       namecom_token:
         required: false
         type: str
-        default: ''
         choices: []
         description: Name.com API Token
       namecheap_api_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: Namecheap API Key
       namecheap_username:
         required: false
         type: str
-        default: ''
         choices: []
         description: Namecheap Username
       nm_user:
         required: false
         type: str
-        default: ''
         choices: []
         description: namemaster.de API username
       nm_sha256:
         required: false
         type: str
-        default: ''
         choices: []
         description: namemaster.de API password as SHA256 hash
       nanelo_token:
         required: false
         type: str
-        default: ''
         choices: []
         description: Nanelo.com Access Token
       nederhost_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: NederHost API Key
       namesilo_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: Namesilo API Key
       neodigit_api_token:
         required: false
         type: str
-        default: ''
         choices: []
         description: Neodigit API Token
       nc_apikey:
         required: false
         type: str
-        default: ''
         choices: []
         description: Netcup API Key
       nc_apipw:
         required: false
         type: str
-        default: ''
         choices: []
         description: Netcup API Password
       nc_cid:
         required: false
         type: str
-        default: ''
         choices: []
         description: Netcup Customer ID/Number
       netlify_access_token:
         required: false
         type: str
-        default: ''
         choices: []
         description: Netlify API Token
       nic_clientid:
         required: false
         type: str
-        default: ''
         choices: []
         description: nic.ru API Client ID
       nic_clientsecret:
         required: false
         type: str
-        default: ''
         choices: []
         description: nic.ru API Client Secret
       nic_username:
         required: false
         type: str
-        default: ''
         choices: []
         description: nic.ru Username
       nic_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: nic.ru Password
       ns1_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: NS1 API Key
       nw_api_token:
         required: false
         type: str
-        default: ''
         choices: []
         description: NW API Token
       nw_api_endpoint:
         required: false
         type: str
-        default: ''
         choices:
         - ''
         - https:\/\/portal.nexcess.net
@@ -1460,80 +1243,67 @@ options:
       onecom_user:
         required: false
         type: str
-        default: ''
         choices: []
         description: One.com Username
       onecom_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: One.com Password
       online_api_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: Online.net API Key
       oci_cli_tenancy:
         required: false
         type: str
-        default: ''
         choices: []
         description: OCID of tenancy that contains the target DNS zone
       oci_cli_user:
         required: false
         type: str
-        default: ''
         choices: []
         description: OCID of user with permission to add/remove records from zones
       oci_cli_region:
         required: false
         type: str
-        default: ''
         choices: []
         description: Tenancy home region
       oci_cli_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: The private API signing key in PEM format. Using an encrypted
           private key that needs a passphrase is not supported.
       openprovider_user:
         required: false
         type: str
-        default: ''
         choices: []
         description: OpenProvider Username
       openprovider_passwordhash:
         required: false
         type: str
-        default: ''
         choices: []
         description: OpenProvider Password Hash
       ovh_ak:
         required: false
         type: str
-        default: ''
         choices: []
         description: OVH Application Key
       ovh_as:
         required: false
         type: str
-        default: ''
         choices: []
         description: OVH Application Secret
       ovh_ck:
         required: false
         type: str
-        default: ''
         choices: []
         description: OVH Consumer Key
       ovh_end_point:
         required: false
         type: str
-        default: ''
         choices:
         - ''
         - ovh-eu
@@ -1547,416 +1317,347 @@ options:
       pleskxml_user:
         required: false
         type: str
-        default: ''
         choices: []
         description: Plesk User
       pleskxml_pass:
         required: false
         type: str
-        default: ''
         choices: []
         description: Plesk Password
       pleskxml_uri:
         required: false
         type: str
-        default: ''
         choices: []
         description: Plesk Server URI
       pointhq_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: PointHQ API Key
       pointhq_email:
         required: false
         type: str
-        default: ''
         choices: []
         description: PointHQ account E-mail address
       porkbun_api_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: API Key
       porkbun_secret_api_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: Secret API Key. Obtain the key and secret from https://porkbun.com/account/api
       pdns_url:
         required: false
         type: str
-        default: ''
         choices: []
         description: PowerDNS URL (e.g. http://ns.example.com:8081 )
       pdns_serverid:
         required: false
         type: str
-        default: ''
         choices: []
         description: PowerDNS ServerId (e.g. localhost )
       pdns_token:
         required: false
         type: str
-        default: ''
         choices: []
         description: PowerDNS Token (e.g. 0123456789ABCDEF )
       pdns_ttl:
         required: false
         type: str
-        default: ''
         choices: []
         description: PowerDNS Record TTL (e.g. 60 )
       rackcorp_apiuuid:
         required: false
         type: str
-        default: ''
         choices: []
         description: API UUID
       rackcorp_apisecret:
         required: false
         type: str
-        default: ''
         choices: []
         description: API Secret
       rackspace_username:
         required: false
         type: str
-        default: ''
         choices: []
         description: Rackspace Username
       rackspace_apikey:
         required: false
         type: str
-        default: ''
         choices: []
         description: Rackspace API Key
       rage4_username:
         required: false
         type: str
-        default: ''
         choices: []
         description: Username
       rage4_token:
         required: false
         type: str
-        default: ''
         choices: []
         description: Token
       rcode0_api_token:
         required: false
         type: str
-        default: ''
         choices: []
         description: Rcode0 API Token
       rcode0_url:
         required: false
         type: str
-        default: ''
         choices: []
         description: Rcode0 URL
       rcode0_ttl:
         required: false
         type: str
-        default: ''
         choices: []
         description: Rcode0 TTL
       regru_api_username:
         required: false
         type: str
-        default: ''
         choices: []
         description: reg.ru Username
       regru_api_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: reg.ru API Password
       scaleway_api_token:
         required: false
         type: str
-        default: ''
         choices: []
         description: API Token
       schlundtech_user:
         required: false
         type: str
-        default: ''
         choices: []
         description: schlundtech.de Username
       schlundtech_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: schlundtech.de Password
       sl_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: Selectel API Key
       selfhostdns_username:
         required: false
         type: str
-        default: ''
         choices: []
         description: Username (Customer number, not email address or DynDNS account)
       selfhostdns_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: Password
       selfhostdns_map:
         required: false
         type: str
-        default: ''
         choices: []
         description: Record ID (Edit the record, value is shown in brackets)
       servercow_api_username:
         required: false
         type: str
-        default: ''
         choices: []
         description: Servercow username
       servercow_api_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: Servercow password
       simply_accountname:
         required: false
         type: str
-        default: ''
         choices: []
         description: Account Name
       simply_apikey:
         required: false
         type: str
-        default: ''
         choices: []
         description: API Key
       simply_api:
         required: false
         type: str
-        default: ''
         choices: []
         description: 'API Endpoint URL. Default: https://api.simply.com/1'
       tele3_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: Tele3 Key
       tele3_secret:
         required: false
         type: str
-        default: ''
         choices: []
         description: Tele3 Secret
       tencent_secretid:
         required: false
         type: str
-        default: ''
         choices: []
         description: Tencent Secret ID
       tencent_secretkey:
         required: false
         type: str
-        default: ''
         choices: []
         description: Tencent Secret Key
       udr_user:
         required: false
         type: str
-        default: ''
         choices: []
         description: Username
       udr_pass:
         required: false
         type: str
-        default: ''
         choices: []
         description: Password
       ultra_usr:
         required: false
         type: str
-        default: ''
         choices: []
         description: UltraDNS Username
       ULTRA_PWD:
         required: false
         type: str
-        default: ''
         choices: []
         description: UltraDNS Password
       uno_user:
         required: false
         type: str
-        default: ''
         choices: []
         description: UnoEuro username
       uno_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: UnoEuro API Key
       variomedia_api_token:
         required: false
         type: str
-        default: ''
         choices: []
         description: variomedia.de API Token
       veesp_user:
         required: false
         type: str
-        default: ''
         choices: []
         description: Username
       veesp_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: Password
       vercel_token:
         required: false
         type: str
-        default: ''
         choices: []
         description: Vercel Token
       vscale_api_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: vscale API Key
       vultr_api_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: vultr.com API Key
       ws_apikey:
         required: false
         type: str
-        default: ''
         choices: []
         description: API Key / "Identifier" in the WS Admin
       ws_apisecret:
         required: false
         type: str
-        default: ''
         choices: []
         description: API Secret / "Secret key" in the WS Admin. Obtain the API Key
           and Secret from https://admin.websupport.sk/en/auth/apiKey.
       west_username:
         required: false
         type: str
-        default: ''
         choices: []
         description: West.cn Domain API Username
       west_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: West.cn Domain API Key
       world4you_username:
         required: false
         type: str
-        default: ''
         choices: []
         description: Username
       world4you_password:
         required: false
         type: str
-        default: ''
         choices: []
         description: Password
       pdd_token:
         required: false
         type: str
-        default: ''
         choices: []
         description: Yandex PDD Token, generate at <a href="https://pddimp.yandex.ru/api2/admin/get_token">https://pddimp.yandex.ru/api2/admin/get_token</a>
       yc_zone_id:
         required: false
         type: str
-        default: ''
         choices: []
         description: DNS Zone ID
       yc_folder_id:
         required: false
         type: str
-        default: ''
         choices: []
         description: Yandex Cloud Folder ID
       yc_sa_id:
         required: false
         type: str
-        default: ''
         choices: []
         description: Service Account ID
       yc_sa_key_id:
         required: false
         type: str
-        default: ''
         choices: []
         description: Service Account IAM Key ID
       yc_sa_key_file_pem_b64:
         required: false
         type: str
-        default: ''
         choices: []
         description: Base64 content of private key.
       zm_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: Zonomi API Key
       zone_username:
         required: false
         type: str
-        default: ''
         choices: []
         description: Zone.ee Username
       zone_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: Zone.ee API Key
       zilore_key:
         required: false
         type: str
-        default: ''
         choices: []
         description: Zilore API Key
       technitium_server:
         required: false
         type: str
-        default: ''
         choices: []
         description: Technitium DNS Server address
       technitium_token:
         required: false
         type: str
-        default: ''
         choices: []
         description: Technitium DNS Server API Token
       anydnschallengealias:
         required: false
         type: str
-        default: ''
         choices: []
         description: (Optional) Adds the --challenge-alias flag to the acme.sh call.<br/>To
           use a CNAME for _acme-challenge.importantDomain.tld to direct the acme validation
@@ -1966,7 +1667,6 @@ options:
       anydnschallengedomain:
         required: false
         type: bool
-        default: false
         choices: []
         description: (Optional) Uses the challenge domain alias value as --domain-alias
           instead in the acme.sh call.
@@ -1990,13 +1690,11 @@ options:
       command:
         required: true
         type: str
-        default: null
         choices: []
         description: The command to execute on the ACME certificate.
       method:
         required: true
         type: str
-        default: null
         choices:
         - shellcommand
         - php_command
@@ -3127,7 +2825,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "descr": {
@@ -3149,7 +2846,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "keylength": {
@@ -3164,7 +2860,6 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "preferredchain": {
@@ -3199,7 +2894,6 @@ def run_module():
             "type": "list",
             "required": True,
             "no_log": False,
-            "default": None,
             "elements": "dict",
             "nullable": False,
             "options": {
@@ -3207,7 +2901,6 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "status": {
@@ -3222,84 +2915,72 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "webrootfolder": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "webrootftpftpserver": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "webrootftpusername": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "webrootftppassword": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "webrootftpfolder": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "standaloneport": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "standaloneipv6": {
                     "type": "bool",
                     "required": False,
                     "no_log": False,
-                    "default": False,
                     "nullable": True,
                 },
                 "standalonetlsport": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "nsupdate_server": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "nsupdate_keyname": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "nsupdate_keyalgo": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "choices": ["", "157", "165", "164", "163", "162", "161"],
                     "nullable": True,
                 },
@@ -3307,1400 +2988,1200 @@ def run_module():
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "nsupdate_zone": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "one984hosting_username": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "one984hosting_password": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "acmeproxy_endpoint": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "acmeproxy_username": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "acmeproxy_password": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "acmedns_username": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "acmedns_password": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "acmedns_subdomain": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "acmedns_update_url": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "active24_token": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "akamai_host": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "akamai_access_token": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "akamai_client_token": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "akamai_client_secret": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "ali_key": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "ali_secret": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "kas_login": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "kas_authtype": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "kas_authdata": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "ad_api_key": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "anx_token": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "af_api_username": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "af_api_password": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "arvan_token": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "aurora_key": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "aurora_secret": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "autodns_user": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "autodns_password": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "autodns_context": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "aws_access_key_id": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "aws_secret_access_key": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "aws_dns_slowrate": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "azion_email": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "azion_password": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "azuredns_subscriptionid": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "azuredns_tenantid": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "azuredns_appid": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "azuredns_clientsecret": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "bookmyname_username": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "bookmyname_password": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "bunny_api_key": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "clouddns_email": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "clouddns_client_id": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "clouddns_password": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "cloudns_auth_id": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "cloudns_sub_auth_id": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "cloudns_auth_password": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "cf_key": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "cf_email": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "cf_token": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "cf_account_id": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "cf_zone_id": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "conoha_username": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "conoha_password": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "conoha_tenantid": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "conoha_identityserviceapi": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "constellix_key": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "constellix_secret": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "cpanel_username": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "cpanel_apitoken": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "cpanel_hostname": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "cn_user": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "cn_password": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "curanet_authclientid": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "curanet_authsecret": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "cy_username": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "cy_password": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "ddnss_token": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "dedyn_token": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "dedyn_name": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "do_api_key": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "da_api": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "da_api_insecure": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "dnsexit_api_key": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "dnsexit_auth_user": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "dnsexit_auth_pass": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "dnshome_subdomain": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "dnshome_subdomainpassword": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "dnsimple_oauth_token": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "me_key": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "me_secret": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "dnsservices_username": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "dnsservices_password": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "do_letoken": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "do_pid": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "do_pw": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "domeneshop_token": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "domeneshop_secret": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "dp_id": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "dp_key": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "dpi_id": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "dpi_key": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "dh_api_key": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "duckdns_token": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "dd_api_user": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "dd_api_key": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "dyn_customer": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "dyn_username": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "dyn_password": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "df_user": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "df_password": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "dynu_clientid": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "dynu_secret": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "easydns_key": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "easydns_token": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "euserv_username": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "euserv_password": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "exoscale_api_key": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "exoscale_secret_key": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "fornex_api_key": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "freedns_user": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "freedns_password": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "gandi_livedns_key": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "gcore_key": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "geoscaling_username": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "geoscaling_password": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "gd_key": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "gd_secret": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "googledomains_access_token": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "googledomains_zone": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "hetzner_token": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "hexonet_login": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "hexonet_password": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "huaweicloud_username": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "huaweicloud_password": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "huaweicloud_domainname": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "he_username": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "he_password": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "hostingde_apikey": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "hostingde_endpoint": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "infoblox_creds": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "infoblox_server": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "infoblox_view": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "infomaniak_api_token": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "default_infomaniak_api_url": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "infomaniak_ttl": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "ionos_prefix": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "ionos_secret": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "ipv64_token": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "internetbs_api_key": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "internetbs_api_password": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "inwx_username": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "inwx_password": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "inwx_shared_secret": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "ispc_user": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "ispc_password": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "ispc_api": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "ispc_api_insecure": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "jd_access_key_id": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "jd_access_key_secret": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "jd_region": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "joker_username": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "joker_password": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "kappernetdns_key": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "kappernetdns_secret": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "kinghost_username": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "kinghost_password": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "knot_server": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "knot_key": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "la_id": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "la_key": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "lsw_key": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "limacity_apikey": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "linode_api_key": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "linode_v4_api_key": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "loopia_user": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "loopia_password": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "lua_key": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "lua_email": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "miab_username": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "miab_password": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "miab_server": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "misaka_key": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "mydnsjp_masterid": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "mydnsjp_password": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "mb_ak": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "mb_as": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "namecom_username": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "namecom_token": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "namecheap_api_key": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "namecheap_username": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "nm_user": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "nm_sha256": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "nanelo_token": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "nederhost_key": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "namesilo_key": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "neodigit_api_token": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "nc_apikey": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "nc_apipw": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "nc_cid": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "netlify_access_token": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "nic_clientid": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "nic_clientsecret": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "nic_username": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "nic_password": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "ns1_key": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "nw_api_token": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "nw_api_endpoint": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "choices": [
                         "",
                         "https:\\/\\/portal.nexcess.net",
@@ -4713,91 +4194,78 @@ def run_module():
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "onecom_password": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "online_api_key": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "oci_cli_tenancy": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "oci_cli_user": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "oci_cli_region": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "oci_cli_key": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "openprovider_user": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "openprovider_passwordhash": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "ovh_ak": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "ovh_as": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "ovh_ck": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "ovh_end_point": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "choices": [
                         "",
                         "ovh-eu",
@@ -4814,490 +4282,420 @@ def run_module():
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "pleskxml_pass": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "pleskxml_uri": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "pointhq_key": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "pointhq_email": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "porkbun_api_key": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "porkbun_secret_api_key": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "pdns_url": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "pdns_serverid": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "pdns_token": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "pdns_ttl": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "rackcorp_apiuuid": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "rackcorp_apisecret": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "rackspace_username": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "rackspace_apikey": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "rage4_username": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "rage4_token": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "rcode0_api_token": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "rcode0_url": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "rcode0_ttl": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "regru_api_username": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "regru_api_password": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "scaleway_api_token": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "schlundtech_user": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "schlundtech_password": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "sl_key": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "selfhostdns_username": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "selfhostdns_password": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "selfhostdns_map": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "servercow_api_username": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "servercow_api_password": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "simply_accountname": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "simply_apikey": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "simply_api": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "tele3_key": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "tele3_secret": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "tencent_secretid": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "tencent_secretkey": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "udr_user": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "udr_pass": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "ultra_usr": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "ULTRA_PWD": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "uno_user": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "uno_key": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "variomedia_api_token": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "veesp_user": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "veesp_password": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "vercel_token": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "vscale_api_key": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "vultr_api_key": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "ws_apikey": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "ws_apisecret": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "west_username": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "west_key": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "world4you_username": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "world4you_password": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "pdd_token": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "yc_zone_id": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "yc_folder_id": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "yc_sa_id": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "yc_sa_key_id": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "yc_sa_key_file_pem_b64": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "zm_key": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "zone_username": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "zone_key": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "zilore_key": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "technitium_server": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "technitium_token": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": "",
                     "nullable": True,
                 },
                 "anydnschallengealias": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "",
                     "nullable": True,
                 },
                 "anydnschallengedomain": {
                     "type": "bool",
                     "required": False,
                     "no_log": False,
-                    "default": False,
                     "nullable": True,
                 },
             },
@@ -5322,14 +4720,12 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "method": {
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "choices": [
                         "shellcommand",
                         "php_command",

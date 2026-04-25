@@ -20,8 +20,8 @@ description:
 - Manage individual Free RADIUS Clients.
 short_description: Manage individual Free RADIUS Clients.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
-- C(pfSense-pkg-freeradius3) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
+- pfSense-pkg-freeradius3 must be installed on the target system.
 options:
   api_host:
     type: str
@@ -69,7 +69,6 @@ options:
   addr:
     required: true
     type: str
-    default: null
     choices: []
     description: The IP address or network of the RADIUS client(s) in CIDR notation.
       This is the IP of the NAS (switch, access point, firewall, router, etc.)
@@ -90,14 +89,12 @@ options:
   shortname:
     required: true
     type: str
-    default: null
     choices: []
     description: A short name for the client. This is generally the hostname of the
       NAS.
   secret:
     required: true
     type: str
-    default: null
     choices: []
     description: This is the shared secret (password) which the NAS (switch, accesspoint,
       etc.) needs to communicate with the RADIUS server.
@@ -322,7 +319,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "ip_version": {
@@ -344,14 +340,12 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "secret": {
             "type": "str",
             "required": True,
             "no_log": True,
-            "default": None,
             "nullable": False,
         },
         "proto": {

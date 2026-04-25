@@ -20,7 +20,7 @@ description:
 - Manage individual DNS Resolver Host Override Aliases.
 short_description: Manage individual DNS Resolver Host Override Aliases.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str
@@ -74,13 +74,11 @@ options:
   host:
     required: true
     type: str
-    default: null
     choices: []
     description: The hostname portion of the host override alias.
   domain:
     required: true
     type: str
-    default: null
     choices: []
     description: The hostname portion of the host override alias.
   descr:
@@ -227,14 +225,12 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "domain": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "descr": {

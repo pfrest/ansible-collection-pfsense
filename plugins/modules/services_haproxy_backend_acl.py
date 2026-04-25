@@ -20,8 +20,8 @@ description:
 - Manage individual HAProxy Backend Access Control Lists.
 short_description: Manage individual HAProxy Backend Access Control Lists.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
-- C(pfSense-pkg-haproxy) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
+- pfSense-pkg-haproxy must be installed on the target system.
 options:
   api_host:
     type: str
@@ -75,13 +75,11 @@ options:
   name:
     required: true
     type: str
-    default: null
     choices: []
     description: The unique name for this backend ACL.
   expression:
     required: true
     type: str
-    default: null
     choices:
     - host_starts_with
     - host_ends_with
@@ -112,7 +110,6 @@ options:
   value:
     required: true
     type: str
-    default: null
     choices: []
     description: The value which indicates a match for this ACL.
   casesensitive:
@@ -274,14 +271,12 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "expression": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": [
                 "host_starts_with",
                 "host_ends_with",
@@ -315,7 +310,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "casesensitive": {

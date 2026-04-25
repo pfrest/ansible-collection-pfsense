@@ -20,8 +20,8 @@ description:
 - Manage all Free RADIUS Users.
 short_description: Manage all Free RADIUS Users.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
-- C(pfSense-pkg-freeradius3) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
+- pfSense-pkg-freeradius3 must be installed on the target system.
 options:
   api_host:
     type: str
@@ -61,19 +61,16 @@ options:
       username:
         required: true
         type: str
-        default: null
         choices: []
         description: The username for this user.
       password:
         required: false
         type: str
-        default: null
         choices: []
         description: The password for this username.
       password_encryption:
         required: false
         type: str
-        default: Cleartext-Password
         choices:
         - Cleartext-Password
         - MD5-Password
@@ -90,7 +87,6 @@ options:
       motp_authmethod:
         required: false
         type: str
-        default: googleauth
         choices:
         - motp
         - googleauth
@@ -98,20 +94,17 @@ options:
       motp_secret:
         required: false
         type: str
-        default: null
         choices: []
         description: The secret for the Mobile One-Time Password (MOTP).
       motp_pin:
         required: false
         type: str
-        default: null
         choices: []
         description: The PIN for the Mobile One-Time Password (MOTP). It must be exactly
           4 digits.
       motp_offset:
         required: false
         type: int
-        default: 0
         choices: []
         description: The timezone offset for this user.
       description:
@@ -288,21 +281,18 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "password": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": None,
                     "nullable": True,
                 },
                 "password_encryption": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "Cleartext-Password",
                     "choices": [
                         "Cleartext-Password",
                         "MD5-Password",
@@ -322,7 +312,6 @@ def run_module():
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "googleauth",
                     "choices": ["motp", "googleauth"],
                     "nullable": True,
                 },
@@ -330,21 +319,18 @@ def run_module():
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": None,
                     "nullable": True,
                 },
                 "motp_pin": {
                     "type": "str",
                     "required": False,
                     "no_log": True,
-                    "default": None,
                     "nullable": True,
                 },
                 "motp_offset": {
                     "type": "int",
                     "required": False,
                     "no_log": False,
-                    "default": 0,
                     "nullable": True,
                 },
                 "description": {

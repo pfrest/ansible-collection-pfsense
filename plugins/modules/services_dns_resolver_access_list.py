@@ -20,7 +20,7 @@ description:
 - Manage individual DNS Resolver Access Lists.
 short_description: Manage individual DNS Resolver Access Lists.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str
@@ -68,13 +68,11 @@ options:
   name:
     required: true
     type: str
-    default: null
     choices: []
     description: The name of this access list.
   action:
     required: true
     type: str
-    default: null
     choices:
     - allow
     - deny
@@ -92,7 +90,6 @@ options:
   networks:
     required: true
     type: list
-    default: null
     choices: []
     description: The DNS Resolver access list network entries to include in this access
       list.
@@ -101,13 +98,11 @@ options:
       network:
         required: true
         type: str
-        default: null
         choices: []
         description: The network address of this access list entry.
       mask:
         required: true
         type: int
-        default: null
         choices: []
         description: The subnet mask of this access list entry's network.
       description:
@@ -264,14 +259,12 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "action": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": [
                 "allow",
                 "deny",
@@ -293,7 +286,6 @@ def run_module():
             "type": "list",
             "required": True,
             "no_log": False,
-            "default": None,
             "elements": "dict",
             "nullable": False,
             "options": {
@@ -301,14 +293,12 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "mask": {
                     "type": "int",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "description": {

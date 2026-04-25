@@ -20,7 +20,7 @@ description:
 - Manage individual DHCP Server Custom Options.
 short_description: Manage individual DHCP Server Custom Options.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str
@@ -74,13 +74,11 @@ options:
   number:
     required: true
     type: int
-    default: null
     choices: []
     description: The DHCP option number to configure.
   type:
     required: true
     type: str
-    default: null
     choices:
     - text
     - string
@@ -96,7 +94,6 @@ options:
   value:
     required: true
     type: str
-    default: null
     choices: []
     description: The value to configure for the option.
 author:
@@ -238,14 +235,12 @@ def run_module():
             "type": "int",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "type": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": [
                 "text",
                 "string",
@@ -264,7 +259,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
     }

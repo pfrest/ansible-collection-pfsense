@@ -20,7 +20,7 @@ description:
 - Manage individual IPsec Phase 2 Encryptions.
 short_description: Manage individual IPsec Phase 2 Encryptions.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str
@@ -74,7 +74,6 @@ options:
   name:
     required: true
     type: str
-    default: null
     choices:
     - aes
     - aes128gcm
@@ -86,7 +85,6 @@ options:
   keylen:
     required: false
     type: int
-    default: null
     choices: []
     description: The key length for the encryption algorithm.
 author:
@@ -223,7 +221,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": [
                 "aes",
                 "aes128gcm",
@@ -237,7 +234,6 @@ def run_module():
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
     }

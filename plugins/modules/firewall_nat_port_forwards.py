@@ -20,7 +20,7 @@ description:
 - Manage all Port Forwards.
 short_description: Manage all Port Forwards.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str
@@ -60,7 +60,6 @@ options:
       interface:
         required: true
         type: str
-        default: null
         choices: []
         description: The interface this port forward rule applies to.
       ipprotocol:
@@ -75,7 +74,6 @@ options:
       protocol:
         required: true
         type: str
-        default: null
         choices:
         - any
         - tcp
@@ -93,7 +91,6 @@ options:
       source:
         required: true
         type: str
-        default: null
         choices: []
         description: 'The source address this port forward rule applies to. Valid
           value options are: an existing interface, an IP address, a subnet CIDR,
@@ -104,7 +101,6 @@ options:
       source_port:
         required: false
         type: str
-        default: null
         choices: []
         description: 'The source port this port forward rule applies to. Set to `null`
           to allow any source port. Valid options are: a TCP/UDP port number, a TCP/UDP
@@ -112,7 +108,6 @@ options:
       destination:
         required: true
         type: str
-        default: null
         choices: []
         description: 'The destination address this rule applies to. Valid value options
           are: an existing interface, an IP address, a subnet CIDR, an existing alias,
@@ -123,7 +118,6 @@ options:
       destination_port:
         required: false
         type: str
-        default: null
         choices: []
         description: 'The destination port this port forward rule applies to. Set
           to `null` to allow any destination port. Valid options are: a TCP/UDP port
@@ -132,7 +126,6 @@ options:
       target:
         required: true
         type: str
-        default: null
         choices: []
         description: 'The IP address or alias of the internal host to forward matching
           traffic to. Valid value options are: an IP address, an existing alias. For
@@ -141,7 +134,6 @@ options:
       local_port:
         required: false
         type: str
-        default: null
         choices: []
         description: 'The port on the internal host to forward matching traffic to.
           In most cases, this must match the `destination_port` value. In the event
@@ -412,7 +404,6 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "ipprotocol": {
@@ -427,7 +418,6 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "choices": [
                         "any",
                         "tcp",
@@ -448,42 +438,36 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "source_port": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
                 "destination": {
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "destination_port": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
                 "target": {
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "local_port": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": None,
                     "nullable": True,
                 },
                 "disabled": {

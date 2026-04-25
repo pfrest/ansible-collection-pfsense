@@ -20,7 +20,7 @@ description:
 - Manage NTP Settings.
 short_description: Manage NTP Settings.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str
@@ -190,7 +190,6 @@ options:
   serverauthkey:
     required: false
     type: str
-    default: null
     choices: []
     description: The NTP server authentication key.
   serverauthalgo:
@@ -513,7 +512,6 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": True,
-            "default": None,
             "nullable": True,
         },
         "serverauthalgo": {

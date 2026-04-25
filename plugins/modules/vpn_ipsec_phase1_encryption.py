@@ -20,7 +20,7 @@ description:
 - Manage individual IPsec Phase 1 Encryptions.
 short_description: Manage individual IPsec Phase 1 Encryptions.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str
@@ -74,7 +74,6 @@ options:
   encryption_algorithm_name:
     required: true
     type: str
-    default: null
     choices:
     - aes
     - aes128gcm
@@ -86,13 +85,11 @@ options:
   encryption_algorithm_keylen:
     required: false
     type: int
-    default: null
     choices: []
     description: The key length for the encryption algorithm.
   hash_algorithm:
     required: true
     type: str
-    default: null
     choices:
     - sha1
     - sha256
@@ -103,7 +100,6 @@ options:
   dhgroup:
     required: true
     type: int
-    default: null
     choices:
     - 1
     - 2
@@ -291,7 +287,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": [
                 "aes",
                 "aes128gcm",
@@ -305,14 +300,12 @@ def run_module():
             "type": "int",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "hash_algorithm": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": ["sha1", "sha256", "sha384", "sha512", "aesxcbc"],
             "nullable": False,
         },
@@ -320,7 +313,6 @@ def run_module():
             "type": "int",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": [
                 1,
                 2,

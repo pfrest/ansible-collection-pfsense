@@ -20,8 +20,8 @@ description:
 - Manage BIND Sync Settings.
 short_description: Manage BIND Sync Settings.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
-- C(pfSense-pkg-bind) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
+- pfSense-pkg-bind must be installed on the target system.
 options:
   api_host:
     type: str
@@ -56,7 +56,6 @@ options:
   synconchanges:
     required: true
     type: str
-    default: null
     choices:
     - disabled
     - manual
@@ -77,7 +76,6 @@ options:
   masterip:
     required: true
     type: str
-    default: null
     choices: []
     description: The IP address of the master BIND server.
 author:
@@ -183,7 +181,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": ["disabled", "manual", "auto"],
             "nullable": False,
         },
@@ -199,7 +196,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
     }

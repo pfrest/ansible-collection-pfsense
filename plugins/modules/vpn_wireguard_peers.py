@@ -20,8 +20,8 @@ description:
 - Manage all WireGuard Peers.
 short_description: Manage all WireGuard Peers.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
-- C(pfSense-pkg-WireGuard) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
+- pfSense-pkg-WireGuard must be installed on the target system.
 options:
   api_host:
     type: str
@@ -80,7 +80,6 @@ options:
       port:
         required: false
         type: str
-        default: '51820'
         choices: []
         description: 'The port used by the remote peer. Valid options are: a TCP/UDP
           port number'
@@ -100,7 +99,6 @@ options:
       publickey:
         required: true
         type: str
-        default: null
         choices: []
         description: The public key for this peer.
       presharedkey:
@@ -120,13 +118,11 @@ options:
           address:
             required: true
             type: str
-            default: null
             choices: []
             description: The IPv4 or IPv6 address for this peer IP.
           mask:
             required: true
             type: int
-            default: null
             choices: []
             description: The subnet mask for this peer IP.
           descr:
@@ -308,7 +304,6 @@ def run_module():
                     "type": "str",
                     "required": False,
                     "no_log": False,
-                    "default": "51820",
                     "nullable": True,
                 },
                 "descr": {
@@ -329,7 +324,6 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "default": None,
                     "nullable": False,
                 },
                 "presharedkey": {
@@ -351,14 +345,12 @@ def run_module():
                             "type": "str",
                             "required": True,
                             "no_log": False,
-                            "default": None,
                             "nullable": False,
                         },
                         "mask": {
                             "type": "int",
                             "required": True,
                             "no_log": False,
-                            "default": None,
                             "nullable": False,
                         },
                         "descr": {

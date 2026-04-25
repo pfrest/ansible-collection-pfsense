@@ -20,7 +20,7 @@ description:
 - Manage individual System Tunables.
 short_description: Manage individual System Tunables.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str
@@ -68,13 +68,11 @@ options:
   tunable:
     required: true
     type: str
-    default: null
     choices: []
     description: The name of the tunable to set.
   value:
     required: true
     type: str
-    default: null
     choices: []
     description: The value to assign this tunable.
   descr:
@@ -208,14 +206,12 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "value": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "descr": {

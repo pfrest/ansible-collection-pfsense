@@ -20,8 +20,8 @@ description:
 - Manage individual BIND Sync Remote Hosts.
 short_description: Manage individual BIND Sync Remote Hosts.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
-- C(pfSense-pkg-bind) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
+- pfSense-pkg-bind must be installed on the target system.
 options:
   api_host:
     type: str
@@ -75,7 +75,6 @@ options:
   syncprotocol:
     required: true
     type: str
-    default: null
     choices:
     - http
     - https
@@ -83,26 +82,22 @@ options:
   ipaddress:
     required: true
     type: str
-    default: null
     choices: []
     description: The IP address/hostname of the remote host.
   syncport:
     required: true
     type: str
-    default: null
     choices: []
     description: 'The remote host port to use for syncing. Valid options are: a TCP/UDP
       port number'
   username:
     required: true
     type: str
-    default: null
     choices: []
     description: The username to use to authenticate when syncing.
   password:
     required: true
     type: str
-    default: null
     choices: []
     description: The password to use to authenticate when syncing.
 author:
@@ -256,7 +251,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": ["http", "https"],
             "nullable": False,
         },
@@ -264,28 +258,24 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "syncport": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "username": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "password": {
             "type": "str",
             "required": True,
             "no_log": True,
-            "default": None,
             "nullable": False,
         },
     }

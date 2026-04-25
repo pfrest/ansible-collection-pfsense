@@ -20,8 +20,8 @@ description:
 - Manage individual Cron Jobs.
 short_description: Manage individual Cron Jobs.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
-- C(pfSense-pkg-Cron) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
+- pfSense-pkg-Cron must be installed on the target system.
 options:
   api_host:
     type: str
@@ -69,7 +69,6 @@ options:
   minute:
     required: true
     type: str
-    default: null
     choices: []
     description: The minute(s) at which the command will be executed or a special
       @ event string. (0-59, ranges, divided, @ event or delay, *=all). When using
@@ -77,41 +76,35 @@ options:
   hour:
     required: false
     type: str
-    default: null
     choices: []
     description: The hour(s) at which the command will be executed. (0-23, ranges,
       or divided, *=all)
   mday:
     required: false
     type: str
-    default: null
     choices: []
     description: The day(s) of the month on which the command will be executed. (1-31,
       ranges, or divided, *=all).
   month:
     required: false
     type: str
-    default: null
     choices: []
     description: The month(s) of the year in which the command will be executed. (1-31,
       ranges, or divided, *=all).
   wday:
     required: false
     type: str
-    default: null
     choices: []
     description: The day(s) of the week on which the command will be executed. (0-7,
       7=Sun or use names, ranges, or divided, *=all).
   who:
     required: true
     type: str
-    default: null
     choices: []
     description: The OS user to use when cron runs the command.
   command:
     required: true
     type: str
-    default: null
     choices: []
     description: The command to run. Use full file paths for this command and include
       an command parameters.
@@ -273,49 +266,42 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "hour": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "mday": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "month": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "wday": {
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": None,
             "nullable": True,
         },
         "who": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "command": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
     }

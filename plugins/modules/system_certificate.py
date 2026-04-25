@@ -20,7 +20,7 @@ description:
 - Manage individual Certificates.
 short_description: Manage individual Certificates.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str
@@ -68,7 +68,6 @@ options:
   descr:
     required: true
     type: str
-    default: null
     choices: []
     description: The descriptive name for this certificate.
   type:
@@ -84,13 +83,11 @@ options:
   crt:
     required: true
     type: str
-    default: null
     choices: []
     description: The X509 certificate string.
   prv:
     required: true
     type: str
-    default: null
     choices: []
     description: The X509 private key string.
 author:
@@ -242,7 +239,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "type": {
@@ -257,14 +253,12 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "prv": {
             "type": "str",
             "required": True,
             "no_log": True,
-            "default": None,
             "nullable": False,
         },
     }

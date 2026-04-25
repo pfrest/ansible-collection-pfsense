@@ -20,7 +20,7 @@ description:
 - Manage individual Routing Gateway Group Priorities.
 short_description: Manage individual Routing Gateway Group Priorities.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str
@@ -74,13 +74,11 @@ options:
   gateway:
     required: true
     type: str
-    default: null
     choices: []
     description: The name of the gateway to prioritize in this gateway group.
   tier:
     required: true
     type: int
-    default: null
     choices: []
     description: The priority of this gateway in the group. Lower numbered tiers are
       higher priority.
@@ -231,14 +229,12 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "tier": {
             "type": "int",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "virtual_ip": {

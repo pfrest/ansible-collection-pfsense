@@ -20,8 +20,8 @@ description:
 - Manage individual ACME Certificate Actions.
 short_description: Manage individual ACME Certificate Actions.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
-- C(pfSense-pkg-acme) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
+- pfSense-pkg-acme must be installed on the target system.
 options:
   api_host:
     type: str
@@ -83,13 +83,11 @@ options:
   command:
     required: true
     type: str
-    default: null
     choices: []
     description: The command to execute on the ACME certificate.
   method:
     required: true
     type: str
-    default: null
     choices:
     - shellcommand
     - php_command
@@ -241,14 +239,12 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "nullable": False,
         },
         "method": {
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": [
                 "shellcommand",
                 "php_command",

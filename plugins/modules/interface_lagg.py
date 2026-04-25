@@ -20,7 +20,7 @@ description:
 - Manage individual Interface LAGGs.
 short_description: Manage individual Interface LAGGs.
 requirements:
-- L(pfSense-pkg-RESTAPI,https://pfrest.org) must be installed on the target system.
+- pfSense-pkg-RESTAPI must be installed on the target system.
 options:
   api_host:
     type: str
@@ -74,14 +74,12 @@ options:
   members:
     required: true
     type: list
-    default: null
     choices: []
     description: A list of member interfaces to include in the LAGG.
     elements: str
   proto:
     required: true
     type: str
-    default: null
     choices:
     - lacp
     - failover
@@ -92,7 +90,6 @@ options:
   lacptimeout:
     required: false
     type: str
-    default: slow
     choices:
     - slow
     - fast
@@ -100,7 +97,6 @@ options:
   lagghash:
     required: false
     type: str
-    default: l2,l3,l4
     choices:
     - l2
     - l3
@@ -113,7 +109,6 @@ options:
   failovermaster:
     required: false
     type: str
-    default: auto
     choices: []
     description: The failover master interface to use.
 author:
@@ -266,7 +261,6 @@ def run_module():
             "type": "list",
             "required": True,
             "no_log": False,
-            "default": None,
             "elements": "str",
             "nullable": False,
         },
@@ -274,7 +268,6 @@ def run_module():
             "type": "str",
             "required": True,
             "no_log": False,
-            "default": None,
             "choices": ["lacp", "failover", "loadbalance", "roundrobin", "none"],
             "nullable": False,
         },
@@ -282,7 +275,6 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "slow",
             "choices": ["slow", "fast"],
             "nullable": True,
         },
@@ -290,7 +282,6 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "l2,l3,l4",
             "choices": ["l2", "l3", "l4", "l2,l3", "l2,l4", "l3,l4", "l2,l3,l4"],
             "nullable": True,
         },
@@ -298,7 +289,6 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": False,
-            "default": "auto",
             "nullable": True,
         },
     }
