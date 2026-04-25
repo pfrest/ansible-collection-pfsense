@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.0.6](https://github.com/pfrest/ansible-collection-pfsense/compare/v0.0.5...v0.0.6) (2026-04-25)
+
+
+### Bug Fixes
+
+* **modules:** regenerate modules with improved default handling [#13](https://github.com/pfrest/ansible-collection-pfsense/issues/13) ([c574e18](https://github.com/pfrest/ansible-collection-pfsense/commit/c574e18851ce474ad022c58c2f431af83f568fcb))
+* **tools:** remove defaults from required and conditional fields [#13](https://github.com/pfrest/ansible-collection-pfsense/issues/13) ([5c5b4af](https://github.com/pfrest/ansible-collection-pfsense/commit/5c5b4af730117e69ea3a1547fda17d557648f2be))
+
 ## [0.0.5](https://github.com/pfrest/ansible-collection-pfsense/compare/v0.0.4...v0.0.5) (2026-04-15)
 
 
