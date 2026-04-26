@@ -19,6 +19,8 @@ and more.
 - **Comprehensive coverage**: Modules are organized by category and include info modules for read-only
   queries, resource modules for managing single resources, collection modules for managing entire sets of resources as a
   whole, singleton modules for one-off settings, and action modules for operational tasks.
+- **Secure, SSH-less access**: No SSH required. Every module authenticates through the pfSense REST API with fine-grained,
+  role-based access control (RBAC) and per-endpoint privileges.
 
 ## Installation
 
