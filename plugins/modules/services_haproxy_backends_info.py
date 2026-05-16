@@ -9,7 +9,7 @@
 ###############################################################
 """An Ansible module for interacting with /api/v2/services/haproxy/backends."""
 
-# pylint: disable=too-many-lines,duplicate-code
+# pylint: disable=too-many-lines,duplicate-code,line-too-long
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: services_haproxy_backends_info
 description:
-- Retrieve information about many HA Proxy Backends.
-short_description: Retrieve information about many HA Proxy Backends.
+- Retrieve information about many HAProxy Backends.
+short_description: Retrieve information about many HAProxy Backends.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 - pfSense-pkg-haproxy must be installed on the target system.
@@ -62,7 +62,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Retrieve all HA Proxy Backends
+- name: Retrieve all HAProxy Backends
   pfrest.pfsense.services_haproxy_backends_info:
     api_host: pfsense.example.com
     api_username: admin
@@ -88,7 +88,7 @@ msg:
   type: str
   returned: always
 data:
-  description: A list of HA Proxy Backends returned by the API.
+  description: A list of HAProxy Backends returned by the API.
   type: list
   elements: dict
   returned: always

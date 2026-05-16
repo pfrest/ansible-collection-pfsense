@@ -9,7 +9,7 @@
 ###############################################################
 """An Ansible module for interacting with /api/v2/services/acme/certificate/issue."""
 
-# pylint: disable=too-many-lines,duplicate-code
+# pylint: disable=too-many-lines,duplicate-code,line-too-long
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: services_acme_certificate_issue
 description:
-- Perform the ACME Certificate Issue action.
-short_description: Perform the ACME Certificate Issue action.
+- Perform the ACME Certificate Issuance action.
+short_description: Perform the ACME Certificate Issuance action.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 - pfSense-pkg-acme must be installed on the target system.
@@ -64,7 +64,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Perform ACME Certificate Issue action
+- name: Perform ACME Certificate Issuance action
   pfrest.pfsense.services_acme_certificate_issue:
     api_host: pfsense.example.com
     api_username: admin
@@ -91,7 +91,7 @@ msg:
   type: str
   returned: always
 data:
-  description: The ACME Certificate Issue data returned by the API.
+  description: The ACME Certificate Issuance data returned by the API.
   type: dict
   returned: always
   contains:

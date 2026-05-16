@@ -9,7 +9,7 @@
 ###############################################################
 """An Ansible module for interacting with /api/v2/vpn/openvpn/client."""
 
-# pylint: disable=too-many-lines,duplicate-code
+# pylint: disable=too-many-lines,duplicate-code,line-too-long
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: vpn_openvpn_client
 description:
-- Manage individual Open VPN Clients.
-short_description: Manage individual Open VPN Clients.
+- Manage individual OpenVPN Clients.
+short_description: Manage individual OpenVPN Clients.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 options:
@@ -453,7 +453,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Create Open VPN Client
+- name: Create OpenVPN Client
   pfrest.pfsense.vpn_openvpn_client:
     api_host: pfsense.example.com
     api_username: admin
@@ -473,7 +473,7 @@ EXAMPLES = """
     - string
     data_ciphers_fallback: string
     digest: string
-- name: Delete Open VPN Client
+- name: Delete OpenVPN Client
   pfrest.pfsense.vpn_openvpn_client:
     api_host: pfsense.example.com
     api_username: admin
@@ -513,7 +513,7 @@ msg:
   type: str
   returned: always
 data:
-  description: The Open VPN Client data returned by the API.
+  description: The OpenVPN Client data returned by the API.
   type: dict
   returned: always
   contains:

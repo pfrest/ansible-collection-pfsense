@@ -9,7 +9,7 @@
 ###############################################################
 """An Ansible module for interacting with /api/v2/vpn/openvpn/server."""
 
-# pylint: disable=too-many-lines,duplicate-code
+# pylint: disable=too-many-lines,duplicate-code,line-too-long
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: vpn_openvpn_server
 description:
-- Manage individual Open VPN Servers.
-short_description: Manage individual Open VPN Servers.
+- Manage individual OpenVPN Servers.
+short_description: Manage individual OpenVPN Servers.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 options:
@@ -578,7 +578,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Create Open VPN Server
+- name: Create OpenVPN Server
   pfrest.pfsense.vpn_openvpn_server:
     api_host: pfsense.example.com
     api_username: admin
@@ -600,7 +600,7 @@ EXAMPLES = """
     serverbridge_interface: string
     serverbridge_dhcp_start: string
     serverbridge_dhcp_end: string
-- name: Delete Open VPN Server
+- name: Delete OpenVPN Server
   pfrest.pfsense.vpn_openvpn_server:
     api_host: pfsense.example.com
     api_username: admin
@@ -642,7 +642,7 @@ msg:
   type: str
   returned: always
 data:
-  description: The Open VPN Server data returned by the API.
+  description: The OpenVPN Server data returned by the API.
   type: dict
   returned: always
   contains:

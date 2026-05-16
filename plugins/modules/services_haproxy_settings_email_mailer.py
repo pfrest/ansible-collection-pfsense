@@ -9,7 +9,7 @@
 ###############################################################
 """An Ansible module for interacting with /api/v2/services/haproxy/settings/email_mailer."""
 
-# pylint: disable=too-many-lines,duplicate-code
+# pylint: disable=too-many-lines,duplicate-code,line-too-long
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: services_haproxy_settings_email_mailer
 description:
-- Manage individual HA Proxy Email Mailers.
-short_description: Manage individual HA Proxy Email Mailers.
+- Manage individual HAProxy Email Mailers.
+short_description: Manage individual HAProxy Email Mailers.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 - pfSense-pkg-haproxy must be installed on the target system.
@@ -89,7 +89,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Create HA Proxy Email Mailer
+- name: Create HAProxy Email Mailer
   pfrest.pfsense.services_haproxy_settings_email_mailer:
     api_host: pfsense.example.com
     api_username: admin
@@ -99,7 +99,7 @@ EXAMPLES = """
     state: present
     name: string
     mailserver: string
-- name: Delete HA Proxy Email Mailer
+- name: Delete HAProxy Email Mailer
   pfrest.pfsense.services_haproxy_settings_email_mailer:
     api_host: pfsense.example.com
     api_username: admin
@@ -129,7 +129,7 @@ msg:
   type: str
   returned: always
 data:
-  description: The HA Proxy Email Mailer data returned by the API.
+  description: The HAProxy Email Mailer data returned by the API.
   type: dict
   returned: always
   contains:
@@ -147,8 +147,7 @@ data:
       type: str
       returned: always
     parent_id:
-      description: The ID of the parent HA Proxy Settings this resource is nested
-        under.
+      description: The ID of the parent HAProxy Settings this resource is nested under.
       type: int
       returned: always
 

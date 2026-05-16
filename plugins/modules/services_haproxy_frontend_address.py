@@ -9,7 +9,7 @@
 ###############################################################
 """An Ansible module for interacting with /api/v2/services/haproxy/frontend/address."""
 
-# pylint: disable=too-many-lines,duplicate-code
+# pylint: disable=too-many-lines,duplicate-code,line-too-long
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: services_haproxy_frontend_address
 description:
-- Manage individual HA Proxy Frontend Addresses.
-short_description: Manage individual HA Proxy Frontend Addresses.
+- Manage individual HAProxy Frontend Addresses.
+short_description: Manage individual HAProxy Frontend Addresses.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 - pfSense-pkg-haproxy must be installed on the target system.
@@ -69,7 +69,7 @@ options:
   parent_lookup_query:
     type: dict
     required: true
-    description: A dictionary of query parameters used to look up the parent HA Proxy
+    description: A dictionary of query parameters used to look up the parent HAProxy
       Frontend. This should contain field name/value pairs that uniquely identify
       the parent object this resource is nested under.
   extaddr:
@@ -112,7 +112,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Create HA Proxy Frontend Address
+- name: Create HAProxy Frontend Address
   pfrest.pfsense.services_haproxy_frontend_address:
     api_host: pfsense.example.com
     api_username: admin
@@ -122,7 +122,7 @@ EXAMPLES = """
     state: present
     extaddr: custom
     extaddr_custom: string
-- name: Delete HA Proxy Frontend Address
+- name: Delete HAProxy Frontend Address
   pfrest.pfsense.services_haproxy_frontend_address:
     api_host: pfsense.example.com
     api_username: admin
@@ -152,7 +152,7 @@ msg:
   type: str
   returned: always
 data:
-  description: The HA Proxy Frontend Address data returned by the API.
+  description: The HAProxy Frontend Address data returned by the API.
   type: dict
   returned: always
   contains:
@@ -178,8 +178,7 @@ data:
       type: str
       returned: always
     parent_id:
-      description: The ID of the parent HA Proxy Frontend this resource is nested
-        under.
+      description: The ID of the parent HAProxy Frontend this resource is nested under.
       type: int
       returned: always
 

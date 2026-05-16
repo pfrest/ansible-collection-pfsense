@@ -9,7 +9,7 @@
 ###############################################################
 """An Ansible module for interacting with /api/v2/services/freeradius/client."""
 
-# pylint: disable=too-many-lines,duplicate-code
+# pylint: disable=too-many-lines,duplicate-code,line-too-long
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: services_freeradius_client
 description:
-- Manage individual Free RADIUS Clients.
-short_description: Manage individual Free RADIUS Clients.
+- Manage individual FreeRADIUS Clients.
+short_description: Manage individual FreeRADIUS Clients.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 - pfSense-pkg-freeradius3 must be installed on the target system.
@@ -158,7 +158,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Create Free RADIUS Client
+- name: Create FreeRADIUS Client
   pfrest.pfsense.services_freeradius_client:
     api_host: pfsense.example.com
     api_username: admin
@@ -167,7 +167,7 @@ EXAMPLES = """
     addr: string
     shortname: string
     secret: string
-- name: Delete Free RADIUS Client
+- name: Delete FreeRADIUS Client
   pfrest.pfsense.services_freeradius_client:
     api_host: pfsense.example.com
     api_username: admin
@@ -197,7 +197,7 @@ msg:
   type: str
   returned: always
 data:
-  description: The Free RADIUS Client data returned by the API.
+  description: The FreeRADIUS Client data returned by the API.
   type: dict
   returned: always
   contains:

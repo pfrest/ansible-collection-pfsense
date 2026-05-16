@@ -9,7 +9,7 @@
 ###############################################################
 """An Ansible module for interacting with /api/v2/status/logs/openvpn."""
 
-# pylint: disable=too-many-lines,duplicate-code
+# pylint: disable=too-many-lines,duplicate-code,line-too-long
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: status_logs_openvpn_info
 description:
-- Retrieve information about many Open VPN Logs.
-short_description: Retrieve information about many Open VPN Logs.
+- Retrieve information about many OpenVPN Logs.
+short_description: Retrieve information about many OpenVPN Logs.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 options:
@@ -61,7 +61,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Retrieve all Open VPN Logs
+- name: Retrieve all OpenVPN Logs
   pfrest.pfsense.status_logs_openvpn_info:
     api_host: pfsense.example.com
     api_username: admin
@@ -87,7 +87,7 @@ msg:
   type: str
   returned: always
 data:
-  description: A list of Open VPN Logs returned by the API.
+  description: A list of OpenVPN Logs returned by the API.
   type: list
   elements: dict
   returned: always

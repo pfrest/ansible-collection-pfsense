@@ -9,7 +9,7 @@
 ###############################################################
 """An Ansible module for interacting with /api/v2/diagnostics/tables."""
 
-# pylint: disable=too-many-lines,duplicate-code
+# pylint: disable=too-many-lines,duplicate-code,line-too-long
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
@@ -97,6 +97,10 @@ data:
       type: list
       returned: always
       elements: str
+    name:
+      description: The name of the table
+      type: str
+      returned: always
 
 """
 

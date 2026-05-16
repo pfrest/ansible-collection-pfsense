@@ -9,7 +9,7 @@
 ###############################################################
 """An Ansible module for interacting with /api/v2/services/haproxy/frontend/address."""
 
-# pylint: disable=too-many-lines,duplicate-code
+# pylint: disable=too-many-lines,duplicate-code,line-too-long
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: services_haproxy_frontend_address_info
 description:
-- Retrieve information about a single HA Proxy Frontend Address.
-short_description: Retrieve information about a single HA Proxy Frontend Address.
+- Retrieve information about a single HAProxy Frontend Address.
+short_description: Retrieve information about a single HAProxy Frontend Address.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 - pfSense-pkg-haproxy must be installed on the target system.
@@ -62,7 +62,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Retrieve HA Proxy Frontend Address
+- name: Retrieve HAProxy Frontend Address
   pfrest.pfsense.services_haproxy_frontend_address_info:
     api_host: pfsense.example.com
     api_username: admin
@@ -89,7 +89,7 @@ msg:
   type: str
   returned: always
 data:
-  description: The HA Proxy Frontend Address data returned by the API.
+  description: The HAProxy Frontend Address data returned by the API.
   type: dict
   returned: always
   contains:

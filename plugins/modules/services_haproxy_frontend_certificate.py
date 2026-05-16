@@ -9,7 +9,7 @@
 ###############################################################
 """An Ansible module for interacting with /api/v2/services/haproxy/frontend/certificate."""
 
-# pylint: disable=too-many-lines,duplicate-code
+# pylint: disable=too-many-lines,duplicate-code,line-too-long
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
@@ -69,7 +69,7 @@ options:
   parent_lookup_query:
     type: dict
     required: true
-    description: A dictionary of query parameters used to look up the parent HA Proxy
+    description: A dictionary of query parameters used to look up the parent HAProxy
       Frontend. This should contain field name/value pairs that uniquely identify
       the parent object this resource is nested under.
   ssl_certificate:
@@ -129,8 +129,7 @@ data:
       type: str
       returned: always
     parent_id:
-      description: The ID of the parent HA Proxy Frontend this resource is nested
-        under.
+      description: The ID of the parent HAProxy Frontend this resource is nested under.
       type: int
       returned: always
 

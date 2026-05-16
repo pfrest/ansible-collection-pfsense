@@ -9,7 +9,7 @@
 ###############################################################
 """An Ansible module for interacting with /api/v2/system/restapi/settings."""
 
-# pylint: disable=too-many-lines,duplicate-code
+# pylint: disable=too-many-lines,duplicate-code,line-too-long
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
@@ -133,6 +133,12 @@ data:
       description: Enables or disables displaying pre-releases in available API updates.
         Pre-releases contain fixes and features that are currently under development
         and may not be fully stable. Use of pre-release versions is at your own risk.
+      type: bool
+      returned: always
+    allow_development_packages:
+      description: Enables or disables allowing the use of development (-devel) variants
+        of pfSense packages when a package is required by specific API endpoints.
+        Use of development packages is at your own risk.
       type: bool
       returned: always
     hateoas:

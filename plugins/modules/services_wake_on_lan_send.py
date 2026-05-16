@@ -9,7 +9,7 @@
 ###############################################################
 """An Ansible module for interacting with /api/v2/services/wake_on_lan/send."""
 
-# pylint: disable=too-many-lines,duplicate-code
+# pylint: disable=too-many-lines,duplicate-code,line-too-long
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: services_wake_on_lan_send
 description:
-- Perform the Wake On LAN Send action.
-short_description: Perform the Wake On LAN Send action.
+- Perform the Wake-on-LAN Packet action.
+short_description: Perform the Wake-on-LAN Packet action.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 options:
@@ -68,7 +68,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Perform Wake On LAN Send action
+- name: Perform Wake-on-LAN Packet action
   pfrest.pfsense.services_wake_on_lan_send:
     api_host: pfsense.example.com
     api_username: admin
@@ -96,7 +96,7 @@ msg:
   type: str
   returned: always
 data:
-  description: The Wake On LAN Send data returned by the API.
+  description: The Wake-on-LAN Packet data returned by the API.
   type: dict
   returned: always
   contains:

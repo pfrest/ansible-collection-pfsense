@@ -9,7 +9,7 @@
 ###############################################################
 """An Ansible module for interacting with /api/v2/services/freeradius/user."""
 
-# pylint: disable=too-many-lines,duplicate-code
+# pylint: disable=too-many-lines,duplicate-code,line-too-long
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: services_freeradius_user
 description:
-- Manage individual Free RADIUS Users.
-short_description: Manage individual Free RADIUS Users.
+- Manage individual FreeRADIUS Users.
+short_description: Manage individual FreeRADIUS Users.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 - pfSense-pkg-freeradius3 must be installed on the target system.
@@ -120,7 +120,7 @@ options:
     type: str
     default: ''
     choices: []
-    description: A description for this user.
+    description: A description for this entry.
   framed_ip_address:
     required: false
     type: str
@@ -134,14 +134,161 @@ options:
     type: str
     default: ''
     choices: []
-    description: Framed-IP-Netmask MUST be supported by NAS
+    description: Framed-IP-Netmask MUST be supported by NAS.
+  framed_route:
+    required: false
+    type: str
+    default: ''
+    choices: []
+    description: 'Framed-Route must be supported by NAS. Required format: Subnet Gateway
+      Metric(s) (e.g. 192.168.10.0/24 192.168.10.1 1).'
+  framed_ipv6_address:
+    required: false
+    type: str
+    default: ''
+    choices: []
+    description: 'When the IPv6 prefix part is empty it uses Framed-IPv6-Address.
+      When the prefix part is filled in, it uses Framed-IPv6-Prefix. Example: 2001:db8:abab::5
+      or 2001:db8:abab::/64'
+  framed_ipv6_route:
+    required: false
+    type: str
+    default: ''
+    choices: []
+    description: 'Framed-IPv6-Route must be supported by NAS. Required format: Prefix
+      Gateway Metric(s) (e.g. 2001:db8:0:16::/64 2001:db8::16:a0:20ff:fe99:a998 1).'
+  vlan_id:
+    required: false
+    type: str
+    default: ''
+    choices: []
+    description: The VLAN ID (integer from 1-4095) or the VLAN name that this entry
+      should be assigned to. Must be supported by the NAS.
+  wispr_redirection_url:
+    required: false
+    type: str
+    default: ''
+    choices: []
+    description: 'The URL the user should be redirected to after successful login.
+      Example: http://www.google.com'
+  simultaneous_connect:
+    required: false
+    type: int
+    default: null
+    choices: []
+    description: The maximum number of simultaneous connections with this entry. Leave
+      null for no limit. If using FreeRADIUS with Captive Portal you should leave
+      this null.
+  expiration:
+    required: false
+    type: str
+    default: ''
+    choices: []
+    description: 'The date when this account should expire. Required format: Mmm dd
+      yyyy (e.g. Jan 01 2030).'
+  session_timeout:
+    required: false
+    type: int
+    default: null
+    choices: []
+    description: The time this entry has until relogin (in seconds).
+  login_time:
+    required: false
+    type: str
+    default: ''
+    choices: []
+    description: 'The time when this entry should have access. Empty for no time restriction.
+      Example: Wk0855-2305,Sa|Su2230-0230 (weekdays after 8:55 AM and before 11:05
+      PM | any time on Saturday | Sunday after 10:30 PM and before 02:30 AM).'
+  amount_of_time:
+    required: false
+    type: int
+    default: null
+    choices: []
+    description: The amount of time this entry is allowed (in minutes) within the
+      configured time period.
+  point_of_time:
+    required: false
+    type: str
+    default: Daily
+    choices:
+    - Daily
+    - Weekly
+    - Monthly
+    - Forever
+    description: The time period after which the 'Amount of Time' is reset.
+  max_total_octets:
+    required: false
+    type: int
+    default: null
+    choices: []
+    description: The amount of download and upload traffic (summarized) in megabytes
+      (MB) for this entry. If using captive portal without periodic reauthentication
+      enabled, this value must not exceed 4095 due to protocol limitations.
+  max_total_octets_time_range:
+    required: false
+    type: str
+    default: daily
+    choices:
+    - daily
+    - weekly
+    - monthly
+    - forever
+    description: The time period for the amount of download and upload traffic. This
+      does not automatically reset the counter; you must configure a cronjob to reset
+      it.
+  max_bandwidth_down:
+    required: false
+    type: int
+    default: null
+    choices: []
+    description: The maximum bandwidth for download in kilobits (1000 bits) per second
+      (Kbit/s).
+  max_bandwidth_up:
+    required: false
+    type: int
+    default: null
+    choices: []
+    description: The maximum bandwidth for upload in kilobits (1000 bits) per second
+      (Kbit/s).
+  acct_interim_interval:
+    required: false
+    type: int
+    default: null
+    choices: []
+    description: The interval in seconds which should elapse between interim-updates.
+      Must be more than 60s and should not be less than 600s.
+  top_additional_options:
+    required: false
+    type: list
+    default: []
+    choices: []
+    description: Additional RADIUS attributes placed at the TOP of this entry. Each
+      list entry becomes a separate line. For experts only.
+    elements: str
+  check_items_additional_options:
+    required: false
+    type: list
+    default: []
+    choices: []
+    description: Additional RADIUS check-item attributes for this entry. Each list
+      entry becomes a separate attribute. For experts only.
+    elements: str
+  reply_items_additional_options:
+    required: false
+    type: list
+    default: []
+    choices: []
+    description: Additional RADIUS reply-item attributes for this entry. Each list
+      entry becomes a separate attribute. For experts only.
+    elements: str
 author:
 - Jared Hendrickson (@jaredhendrickson13)
 
 """
 
 EXAMPLES = """
-- name: Create Free RADIUS User
+- name: Create FreeRADIUS User
   pfrest.pfsense.services_freeradius_user:
     api_host: pfsense.example.com
     api_username: admin
@@ -151,7 +298,7 @@ EXAMPLES = """
     password: string
     motp_secret: string
     motp_pin: string
-- name: Delete Free RADIUS User
+- name: Delete FreeRADIUS User
   pfrest.pfsense.services_freeradius_user:
     api_host: pfsense.example.com
     api_username: admin
@@ -182,7 +329,7 @@ msg:
   type: str
   returned: always
 data:
-  description: The Free RADIUS User data returned by the API.
+  description: The FreeRADIUS User data returned by the API.
   type: dict
   returned: always
   contains:
@@ -221,7 +368,7 @@ data:
       type: int
       returned: always
     description:
-      description: A description for this user.
+      description: A description for this entry.
       type: str
       returned: always
     framed_ip_address:
@@ -231,9 +378,112 @@ data:
       type: str
       returned: always
     framed_ip_netmask:
-      description: Framed-IP-Netmask MUST be supported by NAS
+      description: Framed-IP-Netmask MUST be supported by NAS.
       type: str
       returned: always
+    framed_route:
+      description: 'Framed-Route must be supported by NAS. Required format: Subnet
+        Gateway Metric(s) (e.g. 192.168.10.0/24 192.168.10.1 1).'
+      type: str
+      returned: always
+    framed_ipv6_address:
+      description: 'When the IPv6 prefix part is empty it uses Framed-IPv6-Address.
+        When the prefix part is filled in, it uses Framed-IPv6-Prefix. Example: 2001:db8:abab::5
+        or 2001:db8:abab::/64'
+      type: str
+      returned: always
+    framed_ipv6_route:
+      description: 'Framed-IPv6-Route must be supported by NAS. Required format: Prefix
+        Gateway Metric(s) (e.g. 2001:db8:0:16::/64 2001:db8::16:a0:20ff:fe99:a998
+        1).'
+      type: str
+      returned: always
+    vlan_id:
+      description: The VLAN ID (integer from 1-4095) or the VLAN name that this entry
+        should be assigned to. Must be supported by the NAS.
+      type: str
+      returned: always
+    wispr_redirection_url:
+      description: 'The URL the user should be redirected to after successful login.
+        Example: http://www.google.com'
+      type: str
+      returned: always
+    simultaneous_connect:
+      description: The maximum number of simultaneous connections with this entry.
+        Leave null for no limit. If using FreeRADIUS with Captive Portal you should
+        leave this null.
+      type: int
+      returned: always
+    expiration:
+      description: 'The date when this account should expire. Required format: Mmm
+        dd yyyy (e.g. Jan 01 2030).'
+      type: str
+      returned: always
+    session_timeout:
+      description: The time this entry has until relogin (in seconds).
+      type: int
+      returned: always
+    login_time:
+      description: 'The time when this entry should have access. Empty for no time
+        restriction. Example: Wk0855-2305,Sa|Su2230-0230 (weekdays after 8:55 AM and
+        before 11:05 PM | any time on Saturday | Sunday after 10:30 PM and before
+        02:30 AM).'
+      type: str
+      returned: always
+    amount_of_time:
+      description: The amount of time this entry is allowed (in minutes) within the
+        configured time period.
+      type: int
+      returned: always
+    point_of_time:
+      description: The time period after which the 'Amount of Time' is reset.
+      type: str
+      returned: always
+    max_total_octets:
+      description: The amount of download and upload traffic (summarized) in megabytes
+        (MB) for this entry. If using captive portal without periodic reauthentication
+        enabled, this value must not exceed 4095 due to protocol limitations.
+      type: int
+      returned: always
+    max_total_octets_time_range:
+      description: The time period for the amount of download and upload traffic.
+        This does not automatically reset the counter; you must configure a cronjob
+        to reset it.
+      type: str
+      returned: always
+    max_bandwidth_down:
+      description: The maximum bandwidth for download in kilobits (1000 bits) per
+        second (Kbit/s).
+      type: int
+      returned: always
+    max_bandwidth_up:
+      description: The maximum bandwidth for upload in kilobits (1000 bits) per second
+        (Kbit/s).
+      type: int
+      returned: always
+    acct_interim_interval:
+      description: The interval in seconds which should elapse between interim-updates.
+        Must be more than 60s and should not be less than 600s.
+      type: int
+      returned: always
+    top_additional_options:
+      description: Additional RADIUS attributes placed at the TOP of this entry. Each
+        list entry becomes a separate line. For experts only.
+      type: list
+      returned: always
+      elements: str
+    check_items_additional_options:
+      description: Additional RADIUS check-item attributes for this entry. Each list
+        entry becomes a separate attribute. For experts only.
+      type: list
+      returned: always
+      elements: str
+    reply_items_additional_options:
+      description: Additional RADIUS reply-item attributes for this entry. Each list
+        entry becomes a separate attribute. For experts only.
+      type: list
+      returned: always
+      elements: str
 
 """
 
@@ -371,6 +621,144 @@ def run_module():
             "required": False,
             "no_log": False,
             "default": "",
+            "nullable": True,
+        },
+        "framed_route": {
+            "type": "str",
+            "required": False,
+            "no_log": False,
+            "default": "",
+            "nullable": True,
+        },
+        "framed_ipv6_address": {
+            "type": "str",
+            "required": False,
+            "no_log": False,
+            "default": "",
+            "nullable": True,
+        },
+        "framed_ipv6_route": {
+            "type": "str",
+            "required": False,
+            "no_log": False,
+            "default": "",
+            "nullable": True,
+        },
+        "vlan_id": {
+            "type": "str",
+            "required": False,
+            "no_log": False,
+            "default": "",
+            "nullable": True,
+        },
+        "wispr_redirection_url": {
+            "type": "str",
+            "required": False,
+            "no_log": False,
+            "default": "",
+            "nullable": True,
+        },
+        "simultaneous_connect": {
+            "type": "int",
+            "required": False,
+            "no_log": False,
+            "default": None,
+            "nullable": True,
+        },
+        "expiration": {
+            "type": "str",
+            "required": False,
+            "no_log": False,
+            "default": "",
+            "nullable": True,
+        },
+        "session_timeout": {
+            "type": "int",
+            "required": False,
+            "no_log": False,
+            "default": None,
+            "nullable": True,
+        },
+        "login_time": {
+            "type": "str",
+            "required": False,
+            "no_log": False,
+            "default": "",
+            "nullable": True,
+        },
+        "amount_of_time": {
+            "type": "int",
+            "required": False,
+            "no_log": False,
+            "default": None,
+            "nullable": True,
+        },
+        "point_of_time": {
+            "type": "str",
+            "required": False,
+            "no_log": False,
+            "default": "Daily",
+            "choices": ["Daily", "Weekly", "Monthly", "Forever"],
+            "nullable": True,
+        },
+        "max_total_octets": {
+            "type": "int",
+            "required": False,
+            "no_log": False,
+            "default": None,
+            "nullable": True,
+        },
+        "max_total_octets_time_range": {
+            "type": "str",
+            "required": False,
+            "no_log": False,
+            "default": "daily",
+            "choices": ["daily", "weekly", "monthly", "forever"],
+            "nullable": True,
+        },
+        "max_bandwidth_down": {
+            "type": "int",
+            "required": False,
+            "no_log": False,
+            "default": None,
+            "nullable": True,
+        },
+        "max_bandwidth_up": {
+            "type": "int",
+            "required": False,
+            "no_log": False,
+            "default": None,
+            "nullable": True,
+        },
+        "acct_interim_interval": {
+            "type": "int",
+            "required": False,
+            "no_log": False,
+            "default": None,
+            "nullable": True,
+        },
+        "top_additional_options": {
+            "type": "list",
+            "required": False,
+            "no_log": False,
+            "default": [],
+            "elements": "str",
+            "nullable": True,
+        },
+        "check_items_additional_options": {
+            "type": "list",
+            "required": False,
+            "no_log": False,
+            "default": [],
+            "elements": "str",
+            "nullable": True,
+        },
+        "reply_items_additional_options": {
+            "type": "list",
+            "required": False,
+            "no_log": False,
+            "default": [],
+            "elements": "str",
             "nullable": True,
         },
     }

@@ -9,7 +9,7 @@
 ###############################################################
 """An Ansible module for interacting with /api/v2/services/haproxy/files."""
 
-# pylint: disable=too-many-lines,duplicate-code
+# pylint: disable=too-many-lines,duplicate-code,line-too-long
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: services_haproxy_files
 description:
-- Manage all HA Proxy Files.
-short_description: Manage all HA Proxy Files.
+- Manage all HAProxy Files.
+short_description: Manage all HAProxy Files.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 - pfSense-pkg-haproxy must be installed on the target system.
@@ -85,7 +85,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Manage all HA Proxy Files
+- name: Manage all HAProxy Files
   pfrest.pfsense.services_haproxy_files:
     api_host: pfsense.example.com
     api_username: admin
@@ -115,7 +115,7 @@ msg:
   type: str
   returned: always
 data:
-  description: A list of HA Proxy Files returned by the API.
+  description: A list of HAProxy Files returned by the API.
   type: list
   elements: dict
   returned: always

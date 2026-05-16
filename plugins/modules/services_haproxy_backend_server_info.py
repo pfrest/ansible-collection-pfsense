@@ -9,7 +9,7 @@
 ###############################################################
 """An Ansible module for interacting with /api/v2/services/haproxy/backend/server."""
 
-# pylint: disable=too-many-lines,duplicate-code
+# pylint: disable=too-many-lines,duplicate-code,line-too-long
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: services_haproxy_backend_server_info
 description:
-- Retrieve information about a single HA Proxy Backend Server.
-short_description: Retrieve information about a single HA Proxy Backend Server.
+- Retrieve information about a single HAProxy Backend Server.
+short_description: Retrieve information about a single HAProxy Backend Server.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 - pfSense-pkg-haproxy must be installed on the target system.
@@ -62,7 +62,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Retrieve HA Proxy Backend Server
+- name: Retrieve HAProxy Backend Server
   pfrest.pfsense.services_haproxy_backend_server_info:
     api_host: pfsense.example.com
     api_username: admin
@@ -89,7 +89,7 @@ msg:
   type: str
   returned: always
 data:
-  description: The HA Proxy Backend Server data returned by the API.
+  description: The HAProxy Backend Server data returned by the API.
   type: dict
   returned: always
   contains:

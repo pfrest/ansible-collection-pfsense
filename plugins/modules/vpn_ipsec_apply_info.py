@@ -9,7 +9,7 @@
 ###############################################################
 """An Ansible module for interacting with /api/v2/vpn/ipsec/apply."""
 
-# pylint: disable=too-many-lines,duplicate-code
+# pylint: disable=too-many-lines,duplicate-code,line-too-long
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: vpn_ipsec_apply_info
 description:
-- Retrieve information about the I Psec Apply.
-short_description: Retrieve information about the I Psec Apply.
+- Retrieve information about the IPsec Apply.
+short_description: Retrieve information about the IPsec Apply.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 options:
@@ -61,7 +61,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Retrieve I Psec Apply
+- name: Retrieve IPsec Apply
   pfrest.pfsense.vpn_ipsec_apply_info:
     api_host: pfsense.example.com
     api_username: admin
@@ -88,7 +88,7 @@ msg:
   type: str
   returned: always
 data:
-  description: The I Psec Apply data returned by the API.
+  description: The IPsec Apply data returned by the API.
   type: dict
   returned: always
   contains:

@@ -9,7 +9,7 @@
 ###############################################################
 """An Ansible module for interacting with /api/v2/vpn/openvpn/cso."""
 
-# pylint: disable=too-many-lines,duplicate-code
+# pylint: disable=too-many-lines,duplicate-code,line-too-long
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: vpn_openvpn_cso
 description:
-- Manage individual Open VPN Client Specific Overrides.
-short_description: Manage individual Open VPN Client Specific Overrides.
+- Manage individual OpenVPN Client Specific Overrides.
+short_description: Manage individual OpenVPN Client Specific Overrides.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 options:
@@ -265,14 +265,14 @@ author:
 """
 
 EXAMPLES = """
-- name: Create Open VPN Client Specific Override
+- name: Create OpenVPN Client Specific Override
   pfrest.pfsense.vpn_openvpn_cso:
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
     state: present
     common_name: string
-- name: Delete Open VPN Client Specific Override
+- name: Delete OpenVPN Client Specific Override
   pfrest.pfsense.vpn_openvpn_cso:
     api_host: pfsense.example.com
     api_username: admin
@@ -300,7 +300,7 @@ msg:
   type: str
   returned: always
 data:
-  description: The Open VPN Client Specific Override data returned by the API.
+  description: The OpenVPN Client Specific Override data returned by the API.
   type: dict
   returned: always
   contains:

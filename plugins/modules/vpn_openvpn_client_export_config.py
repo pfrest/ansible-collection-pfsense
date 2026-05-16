@@ -9,7 +9,7 @@
 ###############################################################
 """An Ansible module for interacting with /api/v2/vpn/openvpn/client_export/config."""
 
-# pylint: disable=too-many-lines,duplicate-code
+# pylint: disable=too-many-lines,duplicate-code,line-too-long
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: vpn_openvpn_client_export_config
 description:
-- Manage individual Open VPN Client Export Configs.
-short_description: Manage individual Open VPN Client Export Configs.
+- Manage individual OpenVPN Client Export Configs.
+short_description: Manage individual OpenVPN Client Export Configs.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 - pfSense-pkg-openvpn-client-export must be installed on the target system.
@@ -225,7 +225,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Create Open VPN Client Export Config
+- name: Create OpenVPN Client Export Config
   pfrest.pfsense.vpn_openvpn_client_export_config:
     api_host: pfsense.example.com
     api_username: admin
@@ -241,7 +241,7 @@ EXAMPLES = """
     useproxypass: none
     proxyuser: string
     proxypass: string
-- name: Delete Open VPN Client Export Config
+- name: Delete OpenVPN Client Export Config
   pfrest.pfsense.vpn_openvpn_client_export_config:
     api_host: pfsense.example.com
     api_username: admin
@@ -277,7 +277,7 @@ msg:
   type: str
   returned: always
 data:
-  description: The Open VPN Client Export Config data returned by the API.
+  description: The OpenVPN Client Export Config data returned by the API.
   type: dict
   returned: always
   contains:

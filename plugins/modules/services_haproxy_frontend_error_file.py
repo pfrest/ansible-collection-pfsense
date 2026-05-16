@@ -9,7 +9,7 @@
 ###############################################################
 """An Ansible module for interacting with /api/v2/services/haproxy/frontend/error_file."""
 
-# pylint: disable=too-many-lines,duplicate-code
+# pylint: disable=too-many-lines,duplicate-code,line-too-long
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: services_haproxy_frontend_error_file
 description:
-- Manage individual HA Proxy Frontend Error Files.
-short_description: Manage individual HA Proxy Frontend Error Files.
+- Manage individual HAProxy Frontend Error Files.
+short_description: Manage individual HAProxy Frontend Error Files.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 - pfSense-pkg-haproxy must be installed on the target system.
@@ -69,7 +69,7 @@ options:
   parent_lookup_query:
     type: dict
     required: true
-    description: A dictionary of query parameters used to look up the parent HA Proxy
+    description: A dictionary of query parameters used to look up the parent HAProxy
       Frontend. This should contain field name/value pairs that uniquely identify
       the parent object this resource is nested under.
   errorcode:
@@ -89,7 +89,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Create HA Proxy Frontend Error File
+- name: Create HAProxy Frontend Error File
   pfrest.pfsense.services_haproxy_frontend_error_file:
     api_host: pfsense.example.com
     api_username: admin
@@ -99,7 +99,7 @@ EXAMPLES = """
     state: present
     errorcode: 1
     errorfile: string
-- name: Delete HA Proxy Frontend Error File
+- name: Delete HAProxy Frontend Error File
   pfrest.pfsense.services_haproxy_frontend_error_file:
     api_host: pfsense.example.com
     api_username: admin
@@ -129,7 +129,7 @@ msg:
   type: str
   returned: always
 data:
-  description: The HA Proxy Frontend Error File data returned by the API.
+  description: The HAProxy Frontend Error File data returned by the API.
   type: dict
   returned: always
   contains:
@@ -143,8 +143,7 @@ data:
       type: str
       returned: always
     parent_id:
-      description: The ID of the parent HA Proxy Frontend this resource is nested
-        under.
+      description: The ID of the parent HAProxy Frontend this resource is nested under.
       type: int
       returned: always
 

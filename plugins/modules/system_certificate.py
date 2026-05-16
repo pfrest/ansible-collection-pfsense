@@ -9,7 +9,7 @@
 ###############################################################
 """An Ansible module for interacting with /api/v2/system/certificate."""
 
-# pylint: disable=too-many-lines,duplicate-code
+# pylint: disable=too-many-lines,duplicate-code,line-too-long
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
@@ -172,6 +172,18 @@ data:
     prv:
       description: The X509 private key string.
       type: str
+      returned: always
+    valid_from:
+      description: The start date from which this certificate is valid.
+      type: str
+      returned: always
+    valid_until:
+      description: The date until which this certificate is valid.
+      type: str
+      returned: always
+    valid_days_left:
+      description: The number of days remaining until this certificate expires.
+      type: int
       returned: always
 
 """
