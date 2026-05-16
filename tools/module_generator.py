@@ -438,7 +438,8 @@ def _build_field_options(model_schema: dict, visited: set) -> dict:
         A dict mapping field names to their Ansible option metadata.
     """
     opts = {}
-    for field_name, field_schema in model_schema.get("fields", {}).items():
+    fields = _get_fields_from_model_schema(model_schema)
+    for field_name, field_schema in fields.items():
         if field_schema.get("read_only", False):
             continue
 
@@ -487,6 +488,23 @@ def _build_field_options(model_schema: dict, visited: set) -> dict:
                 pass
 
     return opts
+
+
+def _get_fields_from_model_schema(model_schema: dict) -> dict:
+    """
+    Obtains the fields for a given model schema. This is necessary to normalize the fields
+    as the fields are a list instead of a dict when empty, because PHP...
+
+    Args:
+        model_schema (dict): The schema of the model to get fields from.
+
+    Returns:
+        dict: The fields for the model in a dict format
+    """
+    if not model_schema["fields"]:
+        return {}
+
+    return model_schema["fields"]
 
 
 def get_module_options(endpoint_url: str, module_type: str) -> dict:
@@ -620,9 +638,10 @@ def get_returns_contains_for_model(model_class: str, visited: set = None) -> dic
         return {}
 
     model_schema = native_schema.get_model_schema(model_class)
+    fields = _get_fields_from_model_schema(model_schema)
     contains = {}
 
-    for field_name, field_schema in model_schema.get("fields", {}).items():
+    for field_name, field_schema in fields.items():
         # Skip write-only fields - they are not included in API responses
         if field_schema.get("write_only", False):
             continue
@@ -679,10 +698,9 @@ def get_example_value_for_field(field_schema: dict, visited: set | None = None):
         try:
             nested_schema = native_schema.get_model_schema(nested_model_class)
             child_visited = visited | {nested_model_class}
+            nested_fields = _get_fields_from_model_schema(nested_schema)
             writable = {
-                n: s
-                for n, s in nested_schema.get("fields", {}).items()
-                if not s.get("read_only", False)
+                n: s for n, s in nested_fields.items() if not s.get("read_only", False)
             }
 
             # Use required fields first; fall back to first 2 optional fields
@@ -837,7 +855,8 @@ def generate_module_examples(endpoint_url: str, module_type: str) -> list:
     # Separate writable fields into required and optional
     required_fields = {}
     optional_fields = {}
-    for field_name, field_schema in model_schema.get("fields", {}).items():
+    fields = _get_fields_from_model_schema(model_schema)
+    for field_name, field_schema in fields.items():
         if field_schema.get("read_only", False) or field_schema.get(
             "write_only", False
         ):
@@ -856,17 +875,19 @@ def generate_module_examples(endpoint_url: str, module_type: str) -> list:
         if has_parent_model(endpoint_url):
             parent_model_class = model_schema.get("parent_model_class", "")
             parent_model_schema = native_schema.get_model_schema(parent_model_class)
+            parent_model_fields = _get_fields_from_model_schema(parent_model_schema)
             # Build a query dict using the unique fields of the parent model
             parent_unique_fields = [
                 fname
-                for fname, fschema in parent_model_schema.get("fields", {}).items()
+                for fname, fschema in parent_model_fields.items()
                 if fschema.get("unique", False) and not fschema.get("read_only", False)
             ]
             if not parent_unique_fields:
                 parent_unique_fields = ["id"]
             parent_lookup_query = {}
             for fname in parent_unique_fields:
-                fschema = parent_model_schema.get("fields", {}).get(fname, {})
+                ffields = _get_fields_from_model_schema(parent_model_schema)
+                fschema = ffields.get(fname, {})
                 parent_lookup_query[fname] = (
                     get_example_value_for_field(fschema) if fschema else fname
                 )
