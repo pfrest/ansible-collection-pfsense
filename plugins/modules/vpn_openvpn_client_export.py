@@ -9,7 +9,7 @@
 ###############################################################
 """An Ansible module for interacting with /api/v2/vpn/openvpn/client_export."""
 
-# pylint: disable=too-many-lines,duplicate-code
+# pylint: disable=too-many-lines,duplicate-code,line-too-long
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
