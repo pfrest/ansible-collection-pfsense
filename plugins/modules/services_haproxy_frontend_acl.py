@@ -69,7 +69,7 @@ options:
   parent_lookup_query:
     type: dict
     required: true
-    description: A dictionary of query parameters used to look up the parent HA Proxy
+    description: A dictionary of query parameters used to look up the parent HAProxy
       Frontend. This should contain field name/value pairs that uniquely identify
       the parent object this resource is nested under.
   name:
@@ -197,8 +197,7 @@ data:
       type: bool
       returned: always
     parent_id:
-      description: The ID of the parent HA Proxy Frontend this resource is nested
-        under.
+      description: The ID of the parent HAProxy Frontend this resource is nested under.
       type: int
       returned: always
 

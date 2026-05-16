@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: vpn_openvpn_servers_info
 description:
-- Retrieve information about many Open VPN Servers.
-short_description: Retrieve information about many Open VPN Servers.
+- Retrieve information about many OpenVPN Servers.
+short_description: Retrieve information about many OpenVPN Servers.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 options:
@@ -61,7 +61,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Retrieve all Open VPN Servers
+- name: Retrieve all OpenVPN Servers
   pfrest.pfsense.vpn_openvpn_servers_info:
     api_host: pfsense.example.com
     api_username: admin
@@ -87,7 +87,7 @@ msg:
   type: str
   returned: always
 data:
-  description: A list of Open VPN Servers returned by the API.
+  description: A list of OpenVPN Servers returned by the API.
   type: list
   elements: dict
   returned: always

@@ -97,6 +97,10 @@ data:
       type: list
       returned: always
       elements: str
+    name:
+      description: The name of the table
+      type: str
+      returned: always
 
 """
 

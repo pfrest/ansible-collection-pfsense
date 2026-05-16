@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: vpn_openvpn_cso_info
 description:
-- Retrieve information about a single Open VPN Client Specific Override.
-short_description: Retrieve information about a single Open VPN Client Specific Override.
+- Retrieve information about a single OpenVPN Client Specific Override.
+short_description: Retrieve information about a single OpenVPN Client Specific Override.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 options:
@@ -61,7 +61,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Retrieve Open VPN Client Specific Override
+- name: Retrieve OpenVPN Client Specific Override
   pfrest.pfsense.vpn_openvpn_cso_info:
     api_host: pfsense.example.com
     api_username: admin
@@ -88,7 +88,7 @@ msg:
   type: str
   returned: always
 data:
-  description: The Open VPN Client Specific Override data returned by the API.
+  description: The OpenVPN Client Specific Override data returned by the API.
   type: dict
   returned: always
   contains:

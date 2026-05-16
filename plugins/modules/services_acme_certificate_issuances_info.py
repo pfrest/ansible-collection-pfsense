@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: services_acme_certificate_issuances_info
 description:
-- Retrieve information about many ACME Certificate Issues.
-short_description: Retrieve information about many ACME Certificate Issues.
+- Retrieve information about many ACME Certificate Issuances.
+short_description: Retrieve information about many ACME Certificate Issuances.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 - pfSense-pkg-acme must be installed on the target system.
@@ -62,7 +62,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Retrieve all ACME Certificate Issues
+- name: Retrieve all ACME Certificate Issuances
   pfrest.pfsense.services_acme_certificate_issuances_info:
     api_host: pfsense.example.com
     api_username: admin
@@ -88,7 +88,7 @@ msg:
   type: str
   returned: always
 data:
-  description: A list of ACME Certificate Issues returned by the API.
+  description: A list of ACME Certificate Issuances returned by the API.
   type: list
   elements: dict
   returned: always

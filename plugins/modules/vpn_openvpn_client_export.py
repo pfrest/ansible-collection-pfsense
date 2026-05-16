@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: vpn_openvpn_client_export
 description:
-- Perform the Open VPN Client Export action.
-short_description: Perform the Open VPN Client Export action.
+- Perform the OpenVPN Client Export action.
+short_description: Perform the OpenVPN Client Export action.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 - pfSense-pkg-openvpn-client-export must be installed on the target system.
@@ -249,7 +249,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Perform Open VPN Client Export action
+- name: Perform OpenVPN Client Export action
   pfrest.pfsense.vpn_openvpn_client_export:
     api_host: pfsense.example.com
     api_username: admin
@@ -286,7 +286,7 @@ msg:
   type: str
   returned: always
 data:
-  description: The Open VPN Client Export data returned by the API.
+  description: The OpenVPN Client Export data returned by the API.
   type: dict
   returned: always
   contains:

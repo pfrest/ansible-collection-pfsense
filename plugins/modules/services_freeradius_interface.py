@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: services_freeradius_interface
 description:
-- Manage individual Free RADIUS Interfaces.
-short_description: Manage individual Free RADIUS Interfaces.
+- Manage individual FreeRADIUS Interfaces.
+short_description: Manage individual FreeRADIUS Interfaces.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 - pfSense-pkg-freeradius3 must be installed on the target system.
@@ -110,7 +110,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Create Free RADIUS Interface
+- name: Create FreeRADIUS Interface
   pfrest.pfsense.services_freeradius_interface:
     api_host: pfsense.example.com
     api_username: admin
@@ -118,7 +118,7 @@ EXAMPLES = """
     state: present
     addr: string
     ip_version: ipaddr
-- name: Delete Free RADIUS Interface
+- name: Delete FreeRADIUS Interface
   pfrest.pfsense.services_freeradius_interface:
     api_host: pfsense.example.com
     api_username: admin
@@ -147,7 +147,7 @@ msg:
   type: str
   returned: always
 data:
-  description: The Free RADIUS Interface data returned by the API.
+  description: The FreeRADIUS Interface data returned by the API.
   type: dict
   returned: always
   contains:

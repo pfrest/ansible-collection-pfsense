@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: services_haproxy_frontend_error_file_info
 description:
-- Retrieve information about a single HA Proxy Frontend Error File.
-short_description: Retrieve information about a single HA Proxy Frontend Error File.
+- Retrieve information about a single HAProxy Frontend Error File.
+short_description: Retrieve information about a single HAProxy Frontend Error File.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 - pfSense-pkg-haproxy must be installed on the target system.
@@ -62,7 +62,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Retrieve HA Proxy Frontend Error File
+- name: Retrieve HAProxy Frontend Error File
   pfrest.pfsense.services_haproxy_frontend_error_file_info:
     api_host: pfsense.example.com
     api_username: admin
@@ -89,7 +89,7 @@ msg:
   type: str
   returned: always
 data:
-  description: The HA Proxy Frontend Error File data returned by the API.
+  description: The HAProxy Frontend Error File data returned by the API.
   type: dict
   returned: always
   contains:

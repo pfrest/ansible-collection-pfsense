@@ -7,7 +7,7 @@
 # GENERATED MODULE BY ADDING THIS MODULES NAME TO THE
 # tools/generator.yml FILE.
 ###############################################################
-"""An Ansible module for interacting with /api/v2/services/haproxy/file."""
+"""An Ansible module for interacting with /api/v2/system/enum."""
 
 # pylint: disable=too-many-lines,duplicate-code
 
@@ -15,13 +15,12 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 
 DOCUMENTATION = r"""
-module: services_haproxy_file
+module: system_enum
 description:
-- Manage individual HAProxy Files.
-short_description: Manage individual HAProxy Files.
+- Perform the Enum action.
+short_description: Perform the Enum action.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
-- pfSense-pkg-haproxy must be installed on the target system.
 options:
   api_host:
     type: str
@@ -53,59 +52,29 @@ options:
     type: bool
     default: true
     description: Whether to validate SSL certificates when connecting to the API.
-  state:
-    type: str
-    choices:
-    - present
-    - absent
-    default: present
-    description: Whether the resource should be present or absent.
-  lookup_fields:
-    type: list
-    elements: str
-    required: true
-    description: The list of fields to use when looking up existing resources. This
-      should be a list of field names that uniquely identify a resource.
-  name:
+  model_name:
     required: true
     type: str
     choices: []
-    description: The unique name for this file.
-  type:
-    required: false
-    type: str
-    default: null
-    choices:
-    - luascript
-    - writetodisk
-    description: The type of file. Use `null` to assume an Errorfile.
-  content:
+    description: The name of the model whose field's choices are being requested.
+  model_field:
     required: true
     type: str
     choices: []
-    description: The content of this file.
+    description: The name of the field whose choices are being requested.
 author:
 - Jared Hendrickson (@jaredhendrickson13)
 
 """
 
 EXAMPLES = """
-- name: Create HAProxy File
-  pfrest.pfsense.services_haproxy_file:
+- name: Perform Enum action
+  pfrest.pfsense.system_enum:
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
-    state: present
-    name: string
-    content: string
-- name: Delete HAProxy File
-  pfrest.pfsense.services_haproxy_file:
-    api_host: pfsense.example.com
-    api_username: admin
-    api_password: pfsense
-    state: absent
-    name: string
-    content: string
+    model_name: string
+    model_field: string
 
 """
 
@@ -127,28 +96,30 @@ msg:
   type: str
   returned: always
 data:
-  description: The HAProxy File data returned by the API.
+  description: The Enum data returned by the API.
   type: dict
   returned: always
   contains:
-    name:
-      description: The unique name for this file.
+    model_name:
+      description: The name of the model whose field's choices are being requested.
       type: str
       returned: always
-    type:
-      description: The type of file. Use `null` to assume an Errorfile.
+    model_field:
+      description: The name of the field whose choices are being requested.
       type: str
       returned: always
-    content:
-      description: The content of this file.
-      type: str
+    choices:
+      description: The available choices for the specified model and field. The key
+        represents the internal name of the choice, and the value is the verbose,
+        human-friendly name of the choice.
+      type: list
       returned: always
 
 """
 
 
 def run_module():
-    """Runs this resource module against /api/v2/services/haproxy/file."""
+    """Runs this action module against /api/v2/system/enum."""
 
     module_args = {
         "api_host": {
@@ -192,34 +163,13 @@ def run_module():
             "no_log": False,
             "default": True,
         },
-        "state": {
-            "type": "str",
-            "required": False,
-            "no_log": False,
-            "default": "present",
-            "choices": ["present", "absent"],
-        },
-        "lookup_fields": {
-            "type": "list",
-            "required": True,
-            "no_log": False,
-            "elements": "str",
-        },
-        "name": {
+        "model_name": {
             "type": "str",
             "required": True,
             "no_log": False,
             "nullable": False,
         },
-        "type": {
-            "type": "str",
-            "required": False,
-            "no_log": False,
-            "default": None,
-            "choices": ["luascript", "writetodisk"],
-            "nullable": True,
-        },
-        "content": {
+        "model_field": {
             "type": "str",
             "required": True,
             "no_log": False,
@@ -239,13 +189,8 @@ def run_module():
         validate_certs=module.params["validate_certs"],
     )
 
-    base_module = base.BaseModule("/api/v2/services/haproxy/file", client)
-    changed, resp = base_module.set_object_state(
-        state=module.params["state"],
-        data=module.params,
-        lookup_fields=module.params["lookup_fields"],
-        parent_lookup_query=module.params.get("parent_lookup_query"),
-    )
+    base_module = base.BaseModule("/api/v2/system/enum", client)
+    changed, resp = base_module.execute_action(data=module.params)
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)
     message = resp.get("message", "")

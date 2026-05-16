@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: services_haproxy_frontends
 description:
-- Manage all HA Proxy Frontends.
-short_description: Manage all HA Proxy Frontends.
+- Manage all HAProxy Frontends.
+short_description: Manage all HAProxy Frontends.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 - pfSense-pkg-haproxy must be installed on the target system.
@@ -443,7 +443,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Manage all HA Proxy Frontends
+- name: Manage all HAProxy Frontends
   pfrest.pfsense.services_haproxy_frontends:
     api_host: pfsense.example.com
     api_username: admin
@@ -474,7 +474,7 @@ msg:
   type: str
   returned: always
 data:
-  description: A list of HA Proxy Frontends returned by the API.
+  description: A list of HAProxy Frontends returned by the API.
   type: list
   elements: dict
   returned: always

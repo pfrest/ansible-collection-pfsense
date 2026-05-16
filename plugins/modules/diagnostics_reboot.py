@@ -52,12 +52,6 @@ options:
     type: bool
     default: true
     description: Whether to validate SSL certificates when connecting to the API.
-  dry_run:
-    required: false
-    type: bool
-    default: false
-    choices: []
-    description: Run through the call but don't actually initiate a reboot.
 author:
 - Jared Hendrickson (@jaredhendrickson13)
 
@@ -141,13 +135,6 @@ def run_module():
             "required": False,
             "no_log": False,
             "default": True,
-        },
-        "dry_run": {
-            "type": "bool",
-            "required": False,
-            "no_log": False,
-            "default": False,
-            "nullable": True,
         },
     }
 

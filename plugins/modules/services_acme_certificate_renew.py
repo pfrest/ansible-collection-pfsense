@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: services_acme_certificate_renew
 description:
-- Perform the ACME Certificate Renew action.
-short_description: Perform the ACME Certificate Renew action.
+- Perform the ACME Certificate Renewal action.
+short_description: Perform the ACME Certificate Renewal action.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 - pfSense-pkg-acme must be installed on the target system.
@@ -64,7 +64,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Perform ACME Certificate Renew action
+- name: Perform ACME Certificate Renewal action
   pfrest.pfsense.services_acme_certificate_renew:
     api_host: pfsense.example.com
     api_username: admin
@@ -91,7 +91,7 @@ msg:
   type: str
   returned: always
 data:
-  description: The ACME Certificate Renew data returned by the API.
+  description: The ACME Certificate Renewal data returned by the API.
   type: dict
   returned: always
   contains:

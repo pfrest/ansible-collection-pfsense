@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: vpn_ipsec_apply
 description:
-- Perform the I Psec Apply action.
-short_description: Perform the I Psec Apply action.
+- Perform the IPsec Apply action.
+short_description: Perform the IPsec Apply action.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 options:
@@ -58,7 +58,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Perform I Psec Apply action
+- name: Perform IPsec Apply action
   pfrest.pfsense.vpn_ipsec_apply:
     api_host: pfsense.example.com
     api_username: admin
@@ -84,7 +84,7 @@ msg:
   type: str
   returned: always
 data:
-  description: The I Psec Apply data returned by the API.
+  description: The IPsec Apply data returned by the API.
   type: dict
   returned: always
   contains:

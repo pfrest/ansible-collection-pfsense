@@ -7,7 +7,7 @@
 # GENERATED MODULE BY ADDING THIS MODULES NAME TO THE
 # tools/generator.yml FILE.
 ###############################################################
-"""An Ansible module for interacting with /api/v2/services/freeradius/users."""
+"""An Ansible module for interacting with /api/v2/services/freeradius/macs."""
 
 # pylint: disable=too-many-lines,duplicate-code
 
@@ -15,10 +15,10 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 
 DOCUMENTATION = r"""
-module: services_freeradius_users
+module: services_freeradius_macs
 description:
-- Manage all FreeRADIUS Users.
-short_description: Manage all FreeRADIUS Users.
+- Manage all FreeRADIUS MACs.
+short_description: Manage all FreeRADIUS MACs.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 - pfSense-pkg-freeradius3 must be installed on the target system.
@@ -58,55 +58,12 @@ options:
     elements: dict
     required: true
     suboptions:
-      username:
+      mac:
         required: true
         type: str
         choices: []
-        description: The username for this user.
-      password:
-        required: false
-        type: str
-        choices: []
-        description: The password for this username.
-      password_encryption:
-        required: false
-        type: str
-        choices:
-        - Cleartext-Password
-        - MD5-Password
-        - MD5-Password-hashed
-        - NT-Password-hashed
-        description: The encryption method for the password.
-      motp_enable:
-        required: false
-        type: bool
-        default: false
-        choices: []
-        description: Enable or disable the use of Mobile One-Time Password (MOTP)
-          for this user.
-      motp_authmethod:
-        required: false
-        type: str
-        choices:
-        - motp
-        - googleauth
-        description: The authentication method for the Mobile One-Time Password (MOTP).
-      motp_secret:
-        required: false
-        type: str
-        choices: []
-        description: The secret for the Mobile One-Time Password (MOTP).
-      motp_pin:
-        required: false
-        type: str
-        choices: []
-        description: The PIN for the Mobile One-Time Password (MOTP). It must be exactly
-          4 digits.
-      motp_offset:
-        required: false
-        type: int
-        choices: []
-        description: The timezone offset for this user.
+        description: The MAC address of the entry. May be delimited with '-' or ':'
+          (e.g. 'aa:bb:cc:dd:ee:ff').
       description:
         required: false
         type: str
@@ -285,18 +242,15 @@ author:
 """
 
 EXAMPLES = """
-- name: Manage all FreeRADIUS Users
-  pfrest.pfsense.services_freeradius_users:
+- name: Manage all FreeRADIUS MACs
+  pfrest.pfsense.services_freeradius_macs:
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
     objects:
-    - username: string
-      password: string
-      motp_secret: string
-      motp_pin: string
-      password_encryption: Cleartext-Password
-      motp_enable: false
+    - mac: string
+      description: string
+      framed_ip_address: string
 
 """
 
@@ -318,44 +272,15 @@ msg:
   type: str
   returned: always
 data:
-  description: A list of FreeRADIUS Users returned by the API.
+  description: A list of FreeRADIUS MACs returned by the API.
   type: list
   elements: dict
   returned: always
   contains:
-    username:
-      description: The username for this user.
+    mac:
+      description: The MAC address of the entry. May be delimited with '-' or ':'
+        (e.g. 'aa:bb:cc:dd:ee:ff').
       type: str
-      returned: always
-    password:
-      description: The password for this username.
-      type: str
-      returned: always
-    password_encryption:
-      description: The encryption method for the password.
-      type: str
-      returned: always
-    motp_enable:
-      description: Enable or disable the use of Mobile One-Time Password (MOTP) for
-        this user.
-      type: bool
-      returned: always
-    motp_authmethod:
-      description: The authentication method for the Mobile One-Time Password (MOTP).
-      type: str
-      returned: always
-    motp_secret:
-      description: The secret for the Mobile One-Time Password (MOTP).
-      type: str
-      returned: always
-    motp_pin:
-      description: The PIN for the Mobile One-Time Password (MOTP). It must be exactly
-        4 digits.
-      type: str
-      returned: always
-    motp_offset:
-      description: The timezone offset for this user.
-      type: int
       returned: always
     description:
       description: A description for this entry.
@@ -479,7 +404,7 @@ data:
 
 
 def run_module():
-    """Runs this collection module against /api/v2/services/freeradius/users."""
+    """Runs this collection module against /api/v2/services/freeradius/macs."""
 
     module_args = {
         "api_host": {
@@ -529,61 +454,11 @@ def run_module():
             "no_log": False,
             "elements": "dict",
             "options": {
-                "username": {
+                "mac": {
                     "type": "str",
                     "required": True,
                     "no_log": False,
                     "nullable": False,
-                },
-                "password": {
-                    "type": "str",
-                    "required": False,
-                    "no_log": True,
-                    "nullable": True,
-                },
-                "password_encryption": {
-                    "type": "str",
-                    "required": False,
-                    "no_log": False,
-                    "choices": [
-                        "Cleartext-Password",
-                        "MD5-Password",
-                        "MD5-Password-hashed",
-                        "NT-Password-hashed",
-                    ],
-                    "nullable": True,
-                },
-                "motp_enable": {
-                    "type": "bool",
-                    "required": False,
-                    "no_log": False,
-                    "default": False,
-                    "nullable": True,
-                },
-                "motp_authmethod": {
-                    "type": "str",
-                    "required": False,
-                    "no_log": False,
-                    "choices": ["motp", "googleauth"],
-                    "nullable": True,
-                },
-                "motp_secret": {
-                    "type": "str",
-                    "required": False,
-                    "no_log": True,
-                    "nullable": True,
-                },
-                "motp_pin": {
-                    "type": "str",
-                    "required": False,
-                    "no_log": True,
-                    "nullable": True,
-                },
-                "motp_offset": {
-                    "type": "int",
-                    "required": False,
-                    "no_log": False,
-                    "nullable": True,
                 },
                 "description": {
                     "type": "str",
@@ -760,7 +635,7 @@ def run_module():
         validate_certs=module.params["validate_certs"],
     )
 
-    base_module = base.BaseModule("/api/v2/services/freeradius/users", client)
+    base_module = base.BaseModule("/api/v2/services/freeradius/macs", client)
     changed, resp = base_module.replace_objects(
         data=module.params["objects"],
     )

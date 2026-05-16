@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: services_haproxy_backend_action
 description:
-- Manage individual HA Proxy Backend Actions.
-short_description: Manage individual HA Proxy Backend Actions.
+- Manage individual HAProxy Backend Actions.
+short_description: Manage individual HAProxy Backend Actions.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 - pfSense-pkg-haproxy must be installed on the target system.
@@ -69,7 +69,7 @@ options:
   parent_lookup_query:
     type: dict
     required: true
-    description: A dictionary of query parameters used to look up the parent HA Proxy
+    description: A dictionary of query parameters used to look up the parent HAProxy
       Backend. This should contain field name/value pairs that uniquely identify the
       parent object this resource is nested under.
   action:
@@ -197,7 +197,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Create HA Proxy Backend Action
+- name: Create HAProxy Backend Action
   pfrest.pfsense.services_haproxy_backend_action:
     api_host: pfsense.example.com
     api_username: admin
@@ -220,7 +220,7 @@ EXAMPLES = """
     path: string
     status: string
     reason: string
-- name: Delete HA Proxy Backend Action
+- name: Delete HAProxy Backend Action
   pfrest.pfsense.services_haproxy_backend_action:
     api_host: pfsense.example.com
     api_username: admin
@@ -263,7 +263,7 @@ msg:
   type: str
   returned: always
 data:
-  description: The HA Proxy Backend Action data returned by the API.
+  description: The HAProxy Backend Action data returned by the API.
   type: dict
   returned: always
   contains:
@@ -328,7 +328,7 @@ data:
       type: str
       returned: always
     parent_id:
-      description: The ID of the parent HA Proxy Backend this resource is nested under.
+      description: The ID of the parent HAProxy Backend this resource is nested under.
       type: int
       returned: always
 

@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: services_freeradius_client_info
 description:
-- Retrieve information about a single Free RADIUS Client.
-short_description: Retrieve information about a single Free RADIUS Client.
+- Retrieve information about a single FreeRADIUS Client.
+short_description: Retrieve information about a single FreeRADIUS Client.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 - pfSense-pkg-freeradius3 must be installed on the target system.
@@ -62,7 +62,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Retrieve Free RADIUS Client
+- name: Retrieve FreeRADIUS Client
   pfrest.pfsense.services_freeradius_client_info:
     api_host: pfsense.example.com
     api_username: admin
@@ -89,7 +89,7 @@ msg:
   type: str
   returned: always
 data:
-  description: The Free RADIUS Client data returned by the API.
+  description: The FreeRADIUS Client data returned by the API.
   type: dict
   returned: always
   contains:

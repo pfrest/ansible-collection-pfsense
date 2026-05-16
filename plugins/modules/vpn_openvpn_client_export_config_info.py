@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: vpn_openvpn_client_export_config_info
 description:
-- Retrieve information about a single Open VPN Client Export Config.
-short_description: Retrieve information about a single Open VPN Client Export Config.
+- Retrieve information about a single OpenVPN Client Export Config.
+short_description: Retrieve information about a single OpenVPN Client Export Config.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 - pfSense-pkg-openvpn-client-export must be installed on the target system.
@@ -62,7 +62,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Retrieve Open VPN Client Export Config
+- name: Retrieve OpenVPN Client Export Config
   pfrest.pfsense.vpn_openvpn_client_export_config_info:
     api_host: pfsense.example.com
     api_username: admin
@@ -89,7 +89,7 @@ msg:
   type: str
   returned: always
 data:
-  description: The Open VPN Client Export Config data returned by the API.
+  description: The OpenVPN Client Export Config data returned by the API.
   type: dict
   returned: always
   contains:

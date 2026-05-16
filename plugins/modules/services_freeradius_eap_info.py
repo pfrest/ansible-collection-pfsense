@@ -7,7 +7,7 @@
 # GENERATED MODULE BY ADDING THIS MODULES NAME TO THE
 # tools/generator.yml FILE.
 ###############################################################
-"""An Ansible module for interacting with /api/v2/services/haproxy/settings."""
+"""An Ansible module for interacting with /api/v2/services/freeradius/eap."""
 
 # pylint: disable=too-many-lines,duplicate-code
 
@@ -15,13 +15,13 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 
 DOCUMENTATION = r"""
-module: services_haproxy_settings_info
+module: services_freeradius_eap_info
 description:
-- Retrieve information about the HAProxy Settings.
-short_description: Retrieve information about the HAProxy Settings.
+- Retrieve information about the FreeRADIUS EAP.
+short_description: Retrieve information about the FreeRADIUS EAP.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
-- pfSense-pkg-haproxy must be installed on the target system.
+- pfSense-pkg-freeradius3 must be installed on the target system.
 options:
   api_host:
     type: str
@@ -62,8 +62,8 @@ author:
 """
 
 EXAMPLES = """
-- name: Retrieve HAProxy Settings
-  pfrest.pfsense.services_haproxy_settings_info:
+- name: Retrieve FreeRADIUS EAP
+  pfrest.pfsense.services_freeradius_eap_info:
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
@@ -89,164 +89,159 @@ msg:
   type: str
   returned: always
 data:
-  description: The HAProxy Settings data returned by the API.
+  description: The FreeRADIUS EAP data returned by the API.
   type: dict
   returned: always
   contains:
-    enable:
-      description: Enables or disable HAProxy on the system.
+    disable_weak_eap_types:
+      description: Disables weak EAP types (MD5 and GTC). When enabled, only stronger
+        EAP types like TLS, TTLS, PEAP, and MSCHAPv2 are allowed.
       type: bool
       returned: always
-    maxconn:
-      description: The maximum per-process number of concurrent connections
+    default_eap_type:
+      description: The default EAP type invoked when an EAP-Identity response is received.
+      type: str
+      returned: always
+    timer_expire:
+      description: The expiration time (in seconds) of the EAP-Response / EAP-Request
+        correlation list.
       type: int
       returned: always
-    nbthread:
-      description: The number of threads to start per process. This setting is experimental.
-      type: int
-      returned: always
-    terminate_on_reload:
-      description: Enables or disables an immediate stop of old process on reload.
-        (closes existing connections)
+    ignore_unknown_eap_types:
+      description: If enabled, unknown EAP types are ignored instead of rejected.
+        A proxy module must be configured to forward such requests to another RADIUS
+        server.
       type: bool
       returned: always
-    hard_stop_after:
-      description: The maximum time allowed to perform a clean soft-stop. This can
-        be represented as different time values such as 30s, 15m, 3h or 1d.
-      type: str
-      returned: always
-    carpdev:
-      description: The CARP interface IP to monitor. HAProxy will only run on the
-        firewall whose interface is MASTER.
-      type: str
-      returned: always
-    localstatsport:
-      description: 'The internal port to be used for the stats tab. Set to null to
-        disable local stats. Valid options are: a TCP/UDP port number'
-      type: str
-      returned: always
-    localstats_refreshtime:
-      description: The internal (in seconds) in which local stats will be refreshed.
-      type: int
-      returned: always
-    localstats_sticktable_refreshtime:
-      description: The internal (in seconds) in which the sticktable stats will be
-        refreshed.
-      type: int
-      returned: always
-    remotesyslog:
-      description: The IP address or hostname of the remote syslog server to send
-        logs to. Use `/var/run/log` to to log to the local pfSense system log.
-      type: str
-      returned: always
-    logfacility:
-      description: The logging facility to log to.
-      type: str
-      returned: always
-    loglevel:
-      description: The log level to begin logging events. Only events of this level
-        or higher will be logged.
-      type: str
-      returned: always
-    log_send_hostname:
-      description: The hostname field to include in the syslog header. Leave empty
-        to use the system hostname.
-      type: str
-      returned: always
-    dns_resolvers:
-      description: The DNS resolvers HAProxy will use for DNS queries.
-      type: list
-      returned: always
-      elements: dict
-      contains:
-        name:
-          description: The descriptive name for this DNS server.
-          type: str
-          returned: always
-        server:
-          description: The IP or hostname of the DNS server.
-          type: str
-          returned: always
-        port:
-          description: 'The port used by this DNS server. Valid options are: a TCP/UDP
-            port number'
-          type: str
-          returned: always
-    resolver_retries:
-      description: The number of queries to send to resolve a server name before giving
-        up.
-      type: int
-      returned: always
-    resolver_timeoutretry:
-      description: The time between two DNS queries, when no response have been received.
-      type: str
-      returned: always
-    resolver_holdvalid:
-      description: The interval between two successive name resolution when the last
-        answer was valid.
-      type: str
-      returned: always
-    email_mailers:
-      description: The email servers HAProxy will use to send SMTP alerts.
-      type: list
-      returned: always
-      elements: dict
-      contains:
-        name:
-          description: The descriptive name for this mail server.
-          type: str
-          returned: always
-        mailserver:
-          description: The IP or hostname of the mail server.
-          type: str
-          returned: always
-        mailserverport:
-          description: 'The port used by this mail server. Valid options are: a TCP/UDP
-            port number'
-          type: str
-          returned: always
-    email_level:
-      description: The maximum log level to send emails for. Leave empty to disable
-        sending email alerts.
-      type: str
-      returned: always
-    email_myhostname:
-      description: The hostname to use as the origin of the email.
-      type: str
-      returned: always
-    email_from:
-      description: The email address to be used as the sender of the emails.
-      type: str
-      returned: always
-    email_to:
-      description: The email address to send emails to.
-      type: str
-      returned: always
-    sslcompatibilitymode:
-      description: The SSL/TLS compatibility mode which determines the cipher suites
-        and TLS versions supported.
-      type: str
-      returned: always
-    ssldefaultdhparam:
-      description: The maximum size of the Diffie-Hellman parameters used for generating
-        the ephemeral/temporary Diffie-Hellman key in case of DHE key exchange
-      type: int
-      returned: always
-    advanced:
-      description: Additional HAProxy options to include in the global settings area.
-      type: str
-      returned: always
-    enablesync:
-      description: Enables or disables including HAProxy configurations in HA sync
-        if configured.
+    cisco_accounting_username_bug:
+      description: Enables the workaround for the CISCO AP1230B firmware 12.2(13)JA1
+        accounting username bug.
       type: bool
+      returned: always
+    max_sessions:
+      description: Helps prevent DoS attacks by limiting the number of EAP sessions
+        the server tracks.
+      type: int
+      returned: always
+    tls_min_version:
+      description: The minimum TLS version that will be accepted for EAP-TLS-derived
+        methods.
+      type: str
+      returned: always
+    ssl_ca_cert:
+      description: The Certificate Authority (refid) used by the FreeRADIUS EAP module.
+        Leave unset to have the FreeRADIUS package auto-generate a temporary CA on
+        apply.
+      type: str
+      returned: always
+    ssl_ca_crl:
+      description: The Certificate Revocation List (refid) checked when verifying
+        EAP client certificates. Leave unset to disable CRL checking.
+      type: str
+      returned: always
+    ssl_server_cert:
+      description: The server Certificate (refid) presented by the FreeRADIUS EAP
+        module. Leave unset to have the FreeRADIUS package auto-generate a temporary
+        server certificate on apply.
+      type: str
+      returned: always
+    tls_include_length:
+      description: When enabled, the total length of the EAP-TLS message is included
+        in every packet, instead of only the first packet of a fragment series.
+      type: bool
+      returned: always
+    tls_fragment_size:
+      description: The EAP-TLS fragment size (in bytes). Cannot exceed 4096.
+      type: int
+      returned: always
+    tls_check_cert_issuer:
+      description: When enabled, the server/client certificate must match the configured
+        CA issuer.
+      type: bool
+      returned: always
+    tls_ca_subject:
+      description: The expected CA subject string for issuer validation. Leave blank
+        to use the subject of the configured SSL CA Certificate.
+      type: str
+      returned: always
+    tls_check_cert_cn:
+      description: When enabled, the Common Name of the client certificate must match
+        the User-Name attribute.
+      type: bool
+      returned: always
+    cache_enable:
+      description: Enables the EAP-TLS session resumption / fast reauthentication
+        cache.
+      type: bool
+      returned: always
+    cache_lifetime:
+      description: Lifetime of cached entries (in hours).
+      type: int
+      returned: always
+    cache_max_entries:
+      description: The maximum number of entries in the EAP-TLS cache. Set to 0 for
+        infinite.
+      type: int
+      returned: always
+    ocsp_enable:
+      description: Enables OCSP support for EAP-TLS client certificate verification.
+      type: bool
+      returned: always
+    ocsp_override_cert_url:
+      description: When enabled, the configured OCSP responder URL overrides the URL
+        extracted from the client certificate.
+      type: bool
+      returned: always
+    ocsp_url:
+      description: The OCSP responder URL used to verify EAP-TLS client certificates
+        when OCSP is enabled.
+      type: str
+      returned: always
+    ttls_default_eap_type:
+      description: The default EAP type used inside the EAP-TTLS tunnel.
+      type: str
+      returned: always
+    ttls_copy_request_to_tunnel:
+      description: When enabled, attributes available outside of the EAP-TTLS tunnel
+        are copied into the tunneled authentication request.
+      type: bool
+      returned: always
+    ttls_use_tunneled_reply:
+      description: When enabled, reply attributes from the tunneled authentication
+        are returned to the NAS.
+      type: bool
+      returned: always
+    ttls_include_length:
+      description: When enabled, the total length of the EAP-TTLS message is included
+        in every packet, instead of only the first packet of a fragment series.
+      type: bool
+      returned: always
+    peap_default_eap_type:
+      description: The default EAP type used inside the EAP-PEAP tunnel.
+      type: str
+      returned: always
+    peap_copy_request_to_tunnel:
+      description: When enabled, attributes available outside of the EAP-PEAP tunnel
+        are copied into the tunneled authentication request.
+      type: bool
+      returned: always
+    peap_use_tunneled_reply:
+      description: When enabled, reply attributes from the tunneled authentication
+        are returned to the NAS.
+      type: bool
+      returned: always
+    peap_soh_enable:
+      description: Enable or disable Microsoft Statement of Health (SoH) support inside
+        EAP-PEAP. The SoH site configuration must be edited at /usr/local/etc/raddb/sites-available/soh
+        outside of this API.
+      type: str
       returned: always
 
 """
 
 
 def run_module():
-    """Runs this info module against /api/v2/services/haproxy/settings."""
+    """Runs this info module against /api/v2/services/freeradius/eap."""
 
     module_args = {
         "api_host": {
@@ -309,7 +304,7 @@ def run_module():
         validate_certs=module.params["validate_certs"],
     )
 
-    base_module = base.BaseModule("/api/v2/services/haproxy/settings", client)
+    base_module = base.BaseModule("/api/v2/services/freeradius/eap", client)
     changed = False
     resp = base_module.lookup_object(lookup_params=module.params["lookup_params"])
 

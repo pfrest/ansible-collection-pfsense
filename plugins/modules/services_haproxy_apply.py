@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: services_haproxy_apply
 description:
-- Perform the HA Proxy Apply action.
-short_description: Perform the HA Proxy Apply action.
+- Perform the HAProxy Apply action.
+short_description: Perform the HAProxy Apply action.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 - pfSense-pkg-haproxy must be installed on the target system.
@@ -59,7 +59,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Perform HA Proxy Apply action
+- name: Perform HAProxy Apply action
   pfrest.pfsense.services_haproxy_apply:
     api_host: pfsense.example.com
     api_username: admin
@@ -85,7 +85,7 @@ msg:
   type: str
   returned: always
 data:
-  description: The HA Proxy Apply data returned by the API.
+  description: The HAProxy Apply data returned by the API.
   type: dict
   returned: always
   contains:

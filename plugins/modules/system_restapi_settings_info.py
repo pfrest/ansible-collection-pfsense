@@ -135,6 +135,12 @@ data:
         and may not be fully stable. Use of pre-release versions is at your own risk.
       type: bool
       returned: always
+    allow_development_packages:
+      description: Enables or disables allowing the use of development (-devel) variants
+        of pfSense packages when a package is required by specific API endpoints.
+        Use of development packages is at your own risk.
+      type: bool
+      returned: always
     hateoas:
       description: Enables or disables HATEOAS. Enabling HATEOAS will allow the API
         to include links to related resources in API responses. This is primarily

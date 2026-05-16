@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: services_haproxy_backend_info
 description:
-- Retrieve information about a single HA Proxy Backend.
-short_description: Retrieve information about a single HA Proxy Backend.
+- Retrieve information about a single HAProxy Backend.
+short_description: Retrieve information about a single HAProxy Backend.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 - pfSense-pkg-haproxy must be installed on the target system.
@@ -62,7 +62,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Retrieve HA Proxy Backend
+- name: Retrieve HAProxy Backend
   pfrest.pfsense.services_haproxy_backend_info:
     api_host: pfsense.example.com
     api_username: admin
@@ -89,7 +89,7 @@ msg:
   type: str
   returned: always
 data:
-  description: The HA Proxy Backend data returned by the API.
+  description: The HAProxy Backend data returned by the API.
   type: dict
   returned: always
   contains:

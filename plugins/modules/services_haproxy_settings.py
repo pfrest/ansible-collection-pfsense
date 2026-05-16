@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: services_haproxy_settings
 description:
-- Manage HA Proxy Settings.
-short_description: Manage HA Proxy Settings.
+- Manage HAProxy Settings.
+short_description: Manage HAProxy Settings.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 - pfSense-pkg-haproxy must be installed on the target system.
@@ -310,7 +310,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Manage HA Proxy Settings
+- name: Manage HAProxy Settings
   pfrest.pfsense.services_haproxy_settings:
     api_host: pfsense.example.com
     api_username: admin
@@ -339,7 +339,7 @@ msg:
   type: str
   returned: always
 data:
-  description: The HA Proxy Settings data returned by the API.
+  description: The HAProxy Settings data returned by the API.
   type: dict
   returned: always
   contains:

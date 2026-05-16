@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: services_freeradius_interfaces
 description:
-- Manage all Free RADIUS Interfaces.
-short_description: Manage all Free RADIUS Interfaces.
+- Manage all FreeRADIUS Interfaces.
+short_description: Manage all FreeRADIUS Interfaces.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 - pfSense-pkg-freeradius3 must be installed on the target system.
@@ -105,7 +105,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Manage all Free RADIUS Interfaces
+- name: Manage all FreeRADIUS Interfaces
   pfrest.pfsense.services_freeradius_interfaces:
     api_host: pfsense.example.com
     api_username: admin
@@ -136,7 +136,7 @@ msg:
   type: str
   returned: always
 data:
-  description: A list of Free RADIUS Interfaces returned by the API.
+  description: A list of FreeRADIUS Interfaces returned by the API.
   type: list
   elements: dict
   returned: always

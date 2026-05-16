@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: services_haproxy_backend
 description:
-- Manage individual HA Proxy Backends.
-short_description: Manage individual HA Proxy Backends.
+- Manage individual HAProxy Backends.
+short_description: Manage individual HAProxy Backends.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 - pfSense-pkg-haproxy must be installed on the target system.
@@ -693,7 +693,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Create HA Proxy Backend
+- name: Create HAProxy Backend
   pfrest.pfsense.services_haproxy_backend:
     api_host: pfsense.example.com
     api_username: admin
@@ -702,7 +702,7 @@ EXAMPLES = """
     name: string
     agent_port: string
     persist_cookie_name: string
-- name: Delete HA Proxy Backend
+- name: Delete HAProxy Backend
   pfrest.pfsense.services_haproxy_backend:
     api_host: pfsense.example.com
     api_username: admin
@@ -732,7 +732,7 @@ msg:
   type: str
   returned: always
 data:
-  description: The HA Proxy Backend data returned by the API.
+  description: The HAProxy Backend data returned by the API.
   type: dict
   returned: always
   contains:

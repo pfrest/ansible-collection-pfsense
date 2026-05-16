@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: services_haproxy_settings_dns_resolvers_info
 description:
-- Retrieve information about many HA Proxy DNS Resolvers.
-short_description: Retrieve information about many HA Proxy DNS Resolvers.
+- Retrieve information about many HAProxy DNS Resolvers.
+short_description: Retrieve information about many HAProxy DNS Resolvers.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 - pfSense-pkg-haproxy must be installed on the target system.
@@ -62,7 +62,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Retrieve all HA Proxy DNS Resolvers
+- name: Retrieve all HAProxy DNS Resolvers
   pfrest.pfsense.services_haproxy_settings_dns_resolvers_info:
     api_host: pfsense.example.com
     api_username: admin
@@ -88,7 +88,7 @@ msg:
   type: str
   returned: always
 data:
-  description: A list of HA Proxy DNS Resolvers returned by the API.
+  description: A list of HAProxy DNS Resolvers returned by the API.
   type: list
   elements: dict
   returned: always

@@ -7,7 +7,7 @@
 # GENERATED MODULE BY ADDING THIS MODULES NAME TO THE
 # tools/generator.yml FILE.
 ###############################################################
-"""An Ansible module for interacting with /api/v2/vpn/openvpn/csos."""
+"""An Ansible module for interacting with /api/v2/services/freeradius/mac."""
 
 # pylint: disable=too-many-lines,duplicate-code
 
@@ -15,12 +15,13 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 
 DOCUMENTATION = r"""
-module: vpn_openvpn_csos_info
+module: services_freeradius_mac_info
 description:
-- Retrieve information about many OpenVPN Client Specific Overrides.
-short_description: Retrieve information about many OpenVPN Client Specific Overrides.
+- Retrieve information about a single FreeRADIUS MAC.
+short_description: Retrieve information about a single FreeRADIUS MAC.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
+- pfSense-pkg-freeradius3 must be installed on the target system.
 options:
   api_host:
     type: str
@@ -52,20 +53,21 @@ options:
     type: bool
     default: true
     description: Whether to validate SSL certificates when connecting to the API.
-  query_params:
+  lookup_params:
     type: dict
-    description: Optional query parameters for filtering the results.
+    description: Parameters to lookup the specific resource to retrieve.
 author:
 - Jared Hendrickson (@jaredhendrickson13)
 
 """
 
 EXAMPLES = """
-- name: Retrieve all OpenVPN Client Specific Overrides
-  pfrest.pfsense.vpn_openvpn_csos_info:
+- name: Retrieve FreeRADIUS MAC
+  pfrest.pfsense.services_freeradius_mac_info:
     api_host: pfsense.example.com
     api_username: admin
     api_password: pfsense
+    lookup_params: {}
 
 """
 
@@ -87,136 +89,129 @@ msg:
   type: str
   returned: always
 data:
-  description: A list of OpenVPN Client Specific Overrides returned by the API.
-  type: list
-  elements: dict
+  description: The FreeRADIUS MAC data returned by the API.
+  type: dict
   returned: always
   contains:
-    common_name:
-      description: The X.509 common name for the client certificate, or the username
-        for VPNs utilizing password authentication.
+    mac:
+      description: The MAC address of the entry. May be delimited with '-' or ':'
+        (e.g. 'aa:bb:cc:dd:ee:ff').
       type: str
-      returned: always
-    disable:
-      description: Disables this client specific override.
-      type: bool
-      returned: always
-    block:
-      description: Enables or disables the client from connecting to this server.
-        Do not use this option to permanently disable a client due to a compromised
-        key or password. Use a CRL instead.
-      type: bool
       returned: always
     description:
-      description: The description for this client specific override.
+      description: A description for this entry.
       type: str
       returned: always
-    server_list:
-      description: The OpenVPN servers that will utilize this override. When no servers
-        are specified, the override will apply to all servers.
-      type: list
-      returned: always
-      elements: str
-    tunnel_network:
-      description: The IPv4 virtual network used for private communications between
-        the server and client hosts.
+    framed_ip_address:
+      description: Framed-IP-Address MUST be supported by NAS. If the OpenVPN server
+        uses a subnet style Topology the RADIUS server MUST also send back an appropriate
+        Framed-IP-Netmask value matching the VPN Tunnel Network.
       type: str
       returned: always
-    tunnel_networkv6:
-      description: The IPv6 virtual network used for private communications between
-        the server and client hosts.
+    framed_ip_netmask:
+      description: Framed-IP-Netmask MUST be supported by NAS.
       type: str
       returned: always
-    local_network:
-      description: The IPv4 server-side networks that will be accessible from this
-        particular client.
-      type: list
-      returned: always
-      elements: str
-    local_networkv6:
-      description: the IPv6 server-side networks that will be accessible from this
-        particular client.
-      type: list
-      returned: always
-      elements: str
-    remote_network:
-      description: The IPv4 client-side networks that will be routed to this client
-        specifically using iroute, so that a site-to-site VPN can be established.
-      type: list
-      returned: always
-      elements: str
-    remote_networkv6:
-      description: The IPv6 client-side networks that will be routed to this client
-        specifically using iroute, so that a site-to-site VPN can be established.
-      type: list
-      returned: always
-      elements: str
-    gwredir:
-      description: Enable forcing all client-generated traffic through the tunnel.
-      type: bool
-      returned: always
-    push_reset:
-      description: Enables or disables preventing this client from receiving any server-defined
-        client settings.
-      type: bool
-      returned: always
-    remove_options:
-      description: Specifies the push-remove options to apply to the client
-      type: list
-      returned: always
-      elements: str
-    dns_domain:
-      description: The default domain to provide to the client.
+    framed_route:
+      description: 'Framed-Route must be supported by NAS. Required format: Subnet
+        Gateway Metric(s) (e.g. 192.168.10.0/24 192.168.10.1 1).'
       type: str
       returned: always
-    dns_server1:
-      description: The primary DNS server to provide to the client.
+    framed_ipv6_address:
+      description: 'When the IPv6 prefix part is empty it uses Framed-IPv6-Address.
+        When the prefix part is filled in, it uses Framed-IPv6-Prefix. Example: 2001:db8:abab::5
+        or 2001:db8:abab::/64'
       type: str
       returned: always
-    dns_server2:
-      description: The secondary DNS server to provide to the client.
+    framed_ipv6_route:
+      description: 'Framed-IPv6-Route must be supported by NAS. Required format: Prefix
+        Gateway Metric(s) (e.g. 2001:db8:0:16::/64 2001:db8::16:a0:20ff:fe99:a998
+        1).'
       type: str
       returned: always
-    dns_server3:
-      description: The tertiary DNS server to provide to the client.
+    vlan_id:
+      description: The VLAN ID (integer from 1-4095) or the VLAN name that this entry
+        should be assigned to. Must be supported by the NAS.
       type: str
       returned: always
-    dns_server4:
-      description: The quaternary DNS server to provide to the client.
+    wispr_redirection_url:
+      description: 'The URL the user should be redirected to after successful login.
+        Example: http://www.google.com'
       type: str
       returned: always
-    ntp_server1:
-      description: The primary NTP server to provide to the client.
-      type: str
-      returned: always
-    ntp_server2:
-      description: The secondary NTP server to provide to the client.
-      type: str
-      returned: always
-    netbios_enable:
-      description: Enables or disables NetBIOS over TCP/IP.
-      type: bool
-      returned: always
-    netbios_ntype:
-      description: The NetBIOS node type.
+    simultaneous_connect:
+      description: The maximum number of simultaneous connections with this entry.
+        Leave null for no limit. If using FreeRADIUS with Captive Portal you should
+        leave this null.
       type: int
       returned: always
-    netbios_scope:
-      description: The NetBIOS Scope ID. This provides an extended naming service
-        for NetBIOS over TCP/IP. The NetBIOS scope ID isolates NetBIOS traffic on
-        a single network to only those nodes with the same NetBIOS scope ID.
+    expiration:
+      description: 'The date when this account should expire. Required format: Mmm
+        dd yyyy (e.g. Jan 01 2030).'
       type: str
       returned: always
-    wins_server1:
-      description: The primary WINS server to provide to the client.
+    session_timeout:
+      description: The time this entry has until relogin (in seconds).
+      type: int
+      returned: always
+    login_time:
+      description: 'The time when this entry should have access. Empty for no time
+        restriction. Example: Wk0855-2305,Sa|Su2230-0230 (weekdays after 8:55 AM and
+        before 11:05 PM | any time on Saturday | Sunday after 10:30 PM and before
+        02:30 AM).'
       type: str
       returned: always
-    wins_server2:
-      description: The secondary WINS server to provide to the client.
+    amount_of_time:
+      description: The amount of time this entry is allowed (in minutes) within the
+        configured time period.
+      type: int
+      returned: always
+    point_of_time:
+      description: The time period after which the 'Amount of Time' is reset.
       type: str
       returned: always
-    custom_options:
-      description: Additional OpenVPN options to add for this client.
+    max_total_octets:
+      description: The amount of download and upload traffic (summarized) in megabytes
+        (MB) for this entry. If using captive portal without periodic reauthentication
+        enabled, this value must not exceed 4095 due to protocol limitations.
+      type: int
+      returned: always
+    max_total_octets_time_range:
+      description: The time period for the amount of download and upload traffic.
+        This does not automatically reset the counter; you must configure a cronjob
+        to reset it.
+      type: str
+      returned: always
+    max_bandwidth_down:
+      description: The maximum bandwidth for download in kilobits (1000 bits) per
+        second (Kbit/s).
+      type: int
+      returned: always
+    max_bandwidth_up:
+      description: The maximum bandwidth for upload in kilobits (1000 bits) per second
+        (Kbit/s).
+      type: int
+      returned: always
+    acct_interim_interval:
+      description: The interval in seconds which should elapse between interim-updates.
+        Must be more than 60s and should not be less than 600s.
+      type: int
+      returned: always
+    top_additional_options:
+      description: Additional RADIUS attributes placed at the TOP of this entry. Each
+        list entry becomes a separate line. For experts only.
+      type: list
+      returned: always
+      elements: str
+    check_items_additional_options:
+      description: Additional RADIUS check-item attributes for this entry. Each list
+        entry becomes a separate attribute. For experts only.
+      type: list
+      returned: always
+      elements: str
+    reply_items_additional_options:
+      description: Additional RADIUS reply-item attributes for this entry. Each list
+        entry becomes a separate attribute. For experts only.
       type: list
       returned: always
       elements: str
@@ -225,7 +220,7 @@ data:
 
 
 def run_module():
-    """Runs this info module against /api/v2/vpn/openvpn/csos."""
+    """Runs this info module against /api/v2/services/freeradius/mac."""
 
     module_args = {
         "api_host": {
@@ -269,7 +264,7 @@ def run_module():
             "no_log": False,
             "default": True,
         },
-        "query_params": {
+        "lookup_params": {
             "type": "dict",
             "required": False,
             "no_log": False,
@@ -288,9 +283,9 @@ def run_module():
         validate_certs=module.params["validate_certs"],
     )
 
-    base_module = base.BaseModule("/api/v2/vpn/openvpn/csos", client)
+    base_module = base.BaseModule("/api/v2/services/freeradius/mac", client)
     changed = False
-    resp = base_module.lookup_objects(lookup_params=module.params["query_params"])
+    resp = base_module.lookup_object(lookup_params=module.params["lookup_params"])
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)
     message = resp.get("message", "")

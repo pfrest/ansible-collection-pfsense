@@ -117,6 +117,14 @@ options:
     description: Enables or disables displaying pre-releases in available API updates.
       Pre-releases contain fixes and features that are currently under development
       and may not be fully stable. Use of pre-release versions is at your own risk.
+  allow_development_packages:
+    required: false
+    type: bool
+    default: false
+    choices: []
+    description: Enables or disables allowing the use of development (-devel) variants
+      of pfSense packages when a package is required by specific API endpoints. Use
+      of development packages is at your own risk.
   hateoas:
     required: false
     type: bool
@@ -300,6 +308,12 @@ data:
         and may not be fully stable. Use of pre-release versions is at your own risk.
       type: bool
       returned: always
+    allow_development_packages:
+      description: Enables or disables allowing the use of development (-devel) variants
+        of pfSense packages when a package is required by specific API endpoints.
+        Use of development packages is at your own risk.
+      type: bool
+      returned: always
     hateoas:
       description: Enables or disables HATEOAS. Enabling HATEOAS will allow the API
         to include links to related resources in API responses. This is primarily
@@ -477,6 +491,13 @@ def run_module():
             "nullable": True,
         },
         "allow_pre_releases": {
+            "type": "bool",
+            "required": False,
+            "no_log": False,
+            "default": False,
+            "nullable": True,
+        },
+        "allow_development_packages": {
             "type": "bool",
             "required": False,
             "no_log": False,

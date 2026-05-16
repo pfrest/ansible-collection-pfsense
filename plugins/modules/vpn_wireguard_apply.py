@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: vpn_wireguard_apply
 description:
-- Perform the Wire Guard Apply action.
-short_description: Perform the Wire Guard Apply action.
+- Perform the WireGuard Apply action.
+short_description: Perform the WireGuard Apply action.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 options:
@@ -58,7 +58,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Perform Wire Guard Apply action
+- name: Perform WireGuard Apply action
   pfrest.pfsense.vpn_wireguard_apply:
     api_host: pfsense.example.com
     api_username: admin
@@ -84,7 +84,7 @@ msg:
   type: str
   returned: always
 data:
-  description: The Wire Guard Apply data returned by the API.
+  description: The WireGuard Apply data returned by the API.
   type: dict
   returned: always
   contains:

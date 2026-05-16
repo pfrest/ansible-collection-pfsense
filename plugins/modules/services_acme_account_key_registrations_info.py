@@ -17,8 +17,8 @@ from ansible_collections.pfrest.pfsense.plugins.module_utils import base, rest
 DOCUMENTATION = r"""
 module: services_acme_account_key_registrations_info
 description:
-- Retrieve information about many ACME Account Key Registers.
-short_description: Retrieve information about many ACME Account Key Registers.
+- Retrieve information about many ACME Account Key Registrations.
+short_description: Retrieve information about many ACME Account Key Registrations.
 requirements:
 - pfSense-pkg-RESTAPI must be installed on the target system.
 - pfSense-pkg-acme must be installed on the target system.
@@ -62,7 +62,7 @@ author:
 """
 
 EXAMPLES = """
-- name: Retrieve all ACME Account Key Registers
+- name: Retrieve all ACME Account Key Registrations
   pfrest.pfsense.services_acme_account_key_registrations_info:
     api_host: pfsense.example.com
     api_username: admin
@@ -88,7 +88,7 @@ msg:
   type: str
   returned: always
 data:
-  description: A list of ACME Account Key Registers returned by the API.
+  description: A list of ACME Account Key Registrations returned by the API.
   type: list
   elements: dict
   returned: always
