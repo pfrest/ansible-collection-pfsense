@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.0.7](https://github.com/pfrest/ansible-collection-pfsense/compare/v0.0.6...v0.0.7) (2026-05-16)
+
+
+### Features
+
+* generate modules for pfSense-pkg-RESTAPI v2.8.0 ([#17](https://github.com/pfrest/ansible-collection-pfsense/issues/17)) ([589c977](https://github.com/pfrest/ansible-collection-pfsense/commit/589c977292f5023c0fa55beb991b7c951e949a07))
+
+
+### Bug Fixes
+
+* allow for models with no fields in module generator ([7a5797d](https://github.com/pfrest/ansible-collection-pfsense/commit/7a5797ddb5f405fb80c91ab0ce7a53abb0d6ab65))
+
 ## [0.0.6](https://github.com/pfrest/ansible-collection-pfsense/compare/v0.0.5...v0.0.6) (2026-04-25)
 
 
