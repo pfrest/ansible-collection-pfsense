@@ -1,6 +1,6 @@
 namespace: pfrest
 name: pfsense
-version: 0.0.9
+version: 0.0.10
 readme: README.md
 authors:
   - Jared Hendrickson (@jaredhendrickson13)
