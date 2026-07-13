@@ -8,7 +8,7 @@
 
 # pylint: disable=line-too-long,too-many-lines
 SCHEMA_DICT = {
-    "version": "v2.8.2",
+    "version": "v2.8.3",
     "endpoints": {
         "/api/v2/auth/jwt": {
             "url": "/api/v2/auth/jwt",
@@ -38682,7 +38682,7 @@ SCHEMA_DICT = {
                     "minimum": None,
                     "maximum": None,
                     "minimum_length": 4,
-                    "maximum_length": 4,
+                    "maximum_length": 8,
                     "internal_name": "varusersmotppin",
                     "internal_namespace": "",
                     "referenced_by": [],
@@ -63465,7 +63465,7 @@ SCHEMA_DICT = {
                     "verbose_name_plural": "s",
                     "type": "string",
                     "required": False,
-                    "default": "0x026af74c397922b444df87dfd6358f99",
+                    "default": "0xbe4738100355f4c7dfa9814e37ff29f8",
                     "choices": [],
                     "unique": False,
                     "allow_empty": False,
@@ -69491,7 +69491,7 @@ SCHEMA_DICT = {
                     "verbose_name_plural": "s",
                     "type": "string",
                     "required": False,
-                    "default": "68af7af62b250",
+                    "default": "68af7af84ef2c",
                     "choices": [],
                     "unique": True,
                     "allow_empty": False,
