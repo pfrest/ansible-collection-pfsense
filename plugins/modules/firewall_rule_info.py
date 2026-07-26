@@ -158,6 +158,10 @@ data:
       description: Enable or disable logging of traffic that matches this rule.
       type: bool
       returned: always
+    dscp:
+      description: The DSCP value this firewall rule should match.
+      type: str
+      returned: always
     tag:
       description: A packet matching this rule can be marked and this mark used to
         match on other NAT/filter rules. It is called
