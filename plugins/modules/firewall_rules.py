@@ -184,6 +184,37 @@ options:
         default: false
         choices: []
         description: Enable or disable logging of traffic that matches this rule.
+      dscp:
+        required: false
+        type: str
+        default: null
+        choices:
+        - ''
+        - af11
+        - af12
+        - af13
+        - af21
+        - af22
+        - af23
+        - af31
+        - af32
+        - af33
+        - af41
+        - af42
+        - af43
+        - VA
+        - EF
+        - cs1
+        - cs2
+        - cs3
+        - cs4
+        - cs5
+        - cs6
+        - cs7
+        - '0x01'
+        - '0x02'
+        - '0x04'
+        description: The DSCP value this firewall rule should match.
       tag:
         required: false
         type: str
@@ -413,6 +444,10 @@ data:
     log:
       description: Enable or disable logging of traffic that matches this rule.
       type: bool
+      returned: always
+    dscp:
+      description: The DSCP value this firewall rule should match.
+      type: str
       returned: always
     tag:
       description: A packet matching this rule can be marked and this mark used to
@@ -683,6 +718,40 @@ def run_module():
                     "required": False,
                     "no_log": False,
                     "default": False,
+                    "nullable": True,
+                },
+                "dscp": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "default": None,
+                    "choices": [
+                        "",
+                        "af11",
+                        "af12",
+                        "af13",
+                        "af21",
+                        "af22",
+                        "af23",
+                        "af31",
+                        "af32",
+                        "af33",
+                        "af41",
+                        "af42",
+                        "af43",
+                        "VA",
+                        "EF",
+                        "cs1",
+                        "cs2",
+                        "cs3",
+                        "cs4",
+                        "cs5",
+                        "cs6",
+                        "cs7",
+                        "0x01",
+                        "0x02",
+                        "0x04",
+                    ],
                     "nullable": True,
                 },
                 "tag": {
