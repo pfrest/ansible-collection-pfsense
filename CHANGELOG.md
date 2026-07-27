@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.11](https://github.com/pfrest/ansible-collection-pfsense/compare/v0.0.10...v0.0.11) (2026-07-27)
+
+
+### Features
+
+* generate modules for pfSense-pkg-RESTAPI v2.8.4 ([#24](https://github.com/pfrest/ansible-collection-pfsense/issues/24)) ([81520c5](https://github.com/pfrest/ansible-collection-pfsense/commit/81520c5ac22e7a891cc680053ee305d6448105d9))
+
 ## [0.0.10](https://github.com/pfrest/ansible-collection-pfsense/compare/v0.0.9...v0.0.10) (2026-07-13)
 
 
