@@ -207,7 +207,8 @@ data:
       elements: str
     ha_sync_username:
       description: Sets the username to use when authenticating for HA sync processes.
-        This user must be the present on all hosts defined in `ha_sync_hosts`.
+        This user must be the present on all hosts defined in `ha_sync_hosts` and
+        must hold the `page-all` privilege
       type: str
       returned: always
     ha_sync_password:
