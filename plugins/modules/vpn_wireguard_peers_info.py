@@ -124,6 +124,10 @@ data:
       description: The public key for this peer.
       type: str
       returned: always
+    presharedkey:
+      description: The pre-shared key for this tunnel.
+      type: str
+      returned: always
     allowedips:
       description: The allowed IP/subnets for this WireGuard peer.
       type: list

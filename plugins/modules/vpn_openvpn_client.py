@@ -942,7 +942,7 @@ def run_module():
         "auth_pass": {
             "type": "str",
             "required": False,
-            "no_log": False,
+            "no_log": True,
             "nullable": True,
         },
         "auth_retry_none": {
