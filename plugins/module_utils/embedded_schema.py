@@ -8,7 +8,7 @@
 
 # pylint: disable=line-too-long,too-many-lines
 SCHEMA_DICT = {
-    "version": "v2.9.0",
+    "version": "v2.10",
     "endpoints": {
         "/api/v2/auth/jwt": {
             "url": "/api/v2/auth/jwt",
@@ -56678,7 +56678,7 @@ SCHEMA_DICT = {
                     "allow_empty": False,
                     "allow_null": True,
                     "editable": True,
-                    "sensitive": False,
+                    "sensitive": True,
                     "read_only": False,
                     "write_only": False,
                     "many": False,
@@ -64525,7 +64525,7 @@ SCHEMA_DICT = {
                     "verbose_name_plural": "s",
                     "type": "string",
                     "required": False,
-                    "default": "0xfa134b188cc09b36e19763a65526a2d2",
+                    "default": "0x70306938f0f9d2c25ec57a7c8a52975c",
                     "choices": [],
                     "unique": False,
                     "allow_empty": False,
@@ -70551,7 +70551,7 @@ SCHEMA_DICT = {
                     "verbose_name_plural": "s",
                     "type": "string",
                     "required": False,
-                    "default": "68af7af73b40e",
+                    "default": "68af7af1cace9",
                     "choices": [],
                     "unique": True,
                     "allow_empty": False,
@@ -75089,7 +75089,7 @@ SCHEMA_DICT = {
                     "allow_empty": True,
                     "allow_null": False,
                     "editable": True,
-                    "sensitive": False,
+                    "sensitive": True,
                     "read_only": False,
                     "write_only": False,
                     "many": False,
@@ -76360,9 +76360,9 @@ SCHEMA_DICT = {
                     "allow_empty": True,
                     "allow_null": True,
                     "editable": True,
-                    "sensitive": False,
+                    "sensitive": True,
                     "read_only": False,
-                    "write_only": True,
+                    "write_only": False,
                     "many": False,
                     "many_minimum": 0,
                     "many_maximum": 65535,

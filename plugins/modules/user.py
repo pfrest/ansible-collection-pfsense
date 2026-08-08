@@ -339,7 +339,7 @@ def run_module():
         "ipsecpsk": {
             "type": "str",
             "required": False,
-            "no_log": False,
+            "no_log": True,
             "default": "",
             "nullable": True,
         },
