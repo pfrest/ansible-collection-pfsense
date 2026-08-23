@@ -394,6 +394,43 @@ data:
           description: The description of this static mapping.
           type: str
           returned: always
+    netboot:
+      description: Enable network booting (PXE/TFTP/UEFI HTTP boot) options for this
+        DHCP server.
+      type: bool
+      returned: always
+    nextserver:
+      description: The IPv4 address of the network boot server (e.g. TFTP server).
+      type: str
+      returned: always
+    filename:
+      description: The default bootfile name provided to BIOS/legacy PXE clients.
+      type: str
+      returned: always
+    filename32:
+      description: The bootfile name provided to 32-bit UEFI PXE clients.
+      type: str
+      returned: always
+    filename64:
+      description: The bootfile name provided to 64-bit UEFI PXE clients.
+      type: str
+      returned: always
+    filename32arm:
+      description: The bootfile name provided to 32-bit ARM UEFI PXE clients.
+      type: str
+      returned: always
+    filename64arm:
+      description: The bootfile name provided to 64-bit ARM UEFI PXE clients.
+      type: str
+      returned: always
+    uefihttpboot:
+      description: The URL provided to UEFI HTTP boot clients.
+      type: str
+      returned: always
+    rootpath:
+      description: The root path provided to network boot clients.
+      type: str
+      returned: always
 
 """
 
