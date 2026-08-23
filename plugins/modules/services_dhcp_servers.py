@@ -485,6 +485,53 @@ options:
             default: ''
             choices: []
             description: The description of this static mapping.
+      netboot:
+        required: false
+        type: bool
+        default: false
+        choices: []
+        description: Enable network booting (PXE/TFTP/UEFI HTTP boot) options for
+          this DHCP server.
+      nextserver:
+        required: false
+        type: str
+        choices: []
+        description: The IPv4 address of the network boot server (e.g. TFTP server).
+      filename:
+        required: false
+        type: str
+        choices: []
+        description: The default bootfile name provided to BIOS/legacy PXE clients.
+      filename32:
+        required: false
+        type: str
+        choices: []
+        description: The bootfile name provided to 32-bit UEFI PXE clients.
+      filename64:
+        required: false
+        type: str
+        choices: []
+        description: The bootfile name provided to 64-bit UEFI PXE clients.
+      filename32arm:
+        required: false
+        type: str
+        choices: []
+        description: The bootfile name provided to 32-bit ARM UEFI PXE clients.
+      filename64arm:
+        required: false
+        type: str
+        choices: []
+        description: The bootfile name provided to 64-bit ARM UEFI PXE clients.
+      uefihttpboot:
+        required: false
+        type: str
+        choices: []
+        description: The URL provided to UEFI HTTP boot clients.
+      rootpath:
+        required: false
+        type: str
+        choices: []
+        description: The root path provided to network boot clients.
     description: The list of items to manage in the collection. Each item should be
       a dictionary representing the desired state of a single resource within the
       collection.
@@ -831,6 +878,43 @@ data:
           description: The description of this static mapping.
           type: str
           returned: always
+    netboot:
+      description: Enable network booting (PXE/TFTP/UEFI HTTP boot) options for this
+        DHCP server.
+      type: bool
+      returned: always
+    nextserver:
+      description: The IPv4 address of the network boot server (e.g. TFTP server).
+      type: str
+      returned: always
+    filename:
+      description: The default bootfile name provided to BIOS/legacy PXE clients.
+      type: str
+      returned: always
+    filename32:
+      description: The bootfile name provided to 32-bit UEFI PXE clients.
+      type: str
+      returned: always
+    filename64:
+      description: The bootfile name provided to 64-bit UEFI PXE clients.
+      type: str
+      returned: always
+    filename32arm:
+      description: The bootfile name provided to 32-bit ARM UEFI PXE clients.
+      type: str
+      returned: always
+    filename64arm:
+      description: The bootfile name provided to 64-bit ARM UEFI PXE clients.
+      type: str
+      returned: always
+    uefihttpboot:
+      description: The URL provided to UEFI HTTP boot clients.
+      type: str
+      returned: always
+    rootpath:
+      description: The root path provided to network boot clients.
+      type: str
+      returned: always
 
 """
 
@@ -1323,6 +1407,61 @@ def run_module():
                             "nullable": True,
                         },
                     },
+                },
+                "netboot": {
+                    "type": "bool",
+                    "required": False,
+                    "no_log": False,
+                    "default": False,
+                    "nullable": True,
+                },
+                "nextserver": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "nullable": True,
+                },
+                "filename": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "nullable": True,
+                },
+                "filename32": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "nullable": True,
+                },
+                "filename64": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "nullable": True,
+                },
+                "filename32arm": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "nullable": True,
+                },
+                "filename64arm": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "nullable": True,
+                },
+                "uefihttpboot": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "nullable": True,
+                },
+                "rootpath": {
+                    "type": "str",
+                    "required": False,
+                    "no_log": False,
+                    "nullable": True,
                 },
             },
         },
