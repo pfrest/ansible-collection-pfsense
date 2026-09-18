@@ -29,3 +29,9 @@ directory = "htmlcov"
 exclude = '''/(
     plugins/module_utils/embedded_schema.py
 )'''
+
+[tool.pylint.design]
+max-args = 6
+max-positional-arguments = 6
+max-attributes=10
+max-returns=8
