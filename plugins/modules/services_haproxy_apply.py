@@ -157,7 +157,9 @@ def run_module():
     )
 
     base_module = base.BaseModule("/api/v2/services/haproxy/apply", client)
-    changed, resp = base_module.execute_action(data=module.params)
+    changed, resp = base_module.execute_action(
+        data=module.params, dry_run=module.check_mode
+    )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)
     message = resp.get("message", "")

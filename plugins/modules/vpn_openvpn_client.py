@@ -1205,6 +1205,7 @@ def run_module():
         data=module.params,
         lookup_fields=module.params["lookup_fields"],
         parent_lookup_query=module.params.get("parent_lookup_query"),
+        dry_run=module.check_mode,
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)

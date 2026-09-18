@@ -281,7 +281,7 @@ def run_module():
 
     base_module = base.BaseModule("/api/v2/services/bind/views", client)
     changed, resp = base_module.replace_objects(
-        data=module.params["objects"],
+        data=module.params["objects"], dry_run=module.check_mode
     )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)

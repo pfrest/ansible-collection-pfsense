@@ -226,7 +226,7 @@ def run_module():
         },
     }
 
-    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
+    module = AnsibleModule(argument_spec=module_args, supports_check_mode=False)
 
     # Validate dependencies
     if not HAS_VSHELL:

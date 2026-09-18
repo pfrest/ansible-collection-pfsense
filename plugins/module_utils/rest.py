@@ -103,13 +103,14 @@ class RestClient:
         )
         return response
 
-    def post(self, endpoint: str, data: dict = None) -> requests.Response:
+    def post(self, endpoint: str, data: dict = None, dry_run: bool = False) -> requests.Response:
         """
         Perform a POST request to the specified endpoint.
 
         Args:
             endpoint (str): The REST API endpoint URL.
             data (dict): The data to send in the POST request.
+            dry_run (bool): Whether to perform a dry run.
 
         Returns:
             requests.Response: The response object from the POST request.
@@ -117,6 +118,8 @@ class RestClient:
         url = f"{self.base_url}{endpoint}"
         headers = self.get_auth_headers()
         headers["Content-Type"] = "application/json"
+        if dry_run:
+            headers["Prefer"] = "dry-run"
         response = requests.post(
             url=url,
             headers=headers,
@@ -126,13 +129,14 @@ class RestClient:
         )
         return response
 
-    def patch(self, endpoint: str, data: dict = None) -> requests.Response:
+    def patch(self, endpoint: str, data: dict = None, dry_run: bool = False) -> requests.Response:
         """
         Perform a PATCH request to the specified endpoint.
 
         Args:
             endpoint (str): The REST API endpoint URL.
             data (dict): The data to send in the PATCH request.
+            dry_run (bool): Whether to perform a dry run.
 
         Returns:
             requests.Response: The response object from the PATCH request.
@@ -140,6 +144,8 @@ class RestClient:
         url = f"{self.base_url}{endpoint}"
         headers = self.get_auth_headers()
         headers["Content-Type"] = "application/json"
+        if dry_run:
+            headers["Prefer"] = "dry-run"
         response = requests.patch(
             url=url,
             headers=headers,
@@ -149,7 +155,7 @@ class RestClient:
         )
         return response
 
-    def put(self, endpoint: str, data: dict | list = None) -> requests.Response:
+    def put(self, endpoint: str, data: dict | list = None, dry_run: bool = False) -> requests.Response:
         """
         Perform a PUT request to the specified endpoint.
 
@@ -163,6 +169,8 @@ class RestClient:
         url = f"{self.base_url}{endpoint}"
         headers = self.get_auth_headers()
         headers["Content-Type"] = "application/json"
+        if dry_run:
+            headers["Prefer"] = "dry-run"
         response = requests.put(
             url=url,
             headers=headers,
@@ -172,13 +180,14 @@ class RestClient:
         )
         return response
 
-    def delete(self, endpoint: str, params: dict = None) -> requests.Response:
+    def delete(self, endpoint: str, params: dict = None, dry_run: bool = False) -> requests.Response:
         """
         Perform a DELETE request to the specified endpoint.
 
         Args:
             endpoint (str): The REST API endpoint URL.
             params (dict): The data to send in the DELETE request.
+            dry_run (bool): Whether to perform a dry run.
 
         Returns:
             requests.Response: The response object from the DELETE request.
@@ -186,6 +195,8 @@ class RestClient:
         url = f"{self.base_url}{endpoint}"
         headers = self.get_auth_headers()
         headers["Content-Type"] = "application/json"
+        if dry_run:
+            headers["Prefer"] = "dry-run"
         response = requests.delete(
             url=url,
             headers=headers,

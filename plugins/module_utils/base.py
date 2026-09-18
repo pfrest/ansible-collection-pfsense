@@ -107,7 +107,7 @@ class BaseModule:
         # Otherwise, for non 'many' models, return the single object found
         return resp
 
-    def create_object(self, data: dict) -> dict:
+    def create_object(self, data: dict, dry_run: bool = False) -> dict:
         """
         Create a new object for the module's model.
 
@@ -115,32 +115,34 @@ class BaseModule:
             dict: The full API response dictionary.
         """
         self.validate_data_fields(data)
-        resp = self.rest_client.post(self.endpoint_singular, data=data)
+        resp = self.rest_client.post(self.endpoint_singular, data=data, dry_run=dry_run)
         return resp.json()
 
-    def update_object(self, data: dict) -> dict:
+    def update_object(self, data: dict, dry_run: bool = False) -> dict:
         """
         Update an existing object for the module's model.
 
         Args:
             data (dict): The data to update the object with.
+            dry_run (bool): If True, a dry_run of the update will be performed.
 
         Returns:
             dict: The full API response dictionary.
         """
         self.validate_data_fields(data)
-        resp = self.rest_client.patch(self.endpoint_singular, data=data)
+        resp = self.rest_client.patch(self.endpoint_singular, data=data, dry_run=dry_run)
         return resp.json()
 
-    def delete_object(self, object_id: int | str) -> dict:
+    def delete_object(self, object_id: int | str, dry_run: bool = False) -> dict:
         """
         Delete an existing object based on the module's lookup fields.
 
         Args:
             object_id (int|str): The ID of the object to delete.
+            dry_run (bool): If True, a dry_run of the deletion will be performed.
         """
         return self.rest_client.delete(
-            self.endpoint_singular, params={"id": object_id}
+            self.endpoint_singular, params={"id": object_id}, dry_run=dry_run
         ).json()
 
     def lookup_objects(self, lookup_params: dict = None) -> dict:
@@ -160,7 +162,7 @@ class BaseModule:
         resp = self.rest_client.get(self.endpoint_plural, params=lookup_params)
         return resp.json()
 
-    def replace_objects(self, data: list[dict]) -> tuple[bool, dict]:
+    def replace_objects(self, data: list[dict], dry_run: bool = False) -> tuple[bool, dict]:
         """
         Replace all existing objects of the module's model with the provided list of objects.
 
@@ -171,6 +173,7 @@ class BaseModule:
 
         Args:
             data (list[dict]): The list of objects to replace existing objects with.
+            dry_run (bool): If True, a dry_run of the replacement will be performed.
 
         Returns:
             tuple[bool, dict]: First item indicates whether any change was made,
@@ -184,7 +187,7 @@ class BaseModule:
         if self._collections_match(data, existing_objects):
             return False, existing_resp
 
-        resp = self.rest_client.put(self.endpoint_plural, data=data)
+        resp = self.rest_client.put(self.endpoint_plural, data=data, dry_run=dry_run)
         return True, resp.json()
 
     @staticmethod
@@ -207,27 +210,29 @@ class BaseModule:
             return False
         return all(BaseModule._values_match(d, e) for d, e in zip(desired, existing))
 
-    def execute_action(self, data: dict) -> tuple[bool, dict]:
+    def execute_action(self, data: dict, dry_run: bool = False) -> tuple[bool, dict]:
         """
         Executes an action with the desired parameters.
 
         Args:
             data (dict): The action parameters to include in the action execution
+            dry_run (bool): If True, a dry_run of the action execution will be performed.
 
         Returns:
             tuple[bool, dict]: First item indicates whether the object was changed,
                 second item is the response data
         """
-        resp = self.create_object(data)
+        resp = self.create_object(data, dry_run=dry_run)
         changed = True  # We assume actions always change something
         return changed, resp
 
-    def update_singleton(self, data: dict) -> tuple[bool, dict]:
+    def update_singleton(self, data: dict, dry_run: bool = False) -> tuple[bool, dict]:
         """
         Update a singleton endpoint with the provided data.
 
         Args:
             data (dict): The data to update the singleton with.
+            dry_run (bool): If True, a dry_run of the update will be performed.
 
         Returns:
             tuple[bool, dict]: First item indicates whether the object was changed,
@@ -245,7 +250,7 @@ class BaseModule:
             return False, existing_resp
 
         # Otherwise, update the singleton with a PATCH request
-        resp = self.rest_client.patch(self.endpoint_singular, data=data)
+        resp = self.rest_client.patch(self.endpoint_singular, data=data, dry_run=dry_run)
         return True, resp.json()
 
     def resolve_parent_id(self, parent_lookup_query: dict) -> int | str:
@@ -309,6 +314,7 @@ class BaseModule:
         data: dict,
         lookup_fields: list[str],
         parent_lookup_query: dict | None = None,
+        dry_run: bool = False,
     ) -> tuple[bool, dict]:
         """
         Set the state of the object based on the desired state in module parameters.
@@ -321,6 +327,7 @@ class BaseModule:
             lookup_fields (list[str]): The fields to use for looking up the existing object.
             parent_lookup_query (dict | None): A dictionary of query parameters to use
                 for looking up the parent object when the model has a parent model class.
+            dry_run (bool): If True, a dry_run of the operation will be performed.
 
         Returns:
             tuple[bool, dict]: First item indicates whether the object was changed,
@@ -347,7 +354,7 @@ class BaseModule:
 
         # When state is present and our lookup did not find an existing object, create it
         if state == "present" and not existing_obj:
-            return True, self.create_object(data)
+            return True, self.create_object(data, dry_run=dry_run)
 
         # When state is present and our lookup found an existing object, update it if needs updating
         if (
@@ -355,11 +362,11 @@ class BaseModule:
             and existing_obj
             and self.object_needs_update(data, existing_obj)
         ):
-            return True, self.update_object(data)
+            return True, self.update_object(data, dry_run=dry_run)
 
         # When the state is absent, and the object exists, delete it
         if state == "absent" and existing_obj:
-            return True, self.delete_object(existing_obj.get("id"))
+            return True, self.delete_object(existing_obj.get("id"), dry_run=dry_run)
 
         # Otherwise, nothing needs doing.
         return False, lookup
