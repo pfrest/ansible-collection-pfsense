@@ -68,8 +68,17 @@ All modules share a common set of connection parameters:
 
 Most modules support check mode. It is important to note that check mode _does_ make calls to the API. However,
 calls are made with the REST API's [`dry_run`](https://pfrest.org/COMMON_CONTROL_PARAMETERS/#dry_run) control
-parameter which was introduced in pfSense-pkg-RESTAPI v2.8.0. Earlier versions of the package do not respect
-check mode.
+parameter to do so without modifying the system. The `dry_run` parameter was introduced in pfSense-pkg-RESTAPI v2.8.0. 
+Earlier versions of the package do not respect check mode.
+
+## Idempotence
+
+This collection is designed to generate fully idempotent modules by default. This works by comparing the current
+state of the requested resource(s) against the desired state provided to the module at runtime.
+
+> [!NOTE]
+> Modules that interact with API endpoints with fields marked as `sensitive` or `write_only` are not included in 
+> API responses and therefor cannot be compared accurately. These modules are not always idempotent.
 
 ## Contributing
 

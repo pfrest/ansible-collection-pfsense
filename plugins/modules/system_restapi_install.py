@@ -28,8 +28,8 @@ description:
     a pfSense system.
 short_description: Install the pfSense REST API package on a pfSense system.
 requirements:
-  - L(pfsense_vshell,https://pypi.org/project/pfsense-vshell/)
-  - L(requests,https://pypi.org/project/requests/)
+  - https://pypi.org/project/pfsense-vshell/
+  - https://pypi.org/project/requests/
 notes:
   - The target pfSense system must have its web GUI accessible to the Ansible controller
     for the virtual shell connection to work.
