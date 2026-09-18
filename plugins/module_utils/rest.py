@@ -94,10 +94,11 @@ class RestClient:
         """
         url = f"{self.base_url}{endpoint}"
         headers = self.get_auth_headers()
+        headers["Content-Type"] = "application/json"
         response = requests.get(
             url=url,
             headers=headers,
-            params=params,
+            json=params,
             verify=self.validate_certs,
             timeout=self.timeout,
         )
