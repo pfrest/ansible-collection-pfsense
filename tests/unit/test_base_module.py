@@ -831,5 +831,3 @@ class TestDryRun:
         # Verify DELETE was called with dry_run=True
         call_args = mock_rest_client.delete.call_args
         assert call_args.kwargs["dry_run"] is True
-
-

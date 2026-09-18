@@ -76,7 +76,7 @@ class TestHttpMethods:
         mock_get.assert_called_once()
         _, kwargs = mock_get.call_args
         assert kwargs["url"] == "https://fw.local:443/api/v2/test"
-        assert kwargs["params"] == {"id": 1}
+        assert kwargs["json"] == {"id": 1}
         assert kwargs["verify"] is True
         assert kwargs["timeout"] == 30
 
@@ -155,14 +155,18 @@ class TestDryRun:
         _, kwargs = mock_post.call_args
         assert kwargs["headers"]["Prefer"] == "dry-run"
 
-    @patch("ansible_collections.pfrest.pfsense.plugins.module_utils.rest.requests.patch")
+    @patch(
+        "ansible_collections.pfrest.pfsense.plugins.module_utils.rest.requests.patch"
+    )
     def test_patch_dry_run_false(self, mock_patch):
         mock_patch.return_value = MagicMock(status_code=200)
         self.client.patch("/api/v2/test", data={"name": "b"}, dry_run=False)
         _, kwargs = mock_patch.call_args
         assert "Prefer" not in kwargs["headers"]
 
-    @patch("ansible_collections.pfrest.pfsense.plugins.module_utils.rest.requests.patch")
+    @patch(
+        "ansible_collections.pfrest.pfsense.plugins.module_utils.rest.requests.patch"
+    )
     def test_patch_dry_run_true(self, mock_patch):
         mock_patch.return_value = MagicMock(status_code=200)
         self.client.patch("/api/v2/test", data={"name": "b"}, dry_run=True)
@@ -183,17 +187,20 @@ class TestDryRun:
         _, kwargs = mock_put.call_args
         assert kwargs["headers"]["Prefer"] == "dry-run"
 
-    @patch("ansible_collections.pfrest.pfsense.plugins.module_utils.rest.requests.delete")
+    @patch(
+        "ansible_collections.pfrest.pfsense.plugins.module_utils.rest.requests.delete"
+    )
     def test_delete_dry_run_false(self, mock_delete):
         mock_delete.return_value = MagicMock(status_code=200)
         self.client.delete("/api/v2/test", params={"id": 1}, dry_run=False)
         _, kwargs = mock_delete.call_args
         assert "Prefer" not in kwargs["headers"]
 
-    @patch("ansible_collections.pfrest.pfsense.plugins.module_utils.rest.requests.delete")
+    @patch(
+        "ansible_collections.pfrest.pfsense.plugins.module_utils.rest.requests.delete"
+    )
     def test_delete_dry_run_true(self, mock_delete):
         mock_delete.return_value = MagicMock(status_code=200)
         self.client.delete("/api/v2/test", params={"id": 1}, dry_run=True)
         _, kwargs = mock_delete.call_args
         assert kwargs["headers"]["Prefer"] == "dry-run"
-
