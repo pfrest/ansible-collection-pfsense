@@ -105,6 +105,15 @@
             "descr": "string"
           }
         ],
+        "netboot": false,
+        "nextserver": "string",
+        "filename": "string",
+        "filename32": "string",
+        "filename64": "string",
+        "filename32arm": "string",
+        "filename64arm": "string",
+        "uefihttpboot": "string",
+        "rootpath": "string",
         "id": 0
       }
     ]

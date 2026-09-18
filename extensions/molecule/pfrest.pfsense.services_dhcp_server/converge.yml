@@ -88,6 +88,15 @@
               - string
             arp_table_static_entry: true
             descr: string
+        netboot: false
+        nextserver: string
+        filename: string
+        filename32: string
+        filename64: string
+        filename32arm: string
+        filename64arm: string
+        uefihttpboot: string
+        rootpath: string
 
     - name: Assert results
       ansible.builtin.assert:
@@ -127,5 +136,14 @@
           - result.data.pool is defined
           - result.data.numberoptions is defined
           - result.data.staticmap is defined
+          - result.data.netboot is defined
+          - result.data.nextserver is defined
+          - result.data.filename is defined
+          - result.data.filename32 is defined
+          - result.data.filename64 is defined
+          - result.data.filename32arm is defined
+          - result.data.filename64arm is defined
+          - result.data.uefihttpboot is defined
+          - result.data.rootpath is defined
           - result.data.id is defined
 
