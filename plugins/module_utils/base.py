@@ -130,7 +130,9 @@ class BaseModule:
             dict: The full API response dictionary.
         """
         self.validate_data_fields(data)
-        resp = self.rest_client.patch(self.endpoint_singular, data=data, dry_run=dry_run)
+        resp = self.rest_client.patch(
+            self.endpoint_singular, data=data, dry_run=dry_run
+        )
         return resp.json()
 
     def delete_object(self, object_id: int | str, dry_run: bool = False) -> dict:
@@ -162,7 +164,9 @@ class BaseModule:
         resp = self.rest_client.get(self.endpoint_plural, params=lookup_params)
         return resp.json()
 
-    def replace_objects(self, data: list[dict], dry_run: bool = False) -> tuple[bool, dict]:
+    def replace_objects(
+        self, data: list[dict], dry_run: bool = False
+    ) -> tuple[bool, dict]:
         """
         Replace all existing objects of the module's model with the provided list of objects.
 
@@ -250,7 +254,9 @@ class BaseModule:
             return False, existing_resp
 
         # Otherwise, update the singleton with a PATCH request
-        resp = self.rest_client.patch(self.endpoint_singular, data=data, dry_run=dry_run)
+        resp = self.rest_client.patch(
+            self.endpoint_singular, data=data, dry_run=dry_run
+        )
         return True, resp.json()
 
     def resolve_parent_id(self, parent_lookup_query: dict) -> int | str:
