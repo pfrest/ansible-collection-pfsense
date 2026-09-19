@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.1.0](https://github.com/pfrest/ansible-collection-pfsense/compare/v0.0.13...v0.1.0) (2026-09-19)
+
+
+### Features
+
+* finish wiring check mode to dry_run api calls [#34](https://github.com/pfrest/ansible-collection-pfsense/issues/34) ([c495011](https://github.com/pfrest/ansible-collection-pfsense/commit/c495011586ac145b019410af03bd34660237bed1))
+* generate modules for pfSense-pkg-RESTAPI v2.10.2 ([2054826](https://github.com/pfrest/ansible-collection-pfsense/commit/205482669cda2a0447f6a4af3749e0b96c416388))
+* generate modules for pfSense-pkg-RESTAPI v2.10.2 ([f3d3652](https://github.com/pfrest/ansible-collection-pfsense/commit/f3d365286c09834f99ab11b07c4f14b65ff05d7c))
+
+
+### Bug Fixes
+
+* submit get requests with json body [#30](https://github.com/pfrest/ansible-collection-pfsense/issues/30) ([0fbc532](https://github.com/pfrest/ansible-collection-pfsense/commit/0fbc53285860a82f21b13032de61e99bc2ba809b))
+
 ## [0.0.13](https://github.com/pfrest/ansible-collection-pfsense/compare/v0.0.12...v0.0.13) (2026-08-08)
 
 
