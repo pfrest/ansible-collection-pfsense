@@ -51,13 +51,18 @@ def run_module():
         state=module.params['state'],
         data=module.params,
         lookup_fields=module.params['lookup_fields'],
-        parent_lookup_query=module.params.get('parent_lookup_query')
+        parent_lookup_query=module.params.get('parent_lookup_query'),
+        dry_run=module.check_mode
     )
 {%- elif module_type == 'singleton' %}
-    changed, resp = base_module.update_singleton(module.params)
+    changed, resp = base_module.update_singleton(
+        module.params,
+        dry_run=module.check_mode
+    )
 {%- elif module_type == 'collection' %}
     changed, resp = base_module.replace_objects(
         data=module.params['objects'],
+        dry_run=module.check_mode
     )
 {%- elif module_type == 'info' and not endpoint_schema['many'] %}
     changed = False
@@ -66,7 +71,10 @@ def run_module():
     changed = False
     resp = base_module.lookup_objects(lookup_params=module.params['query_params'])
 {%- elif module_type == 'action' %}
-    changed, resp = base_module.execute_action(data=module.params)
+    changed, resp = base_module.execute_action(
+        data=module.params,
+        dry_run=module.check_mode
+    )
 {%- endif %}
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)

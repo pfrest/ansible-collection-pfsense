@@ -528,3 +528,306 @@ class TestValidateDataFields:
         """Setting a read-only field raises ValueError."""
         with pytest.raises(ValueError, match="read-only and cannot be set"):
             base_module.validate_data_fields({"status": "active"})
+
+
+class TestDryRun:
+    """Verify dry_run flag is properly passed through CRUD operations."""
+
+    def _data_with_internals(self, **overrides):
+        """Build a data dict that includes required internal args."""
+        base = {
+            "api_host": "fw",
+            "api_port": 443,
+            "api_protocol": "https",
+            "api_username": "admin",
+            "api_password": "pw",
+            "api_key": "",
+            "validate_certs": True,
+            "lookup_fields": ["name"],
+            "state": "present",
+            "name": "obj1",
+            "enabled": True,
+        }
+        base.update(overrides)
+        return base
+
+    def test_create_object_with_dry_run_false(self, base_module, mock_rest_client):
+        """create_object passes dry_run=False to POST request."""
+        mock_rest_client.post.return_value = _make_json_response(
+            {"code": 200, "data": {"name": "obj1", "id": 0}}
+        )
+        data = {"name": "obj1"}
+        base_module.create_object(data, dry_run=False)
+
+        # Verify POST was called with dry_run=False (which means no Prefer header)
+        call_args = mock_rest_client.post.call_args
+        assert call_args.kwargs["dry_run"] is False
+
+    def test_create_object_with_dry_run_true(self, base_module, mock_rest_client):
+        """create_object passes dry_run=True to POST request."""
+        mock_rest_client.post.return_value = _make_json_response(
+            {"code": 200, "data": {"name": "obj1", "id": 0}}
+        )
+        data = {"name": "obj1"}
+        base_module.create_object(data, dry_run=True)
+
+        # Verify POST was called with dry_run=True
+        call_args = mock_rest_client.post.call_args
+        assert call_args.kwargs["dry_run"] is True
+
+    def test_update_object_with_dry_run_false(self, base_module, mock_rest_client):
+        """update_object passes dry_run=False to PATCH request."""
+        mock_rest_client.patch.return_value = _make_json_response(
+            {"code": 200, "data": {"name": "obj1", "id": 0}}
+        )
+        data = {"name": "obj1"}
+        base_module.update_object(data, dry_run=False)
+
+        # Verify PATCH was called with dry_run=False
+        call_args = mock_rest_client.patch.call_args
+        assert call_args.kwargs["dry_run"] is False
+
+    def test_update_object_with_dry_run_true(self, base_module, mock_rest_client):
+        """update_object passes dry_run=True to PATCH request."""
+        mock_rest_client.patch.return_value = _make_json_response(
+            {"code": 200, "data": {"name": "obj1", "id": 0}}
+        )
+        data = {"name": "obj1"}
+        base_module.update_object(data, dry_run=True)
+
+        # Verify PATCH was called with dry_run=True
+        call_args = mock_rest_client.patch.call_args
+        assert call_args.kwargs["dry_run"] is True
+
+    def test_delete_object_with_dry_run_false(self, base_module, mock_rest_client):
+        """delete_object passes dry_run=False to DELETE request."""
+        mock_rest_client.delete.return_value = _make_json_response(
+            {"code": 200, "data": {}}
+        )
+        base_module.delete_object(5, dry_run=False)
+
+        # Verify DELETE was called with dry_run=False
+        call_args = mock_rest_client.delete.call_args
+        assert call_args.kwargs["dry_run"] is False
+
+    def test_delete_object_with_dry_run_true(self, base_module, mock_rest_client):
+        """delete_object passes dry_run=True to DELETE request."""
+        mock_rest_client.delete.return_value = _make_json_response(
+            {"code": 200, "data": {}}
+        )
+        base_module.delete_object(5, dry_run=True)
+
+        # Verify DELETE was called with dry_run=True
+        call_args = mock_rest_client.delete.call_args
+        assert call_args.kwargs["dry_run"] is True
+
+    def test_replace_objects_with_dry_run_false(self, base_module, mock_rest_client):
+        """replace_objects passes dry_run=False to PUT request."""
+        existing = [{"name": "a", "id": 0}]
+        mock_rest_client.get.return_value = _make_json_response(
+            {"code": 200, "data": existing}
+        )
+        mock_rest_client.put.return_value = _make_json_response(
+            {"code": 200, "data": [{"name": "z", "id": 0}]}
+        )
+
+        base_module.replace_objects([{"name": "z"}], dry_run=False)
+
+        # Verify PUT was called with dry_run=False
+        call_args = mock_rest_client.put.call_args
+        assert call_args.kwargs["dry_run"] is False
+
+    def test_replace_objects_with_dry_run_true(self, base_module, mock_rest_client):
+        """replace_objects passes dry_run=True to PUT request."""
+        existing = [{"name": "a", "id": 0}]
+        mock_rest_client.get.return_value = _make_json_response(
+            {"code": 200, "data": existing}
+        )
+        mock_rest_client.put.return_value = _make_json_response(
+            {"code": 200, "data": [{"name": "z", "id": 0}]}
+        )
+
+        base_module.replace_objects([{"name": "z"}], dry_run=True)
+
+        # Verify PUT was called with dry_run=True
+        call_args = mock_rest_client.put.call_args
+        assert call_args.kwargs["dry_run"] is True
+
+    def test_execute_action_with_dry_run_false(self, base_module, mock_rest_client):
+        """execute_action passes dry_run=False through to POST request."""
+        mock_rest_client.post.return_value = _make_json_response(
+            {"code": 200, "data": {"result": "ok"}}
+        )
+
+        base_module.execute_action({"name": "action1"}, dry_run=False)
+
+        # Verify POST was called with dry_run=False
+        call_args = mock_rest_client.post.call_args
+        assert call_args.kwargs["dry_run"] is False
+
+    def test_execute_action_with_dry_run_true(self, base_module, mock_rest_client):
+        """execute_action passes dry_run=True through to POST request."""
+        mock_rest_client.post.return_value = _make_json_response(
+            {"code": 200, "data": {"result": "ok"}}
+        )
+
+        base_module.execute_action({"name": "action1"}, dry_run=True)
+
+        # Verify POST was called with dry_run=True
+        call_args = mock_rest_client.post.call_args
+        assert call_args.kwargs["dry_run"] is True
+
+    def test_update_singleton_with_dry_run_false(self, base_module, mock_rest_client):
+        """update_singleton passes dry_run=False to PATCH request when changed."""
+        mock_rest_client.get.return_value = _make_json_response(
+            {"code": 200, "data": {"name": "obj1", "enabled": False}}
+        )
+        mock_rest_client.patch.return_value = _make_json_response(
+            {"code": 200, "data": {"name": "obj1", "enabled": True}}
+        )
+
+        base_module.update_singleton({"name": "obj1", "enabled": True}, dry_run=False)
+
+        # Verify PATCH was called with dry_run=False
+        call_args = mock_rest_client.patch.call_args
+        assert call_args.kwargs["dry_run"] is False
+
+    def test_update_singleton_with_dry_run_true(self, base_module, mock_rest_client):
+        """update_singleton passes dry_run=True to PATCH request when changed."""
+        mock_rest_client.get.return_value = _make_json_response(
+            {"code": 200, "data": {"name": "obj1", "enabled": False}}
+        )
+        mock_rest_client.patch.return_value = _make_json_response(
+            {"code": 200, "data": {"name": "obj1", "enabled": True}}
+        )
+
+        base_module.update_singleton({"name": "obj1", "enabled": True}, dry_run=True)
+
+        # Verify PATCH was called with dry_run=True
+        call_args = mock_rest_client.patch.call_args
+        assert call_args.kwargs["dry_run"] is True
+
+    def test_update_singleton_skips_patch_with_dry_run_true_when_unchanged(
+        self, base_module, mock_rest_client
+    ):
+        """update_singleton skips PATCH even with dry_run=True when unchanged."""
+        existing = {"code": 200, "data": {"name": "obj1", "enabled": True}}
+        mock_rest_client.get.return_value = _make_json_response(existing)
+
+        changed, _ = base_module.update_singleton(
+            {"name": "obj1", "enabled": True}, dry_run=True
+        )
+
+        # Should not patch when unchanged (changed=False)
+        assert changed is False
+        mock_rest_client.patch.assert_not_called()
+
+    def test_set_object_state_create_with_dry_run_false(
+        self, base_module, mock_rest_client
+    ):
+        """set_object_state passes dry_run=False to create_object."""
+        mock_rest_client.get.return_value = _make_json_response(
+            {"code": 200, "data": []}
+        )
+        mock_rest_client.post.return_value = _make_json_response(
+            {"code": 200, "data": {"name": "obj1", "id": 0}}
+        )
+
+        data = self._data_with_internals()
+        base_module.set_object_state("present", data, ["name"], dry_run=False)
+
+        # Verify POST was called with dry_run=False
+        call_args = mock_rest_client.post.call_args
+        assert call_args.kwargs["dry_run"] is False
+
+    def test_set_object_state_create_with_dry_run_true(
+        self, base_module, mock_rest_client
+    ):
+        """set_object_state passes dry_run=True to create_object."""
+        mock_rest_client.get.return_value = _make_json_response(
+            {"code": 200, "data": []}
+        )
+        mock_rest_client.post.return_value = _make_json_response(
+            {"code": 200, "data": {"name": "obj1", "id": 0}}
+        )
+
+        data = self._data_with_internals()
+        base_module.set_object_state("present", data, ["name"], dry_run=True)
+
+        # Verify POST was called with dry_run=True
+        call_args = mock_rest_client.post.call_args
+        assert call_args.kwargs["dry_run"] is True
+
+    def test_set_object_state_update_with_dry_run_false(
+        self, base_module, mock_rest_client
+    ):
+        """set_object_state passes dry_run=False to update_object."""
+        mock_rest_client.get.return_value = _make_json_response(
+            {"code": 200, "data": [{"name": "obj1", "enabled": False, "id": 5}]}
+        )
+        mock_rest_client.patch.return_value = _make_json_response(
+            {"code": 200, "data": {"name": "obj1", "enabled": True, "id": 5}}
+        )
+
+        data = self._data_with_internals(enabled=True)
+        base_module.set_object_state("present", data, ["name"], dry_run=False)
+
+        # Verify PATCH was called with dry_run=False
+        call_args = mock_rest_client.patch.call_args
+        assert call_args.kwargs["dry_run"] is False
+
+    def test_set_object_state_update_with_dry_run_true(
+        self, base_module, mock_rest_client
+    ):
+        """set_object_state passes dry_run=True to update_object."""
+        mock_rest_client.get.return_value = _make_json_response(
+            {"code": 200, "data": [{"name": "obj1", "enabled": False, "id": 5}]}
+        )
+        mock_rest_client.patch.return_value = _make_json_response(
+            {"code": 200, "data": {"name": "obj1", "enabled": True, "id": 5}}
+        )
+
+        data = self._data_with_internals(enabled=True)
+        base_module.set_object_state("present", data, ["name"], dry_run=True)
+
+        # Verify PATCH was called with dry_run=True
+        call_args = mock_rest_client.patch.call_args
+        assert call_args.kwargs["dry_run"] is True
+
+    def test_set_object_state_delete_with_dry_run_false(
+        self, base_module, mock_rest_client
+    ):
+        """set_object_state passes dry_run=False to delete_object."""
+        existing = {"name": "obj1", "id": 5}
+        mock_rest_client.get.return_value = _make_json_response(
+            {"code": 200, "data": [existing]}
+        )
+        mock_rest_client.delete.return_value = _make_json_response(
+            {"code": 200, "data": {}}
+        )
+
+        data = self._data_with_internals(state="absent")
+        base_module.set_object_state("absent", data, ["name"], dry_run=False)
+
+        # Verify DELETE was called with dry_run=False
+        call_args = mock_rest_client.delete.call_args
+        assert call_args.kwargs["dry_run"] is False
+
+    def test_set_object_state_delete_with_dry_run_true(
+        self, base_module, mock_rest_client
+    ):
+        """set_object_state passes dry_run=True to delete_object."""
+        existing = {"name": "obj1", "id": 5}
+        mock_rest_client.get.return_value = _make_json_response(
+            {"code": 200, "data": [existing]}
+        )
+        mock_rest_client.delete.return_value = _make_json_response(
+            {"code": 200, "data": {}}
+        )
+
+        data = self._data_with_internals(state="absent")
+        base_module.set_object_state("absent", data, ["name"], dry_run=True)
+
+        # Verify DELETE was called with dry_run=True
+        call_args = mock_rest_client.delete.call_args
+        assert call_args.kwargs["dry_run"] is True

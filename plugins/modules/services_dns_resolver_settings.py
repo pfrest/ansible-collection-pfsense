@@ -495,7 +495,9 @@ def run_module():
     )
 
     base_module = base.BaseModule("/api/v2/services/dns_resolver/settings", client)
-    changed, resp = base_module.update_singleton(module.params)
+    changed, resp = base_module.update_singleton(
+        module.params, dry_run=module.check_mode
+    )
 
     # Capture the response message and clear it (prevent duplicate message/msg in result)
     message = resp.get("message", "")

@@ -213,4 +213,5 @@ docs/index.rst
 
 # pfSense-pkg-RESTAPI
 schema.json
+native.json
 playbook.yml

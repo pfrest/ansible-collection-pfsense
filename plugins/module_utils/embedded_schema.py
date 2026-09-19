@@ -8,7 +8,7 @@
 
 # pylint: disable=line-too-long,too-many-lines
 SCHEMA_DICT = {
-    "version": "unknown",
+    "version": "v2.10.2",
     "endpoints": {
         "/api/v2/auth/jwt": {
             "url": "/api/v2/auth/jwt",
