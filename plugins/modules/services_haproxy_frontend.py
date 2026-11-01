@@ -96,13 +96,11 @@ options:
       extaddr:
         required: true
         type: str
-        choices:
-        - custom
-        - any_ipv4
-        - any_ipv6
-        - localhost_ipv4
-        - localhost_ipv6
-        description: The external address to use.
+        choices: []
+        description: The external address to use. Interface references must match
+          the format set as the REST APIs interface representation format in the REST
+          API settings, and must end with `_ipv4` or `_ipv6` to select the address
+          family.
       extaddr_custom:
         required: false
         type: str
@@ -121,7 +119,7 @@ options:
         default: false
         choices: []
         description: Enables or disables using SSL/TLS for this address.
-      exaddr_advanced:
+      extaddr_advanced:
         required: false
         type: str
         default: ''
@@ -507,7 +505,10 @@ data:
       elements: dict
       contains:
         extaddr:
-          description: The external address to use.
+          description: The external address to use. Interface references must match
+            the format set as the REST APIs interface representation format in the
+            REST API settings, and must end with `_ipv4` or `_ipv6` to select the
+            address family.
           type: str
           returned: always
         extaddr_custom:
@@ -523,7 +524,7 @@ data:
           description: Enables or disables using SSL/TLS for this address.
           type: bool
           returned: always
-        exaddr_advanced:
+        extaddr_advanced:
           description: The advanced configuration to apply to this address.
           type: str
           returned: always
@@ -800,13 +801,6 @@ def run_module():
                     "type": "str",
                     "required": True,
                     "no_log": False,
-                    "choices": [
-                        "custom",
-                        "any_ipv4",
-                        "any_ipv6",
-                        "localhost_ipv4",
-                        "localhost_ipv6",
-                    ],
                     "nullable": False,
                 },
                 "extaddr_custom": {
@@ -829,7 +823,7 @@ def run_module():
                     "default": False,
                     "nullable": True,
                 },
-                "exaddr_advanced": {
+                "extaddr_advanced": {
                     "type": "str",
                     "required": False,
                     "no_log": False,
