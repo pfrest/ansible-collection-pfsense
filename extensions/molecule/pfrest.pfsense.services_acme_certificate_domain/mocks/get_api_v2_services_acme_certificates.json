@@ -314,14 +314,16 @@
             "zone_key": "string",
             "zilore_key": "string",
             "anydnschallengealias": "string",
-            "anydnschallengedomain": true
+            "anydnschallengedomain": true,
+            "azuredns_managedidentity": "string"
           }
         ],
         "a_actionlist": [
           {
             "status": "active",
             "command": "string",
-            "method": "shellcommand"
+            "method": "shellcommand",
+            "azuredns_managedidentity": "string"
           }
         ],
         "id": 0

@@ -303,7 +303,8 @@
       "anydnschallengealias": "string",
       "anydnschallengedomain": true,
       "id": 0,
-      "parent_id": 0
+      "parent_id": 0,
+      "azuredns_managedidentity": "string"
     }
   }
 }

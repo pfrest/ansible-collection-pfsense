@@ -17,6 +17,7 @@
         name: string
         status: enable
         method: string
+        azuredns_managedidentity: string
         webrootfolder: string
         webrootftpftpserver: string
         webrootftpusername: string
@@ -328,6 +329,7 @@
           - result.data.name is defined
           - result.data.status is defined
           - result.data.method is defined
+          - result.data.azuredns_managedidentity is defined
           - result.data.webrootfolder is defined
           - result.data.webrootftpftpserver is defined
           - result.data.webrootftpusername is defined

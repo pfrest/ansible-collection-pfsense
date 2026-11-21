@@ -28,6 +28,8 @@
             log: true
             tag: string
             statetype: keep state
+            dscp: af11
+            tracker: 9223372036854776000
             tcp_flags_any: true
             tcp_flags_out_of:
               - fin

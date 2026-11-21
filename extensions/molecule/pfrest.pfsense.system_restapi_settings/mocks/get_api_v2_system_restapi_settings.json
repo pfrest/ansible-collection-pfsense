@@ -31,7 +31,8 @@
         "string"
       ],
       "ha_sync_username": "string",
-      "ha_sync_password": "string"
+      "ha_sync_password": "string",
+      "allow_development_packages": true
     }
   }
 }

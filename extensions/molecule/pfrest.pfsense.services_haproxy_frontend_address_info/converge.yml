@@ -33,8 +33,8 @@
           - result.data.extaddr_port == "string"
           - result.data.extaddr_ssl is defined
           - result.data.extaddr_ssl == true
-          - result.data.exaddr_advanced is defined
-          - result.data.exaddr_advanced == "string"
+          - result.data.extaddr_advanced is defined
+          - result.data.extaddr_advanced == "string"
           - result.data.parent_id is defined
           - result.data.id is defined
           - result.data.id == 0

@@ -9,9 +9,9 @@
       "extaddr_custom": "string",
       "extaddr_port": "string",
       "extaddr_ssl": true,
-      "exaddr_advanced": "string",
       "id": 0,
-      "parent_id": 0
+      "parent_id": 0,
+      "extaddr_advanced": "string"
     }
   }
 }
