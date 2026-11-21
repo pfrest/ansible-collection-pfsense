@@ -366,6 +366,10 @@ data:
           description: Azure Client Secret
           type: str
           returned: always
+        azuredns_managedidentity:
+          description: Azure Management Identity
+          type: str
+          returned: always
         bookmyname_username:
           description: BookMyName Username
           type: str

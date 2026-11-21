@@ -94,7 +94,9 @@ data:
   returned: always
   contains:
     extaddr:
-      description: The external address to use.
+      description: The external address to use. Interface references must match the
+        format set as the REST APIs interface representation format in the REST API
+        settings, and must end with `_ipv4` or `_ipv6` to select the address family.
       type: str
       returned: always
     extaddr_custom:
@@ -110,7 +112,7 @@ data:
       description: Enables or disables using SSL/TLS for this address.
       type: bool
       returned: always
-    exaddr_advanced:
+    extaddr_advanced:
       description: The advanced configuration to apply to this address.
       type: str
       returned: always

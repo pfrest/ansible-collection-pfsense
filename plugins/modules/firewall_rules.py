@@ -329,6 +329,13 @@ options:
         - out
         description: The direction of traffic this firewall rule applies to. This
           field only applies to floating firewall rules.
+      tracker:
+        required: true
+        type: int
+        choices: []
+        description: The internal tracking ID for this firewall rule. Defaults to
+          the current Unix timestamp for single-rule creation, or a unique random
+          numeric value when replacing all rules.
     description: The list of items to manage in the collection. Each item should be
       a dictionary representing the desired state of a single resource within the
       collection.
@@ -350,6 +357,7 @@ EXAMPLES = """
       ipprotocol: inet
       source: string
       destination: string
+      tracker: 1
       protocol: tcp
       icmptype:
       - any
@@ -517,7 +525,9 @@ data:
       type: str
       returned: always
     tracker:
-      description: The internal tracking ID for this firewall rule.
+      description: The internal tracking ID for this firewall rule. Defaults to the
+        current Unix timestamp for single-rule creation, or a unique random numeric
+        value when replacing all rules.
       type: int
       returned: always
     associated_rule_id:
@@ -853,6 +863,12 @@ def run_module():
                     "no_log": False,
                     "choices": ["any", "in", "out"],
                     "nullable": True,
+                },
+                "tracker": {
+                    "type": "int",
+                    "required": True,
+                    "no_log": False,
+                    "nullable": False,
                 },
             },
         },

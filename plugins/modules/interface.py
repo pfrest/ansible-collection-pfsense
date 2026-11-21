@@ -296,6 +296,36 @@ options:
     type: bool
     choices: []
     description: Enable or disable IPv6 using the IPv4 connectivity link (PPPoE).
+  dhcp6prefixonly:
+    required: false
+    type: bool
+    choices: []
+    description: Only request an IPv6 prefix, do not request an IPv6 address.
+  dhcp6_ia_pd_len:
+    required: false
+    type: str
+    choices:
+    - none
+    - '0'
+    - '1'
+    - '2'
+    - '3'
+    - '4'
+    - '5'
+    - '6'
+    - '7'
+    - '8'
+    - '9'
+    - '10'
+    - '11'
+    - '12'
+    - '13'
+    - '14'
+    - '15'
+    - '16'
+    description: The delegated prefix length provided by the DHCPv6 server. `none`
+      disables delegation; numeric values are the IA-PD length (16 -> /48 ... 0 ->
+      /64). Normally specified by the ISP.
   prefix_6rd:
     required: false
     type: str
@@ -561,6 +591,16 @@ data:
     slaacusev4iface:
       description: Enable or disable IPv6 using the IPv4 connectivity link (PPPoE).
       type: bool
+      returned: always
+    dhcp6prefixonly:
+      description: Only request an IPv6 prefix, do not request an IPv6 address.
+      type: bool
+      returned: always
+    dhcp6_ia_pd_len:
+      description: The delegated prefix length provided by the DHCPv6 server. `none`
+        disables delegation; numeric values are the IA-PD length (16 -> /48 ... 0
+        -> /64). Normally specified by the ISP.
+      type: str
       returned: always
     prefix_6rd:
       description: Sets the 6RD IPv6 prefix assigned by the ISP for this interface.
@@ -886,6 +926,38 @@ def run_module():
             "type": "bool",
             "required": False,
             "no_log": False,
+            "nullable": True,
+        },
+        "dhcp6prefixonly": {
+            "type": "bool",
+            "required": False,
+            "no_log": False,
+            "nullable": True,
+        },
+        "dhcp6_ia_pd_len": {
+            "type": "str",
+            "required": False,
+            "no_log": False,
+            "choices": [
+                "none",
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12",
+                "13",
+                "14",
+                "15",
+                "16",
+            ],
             "nullable": True,
         },
         "prefix_6rd": {

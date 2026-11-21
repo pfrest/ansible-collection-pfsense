@@ -114,6 +114,8 @@ options:
     default: []
     choices: []
     description: MAC addresses this DHCP server is allowed to provide leases for.
+      OUI prefixes (partial MACs, e.g. `EC:71:DB`) are accepted to match all devices
+      of a vendor (GUI parity).
     elements: str
   mac_deny:
     required: false
@@ -121,6 +123,8 @@ options:
     default: []
     choices: []
     description: MAC addresses this DHCP server is not allowed to provide leases for.
+      OUI prefixes (partial MACs, e.g. `EC:71:DB`) are accepted to match all devices
+      of a vendor (GUI parity).
     elements: str
   domainsearchlist:
     required: false
@@ -266,6 +270,8 @@ options:
         default: []
         choices: []
         description: MAC addresses this DHCP server is allowed to provide leases for.
+          OUI prefixes (partial MACs, e.g. `EC:71:DB`) are accepted to match all devices
+          of a vendor (GUI parity).
         elements: str
       mac_deny:
         required: false
@@ -273,7 +279,8 @@ options:
         default: []
         choices: []
         description: MAC addresses this DHCP server is not allowed to provide leases
-          for.
+          for. OUI prefixes (partial MACs, e.g. `EC:71:DB`) are accepted to match
+          all devices of a vendor (GUI parity).
         elements: str
       domainsearchlist:
         required: false
@@ -614,12 +621,15 @@ data:
       returned: always
     mac_allow:
       description: MAC addresses this DHCP server is allowed to provide leases for.
+        OUI prefixes (partial MACs, e.g. `EC:71:DB`) are accepted to match all devices
+        of a vendor (GUI parity).
       type: list
       returned: always
       elements: str
     mac_deny:
       description: MAC addresses this DHCP server is not allowed to provide leases
-        for.
+        for. OUI prefixes (partial MACs, e.g. `EC:71:DB`) are accepted to match all
+        devices of a vendor (GUI parity).
       type: list
       returned: always
       elements: str
@@ -725,13 +735,15 @@ data:
           returned: always
         mac_allow:
           description: MAC addresses this DHCP server is allowed to provide leases
-            for.
+            for. OUI prefixes (partial MACs, e.g. `EC:71:DB`) are accepted to match
+            all devices of a vendor (GUI parity).
           type: list
           returned: always
           elements: str
         mac_deny:
           description: MAC addresses this DHCP server is not allowed to provide leases
-            for.
+            for. OUI prefixes (partial MACs, e.g. `EC:71:DB`) are accepted to match
+            all devices of a vendor (GUI parity).
           type: list
           returned: always
           elements: str

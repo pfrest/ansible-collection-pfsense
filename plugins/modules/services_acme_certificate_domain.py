@@ -359,6 +359,11 @@ options:
     type: str
     choices: []
     description: Azure Client Secret
+  azuredns_managedidentity:
+    required: false
+    type: str
+    choices: []
+    description: Azure Management Identity
   bookmyname_username:
     required: false
     type: str
@@ -1875,6 +1880,10 @@ data:
       description: Azure Client Secret
       type: str
       returned: always
+    azuredns_managedidentity:
+      description: Azure Management Identity
+      type: str
+      returned: always
     bookmyname_username:
       description: BookMyName Username
       type: str
@@ -2981,6 +2990,12 @@ def run_module():
             "type": "str",
             "required": False,
             "no_log": True,
+            "nullable": True,
+        },
+        "azuredns_managedidentity": {
+            "type": "str",
+            "required": False,
+            "no_log": False,
             "nullable": True,
         },
         "bookmyname_username": {
