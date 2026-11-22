@@ -29,7 +29,7 @@
           - result.data[0].extaddr_custom is defined
           - result.data[0].extaddr_port is defined
           - result.data[0].extaddr_ssl is defined
-          - result.data[0].exaddr_advanced is defined
+          - result.data[0].extaddr_advanced is defined
           - result.data[0].parent_id is defined
           - result.data[0].id is defined
 

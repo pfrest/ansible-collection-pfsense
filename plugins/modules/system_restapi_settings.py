@@ -191,9 +191,10 @@ options:
     type: bool
     default: false
     choices: []
-    description: Enables or disables syncing API settings to HA peers. When enabled,
-      API settings from this host will automatically be synced to any hosts defined
-      in `ha_sync_hosts`.
+    description: Enables HA sync for REST API settings. When enabled, this host will
+      be allowed to accept sync requests from peers. If `ha_sync_hosts` are also defined,
+      this host will sync its settings to those hosts, which must also enable this
+      setting to accept them.
   ha_sync_validate_certs:
     required: false
     type: bool
@@ -361,9 +362,10 @@ data:
       type: int
       returned: always
     ha_sync:
-      description: Enables or disables syncing API settings to HA peers. When enabled,
-        API settings from this host will automatically be synced to any hosts defined
-        in `ha_sync_hosts`.
+      description: Enables HA sync for REST API settings. When enabled, this host
+        will be allowed to accept sync requests from peers. If `ha_sync_hosts` are
+        also defined, this host will sync its settings to those hosts, which must
+        also enable this setting to accept them.
       type: bool
       returned: always
     ha_sync_validate_certs:

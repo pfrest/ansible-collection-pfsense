@@ -50,6 +50,8 @@
         adv_dhcp_config_file_override: true
         adv_dhcp_config_file_override_path: string
         typev6: staticv6
+        dhcp6prefixonly: true
+        dhcp6_ia_pd_len: none
         ipaddrv6: string
         subnetv6: 9223372036854776000
         gatewayv6: string
@@ -106,6 +108,8 @@
           - result.data.adv_dhcp_config_file_override is defined
           - result.data.adv_dhcp_config_file_override_path is defined
           - result.data.typev6 is defined
+          - result.data.dhcp6prefixonly is defined
+          - result.data.dhcp6_ia_pd_len is defined
           - result.data.ipaddrv6 is defined
           - result.data.subnetv6 is defined
           - result.data.gatewayv6 is defined

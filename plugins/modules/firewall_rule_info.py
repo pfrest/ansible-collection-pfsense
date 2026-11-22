@@ -230,7 +230,9 @@ data:
       type: str
       returned: always
     tracker:
-      description: The internal tracking ID for this firewall rule.
+      description: The internal tracking ID for this firewall rule. Defaults to the
+        current Unix timestamp for single-rule creation, or a unique random numeric
+        value when replacing all rules.
       type: int
       returned: always
     associated_rule_id:

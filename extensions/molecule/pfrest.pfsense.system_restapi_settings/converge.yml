@@ -14,6 +14,7 @@
         enabled: true
         read_only: true
         keep_backup: true
+        allow_development_packages: true
         login_protection: true
         log_successful_auth: true
         log_level: LOG_DEBUG
@@ -50,6 +51,7 @@
           - result.data.enabled is defined
           - result.data.read_only is defined
           - result.data.keep_backup is defined
+          - result.data.allow_development_packages is defined
           - result.data.login_protection is defined
           - result.data.log_successful_auth is defined
           - result.data.log_level is defined

@@ -28,6 +28,7 @@
             - name: string
               status: enable
               method: string
+              azuredns_managedidentity: string
               webrootfolder: string
               webrootftpftpserver: string
               webrootftpusername: string

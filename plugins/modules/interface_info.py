@@ -266,6 +266,16 @@ data:
       description: Enable or disable IPv6 using the IPv4 connectivity link (PPPoE).
       type: bool
       returned: always
+    dhcp6prefixonly:
+      description: Only request an IPv6 prefix, do not request an IPv6 address.
+      type: bool
+      returned: always
+    dhcp6_ia_pd_len:
+      description: The delegated prefix length provided by the DHCPv6 server. `none`
+        disables delegation; numeric values are the IA-PD length (16 -> /48 ... 0
+        -> /64). Normally specified by the ISP.
+      type: str
+      returned: always
     prefix_6rd:
       description: Sets the 6RD IPv6 prefix assigned by the ISP for this interface.
       type: str

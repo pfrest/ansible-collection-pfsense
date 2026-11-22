@@ -50,7 +50,9 @@
       "prefix_6rd_v4plen": 9223372036854776000,
       "track6_interface": "string",
       "track6_prefix_id_hex": "string",
-      "id": 0
+      "id": 0,
+      "dhcp6prefixonly": true,
+      "dhcp6_ia_pd_len": "none"
     }
   }
 }

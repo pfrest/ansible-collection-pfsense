@@ -45,7 +45,8 @@
       "created_by": "string",
       "updated_time": 9223372036854776000,
       "updated_by": "string",
-      "id": 0
+      "id": 0,
+      "dscp": "af11"
     }
   }
 }
